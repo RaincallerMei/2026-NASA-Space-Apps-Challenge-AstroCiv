@@ -1,0 +1,19 @@
+{
+    "name": "Mapmakers.Editor",
+    "rootNamespace": "Mapmakers.EditorTools",
+    "references": [
+        "Mapmakers.Game",
+        "Mapmakers.Sim"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -4,31 +4,39 @@ using System.Collections.Generic;
 namespace Mapmakers.Sim
 {
     // Deterministic fixed-step simulation. Commands mutate the state they are given;
-    // Step returns a new state and never reads frame time.
+    // Step and AdvanceDay return a new state and never read frame time.
+    // Play is turn based: one Next Day press runs 24 game hours of fixed steps.
     public sealed class Simulator
     {
         const double Eps = 1e-6;
+        public const double HoursPerDay = 24;
         public readonly Balance balance;
         public readonly TerrainGrid terrain;
+        public readonly Scenario scenario;
+        public PlanetProfile planet = PlanetProfile.Moon;
         public string geologistName = "Yuki";
         public bool missionEnabled = true;
 
-        public Simulator(Balance balance, TerrainGrid terrain)
+        public Simulator(Balance balance, TerrainGrid terrain, Scenario scenario = null)
         {
             this.balance = balance;
             this.terrain = terrain;
+            this.scenario = scenario ?? new Scenario();
         }
 
         public SimState NewGame()
         {
-            return new SimState
+            var s = new SimState
             {
                 supplies = balance.startSupplies,
                 waterL = balance.startWaterL,
                 meals = balance.startMeals,
                 airHours = balance.startAirHours,
-                maxBatteries = balance.startMaxBatteries
+                maxBatteries = Math.Max(balance.startMaxBatteries, scenario.maxBatteries),
+                shelterUnlocked = scenario.shelterUnlocked
             };
+            if (missionEnabled) StartDay(s);
+            return s;
         }
 
         // ---------- commands ----------
@@ -48,6 +56,16 @@ namespace Mapmakers.Sim
             s.supplies -= def.cost;
             Log(s, "placed_" + type, def.displayName + " placed.");
             result.building = b;
+            return result;
+        }
+
+        // Rebuilds a saved base at no cost (a level that continues the previous level's base).
+        public PlacementResult PlaceFree(SimState s, BuildingType type, int x, int y)
+        {
+            int cost = balance.Def(type).cost;
+            s.supplies += cost;
+            var result = Place(s, type, x, y);
+            if (!result.Ok) s.supplies -= cost;
             return result;
         }
 
@@ -76,28 +94,50 @@ namespace Mapmakers.Sim
             return true;
         }
 
+        public bool CanRepair(SimState s, int id, out string why)
+        {
+            why = "";
+            var b = s.Find(id);
+            if (b == null || !b.broken) { why = "Nothing to fix."; return false; }
+            if (s.supplies < balance.repairCost) { why = "Need " + balance.repairCost + " supplies."; return false; }
+            return true;
+        }
+
+        public bool Repair(SimState s, int id)
+        {
+            if (!CanRepair(s, id, out _)) return false;
+            var b = s.Find(id);
+            b.broken = false;
+            s.supplies -= balance.repairCost;
+            Log(s, "repaired_" + b.type, balance.Def(b.type).displayName + " fixed.");
+            return true;
+        }
+
         public void StartShadow(SimState s)
         {
             s.shadowFactor = balance.shadow.factor;
             s.shadowEndsAt = s.timeHours + balance.shadow.durationHours;
-            Log(s, "shadow_start", "A long shadow covers the base. Less sunlight reaches the panels.");
+            Log(s, "shadow_start", planet.dimmingStart);
         }
 
-        public void StartStorm(SimState s)
+        public void StartStorm(SimState s, double strength = 1)
         {
             s.stormStartHour = s.timeHours;
+            s.stormStrength = strength;
             s.stormPhase = StormPhase.Warning;
+            s.stormsStarted++;
+            s.recallIssued = false;
+            s.recallRelHour = -1;
             s.geologist = CrewLocation.Outside;
-            s.minSafetyStorm = s.safety;
-            s.stage = MissionStage.Storm;
-            Log(s, "storm_warning", "Solar particle warning from mission control.");
+            s.minSafetyStorm = Math.Min(s.minSafetyStorm, s.safety);
+            Log(s, "storm_warning", "Solar warning! Particles arrive tomorrow. " + geologistName + " is outside.");
         }
 
         public bool CanRecall(SimState s, out string why)
         {
             why = "";
             if (s.geologist != CrewLocation.Outside || s.recallIssued) { why = geologistName + " is not outside."; return false; }
-            if (!s.AnyPowered(BuildingType.Communications)) { why = "The radio is off. Communications needs power."; return false; }
+            if (!s.AnyPowered(BuildingType.Communications)) { why = "The radio needs power."; return false; }
             return true;
         }
 
@@ -106,9 +146,10 @@ namespace Mapmakers.Sim
             if (!CanRecall(s, out _)) return false;
             s.recallIssued = true;
             s.recallRelHour = s.StormRelHour;
+            if (s.recallRelHour < balance.storm.onsetHour) s.earlyRecalls++;
             s.geologist = CrewLocation.Returning;
             s.geologistArrivesAt = s.timeHours + balance.storm.recallWalkHours;
-            Log(s, "recall", geologistName + " is called back to base.");
+            Log(s, "recall", geologistName + " is coming back to base.");
             return true;
         }
 
@@ -139,8 +180,18 @@ namespace Mapmakers.Sim
             var t = balance.storm;
             double rel = s.StormRelHour;
             if (rel < t.onsetHour || rel >= t.endHour) return 0;
-            if (rel < t.decayHour) return 1;
-            return 1 - (rel - t.decayHour) / (t.endHour - t.decayHour);
+            if (rel < t.decayHour) return s.stormStrength;
+            return s.stormStrength * (1 - (rel - t.decayHour) / (t.endHour - t.decayHour));
+        }
+
+        // Power numbers for the current layout without changing the state.
+        public StepReport Preview(SimState s)
+        {
+            bool mission = missionEnabled;
+            missionEnabled = false;
+            var report = Step(s).report;
+            missionEnabled = mission;
+            return report;
         }
 
         // ---------- stepping ----------
@@ -152,10 +203,42 @@ namespace Mapmakers.Sim
             return s;
         }
 
+        // Runs one whole day (one Next Day press) and records what happened.
+        public SimState AdvanceDay(SimState s)
+        {
+            if (s.Finished) return s;
+            var report = new DayReport
+            {
+                day = s.day, batteryStart = s.batteryKWh, airStart = s.airHours, waterStart = s.waterL,
+                mealsStart = s.meals, safetyStart = s.safety, safetyLowest = s.safety
+            };
+            int firstEvent = s.events.Count, brownouts = s.brownouts, day = s.day;
+            bool hasHabitat = s.Count(BuildingType.Habitat) > 0;
+            while (!s.Finished && s.day == day)
+            {
+                s = Step(s);
+                report.safetyLowest = Math.Min(report.safetyLowest, s.safety);
+                if (hasHabitat && s.airHours <= 0) report.airRanOut = true;
+            }
+            report.batteryEnd = s.batteryKWh;
+            report.airEnd = s.airHours;
+            report.waterEnd = s.waterL;
+            report.mealsEnd = s.meals;
+            report.safetyEnd = s.safety;
+            report.brownouts = s.brownouts - brownouts;
+            report.failed = s.failed;
+            report.events = s.events.GetRange(firstEvent, s.events.Count - firstEvent);
+            s.lastDay = report;
+            return s;
+        }
+
+        // What tomorrow looks like if the player changes nothing.
+        public SimState Forecast(SimState s) => AdvanceDay(s);
+
         public SimState Step(SimState previous)
         {
             var s = previous.Clone();
-            if (s.failed) return s;
+            if (s.Finished) return s;
             double dt = balance.dtHours;
             var r = new StepReport();
             s.report = r;
@@ -168,8 +251,62 @@ namespace Mapmakers.Sim
 
             s.step++;
             s.timeHours = s.step * dt;
-            if (missionEnabled) UpdateMission(s);
+            if (missionEnabled) UpdateHarvest(s);
+
+            int day = 1 + (int)Math.Floor(s.timeHours / HoursPerDay + Eps);
+            if (day != s.day)
+            {
+                s.day = day;
+                if (missionEnabled && !s.failed) StartDay(s);
+                UpdateLighting(s);
+                UpdateStorm(s);
+            }
             return s;
+        }
+
+        void StartDay(SimState s)
+        {
+            int d = s.day;
+            if (scenario.days > 0 && d > scenario.days)
+            {
+                s.completed = true;
+                Log(s, "complete", "Mission complete!");
+                return;
+            }
+            foreach (var e in scenario.events)
+            {
+                switch (e.Kind)
+                {
+                    case EventKind.Shadow:
+                        if (e.day - 1 == d) Log(s, "shadow_warning", planet.dimmingWarning);
+                        if (e.day == d) StartShadow(s);
+                        break;
+                    case EventKind.SolarStorm:
+                        if (e.day - 1 == d || (e.day == d && d == 1)) StartStorm(s, e.strength);
+                        break;
+                    case EventKind.Fault:
+                        if (e.day == d) BreakPanel(s, e.amount);
+                        break;
+                    case EventKind.SupplyDrop:
+                        if (e.day != d) break;
+                        s.supplies += e.amount;
+                        Log(s, "supply_drop", "A supply lander brings " + e.amount + " supplies.");
+                        break;
+                    case EventKind.Sunrise:
+                        if (e.day != d) break;
+                        s.sunriseStartedAt = s.timeHours;
+                        Log(s, "sunrise_start", "Sunlight creeps over the ridge. Solar power climbs.");
+                        break;
+                }
+            }
+        }
+
+        void BreakPanel(SimState s, int pick)
+        {
+            var panels = s.buildings.FindAll(b => b.type == BuildingType.SolarArray && !b.broken);
+            if (panels.Count == 0) return;
+            panels[Math.Abs(pick) % panels.Count].broken = true;
+            Log(s, "fault", "A tiny space rock hit a Solar Array. Fix it for " + balance.repairCost + " supplies.");
         }
 
         void UpdateLighting(SimState s)
@@ -178,7 +315,16 @@ namespace Mapmakers.Sim
             {
                 s.shadowFactor = 1;
                 s.shadowEndsAt = -1;
-                Log(s, "shadow_end", "The long shadow has passed. Full sunlight is back.");
+                Log(s, "shadow_end", planet.dimmingEnd);
+                if (missionEnabled && !s.shadowPassed)
+                {
+                    s.shadowPassed = true;
+                    if (s.maxBatteries < balance.unlockedMaxBatteries)
+                    {
+                        s.maxBatteries = balance.unlockedMaxBatteries;
+                        Log(s, "battery_unlock", "You got through the dark. A second Battery is unlocked.");
+                    }
+                }
             }
             if (s.sunriseStartedAt >= 0)
                 s.sunrise = Math.Min(1, (s.timeHours - s.sunriseStartedAt) / balance.sunriseHours);
@@ -201,7 +347,7 @@ namespace Mapmakers.Sim
                 {
                     s.batteryAtOnsetKWh = s.batteryKWh;
                     s.batteriesAtOnset = s.Count(BuildingType.Battery);
-                    Log(s, "storm_onset", "Solar particles have reached the Moon.");
+                    Log(s, "storm_onset", "Solar particles have arrived. Stay in the Shelter.");
                 }
                 else if (phase == StormPhase.Decay) Log(s, "storm_decay", "The particle storm is fading.");
                 else if (phase == StormPhase.Over) Log(s, "storm_over", "All clear. The storm is over.");
@@ -229,14 +375,14 @@ namespace Mapmakers.Sim
                 var def = balance.Def(b.type);
                 cap += def.batteryKWh;
                 rate += def.batteryRateKW;
-                if (def.generationKW > 0 && b.enabled)
+                if (def.generationKW > 0)
                 {
-                    gen += def.generationKW * SunFor(s, b);
-                    b.powered = true;
+                    b.powered = b.enabled && !b.broken;
+                    if (b.powered) gen += def.generationKW * SunFor(s, b);
                 }
                 if (def.demandKW > 0)
                 {
-                    if (b.enabled) loads.Add(b);
+                    if (b.enabled && !b.broken) loads.Add(b);
                     else b.powered = false;
                 }
             }
@@ -299,10 +445,13 @@ namespace Mapmakers.Sim
             if (lostNames.Count > 0)
             {
                 s.brownouts++;
-                if (s.stormPhase != StormPhase.None && s.stormPhase != StormPhase.Over) s.stormBrownouts++;
-                Log(s, "brownout", "Battery empty at " + SimText.Clock(s.timeHours, balance.startClockHour)
-                    + ": demand " + SimText.Num(wanted) + " kW > supply " + SimText.Num(gen)
-                    + " kW. Switched off: " + string.Join(", ", lostNames) + ".");
+                if (s.lastBrownoutDay != s.day)
+                {
+                    s.brownoutDays++;
+                    s.lastBrownoutDay = s.day;
+                }
+                if (s.StormActive) s.stormBrownouts++;
+                Log(s, "brownout", "Battery empty. Switched off: " + string.Join(", ", lostNames) + ".");
             }
 
             double net = gen - total;
@@ -416,12 +565,13 @@ namespace Mapmakers.Sim
             double safety = Math.Max(0, Math.Min(100, s.safety + rate * dt));
             r.safetyPerHour = (safety - s.safety) / dt;
             s.safety = safety;
+            s.minSafety = Math.Min(s.minSafety, s.safety);
             s.damageNoAir += noAir * dt;
             s.damageNoFood += noFood * dt;
             s.damageOutside += radOutside * dt;
             s.damageNoShelter += radInside * dt;
 
-            if (s.stormPhase != StormPhase.None && s.stormPhase != StormPhase.Over)
+            if (s.StormActive)
             {
                 s.minSafetyStorm = Math.Min(s.minSafetyStorm, s.safety);
                 if (sheltered) s.shelterHours += dt;
@@ -455,54 +605,18 @@ namespace Mapmakers.Sim
             return reason;
         }
 
-        void UpdateMission(SimState s)
+        void UpdateHarvest(SimState s)
         {
-            if (!s.harvestDone && s.mealsHarvested >= balance.harvestMeals - Eps)
+            if (s.harvestDone || s.mealsHarvested < balance.harvestMeals - Eps) return;
+            s.harvestDone = true;
+            s.supplies += balance.harvestSupplyReward;
+            if (s.shelterUnlocked)
             {
-                s.harvestDone = true;
-                s.shelterUnlocked = true;
-                s.supplies += balance.harvestSupplyReward;
-                Log(s, "first_harvest", "First harvest! A supply lander brings " + balance.harvestSupplyReward + " supplies. Shelter unlocked.");
+                Log(s, "first_harvest", "First harvest! A lander brings " + balance.harvestSupplyReward + " supplies.");
+                return;
             }
-
-            switch (s.stage)
-            {
-                case MissionStage.Build:
-                    if (!HasCoreBase(s)) return;
-                    s.stage = MissionStage.ShadowWarning;
-                    s.shadowStartsAt = s.timeHours + balance.shadow.warningHours;
-                    Log(s, "shadow_warning", "A long shadow will cross the base in " + SimText.Num(balance.shadow.warningHours) + " hours.");
-                    return;
-                case MissionStage.ShadowWarning:
-                    if (s.timeHours < s.shadowStartsAt - Eps) return;
-                    s.stage = MissionStage.Shadow;
-                    StartShadow(s);
-                    return;
-                case MissionStage.Shadow:
-                    if (s.shadowEndsAt >= 0) return;
-                    s.stage = MissionStage.Recover;
-                    s.shadowPassed = true;
-                    s.maxBatteries = balance.unlockedMaxBatteries;
-                    Log(s, "shadow_passed", "Power shortage passed. A second Battery is unlocked.");
-                    return;
-                case MissionStage.Recover:
-                    if (!s.harvestDone) return;
-                    if (s.stormStartsAt < 0) s.stormStartsAt = s.timeHours + balance.storm.leadHours;
-                    if (s.timeHours >= s.stormStartsAt - Eps) StartStorm(s);
-                    return;
-                case MissionStage.Storm:
-                    if (s.stormPhase != StormPhase.Over) return;
-                    s.stage = MissionStage.Sunrise;
-                    s.sunriseStartedAt = s.timeHours;
-                    Log(s, "sunrise_start", "Sunlight creeps over the ridge.");
-                    return;
-                case MissionStage.Sunrise:
-                    if (s.timeHours < s.sunriseStartedAt + balance.sunriseHours - Eps) return;
-                    s.sunrise = 1;
-                    s.stage = MissionStage.Done;
-                    Log(s, "sunrise_done", "The first lunar sunrise lights the whole base.");
-                    return;
-            }
+            s.shelterUnlocked = true;
+            Log(s, "first_harvest", "First harvest! +" + balance.harvestSupplyReward + " supplies. Shelter unlocked.");
         }
 
         static readonly BuildingType[] CoreTypes =
@@ -527,7 +641,7 @@ namespace Mapmakers.Sim
 
         void Log(SimState s, string code, string text)
         {
-            s.events.Add(new SimEvent { timeHours = s.timeHours, code = code, text = text });
+            s.events.Add(new SimEvent { timeHours = s.timeHours, day = s.day, code = code, text = text });
         }
 
         static void Warn(StepReport r, string code, string text)

@@ -4,7 +4,6 @@ namespace Mapmakers.Sim
 {
     public enum StormPhase { None, Warning, Particles, Decay, Over }
     public enum CrewLocation { Inside, Outside, Returning }
-    public enum MissionStage { Build, ShadowWarning, Shadow, Recover, Storm, Sunrise, Done }
     public enum FailReason { None, NoAir, NoFood, RadiationOutside, RadiationNoShelter }
 
     public sealed class PlacedBuilding
@@ -16,6 +15,7 @@ namespace Mapmakers.Sim
         public bool enabled = true;
         public bool powered;
         public bool tripped;
+        public bool broken;
 
         public PlacedBuilding Clone() => (PlacedBuilding)MemberwiseClone();
     }
@@ -23,6 +23,7 @@ namespace Mapmakers.Sim
     public sealed class SimEvent
     {
         public double timeHours;
+        public int day;
         public string code;
         public string text;
     }
@@ -50,12 +51,29 @@ namespace Mapmakers.Sim
         public List<SimWarning> warnings = new List<SimWarning>();
 
         public double HoursToEmpty(double batteryKWh) => batteryFlowKW < 0 ? batteryKWh / -batteryFlowKW : double.PositiveInfinity;
+        public bool Has(string code) => warnings.Exists(w => w.code == code);
+    }
+
+    // What one Next Day press did. Values are start-of-day and end-of-day snapshots.
+    public sealed class DayReport
+    {
+        public int day;
+        public double batteryStart, batteryEnd;
+        public double airStart, airEnd;
+        public double waterStart, waterEnd;
+        public double mealsStart, mealsEnd;
+        public double safetyStart, safetyEnd, safetyLowest;
+        public int brownouts;
+        public bool airRanOut;
+        public bool failed;
+        public List<SimEvent> events = new List<SimEvent>();
     }
 
     public sealed class SimState
     {
         public long step;
         public double timeHours;
+        public int day = 1;
         public int supplies;
         public double batteryKWh;
         public double airHours;
@@ -71,16 +89,17 @@ namespace Mapmakers.Sim
         public double shadowFactor = 1;
         public double shadowEndsAt = -1;
         public double sunrise;
+        public double sunriseStartedAt = -1;
 
-        public MissionStage stage = MissionStage.Build;
-        public double shadowStartsAt = -1;
         public bool shadowPassed;
         public bool harvestDone;
-        public double stormStartsAt = -1;
-        public double sunriseStartedAt = -1;
+        public bool completed;
 
         public StormPhase stormPhase = StormPhase.None;
         public double stormStartHour = -1;
+        public double stormStrength = 1;
+        public int stormsStarted;
+        public int earlyRecalls;
         public CrewLocation geologist = CrewLocation.Inside;
         public double geologistArrivesAt = -1;
         public bool recallIssued;
@@ -89,8 +108,11 @@ namespace Mapmakers.Sim
         public double mealsHarvested;
         public double noFoodHours;
         public double lowSafetyHours;
+        public double minSafety = 100;
         public double minSafetyStorm = 100;
         public int brownouts;
+        public int brownoutDays;
+        public int lastBrownoutDay;
         public int stormBrownouts;
         public bool criticalOut;
         public double unmetCriticalKWh;
@@ -107,6 +129,7 @@ namespace Mapmakers.Sim
 
         public List<SimEvent> events = new List<SimEvent>();
         public StepReport report = new StepReport();
+        public DayReport lastDay;
 
         public SimState Clone()
         {
@@ -139,6 +162,8 @@ namespace Mapmakers.Sim
             return false;
         }
 
+        public bool StormActive => stormPhase != StormPhase.None && stormPhase != StormPhase.Over;
+        public bool Finished => failed || completed;
         public double StormRelHour => stormStartHour < 0 ? -1 : timeHours - stormStartHour;
     }
 }

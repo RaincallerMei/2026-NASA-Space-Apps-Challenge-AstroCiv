@@ -12,9 +12,6 @@
     { "id": "p_seager", "text": "Sara Seager, born in Toronto, studies planets around other stars." },
     { "id": "p_wonder", "text": "You wonder: could I build a home on the Moon?" },
     { "id": "p_draw", "text": "So you draw a Moon base on your map." },
-    { "id": "p_task_habitat", "text": "First, a Habitat. Where will your crew live?" },
-    { "id": "p_task_solar", "text": "Now a Solar Array. A base needs power." },
-    { "id": "p_task_greenhouse", "text": "Add a Greenhouse. Watch power in and power out." },
     { "id": "p_locked", "text": "The Lab and Rover Garage must wait. Power and people first." },
     { "id": "p_teacher1", "text": "Your teacher says: A civilization needs more than buildings." },
     { "id": "p_teacher2", "text": "It needs people, resources, science and a plan." },
@@ -38,7 +35,11 @@
     { "id": "e_photo", "text": "Priya hands you an old photo: your first drawing." },
     { "id": "e_msg1", "text": "I used to build this world on a computer." },
     { "id": "e_msg2", "text": "Now we are building it together." },
-    { "id": "e_kid", "text": "On Earth, a new kid opens Blueprint v2." }
+    { "id": "e_kid", "text": "On Earth, a new kid opens Blueprint v2." },
+    { "id": "p_l3_intro", "text": "Yuki walks out to study old rocks." },
+    { "id": "p_l3_warn", "text": "Mission control: the Sun is very active." },
+    { "id": "p_mars1", "text": "Years later, a new rocket waits." },
+    { "id": "p_mars2", "text": "Next stop: Mars." }
   ],
   "chat": [
     {
@@ -141,12 +142,12 @@
     }
   ],
   "hints": [
-    { "id": "h_build", "text": "Pick a building on the right. Then click the map." },
+    { "id": "h_build", "text": "Pick a building below. Then click the map." },
     { "id": "h_sun", "text": "Brighter ground gets more sun. Put Solar Arrays there." },
-    { "id": "h_power", "text": "Power in must beat power out. Watch the Power row." },
+    { "id": "h_power", "text": "Power in must beat power out. Watch the top bar." },
     { "id": "h_info", "text": "Click a building to see what it needs." },
     { "id": "h_toggle", "text": "Short on power? Switch the Greenhouse off for a while." },
-    { "id": "h_speed", "text": "Pause to think. Use 2x or 4x to go faster." }
+    { "id": "h_next", "text": "Ready? Press Next Day to see what happens." }
   ],
   "cards": [
     { "id": "c_sun_home", "title": "Sun at home, Sun at the pole", "text": "Mississauga gets about five times more sunlight energy in June than in December.", "text2": "At the Moon's poles the Sun is never more than 1.5 degrees above the horizon, so shadows are long.", "source": "NASA POWER climatology; NASA Scientific Visualization Studio (svs.gsfc.nasa.gov/4893)", "label": "NASA-derived, simplified" },

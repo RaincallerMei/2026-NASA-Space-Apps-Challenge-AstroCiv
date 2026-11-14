@@ -1,0 +1,65 @@
+{
+  "note": "Story Mode levels, cutscenes and goal labels. Event days and goals are fictional game design. Cutscene lines are ids from Story.json.",
+  "levels": [
+    {
+      "id": "L1", "title": "The Dream", "subtitle": "Draw your first Moon base.", "planet": "Moon", "mode": "drawing",
+      "before": "c_dream", "after": "c_teacher", "days": 0,
+      "build": ["Habitat", "SolarArray", "Greenhouse"],
+      "goals": ["habitat", "solar", "greenhouse", "power_positive"],
+      "events": []
+    },
+    {
+      "id": "L2", "title": "The Commander", "subtitle": "Build a home for your crew.", "planet": "Moon", "mode": "mission",
+      "before": "c_years", "after": "", "days": 5, "saveBase": true,
+      "goals": ["core_base", "harvest", "all_days"],
+      "events": [ { "day": 3, "kind": "Shadow" } ]
+    },
+    {
+      "id": "L3", "title": "Solar Storm", "subtitle": "Keep your crew safe.", "planet": "Moon", "mode": "mission",
+      "before": "c_storm", "after": "c_finale", "days": 5, "startBase": "L2", "startSupplies": 40,
+      "shelterUnlocked": true, "maxBatteries": 2,
+      "goals": ["recall_early", "shelter_used", "storm_power", "all_days"],
+      "events": [ { "day": 3, "kind": "SolarStorm", "strength": 1 }, { "day": 5, "kind": "Sunrise" } ]
+    },
+    {
+      "id": "L4", "title": "Mars Base", "subtitle": "Build again, on red ground.", "planet": "Mars", "mode": "mission",
+      "before": "c_mars", "after": "c_next", "days": 7, "seed": 4,
+      "goals": ["core_base", "harvest", "recall_early", "shelter_used", "all_days"],
+      "events": [ { "day": 3, "kind": "Shadow" }, { "day": 6, "kind": "SolarStorm", "strength": 1 } ]
+    }
+  ],
+  "cutscenes": [
+    { "id": "c_dream", "slides": [
+      { "image": "bedroom", "lines": ["p_night"] },
+      { "image": "classroom", "lines": ["p_event", "p_hadfield", "p_seager"] },
+      { "image": "bedroom", "lines": ["p_wonder", "p_draw"] } ] },
+    { "id": "c_teacher", "slides": [
+      { "image": "classroom", "lines": ["p_teacher1", "p_teacher2"] } ] },
+    { "id": "c_years", "slides": [
+      { "image": "graduation", "lines": ["p_card1", "p_card2"] },
+      { "image": "launch", "lines": ["p_card3", "p_jump"] },
+      { "image": "colony", "lines": ["m_drawing", "m_commander"] } ] },
+    { "id": "c_storm", "slides": [
+      { "image": "colony", "lines": ["p_l3_intro"] },
+      { "image": "storm", "lines": ["p_l3_warn"] } ] },
+    { "id": "c_finale", "slides": [
+      { "image": "message", "lines": ["e_window", "e_earth", "e_photo", "e_msg1", "e_msg2"] } ] },
+    { "id": "c_mars", "slides": [
+      { "image": "launch", "lines": ["p_mars1", "p_mars2"] } ] },
+    { "id": "c_next", "slides": [
+      { "image": "bedroom", "lines": ["e_kid"] } ] }
+  ],
+  "goals": [
+    { "id": "habitat", "text": "Place the Habitat." },
+    { "id": "solar", "text": "Place a Solar Array on bright ground." },
+    { "id": "greenhouse", "text": "Place the Greenhouse." },
+    { "id": "power_positive", "text": "Make power in beat power out." },
+    { "id": "core_base", "text": "Build all six base parts." },
+    { "id": "harvest", "text": "Grow your first harvest." },
+    { "id": "two_batteries", "text": "Build a second Battery." },
+    { "id": "recall_early", "text": "Call Yuki in before the storm." },
+    { "id": "shelter_used", "text": "Switch on the Shelter." },
+    { "id": "storm_power", "text": "Keep the power on in the storm." },
+    { "id": "all_days", "text": "Keep the crew safe every day." }
+  ]
+}

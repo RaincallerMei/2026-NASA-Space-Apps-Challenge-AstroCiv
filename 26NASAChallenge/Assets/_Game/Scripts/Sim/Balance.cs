@@ -93,6 +93,7 @@ namespace Mapmakers.Sim
         public int startMaxBatteries = 1;
         public int unlockedMaxBatteries = 2;
         public double sunriseHours = 3;
+        public int repairCost = 5;
 
         public StormTimeline storm = new StormTimeline();
         public ShadowEventDef shadow = new ShadowEventDef();

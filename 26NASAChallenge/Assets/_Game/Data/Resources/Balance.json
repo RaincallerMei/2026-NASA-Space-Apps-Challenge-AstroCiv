@@ -27,34 +27,50 @@
   "harvestSupplyReward": 30,
   "startMaxBatteries": 1,
   "unlockedMaxBatteries": 2,
-  "sunriseHours": 3,
+  "sunriseHours": 12,
   "storm": {
-    "leadHours": 3,
-    "evaPromptHour": 2,
-    "onsetHour": 4,
-    "decayHour": 10,
-    "endHour": 12,
+    "leadHours": 24,
+    "evaPromptHour": 0,
+    "onsetHour": 24,
+    "decayHour": 48,
+    "endHour": 60,
     "recallWalkHours": 1.5,
     "selfReturnDelayHours": 1
   },
   "shadow": {
-    "warningHours": 2,
-    "durationHours": 3,
+    "warningHours": 24,
+    "durationHours": 24,
     "factor": 0.7
   },
   "terrain": {
     "sunFloor": 0.5,
     "sunFullAtPercent": 65,
     "blockedBelowPercent": 10,
-    "rockTiles": [7, 11, 8, 11, 12, 6, 6, 3, 13, 2, 14, 2, 10, 13]
+    "rockTiles": [
+      7,
+      11,
+      8,
+      11,
+      12,
+      6,
+      6,
+      3,
+      13,
+      2,
+      14,
+      2,
+      10,
+      13
+    ]
   },
   "buildings": [
     { "type": "Habitat", "displayName": "Habitat", "blurb": "The crew lives here.", "width": 3, "height": 3, "cost": 30, "maxCount": 1, "generationKW": 0, "demandKW": 1, "priority": 1, "optional": false, "batteryKWh": 0, "batteryRateKW": 0, "waterInLph": 0, "waterReturnLph": 0, "foodPerHour": 0, "airBonusPerHour": 0 },
     { "type": "SolarArray", "displayName": "Solar Array", "blurb": "Turns sunlight into power.", "width": 2, "height": 2, "cost": 10, "maxCount": 4, "generationKW": 3, "demandKW": 0, "priority": 0, "optional": false, "batteryKWh": 0, "batteryRateKW": 0, "waterInLph": 0, "waterReturnLph": 0, "foodPerHour": 0, "airBonusPerHour": 0 },
-    { "type": "Battery", "displayName": "Battery", "blurb": "Saves power for later.", "width": 1, "height": 2, "cost": 12, "maxCount": 1, "generationKW": 0, "demandKW": 0, "priority": 0, "optional": false, "batteryKWh": 4, "batteryRateKW": 3, "waterInLph": 0, "waterReturnLph": 0, "foodPerHour": 0, "airBonusPerHour": 0 },
+    { "type": "Battery", "displayName": "Battery", "blurb": "Saves power for later.", "width": 1, "height": 2, "cost": 12, "maxCount": 1, "generationKW": 0, "demandKW": 0, "priority": 0, "optional": false, "batteryKWh": 30, "batteryRateKW": 5, "waterInLph": 0, "waterReturnLph": 0, "foodPerHour": 0, "airBonusPerHour": 0 },
     { "type": "LifeSupport", "displayName": "Life Support", "blurb": "Makes air to breathe.", "width": 2, "height": 2, "cost": 20, "maxCount": 1, "generationKW": 0, "demandKW": 4, "priority": 1, "optional": false, "batteryKWh": 0, "batteryRateKW": 0, "waterInLph": 0, "waterReturnLph": 0, "foodPerHour": 0, "airBonusPerHour": 0 },
     { "type": "Communications", "displayName": "Communications", "blurb": "Radio link to Earth and crew.", "width": 1, "height": 1, "cost": 8, "maxCount": 1, "generationKW": 0, "demandKW": 1, "priority": 4, "optional": true, "batteryKWh": 0, "batteryRateKW": 0, "waterInLph": 0, "waterReturnLph": 0, "foodPerHour": 0, "airBonusPerHour": 0 },
-    { "type": "Greenhouse", "displayName": "Greenhouse", "blurb": "Grows food. Needs power and water.", "width": 3, "height": 2, "cost": 25, "maxCount": 1, "generationKW": 0, "demandKW": 4, "priority": 3, "optional": true, "batteryKWh": 0, "batteryRateKW": 0, "waterInLph": 5, "waterReturnLph": 4, "foodPerHour": 0.5, "airBonusPerHour": 0.25 },
+    { "type": "Greenhouse", "displayName": "Greenhouse", "blurb": "Grows food. Needs power and water.", "width": 3, "height": 2, "cost": 25, "maxCount": 1, "generationKW": 0, "demandKW": 4, "priority": 3, "optional": true, "batteryKWh": 0, "batteryRateKW": 0, "waterInLph": 5, "waterReturnLph": 4.75, "foodPerHour": 0.5, "airBonusPerHour": 0.25 },
     { "type": "Shelter", "displayName": "Shelter", "blurb": "Shields the crew from solar particles.", "width": 2, "height": 2, "cost": 15, "maxCount": 1, "generationKW": 0, "demandKW": 2, "priority": 2, "optional": true, "batteryKWh": 0, "batteryRateKW": 0, "waterInLph": 0, "waterReturnLph": 0, "foodPerHour": 0, "airBonusPerHour": 0 }
-  ]
+  ],
+  "repairCost": 5
 }

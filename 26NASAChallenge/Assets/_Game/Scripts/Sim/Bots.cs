@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Mapmakers.Sim
 {
-    // Scripted players used to test and tune the balance. Pure C#, no UI.
+    // Scripted players used to test and tune the balance. Pure C#, no UI. They act once per day, like a player.
     public abstract class Bot
     {
         public abstract string Name { get; }
@@ -49,6 +49,8 @@ namespace Mapmakers.Sim
                 if (!PlaceBest(sim, s, BuildingType.SolarArray)) break;
             foreach (var type in new[] { BuildingType.LifeSupport, BuildingType.Battery, BuildingType.Communications, BuildingType.Greenhouse })
                 if (s.Count(type) == 0) PlaceBest(sim, s, type);
+            foreach (var b in s.buildings.ToArray())
+                if (b.broken) sim.Repair(s, b.id);
         }
 
         protected static void ProtectCrew(Simulator sim, SimState s)
@@ -61,8 +63,11 @@ namespace Mapmakers.Sim
             }
             if (s.geologist == CrewLocation.Outside) sim.RecallGeologist(s);
             if (s.Count(BuildingType.Shelter) == 0) PlaceBest(sim, s, BuildingType.Shelter);
-            if (s.StormRelHour >= sim.balance.storm.onsetHour - 0.5) Switch(sim, s, BuildingType.Shelter, true);
+            Switch(sim, s, BuildingType.Shelter, true);
         }
+
+        protected static bool Dim(SimState s) => s.shadowFactor < 1;
+        protected static bool Particles(SimState s) => s.stormPhase == StormPhase.Particles || s.stormPhase == StormPhase.Decay;
     }
 
     // Builds nothing at all.
@@ -72,14 +77,15 @@ namespace Mapmakers.Sim
         public override void Act(Simulator sim, SimState s) { }
     }
 
-    // Builds the base, then ignores the storm.
+    // Builds the base, then ignores every event.
     public sealed class DoNothingBot : Bot
     {
         public override string Name => "DoNothing";
         public override void Act(Simulator sim, SimState s) => BuildCoreBase(sim, s);
+        public static void Build(Simulator sim, SimState s) => BuildCoreBase(sim, s);
     }
 
-    // Protects the crew and switches the Greenhouse off while particles are arriving.
+    // Protects the crew and rests the Greenhouse on dim days and particle days.
     public sealed class ShedLoadsBot : Bot
     {
         public override string Name => "ShedLoads";
@@ -87,12 +93,11 @@ namespace Mapmakers.Sim
         {
             BuildCoreBase(sim, s);
             ProtectCrew(sim, s);
-            bool particles = s.stormPhase == StormPhase.Particles || s.stormPhase == StormPhase.Decay;
-            if (s.stormPhase != StormPhase.None) Switch(sim, s, BuildingType.Greenhouse, !particles);
+            Switch(sim, s, BuildingType.Greenhouse, !(Dim(s) || Particles(s)));
         }
     }
 
-    // Protects the crew and keeps everything on, using a second, pre-charged Battery.
+    // Protects the crew and keeps everything on, using a second Battery as soon as it is allowed.
     public sealed class StoredEnergyBot : Bot
     {
         public override string Name => "StoredEnergy";
@@ -101,6 +106,20 @@ namespace Mapmakers.Sim
             BuildCoreBase(sim, s);
             if (s.Count(BuildingType.Battery) < s.maxBatteries) PlaceBest(sim, s, BuildingType.Battery);
             ProtectCrew(sim, s);
+        }
+    }
+
+    // Plays like a careful child using the Tomorrow forecast: rests the Greenhouse only when power would run out.
+    public sealed class SmartBot : Bot
+    {
+        public override string Name => "Smart";
+        public override void Act(Simulator sim, SimState s)
+        {
+            BuildCoreBase(sim, s);
+            if (s.Count(BuildingType.Battery) < s.maxBatteries) PlaceBest(sim, s, BuildingType.Battery);
+            ProtectCrew(sim, s);
+            Switch(sim, s, BuildingType.Greenhouse, true);
+            if (sim.Forecast(s).lastDay.brownouts > 0) Switch(sim, s, BuildingType.Greenhouse, false);
         }
     }
 
@@ -115,30 +134,45 @@ namespace Mapmakers.Sim
         }
     }
 
+    // A ready-made base, placed for free. Used when a level starts from a base the player has not saved.
+    public static class StarterBase
+    {
+        public static void Build(Simulator sim, SimState s)
+        {
+            int supplies = s.supplies;
+            s.supplies = 1000;
+            DoNothingBot.Build(sim, s);
+            s.supplies = supplies;
+        }
+    }
+
     public sealed class RunResult
     {
         public string bot;
         public SimState state;
-        public Outcome outcome;
-        public double hours;
+        public LevelScore score;
+        public int days;
         public List<string> log = new List<string>();
     }
 
     public static class ScenarioRunner
     {
-        public static RunResult Run(Simulator sim, Bot bot, double maxHours = 200)
+        public static RunResult Run(Simulator sim, Bot bot, IList<string> goals = null, int maxDays = 40, SimState start = null)
         {
-            var s = sim.NewGame();
-            long maxSteps = (long)(maxHours / sim.balance.dtHours);
-            for (long i = 0; i < maxSteps; i++)
+            var s = start ?? sim.NewGame();
+            while (!s.Finished && s.day <= maxDays)
             {
                 bot.Act(sim, s);
-                s = sim.Step(s);
-                if (s.failed || s.stage == MissionStage.Done) break;
+                s = sim.AdvanceDay(s);
             }
-            var result = new RunResult { bot = bot.Name, state = s, hours = s.timeHours, outcome = Outcome.Evaluate(sim.balance, s) };
+            goals = goals ?? new string[0];
+            var result = new RunResult
+            {
+                bot = bot.Name, state = s, days = s.day,
+                score = Grader.Mission(sim.balance, s, Goals.CountMet(goals, sim, s), goals.Count)
+            };
             foreach (var e in s.events)
-                result.log.Add(SimText.Num(e.timeHours) + "h " + e.code + ": " + e.text);
+                result.log.Add("D" + e.day + " " + SimText.Num(e.timeHours) + "h " + e.code + ": " + e.text);
             return result;
         }
     }

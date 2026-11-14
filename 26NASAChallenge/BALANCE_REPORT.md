@@ -1,5 +1,27 @@
 # Balance report
 
+## Current: day turns (14 November 2026, redesign)
+
+Source: `BalanceTests` on the shipped `Balance.json` and `Levels.json`. Bots act once per day, like a player pressing Next Day. All numbers are **fictional balance**, not equipment specs or dose forecasts.
+
+**What changed for day turns:** Battery 4 → 30 kWh (limit 3 → 5 kW). Storm: warning at the start of the day before, particles for a full day, fading over 12 h (onset 24 h, decay 48 h, end 60 h after the warning). Long shadow lasts one day (×0.7 sun). Greenhouse recycles 95% of its water (was 80%). Sunrise climbs over 12 h. Repair costs 5 supplies. A base carried into Level 3 starts with full batteries.
+
+| Level | Bot | Score | Grade | Passed | Notes |
+|---|---|---|---|---|---|
+| L2 Commander | ShedLoads | 98 | S | yes | 0 brownout days |
+| L2 Commander | Idle | 30 | C | no | Air runs out on day 2 (after 20+ game hours) |
+| L3 Solar Storm | ShedLoads | 95 | S | yes | Rests the Greenhouse in the storm |
+| L3 Solar Storm | StoredEnergy | 92 | S | yes | Second Battery, no storm brownout |
+| L3 Solar Storm | Greedy | 86 | S | yes | One storm brownout; scores lowest of the winners |
+| L3 Solar Storm | DoNothing | 30 | C | no | No Shelter: RadiationNoShelter |
+| L4 Mars | ShedLoads | 92 | S | yes | |
+| L4 Mars | StoredEnergy | 86 | S | yes | 2 storm brownouts |
+| Free Build ×36 | Smart (uses the forecast) | 89–96 | S | 36/36 | Seeds 1–12 × Easy/Normal/Hard, Moon and Mars |
+
+Open balance question: the Greedy player still earns S (86). If the team wants the storm choice to matter more in the grade, lower the "Steady power" points or raise the S line. Not changed without the team.
+
+## Historical: real-time version (before the redesign)
+
 Generated UTC: 2026-11-14 17:22:52Z
 Source: shipped `Balance.json`, real LOLA terrain, and the existing scenario bots. No values were tuned by this export.
 

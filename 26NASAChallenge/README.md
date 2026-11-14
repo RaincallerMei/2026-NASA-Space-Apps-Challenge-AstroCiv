@@ -2,18 +2,25 @@
 
 Open this folder in **Unity 6000.6.7f1** through Unity Hub. This is the folder with `Assets`, `Packages`, and `ProjectSettings`. Do not upgrade the editor or packages.
 
-The simulation now has a functional greybox Main scene with a clickable map, resource display, placement/inspection, pause/speed/retry controls, storm actions and a debrief. The functional tutorial and chapter sequence are connected; the crew-chat screen, final artwork and browser build remain pending.
+## Play
 
-Open `Assets/_Game/Scenes/Boot.unity` and press Play for the full tutorial and campaign. Main is the direct outpost development shortcut. Pick a building on the right, then click the map; choose Inspect to select existing buildings. Use the selected-system button for optional loads. Recall Yuki while the radio is powered, place the unlocked Shelter and switch it on, and manage optional demand through the storm. Reset / Retry starts over. Existing balance values are unchanged.
+Open `Assets/_Game/Scenes/Boot.unity` and press Play. The menu offers **Story Mode** (4 levels, each unlocks the next), **Free Build** (random map and events) and **Data & Credits**. Story pictures play in their own Cutscene scene. Play is turn based: build, then press **Next Day**. Each level ends on a Results screen with a grade (S/A/B/C), a score out of 100 and stars. Full flow: `GAMEPLAY_SEQUENCE.md`.
 
-## Work already specified
+Controls: click a building card, then click the map. Right-click or Esc cancels. Click a building to inspect it, turn it off or on, fix it or remove it. Click a crew member to talk. Enter = Next Day. Esc with nothing selected = pause menu.
 
-- Pure C# simulation: `Assets/_Game/Scripts/Sim/`.
-- Pause/1x/2x/4x and Reset/Retry: `Assets/_Game/Scripts/Game/GameSession.cs`, connected by `MissionController.cs`. `MissionView.cs` is the replaceable greybox uGUI view; Reset creates a fresh session at 1x.
-- Runtime data loaders: `Assets/_Game/Scripts/Data/`.
-- Balance settings: `Assets/_Game/Data/Resources/Balance.json`; no tuning was performed in this pass.
-- Story and crew reply text: `Assets/_Game/Data/Resources/Story.json`.
-- Six offline source files: `Assets/_Game/Data/Resources/Fixtures/`. Runtime reads local Resources, with no NASA key or live API calls required by the data loaders.
+Rebuild the five scenes and the build order with **Mapmakers → Build Scenes**.
+
+## Code map
+
+| Folder | Contents |
+|---|---|
+| `Assets/_Game/Scripts/Sim/` | Pure C# simulation: day turns, event schedule (`Scenario.cs`), grades (`Scoring.cs`), random maps and events (`RandomWorld.cs`), bots |
+| `Assets/_Game/Scripts/Data/` | Loaders for balance, story, fixtures and levels (`LevelData.cs`) |
+| `Assets/_Game/Scripts/Game/` | Scene flow and progress (`Flow.cs`), one level run (`MissionRun.cs`), crew chat choice (`CrewChat.cs`) |
+| `Assets/_Game/Scripts/UI/` | Screens built in code: Menu, Cutscene, Game (map, windows), Results; `UIKit.cs` holds the palette and placeholder pixel icons |
+| `Assets/_Game/Data/Resources/` | `Balance.json`, `Story.json`, `Levels.json`, six offline fixtures |
+| `Assets/_Game/Art/Resources/Cutscenes/` | Seven AI-generated story pictures (watermarked in game) |
+| `Assets/_Game/Editor/` | Scene builder and cutscene import settings |
 
 ## Run tests and regenerate technical reports
 
@@ -21,18 +28,14 @@ With this editor open and the Unity CLI installed, run from this folder:
 
 ```powershell
 unity command test run --mode editor --filter Mapmakers --async-tests true
+unity command test run --mode playmode --async-tests
 unity command test status --detail failures
-unity command script run --file tools/export_balance.cs
 python tools/export_assumptions.py
 ```
 
 Wait for compilation to finish before starting tests. Alternatively use Unity's Test Runner, EditMode, `Mapmakers.Tests`. Reports describe automated simulation outcomes, not player testing.
 
 Refresh source data only if requested: `python tools/fetch_data.py`. It reads NASA_API_KEY from the environment or uses DEMO_KEY; do not put a personal key in project files. Existing offline fixtures are already present and should not be refreshed just to run the game/tests.
-
-## Scope of the playable greybox
-
-Map placement/inspection, optional load toggles, Pause/1x/2x/4x, recall and Retry are connected. Boot starts the drawing tutorial in Prologue, then loads Main for commander instructions and the persistent outpost. The simulation advances through shadow, harvest, storm and sunrise to the debrief; Continue shows the existing ending lines and Blueprint v2. See GAMEPLAY_SEQUENCE.md. Crew replies and final illustrated scenes remain for Opus. This map uses plain uGUI cells, not final Tilemap artwork. The original untitled editor scene was preserved as WorkspaceSnapshot.unity and is excluded from the build scene list.
 
 ## Handoff documents
 

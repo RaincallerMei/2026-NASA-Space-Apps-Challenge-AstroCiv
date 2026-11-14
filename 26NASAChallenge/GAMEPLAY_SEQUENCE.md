@@ -1,26 +1,60 @@
 # Gameplay sequence
 
-Normal entry: open `Assets/_Game/Scenes/Boot.unity` and press Play. Boot loads Prologue; the build scene order is Boot, Prologue, Main. Opening Main directly remains an outpost-only development shortcut.
+Open `Assets/_Game/Scenes/Boot.unity` and press Play. Rebuild the scenes any time with **Mapmakers → Build Scenes**.
 
-| Order | Player action / story | Guard |
+## Scenes
+
+| Scene | What it shows |
+|---|---|
+| Boot | Loads the menu |
+| Menu | Title. **Story Mode** (level list), **Free Build** (setup), **Data & Credits** |
+| Cutscene | Full-screen story picture, one short line at a time. Click, Space or Enter continues. Skip leaves |
+| Game | The map-first play screen. Same scene for every level and Free Build |
+| Results | Grade letter, score out of 100, stars, why, and what to do next |
+
+Story pictures never share the screen with the game UI.
+
+## Story Mode
+
+Each level unlocks the next. Progress and best grades are saved (PlayerPrefs, works in WebGL).
+
+| # | Level | Before | Play | After |
+|---|---|---|---|---|
+| 1 | The Dream (tutorial) | Bedroom, classroom | Draw Habitat, Solar Array, Greenhouse. Fix the power deficit with a second Solar Array. No clock | Teacher |
+| 2 | The Commander | Graduation, launch, colony | Build all six base parts. Day 3: long shadow. First harvest unlocks the Shelter; the shadow unlocks a second Battery | — |
+| 3 | Solar Storm | Colony, storm | Starts from the player's Level 2 base. Day 2: DONKI-based warning, Yuki outside. Days 3–4: particles. Day 5: sunrise | Window and final message |
+| 4 | Mars Base | Launch | Same rules on red ground, counted in sols. Sol 3: dust storm. Sol 6: solar storm | Bedroom, Blueprint v2 |
+
+## Free Build
+
+No story. Choose Moon or Mars and Easy, Normal or Hard. Every run has a new seed:
+
+- a new made-up map (sunlight pattern, craters, rocks);
+- new days for dim days, solar storms, panel faults and supply landers.
+
+The seed is shown (Map #1234). "Same map" replays it.
+
+## One day (turn)
+
+1. Look at the top bar, the goal card and the alerts. Alerts use tomorrow's forecast.
+2. Build, switch systems on or off, fix, talk to the crew.
+3. Press **Next Day** (amber when tomorrow looks risky).
+4. Read the day summary and any event card.
+
+## Grades
+
+Score out of 100: crew safety 25, steady power 25, air/water/food 25, goals 25. The tutorial uses power balance 25, sunny solar spots 25 and goals 50.
+
+| Letter | Score | Stars |
 |---|---|---|
-| 1. Childhood dream | Continue through the existing Mississauga, science-event and inspiration lines | No simulation/resource timer |
-| 2. Draw the base | Place Habitat, then Solar Array, then Greenhouse on valid tiles | Cannot skip placement or build later systems; power-in/out preview runs on a clone |
-| 3. Teacher | Read the two existing teacher lines | Placement complete before Continue is available |
-| 4. Photo cards | University, PhD, astronaut training, in order | Existing dream-not-promise disclaimer appears on the third card |
-| 5. Departure | Continue to the Moon | One scene transition only; repeated clicks cannot skip the next chapter |
-| 6. Commander | Drawing, commander, Mississauga class question and life-support task | Main receives the three drawing positions, starts with fresh 150 supplies and no ticking until these lines finish |
-| 7. Outpost | Build Habitat, Solar Arrays, Battery, Life Support, Communications and Greenhouse | Existing footprint, terrain, cost, overlap, power and resource rules |
-| 8. Shadow and harvest | Balance demand during the shadow; grow the first harvest | Existing simulation unlocks second Battery after shadow and Shelter after harvest; the same outpost persists |
-| 9. Storm | Recall Yuki, power Shelter, shed optional loads or use stored energy | Existing scripted warning/onset/decay; storm does not change solar output |
-| 10. Debrief | Read success/close-call or the explained failure | Success waits for Continue; failure offers Retry and cannot advance to the ending |
-| 11. Window ending | Existing window, sunlight, Earth, old drawing and final-message lines | Only follows completed successful/close-call mission; separate sunrise lighting occurs in the simulation |
-| 12. Blueprint v2 | Read the final new-kid/blueprint text | End state; Replay tutorial starts Prologue again |
+| S | 81–100 | 3 |
+| A | 61–80 | 2 |
+| B | 31–60 | 1 |
+| C | 0–30 | 0 |
 
-Reset/Retry in Prologue returns to the tutorial intro and clears its placements. Reset/Retry in Main starts a fresh outpost attempt. Replay tutorial is available explicitly; it does not silently reset a live outpost.
+A failed mission is capped at 30 (C) and does not unlock the next level.
 
-Story text is loaded from the existing Story.json. Bedroom, photo cards and observation window currently use labelled text/greybox placeholders; final illustrations and the crew-chat screen remain separate Opus work. No final art, dialogue or balance values were changed for this sequence.
+## Tests
 
-Automated coverage: CampaignSmokeTests follows Boot through the real scene change, checks placement order, timer safety, fresh Moon resources/drawing transfer, the storm, mandatory debrief and Blueprint ending. A second test checks tutorial Reset and that failure cannot enter the success ending. Existing outpost button tests remain in place. The combined suite passes 57/57 tests; evidence is in [campaign-tests.json](../review/campaign-tests.json).
-
-Human reading time, child usability and the overall 12–16 minute target still require the manual test plan; automated fast-forward tests are not timing/usability evidence.
+- EditMode (55): simulation, data, day turns, events, grades, random worlds, level data, crew chat, bot balance on every level and on 36 Free Build seeds.
+- PlayMode (3): Boot → Menu; tutorial cutscene → drawing → grade; a full Free Build run on Mars → grade.

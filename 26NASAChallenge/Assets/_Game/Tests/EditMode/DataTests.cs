@@ -108,7 +108,7 @@ namespace Mapmakers.Tests
             foreach (BuildingType type in System.Enum.GetValues(typeof(BuildingType)))
                 Assert.IsNotNull(balance.Def(type), type.ToString());
             Assert.AreEqual("fictional balance", balance.classification);
-            Assert.AreEqual(4.0, balance.Def(BuildingType.Battery).batteryKWh);
+            Assert.AreEqual(30.0, balance.Def(BuildingType.Battery).batteryKWh);
         }
 
         [Test]

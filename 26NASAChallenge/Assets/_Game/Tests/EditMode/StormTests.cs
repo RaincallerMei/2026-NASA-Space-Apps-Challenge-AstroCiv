@@ -107,12 +107,11 @@ namespace Mapmakers.Tests
             sim.RecallGeologist(s);
             var shelter = SimTestKit.Put(sim, s, BuildingType.Shelter, 15, 0);
             sim.SetEnabled(s, shelter.id, true);
-            sim.SetEnabled(s, SimTestKit.First(s, BuildingType.Greenhouse).id, false);
             s = sim.Advance(s, sim.balance.storm.endHour + 0.5);
 
             Assert.AreEqual(100.0, s.minSafetyStorm, 1e-6);
             Assert.IsFalse(s.failed);
-            Assert.AreEqual(OutcomeKind.Win, Outcome.Evaluate(sim.balance, s).kind);
+            Assert.Greater(Grader.Mission(sim.balance, s, 0, 0).total, Grader.FailCap);
         }
 
         [Test]
@@ -131,7 +130,10 @@ namespace Mapmakers.Tests
             Assert.AreNotEqual(FailReason.None, s.failReason);
             Assert.Greater(safetyAtOnset, 95.0, "no instant game over at onset");
             Assert.Greater(s.StormRelHour, sim.balance.storm.onsetHour + 2, "failure takes hours, not a moment");
-            Assert.AreEqual(OutcomeKind.Fail, Outcome.Evaluate(sim.balance, s).kind);
+            var score = Grader.Mission(sim.balance, s, 0, 0);
+            Assert.LessOrEqual(score.total, Grader.FailCap);
+            Assert.AreEqual("C", score.letter);
+            Assert.IsFalse(score.passed);
         }
 
         [Test]
@@ -139,7 +141,7 @@ namespace Mapmakers.Tests
         {
             var sim = SimTestKit.Sim();
             var s = BaseInStorm(sim);
-            s = sim.Advance(s, 20);
+            s = sim.Advance(s, sim.balance.storm.onsetHour + 20);
             Assert.IsTrue(s.failed);
             double t = s.timeHours;
             s = sim.Advance(s, 5);

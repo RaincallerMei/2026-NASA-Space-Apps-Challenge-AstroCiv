@@ -39,13 +39,14 @@ namespace Mapmakers.Tests
                 Assert.LessOrEqual(s.batteryKWh, s.report.batteryCapacityKWh + 1e-9);
             }
 
+            double cap = sim.balance.Def(BuildingType.Battery).batteryKWh;
             var charged = SimTestKit.FullBase(sim, 4);
             for (int i = 0; i < 2000; i++)
             {
                 charged = sim.Step(charged);
-                Assert.LessOrEqual(charged.batteryKWh, 4.0 + 1e-9);
+                Assert.LessOrEqual(charged.batteryKWh, cap + 1e-9);
             }
-            Assert.AreEqual(4.0, charged.batteryKWh, 1e-6);
+            Assert.AreEqual(cap, charged.batteryKWh, 1e-6);
         }
 
         [Test]
@@ -58,7 +59,9 @@ namespace Mapmakers.Tests
 
             s = sim.Step(s);
             Assert.AreEqual(12.0, s.report.generationKW, 1e-6);
-            Assert.AreEqual(3.0, s.report.batteryFlowKW, 1e-6, "charge is capped at 3 kW");
+            double rate = sim.balance.Def(BuildingType.Battery).batteryRateKW;
+            Assert.Less(rate, 12.0);
+            Assert.AreEqual(rate, s.report.batteryFlowKW, 1e-6, "charge is capped at the battery's power limit");
         }
 
         [Test]
@@ -124,7 +127,10 @@ namespace Mapmakers.Tests
             s = sim.Advance(s, 4.5);
             var brownout = s.events.Find(e => e.code == "brownout");
             Assert.IsNotNull(brownout);
-            StringAssert.Contains("Battery empty at 12:00: demand 10 kW > supply 9 kW", brownout.text);
+            StringAssert.Contains("Battery empty. Switched off: Communications", brownout.text);
+            var off = s.report.warnings.Find(w => w.code == "loads_off");
+            Assert.IsNotNull(off);
+            StringAssert.Contains("demand 10 kW > supply 9 kW", off.text);
         }
 
         [Test]

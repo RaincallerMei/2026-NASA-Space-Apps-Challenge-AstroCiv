@@ -17,7 +17,13 @@ The completed execution-pass run on November 14, 2026 was **53/53 passing**, inc
 
 Coverage required by the briefs: exact battery depletion and limits; critical-load priorities; storm does not reduce solar; powered/watered greenhouse and 80% fictional recycling; placement bounds, overlap, terrain and cost; determinism; fixture metadata and no API keys; dialogue structure and word limits; DoNothing fails, ShedLoads wins, StoredEnergy wins, Greedy at best a close call. Also check fixed-step Pause/1x/2x/4x and Reset/Retry execution independently of frame rate.
 
-## Required PlayMode smoke test — pending Main scene
+## Main scene PlayMode smoke tests
+
+Implemented in `Assets/_Game/Tests/PlayMode/MissionSmokeTests.cs`: one full winning storm run using runtime placement, inspection, speed, recall, optional toggles and Retry; one explained idle failure and Retry. These load the real Main scene and exercise uGUI button events. They do not replace physical mouse/usability testing or the future Boot/Prologue story flow.
+
+Run both modes with `unity command test run --mode all --filter Mapmakers --async-tests true`, then poll status. The final combined run after the UI label fix passed **55/55**; evidence is saved in `../review/runtime-tests.json`. The actual runtime screen was captured and inspected at 1920x1080; clipped tile labels were corrected. OS mouse input and human usability remain manual checks.
+
+## Remaining full-story integration checks
 
 1. Load the completed Main scene through Boot/Menu.
 2. Place Habitat, Solar Arrays, Battery, Life Support, Communications and Greenhouse using their runtime commands.
@@ -26,7 +32,7 @@ Coverage required by the briefs: exact battery depletion and limits; critical-lo
 5. Reach the debrief and ending, then Retry.
 6. Assert mission outcome and zero errors/warnings from game code. Separately record package warnings.
 
-Do not mark this done until the real game scene, controls, and debrief are connected. A simulation-only test is not a replacement.
+The Main/outpost portion is connected. Boot/Menu, the story tutorial, crew-chat UI and illustrated ending remain pending and must be covered when added. A simulation-only test is not a replacement for these scene checks.
 
 ## Five-minute usability script
 

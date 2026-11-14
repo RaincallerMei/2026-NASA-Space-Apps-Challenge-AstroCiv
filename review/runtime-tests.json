@@ -1,0 +1,35 @@
+﻿{
+    "success":  true,
+    "command":  "command test",
+    "data":  {
+                 "command":  "test",
+                 "parameters":  {
+                                    "detail":  "failures"
+                                },
+                 "result":  {
+                                "status":  "completed",
+                                "duration":  2.26,
+                                "summary":  {
+                                                "total":  55,
+                                                "passed":  55,
+                                                "failed":  0,
+                                                "skipped":  0,
+                                                "inconclusive":  0
+                                            },
+                                "results":  [
+
+                                            ]
+                            },
+                 "target":  {
+                                "host":  "127.0.0.1",
+                                "port":  7801,
+                                "projectPath":  "26NASAChallenge/"
+                            }
+             },
+    "errors":  [
+
+               ],
+    "warnings":  [
+
+                 ]
+}

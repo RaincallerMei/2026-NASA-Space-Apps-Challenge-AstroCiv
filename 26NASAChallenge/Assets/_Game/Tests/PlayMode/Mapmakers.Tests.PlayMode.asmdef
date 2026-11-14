@@ -1,0 +1,6 @@
+{
+  "name": "Mapmakers.Tests.PlayMode",
+  "references": ["Mapmakers.Game", "Mapmakers.Sim", "UnityEngine.UI"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

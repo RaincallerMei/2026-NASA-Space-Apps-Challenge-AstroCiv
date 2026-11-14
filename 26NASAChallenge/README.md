@@ -2,12 +2,14 @@
 
 Open this folder in **Unity 6000.6.7f1** through Unity Hub. This is the folder with `Assets`, `Packages`, and `ProjectSettings`. Do not upgrade the editor or packages.
 
-The simulation, data loaders, story data and automated tests exist. **The map, UI controls, scene flow and playable browser build are pending.** Pressing Play currently does not start the planned game.
+The simulation now has a functional greybox Main scene with a clickable map, resource display, placement/inspection, pause/speed/retry controls, storm actions and a debrief. The story tutorial, crew-chat screen, final artwork and browser build remain pending.
+
+Open `Assets/_Game/Scenes/Main.unity` and press Play. Pick a building on the right, then click the map; choose Inspect to select existing buildings. Use the selected-system button for optional loads. Recall Yuki while the radio is powered, place the unlocked Shelter and switch it on, and manage optional demand through the storm. Reset / Retry starts over. Existing balance values are unchanged.
 
 ## Work already specified
 
 - Pure C# simulation: `Assets/_Game/Scripts/Sim/`.
-- Pause/1x/2x/4x and Reset/Retry state execution: `Assets/_Game/Scripts/Game/GameSession.cs`. Views still need to connect to it. The session preserves the selected speed during Reset; screen behavior can explicitly set a speed when Opus connects the UI.
+- Pause/1x/2x/4x and Reset/Retry: `Assets/_Game/Scripts/Game/GameSession.cs`, connected by `MissionController.cs`. `MissionView.cs` is the replaceable greybox uGUI view; Reset creates a fresh session at 1x.
 - Runtime data loaders: `Assets/_Game/Scripts/Data/`.
 - Balance settings: `Assets/_Game/Data/Resources/Balance.json`; no tuning was performed in this pass.
 - Story and crew reply text: `Assets/_Game/Data/Resources/Story.json`.
@@ -28,9 +30,9 @@ Wait for compilation to finish before starting tests. Alternatively use Unity's 
 
 Refresh source data only if requested: `python tools/fetch_data.py`. It reads NASA_API_KEY from the environment or uses DEMO_KEY; do not put a personal key in project files. Existing offline fixtures are already present and should not be refreshed just to run the game/tests.
 
-## Planned controls and demo path — not yet connected
+## Scope of the playable greybox
 
-The agreed controls are mouse placement/inspection, optional load toggles, crew reply buttons, Pause/1x/2x/4x and Reset/Retry. The agreed demo route is tutorial placement → lunar base/greenhouse → crew chat → storm recall/shelter/power choice → debrief and sunrise. Opus must connect these screens before this can become a verified three-minute click guide.
+Map placement/inspection, optional load toggles, Pause/1x/2x/4x, recall and Retry are connected. Main starts directly at the outpost; the existing simulation advances through shadow, harvest, storm and sunrise to a text debrief. The full story route, crew reply screen and illustrated ending remain for Opus. This map uses plain uGUI cells, not final Tilemap artwork. The original untitled editor scene was preserved as WorkspaceSnapshot.unity and is excluded from the build scene list.
 
 ## Handoff documents
 

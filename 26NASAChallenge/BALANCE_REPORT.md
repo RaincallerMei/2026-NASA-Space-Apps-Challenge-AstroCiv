@@ -31,7 +31,7 @@ Greenhouse: 5 L/h in, 4 L/h returned (80% recycled), net loss 1 L/h; 0.5 meals/h
 
 ## Verification limits
 
-These are automated simulation runs, not human playthroughs. Successful bots finish in roughly 25.1 game hours (about 126 real seconds at 1x), excluding construction/reading. Pacing, ease of use, and how fair it feels are awaiting human testing and Opus review. Failed runs end with a reason; visual Retry controls remain to be connected.
+These are automated simulation runs, not human playthroughs. Successful bots finish in roughly 25.1 game hours (about 126 real seconds at 1x), excluding construction/reading. Pacing, ease of use, and how fair it feels are awaiting human testing and Opus review. Failed runs end with a reason. The functional Main scene now includes Retry; human usability and full-story integration remain pending.
 
 ## Complete event logs
 

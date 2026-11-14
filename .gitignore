@@ -1,0 +1,46 @@
+# Local secrets and machine configuration
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pfx
+*.p12
+.aws/
+.codex/
+.agents/
+
+# Unity Version Control local database
+.plastic/
+
+# Unity caches, output, and user settings (project is in 26NASAChallenge/)
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Bb]uild/
+**/[Bb]uilds/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+**/[Mm]emoryCaptures/
+**/Screenshots/
+
+# IDE and operating-system files
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+.DS_Store
+Thumbs.db
+Desktop.ini
+__pycache__/
+*.pyc

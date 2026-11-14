@@ -1,0 +1,35 @@
+{
+  "source": "Canadian Space Agency, food production toolkit and linked pages",
+  "query_url": "https://www.asc-csa.gc.ca/eng/youth-educators/toolkits/food-production/",
+  "retrieved_utc": "2026-11-14T15:51:58Z",
+  "units": "text",
+  "license_note": "© Canadian Space Agency. Non-commercial educational use with credit. No endorsement implied. Commercial use needs written permission.",
+  "classification": "CSA-derived",
+  "note": "Kid lines and facts are short paraphrases of the linked CSA page.",
+  "cards": [
+    {
+      "title": "Tomatosphere",
+      "kidLine": "Over three million students have taken part in Tomatosphere.",
+      "fact": "Plants can provide food, produce oxygen, and recycle carbon dioxide.",
+      "url": "https://www.asc-csa.gc.ca/eng/youth-educators/tomatosphere.asp",
+      "pageModified": "",
+      "credit": "© Canadian Space Agency"
+    },
+    {
+      "title": "Deep Space Food Challenge",
+      "kidLine": "Canada and NASA ran a contest for new ways to grow space food.",
+      "fact": "The challenge looked for food systems that need little water and energy.",
+      "url": "https://www.asc-csa.gc.ca/eng/sciences/food-production/deep-space-food-challenge.asp",
+      "pageModified": "",
+      "credit": "© Canadian Space Agency"
+    },
+    {
+      "title": "Growing food far from Earth",
+      "kidLine": "Far from Earth, supply trips are rare. Crews must grow food.",
+      "fact": "On the Moon or Mars, astronauts will need to be more self-sufficient.",
+      "url": "https://www.asc-csa.gc.ca/eng/sciences/food-production/growing-healthy-food-in-space-and-remote-areas.asp",
+      "pageModified": "",
+      "credit": "© Canadian Space Agency"
+    }
+  ]
+}

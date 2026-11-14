@@ -1,0 +1,47 @@
+{
+  "source": "NASA CCMC DONKI (Space Weather Database Of Notifications, Knowledge, Information)",
+  "query_url": "https://ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=2024-05-10&endDate=2024-05-12 ; https://api.nasa.gov/DONKI/CME?startDate=2024-05-10&endDate=2024-05-12 ; https://api.nasa.gov/DONKI/SEP?startDate=2024-05-10&endDate=2024-05-12 ; https://ccmc.gsfc.nasa.gov/DONKI/WS/get/GST?startDate=2024-05-10&endDate=2024-05-12",
+  "retrieved_utc": "2026-11-14T15:51:58Z",
+  "units": "times in UTC; flare class = GOES X-ray class; CME speed in km/s; Kp index (0-9)",
+  "license_note": "NASA data is generally not copyrighted in the United States. Credit NASA. No NASA logo and no implied endorsement.",
+  "classification": "NASA-derived",
+  "selection_note": "One historic window, 2024-05-10 to 2024-05-12. Chosen because DONKI links this X-class flare to a CME and to solar energetic particle (SEP) detections. The game's hour-by-hour timeline and crew effects are fictional.",
+  "flare": {
+    "id": "2024-05-11T01:10:00-FLR-001",
+    "classType": "X5.8",
+    "beginTime": "2024-05-11T01:10Z",
+    "peakTime": "2024-05-11T01:23Z",
+    "endTime": "2024-05-11T01:39Z",
+    "sourceLocation": "S17W47",
+    "activeRegionNum": 13664,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30711/-1"
+  },
+  "cme": {
+    "id": "2024-05-11T01:36:00-CME-001",
+    "startTime": "2024-05-11T01:36Z",
+    "speedKmS": 1263.0,
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30719/-1"
+  },
+  "sep": [
+    {
+      "id": "2024-05-11T02:10:00-SEP-001",
+      "eventTime": "2024-05-11T02:10Z",
+      "instrument": "GOES-P: SEISS >100 MeV",
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30714/-1"
+    },
+    {
+      "id": "2024-05-11T04:07:00-SEP-001",
+      "eventTime": "2024-05-11T04:07Z",
+      "instrument": "STEREO A: IMPACT 13-100 MeV",
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30717/-1"
+    }
+  ],
+  "gst": {
+    "id": "2024-05-10T15:00:00-GST-001",
+    "startTime": "2024-05-10T15:00Z",
+    "maxKp": 9.0,
+    "maxKpTime": "2024-05-11T00:00Z",
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/GST/30693/-1",
+    "note": "Earth geomagnetic storm index. Context only. It is not a Moon radiation dose."
+  }
+}

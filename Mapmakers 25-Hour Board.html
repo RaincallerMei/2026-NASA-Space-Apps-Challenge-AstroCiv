@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapmakers 25-Hour Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* layout: one cozy night-desk column, tab pages, pixel headings, amber lamp accent */
+  --bg:#1b1f3a; --panel:#262b4f; --panel2:#30366a; --line:#454c85;
+  --text:#ece8dc; --muted:#aeb0d0; --lamp:#f2b84b; --ok:#6fd3c0; --must:#f39a8f;
+  --display:"Pixelify Sans","Courier New",monospace; --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto;padding:16px 16px 60px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:700}
+h1{font-size:30px;color:var(--lamp)} h2{font-size:22px;margin:26px 0 10px} h3{font-size:17px}
+p{margin:6px 0;max-width:68ch} a{color:var(--ok)}
+canvas#scene{width:100%;display:block;image-rendering:pixelated;border:3px solid var(--line);border-radius:6px;background:#0d1024}
+.head{margin:14px 0 10px}
+.sub{color:var(--muted);font-size:14px}
+.bar{height:14px;background:#141733;border:2px solid var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--lamp) 0 8px,#d99c2e 8px 10px);width:0;transition:width .3s}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+.total{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:8px 0 14px}
+.total b{font-family:var(--display);font-variant-numeric:tabular-nums}
+nav{display:flex;flex-wrap:wrap;gap:8px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5;border-bottom:2px solid var(--line)}
+nav button{font-family:var(--display);font-size:15px;background:var(--panel);color:var(--text);border:2px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--lamp);color:#22203a;border-color:var(--lamp)}
+button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ok);outline-offset:2px}
+.page{display:none}.page.on{display:block}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:8px;padding:14px}
+.grid{display:grid;gap:12px}.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.big{border-left:6px solid var(--lamp);background:var(--panel2);padding:12px 14px;border-radius:6px;margin:14px 0;font-weight:600}
+.big span.lab{display:block;font-family:var(--display);color:var(--lamp);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.tag{font-family:var(--display);font-size:20px;color:var(--lamp);text-align:center;margin:16px 0 4px;text-wrap:balance}
+.tw{overflow-x:auto;border:2px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{padding:8px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font-family:var(--display);background:var(--panel2);font-weight:500;color:var(--lamp)}
+tr:last-child td{border-bottom:0} td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.now td{background:#3a3f1f}
+ul{margin:6px 0;padding-left:20px} li{margin:3px 0}
+.pill{display:inline-block;font-size:11.5px;font-weight:800;padding:1px 7px;border-radius:99px;border:1.5px solid;white-space:nowrap}
+.pill.must{color:var(--must);border-color:var(--must)} .pill.nice{color:var(--muted);border-color:var(--muted)}
+.pill.tool{color:var(--ok);border-color:var(--ok)} .pill.you{color:#22203a;background:var(--lamp);border-color:var(--lamp)}
+.pill.later{color:var(--muted);border-color:var(--muted);border-style:dashed}
+details{background:var(--panel);border:2px solid var(--line);border-radius:8px;margin:10px 0}
+summary{cursor:pointer;padding:11px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary .ico{width:28px;height:28px;image-rendering:pixelated}
+summary .meta{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+summary .mini{height:6px;width:90px;background:#141733;border-radius:3px;overflow:hidden;margin-top:4px;margin-left:auto}
+summary .mini i{display:block;height:100%;background:var(--ok);width:0}
+.inner{padding:0 14px 12px}
+.task{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:7px 0;border-top:1px dashed var(--line)}
+.task input{width:19px;height:19px;margin-top:2px;accent-color:var(--lamp);cursor:pointer}
+.task label{cursor:pointer}
+.task.done label{color:var(--muted);text-decoration:line-through}
+.tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.hide-done .task.done,.must-only .task[data-tag="nice"]{display:none}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:12px 0}
+.sw{display:inline-flex;gap:8px;align-items:center;cursor:pointer;font-weight:600;font-size:14.5px}
+.sw input{appearance:none;width:40px;height:22px;background:#141733;border:2px solid var(--line);border-radius:99px;position:relative;cursor:pointer;margin:0}
+.sw input::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:var(--muted);border-radius:50%}
+.sw input:checked{background:var(--lamp);border-color:var(--lamp)} .sw input:checked::after{left:20px;background:#22203a}
+.btn{font:inherit;font-weight:700;font-size:14px;background:transparent;color:var(--muted);border:2px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer}
+.idea h3{color:var(--lamp)}
+.clock{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+input[type=range]{width:100%;accent-color:var(--lamp)}
+.clock output{font-family:var(--display);font-size:20px;color:var(--lamp);min-width:92px;text-align:right}
+.src{font-size:13.5px;color:var(--muted)}
+@media (max-width:480px){h1{font-size:24px}.task{grid-template-columns:auto 1fr}.tags{grid-column:2;justify-content:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<canvas id="scene" width="240" height="72" aria-label="Pixel drawing of a small Moon base with a dome, a greenhouse, solar panels and Earth in the sky"></canvas>
+<div class="head"><h1>Mapmakers of the Moon</h1><div class="sub">25-hour build board. Space Apps 2026, Junior Astronaut Mission Trainer. Hackathon days: Nov 14 to 15.</div></div>
+<div class="total"><div class="bar" aria-hidden="true"><i id="tbar"></i></div><b id="tnum">0 / 0 done</b></div>
+
+<nav role="tablist" aria-label="Pages">
+  <button role="tab" data-p="story">1 Our story</button>
+  <button role="tab" data-p="plan">2 The 25 hours</button>
+  <button role="tab" data-p="tasks">3 Task list</button>
+  <button role="tab" data-p="ship">4 Ship it</button>
+</nav>
+
+<!-- ================= STORY ================= -->
+<section class="page" id="p-story">
+<div class="big"><span class="lab">Big picture</span>This is not a resource game with a story on top. It is a story about a dream of exploring space. Managing power, air, water and food is how the player lives that dream.</div>
+<p class="tag">Every great civilization starts with a dream.</p>
+<p class="sub" style="text-align:center;margin-inline:auto">A child who loved building civilizations on a computer gets to build humanity's first real lunar settlement.</p>
+
+<h2>Three ideas</h2>
+<div class="grid g3">
+  <div class="card idea"><h3>Wonder</h3><p>What does it feel like to look at the Moon and imagine living there?</p><p class="sub">Felt in: bedroom, the drawing, the sunrise.</p></div>
+  <div class="card idea"><h3>Responsibility</h3><p>What does it take to keep people alive in an unfamiliar world?</p><p class="sub">Felt in: power, air, water, food, crew chat, the storm.</p></div>
+  <div class="card idea"><h3>Possibility</h3><p>Could a kid from Mississauga become part of humanity's space story?</p><p class="sub">Felt in: Hadfield and Seager moment, photo cards, final message.</p></div>
+</div>
+
+<h2>Three chapters we build</h2>
+<div class="tw"><table>
+<tr><th>Chapter</th><th>What happens</th><th>Player does</th><th>Time</th></tr>
+<tr><td><b>1 The Kid Who Looked Up</b></td><td>11-year-old in Mississauga loves strategy games. At a science event they hear about Hadfield and Seager. In high school they draw a Moon base: greenhouse, lab, power station, rover garage. Teacher: "A civilization needs people, resources, science and a plan."</td><td>Tutorial. Place Habitat, Solar, Greenhouse. See power in vs out. Lab and Rover Garage are locked.</td><td class="n">4 min</td></tr>
+<tr><td><b>2 The Commander</b></td><td>Years later: astronaut, commander of a lunar outpost. The childhood drawing becomes the real base. Every decision touches real crew.</td><td>20×15 grid. Build 6 buildings. Balance power, air, water, food. Chat with crew.</td><td class="n">6 to 7 min</td></tr>
+<tr><td><b>3 Solar Storm and the First Lunar Sunrise</b></td><td>Real-data alert. A crew member is outside. The base survives. Crew gathers at the window: sunlight over the ridge, Earth low in the sky, the old drawing. Message home: "I used to build this world on a computer. Now we are building it together."</td><td>Recall crew, shelter, shed loads, or save energy early. Then the ending.</td><td class="n">5 min</td></tr>
+</table></div>
+
+<h2>Crew chat: how players care</h2>
+<div class="tw"><table>
+<tr><th>Crew (fictional)</th><th>Owns</th><th>Talks about</th></tr>
+<tr><td>Engineer</td><td>Power</td><td>Low battery, load choices, "thanks for the second battery".</td></tr>
+<tr><td>Botanist</td><td>Greenhouse</td><td>First sprouts, water, first harvest.</td></tr>
+<tr><td>Geologist</td><td>Scouting</td><td>Outside in the storm. Remembers if you called her in first. Dreams of the rover.</td></tr>
+</table></div>
+<ul>
+<li>Click a portrait. 2 to 3 reply buttons. <b>No typing. No live AI.</b> It stays kid-safe and works offline.</li>
+<li>Lines react to the base. Crew remember your choices.</li>
+</ul>
+
+<h2>Story through play</h2>
+<div class="tw"><table>
+<tr><th>Mission event</th><th>Gameplay</th><th>In the build?</th></tr>
+<tr><td>First habitat setup</td><td>Choose where to build.</td><td><span class="pill must">yes</span></td></tr>
+<tr><td>Power shortage</td><td>Balance electricity between systems.</td><td><span class="pill must">yes</span></td></tr>
+<tr><td>First greenhouse</td><td>Grow experimental crops. Water and food loop.</td><td><span class="pill must">yes</span></td></tr>
+<tr><td>Solar storm warning</td><td>Protect the crew and equipment.</td><td><span class="pill must">yes</span></td></tr>
+<tr><td>Rover expedition</td><td>Explore nearby regions. Collect samples.</td><td><span class="pill later">later: locked slot</span></td></tr>
+<tr><td>Communication delay</td><td>Decide before Earth replies.</td><td><span class="pill later">later: Mars</span></td></tr>
+</table></div>
+<p class="src">Light unlocks only: power shortage passed gives a second Battery. First harvest gives the Shelter. Lab and Rover Garage stay locked.</p>
+
+<h2>What past winners teach us</h2>
+<div class="tw"><table>
+<tr><th>Team (year, award)</th><th>What they made</th><th>We borrow</th></tr>
+<tr><td>Space Travelers<br>2021, Best Storytelling</td><td>Kids game. Keep an avatar alive on a Mars trip. Radiation events need action.</td><td>Hazard asks for an action. Each room serves a need.</td></tr>
+<tr><td>TerraTales<br>2024, Best Storytelling</td><td>Game showing climate results of acting or not acting.</td><td>Show what happens when you do nothing. Then let them retry.</td></tr>
+<tr><td>HerCode Space<br>2025, Best Use of Storytelling</td><td>"A Solar Tale". Kids story about space weather.</td><td>Space weather in a child's voice.</td></tr>
+<tr><td>Zumorroda-X<br>2025, Art &amp; Technology</td><td>Mini games following one farmer's journey.</td><td>One person's journey holds the whole game.</td></tr>
+<tr><td>PureFlow<br>2025, Best Mission Concept</td><td>Design a habitat. Test it against solar storms.</td><td>Design, test, improve.</td></tr>
+</table></div>
+
+<h2>Honesty rules for the story</h2>
+<ul>
+<li>Seager and Hadfield: names as inspiration only. No faces, no quotes, no hint they back the game. Check every fact on their own pages.</li>
+<li>Seager was TESS <b>Deputy</b> Science Director. Not the director.</li>
+<li>Say once: the astronaut path is a dream, not a promise.</li>
+<li>Science event, teacher and crew are made up. Say so.</li>
+<li>Write "Earth hangs low above the horizon". Do not write "Earthrise". From most Moon spots Earth barely moves.</li>
+<li>Storm and sunrise are separate. A solar warning never turns panels off.</li>
+<li>Game numbers (kW, kWh, costs) are made-up balance numbers. Label them.</li>
+<li>Story text under about 650 words. Lines up to 14 words.</li>
+</ul>
+</section>
+
+<!-- ================= PLAN ================= -->
+<section class="page" id="p-plan">
+<div class="big"><span class="lab">Big picture</span>Claude Code builds. You write, draw, check, test and film. The last 10 hours (test, fix, build, submit, buffer) are sacred. Do not borrow from them.</div>
+
+<h2>Where am I?</h2>
+<div class="card">
+  <div class="clock"><div><label for="hour" class="sub">Drag to the hour you are at, or start the clock</label><input type="range" id="hour" min="0" max="25" step="0.5" value="0"></div><output id="hourOut" for="hour">Hour 0</output></div>
+  <div class="ctrl"><button class="btn" id="startNow">Start clock now</button><button class="btn" id="stopClock">Stop clock</button><span class="sub" id="clockNote"></span></div>
+</div>
+<p id="hourTip" class="sub"></p>
+
+<h2>Hour map</h2>
+<div class="tw"><table id="timeline"><tr><th>Hours</th><th>Block</th><th>Who</th><th>Budget</th><th>Done when</th></tr></table></div>
+<p class="src">Story and Pixel art run alongside the greybox build. They do not add hours.</p>
+
+<h2>Which tool does what</h2>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Use for</th><th>Do not use for</th></tr>
+<tr><td>Claude Code</td><td>All Unity C# code, tests, data fetch, Story.json, README, docs. Drives your open Unity.</td><td>Final fact check. You check sources.</td></tr>
+<tr><td>Unity 2D</td><td>Stays open. Tilemap, sprites, Canvas UI, WebGL build.</td><td>Upgrading the version.</td></tr>
+<tr><td>Midjourney</td><td>Pictures only: bedroom, kid's map drawing, 3 photo cards, observation window, title, crew faces.</td><td><b>Code.</b> Also not tiles: its pixels are not on a real grid.</td></tr>
+<tr><td>Free packs</td><td>Tiles and UI: Cozy Space Planet (16 px), Kenney Pixel UI (CC0).</td><td>Anything with unclear license.</td></tr>
+<tr><td>Piskel or Aseprite</td><td>Fix sprites. Shrink Midjourney art. Match palette. Greenhouse sprite.</td><td>Drawing whole tilesets from zero.</td></tr>
+<tr><td>Blender</td><td>Skip. Game is 2D pixel.</td><td>Game art.</td></tr>
+<tr><td>OBS + CapCut</td><td>Record play. Cut the demo. English subtitles.</td><td>Long edits.</td></tr>
+</table></div>
+
+<h2>Make Midjourney look like real pixel art</h2>
+<ul>
+<li>Ask for: "16-bit pixel art, top-down, limited palette, flat colours".</li>
+<li>Shrink to 480 × 270 with nearest-neighbour. Scenes then scale ×4 to 1080p.</li>
+<li>Crew portraits: ask for a face, then shrink to 32 × 32 and clean by hand.</li>
+<li>Cut colours to the same 16 to 32 as the tile pack.</li>
+<li>Write "AI-made art" in ASSET_CREDITS.md and on the project page. Never credit it to NASA.</li>
+</ul>
+
+<h2>Battery math the kid will do</h2>
+<div class="tw"><table>
+<tr><th>Case</th><th>Make</th><th>Use</th><th>Gap</th><th>4 kWh battery lasts</th></tr>
+<tr><td>Normal day, full sun</td><td class="n">12 kW</td><td class="n">10 kW</td><td class="n">+2 kW</td><td>Charging</td></tr>
+<tr><td>Shadowed tiles (75% sun)</td><td class="n">9 kW</td><td class="n">10 kW</td><td class="n">−1 kW</td><td class="n">4 hours</td></tr>
+<tr><td>Storm, shelter on, full sun</td><td class="n">12 kW</td><td class="n">12 kW</td><td class="n">0 kW</td><td>Holds. No spare.</td></tr>
+<tr><td>Storm, shelter on, 75% sun</td><td class="n">9 kW</td><td class="n">12 kW</td><td class="n">−3 kW</td><td class="n">1.3 hours</td></tr>
+<tr><td>Same, greenhouse off</td><td class="n">9 kW</td><td class="n">8 kW</td><td class="n">+1 kW</td><td>Charging</td></tr>
+<tr><td>Same, comms off only</td><td class="n">9 kW</td><td class="n">11 kW</td><td class="n">−2 kW</td><td class="n">2 hours</td></tr>
+</table></div>
+<p class="src">Starting guesses, all fictional: 4 panels × 3 kW; Habitat 1 + Life Support 4 = 5 kW essential; comms 1; greenhouse 4; shelter 2. The bots tune them. The storm never lowers solar output. Shadow does.</p>
+</section>
+
+<!-- ================= TASKS ================= -->
+<section class="page" id="p-tasks">
+<div class="big"><span class="lab">Big picture</span>Finish every <span class="pill must">must</span> before any <span class="pill nice">nice</span>. <span class="pill you">You</span> tasks are yours. Others are for Claude Code, Unity or a tool: you only check them.</div>
+<div class="ctrl">
+  <label class="sw"><input type="checkbox" id="swMust">Must-do only</label>
+  <label class="sw"><input type="checkbox" id="swHide">Hide done</label>
+  <button class="btn" id="openAll">Open all</button>
+  <button class="btn" id="closeAll">Close all</button>
+  <button class="btn" id="reset">Reset checks</button>
+</div>
+<div class="card" id="runlog"><h3>Claude Code run log</h3>
+<ul class="src" id="runlogList">
+<li><b>M0</b> Unity 6000.6.7f1, URP 2D, new Input System only, Web build module installed. Editor driven live through unity-cli.</li>
+<li><b>M1</b> Pure C# sim + 29 EditMode tests, all green in the open Editor (power deficit, load shedding, storm does not cut solar, greenhouse, placement, determinism).</li>
+<li><b>M2</b> Six real fixtures fetched 2026-11-14 (none synthetic): DONKI X5.8 flare 2024-05-11, RadLab ISS, LOLA south-pole crop, POWER Mississauga, 8 OSDR cards, 3 CSA cards. Loaders, Story.json (646 words story + chat), DATA_SOURCES.md. 38/38 EditMode tests green. Issues: api.nasa.gov DONKI FLR 404 (CCMC fallback used); RadLab unit page HTTP 500; TESS Deputy role not verifiable today, so not stated in game.</li>
+</ul></div>
+<div id="tasklist"></div>
+</section>
+
+<!-- ================= SHIP ================= -->
+<section class="page" id="p-ship">
+<div class="big"><span class="lab">Big picture</span>Judges see the project page and the demo first. Maybe never the code. Spend real time on those two.</div>
+
+<h2>What judges score</h2>
+<div class="tw"><table>
+<tr><th>Criteria</th><th>Our answer</th></tr>
+<tr><td>Impact</td><td>Kids 7 to 12 in Mississauga and Toronto see a local path to space.</td></tr>
+<tr><td>Creativity</td><td>A childhood drawing becomes the real base. Crew you can talk to.</td></tr>
+<tr><td>Validity</td><td>Sim with tests. Real NASA data in fixtures. Sources file. Made-up numbers labelled.</td></tr>
+<tr><td>Relevance</td><td>It trains a junior astronaut: power, air, water, food, hazards.</td></tr>
+<tr><td>Presentation</td><td>Short demo with English subtitles. Clean page.</td></tr>
+</table></div>
+<p class="src">These five are from the 2025 guide. The 2026 guide came out Nov 13. Read it first for demo length, deadline and AI rules. The 2026 challenge page blocked my reader, so check its text yourself.</p>
+
+<h2>Award fit</h2>
+<div class="tw"><table>
+<tr><th>Award you want</th><th>What proves it</th></tr>
+<tr><td>Most Inspirational</td><td>The ending message. The "Possibility" moment with Hadfield and Seager.</td></tr>
+<tr><td>Best Use of Storytelling</td><td>Story told by play: crew chat, events, the sunrise ending.</td></tr>
+<tr><td>Art &amp; Technology</td><td>One pixel style everywhere. A working sim under it.</td></tr>
+<tr><td>Local Impact</td><td>Mississauga kid, U of T, Ontario names. A real local kid playtest. A plan to show it at a school or library.</td></tr>
+</table></div>
+
+<h2>If you run late, cut in this order</h2>
+<div class="tw"><table>
+<tr><th>Behind by</th><th>Cut</th><th>Keep</th></tr>
+<tr><td class="n">1 hour</td><td>Sound, juice, bond hearts, drawing ghost overlay.</td><td>Everything else.</td></tr>
+<tr><td class="n">2 to 3 hours</td><td>Botanist chat lines. Data card polish. Ch. 1 animation.</td><td>Ch. 2 build + greenhouse, Ch. 3 storm.</td></tr>
+<tr><td class="n">4+ hours</td><td>Midjourney art. Use plain placeholder sprites. Shorten the ending to one screen.</td><td>Build, storm, one crew chat, final message, demo video, submit.</td></tr>
+</table></div>
+<p class="src">Never cut: sim tests, the storm decision, the greenhouse, Retry, the WebGL build, one crew chat, the final message.</p>
+
+<h2>Sources checked</h2>
+<ul class="src">
+<li><a href="https://www.nasa.gov/learning-resources/stem-engagement-at-nasa/nasa-announces-2025-international-space-apps-challenge-global-winners/">NASA: 2025 Space Apps global winners</a></li>
+<li><a href="https://2021.spaceappschallenge.org/challenges/statements/the-trail-to-mars-can-you-keep-your-crew-alive/teams/space-travelers-1/">Space Travelers project page (2021)</a></li>
+<li><a href="https://www.nasa.gov/learning-resources/stem-engagement-at-nasa/nasa-international-space-apps-challenge-announces-2024-global-winners/">NASA: 2024 Space Apps global winners</a></li>
+<li><a href="https://www.spaceappschallenge.org/resources/project-submission-guide/">Space Apps project submission guide</a></li>
+<li><a href="https://www.spaceappschallenge.org/resources/participant-faqs/">Space Apps 2026 participant FAQs</a></li>
+</ul>
+<p class="src">Not checked: Eco-Metropolis, Connected Earth Museum. Treat as unverified. Checks on this board save in this browser only.</p>
+</section>
+</div>
+
+<script>
+/* ---------- phases. t = [text, must|nice, who/tool]. par = runs alongside another phase ---------- */
+const PH=[
+ {id:"kick",name:"Kick-off and safety",h:1,who:"You",c:"#f2b84b",done:"Briefs in project. Master prompt sent. Key safe.",t:[
+  ["Read the 2026 Project Submission Guide and Judging Guide. Write down demo length, deadline, AI rules","must","You"],
+  ["Register the team. Pick the Toronto or Mississauga local event","must","You"],
+  ["Put CLAUDE.md and RESEARCH_AGENT_BRIEF.md in the Unity project root","must","You"],
+  ["Unity stays open. Note the version in ProjectSettings/ProjectVersion.txt","must","Unity"],
+  ["Git repo exists. .gitignore has .env","must","Git"],
+  ["Set NASA_API_KEY on your computer. Never in a file you commit","must","You"],
+  ["Paste CLAUDE_CODE_MASTER_PROMPT.md into Claude Code","must","Claude"],
+  ["Claude can see the Unity console (unity-cli works)","must","Claude"],
+  ["Press Start clock on page 2","nice","You"],
+  ["After the hackathon: make a new NASA key, since the old one was pasted in a chat","nice","You"]]},
+ {id:"sim",name:"Claude Code: sim and data (M0 to M2)",h:3,who:"Claude",c:"#8fb4ff",done:"Tests green. Fixtures made. No key in files.",t:[
+  ["M0 report: Unity version, packages, blockers","must","Claude"],
+  ["Test passes: power deficit drains battery to 0, never below","must","Claude"],
+  ["Test passes: load shedding keeps Life Support alive","must","Claude"],
+  ["Test passes: a storm alert does NOT cut solar output","must","Claude"],
+  ["Test passes: Greenhouse with power and water makes food","must","Claude"],
+  ["Fixtures made: DONKI, RadLab, illumination, POWER, OSDR, CSA","must","Claude"],
+  ["Open DATA_SOURCES.md. Any failed call is marked synthetic, not real","must","You"],
+  ["Search the repo for your real key. Zero hits","must","You"],
+  ["Commits exist for M1 and M2","nice","Git"]]},
+ {id:"grey",name:"Claude Code: playable greybox (M3 to M4)",h:5,who:"Claude",c:"#6fd3c0",done:"Tutorial to ending plays start to finish with plain boxes.",t:[
+  ["Grid placement works: footprint, overlap, cost, blocked tiles","must","Claude"],
+  ["All 6 buildings place: Habitat, Solar, Battery, Life Support, Comms, Greenhouse","must","Claude"],
+  ["HUD shows totals, per-hour rates, and the reason for each warning","must","Claude"],
+  ["Info panel with on/off toggle for optional loads","must","Claude"],
+  ["Pause, 1×, 2×, 4×. Reset and Retry work","must","Claude"],
+  ["Ch. 1 tutorial: bedroom, the kid's map, place 3 buildings, teacher line","must","Claude"],
+  ["Lab and Rover Garage show as locked slots","nice","Claude"],
+  ["Greenhouse first-harvest moment with a science card","must","Claude"],
+  ["Crew chat: click a portrait, reply with buttons, no typing","must","Claude"],
+  ["Storm alert from the fixture. Crew member outside. Choices change the outcome","must","Claude"],
+  ["Ending: observation window, sunrise, Earth low, old drawing, final message","must","Claude"],
+  ["Unity console: zero errors","must","Unity"],
+  ["You play the greybox once, start to end, and write 3 notes","must","You"]]},
+ {id:"story",name:"Story and crew chat",par:"grey",bud:"2 h",who:"You + Claude",c:"#f39a8f",done:"Story.json done. Under 650 words. Facts checked.",t:[
+  ["Check Hadfield and Seager facts on their official pages. Seager = Deputy Science Director of TESS","must","You"],
+  ["Read the Ch. 1 text: kid, science event, Hadfield, Seager, teacher line","must","You"],
+  ["Say once: the astronaut path is a dream, not a promise","must","You"],
+  ["Crew: Engineer, Botanist, Geologist. 3 to 4 lines each","must","Claude"],
+  ["One Geologist line remembers if you called her in first","must","Claude"],
+  ["Every line is 14 words or fewer. Read aloud. Grade 3 to 4","must","You"],
+  ["Earth line says \"hangs low\", not \"Earthrise\"","must","You"],
+  ["Final message is in: \"I used to build this world on a computer. Now we are building it together.\"","must","You"],
+  ["5 science cards, one sentence each, each with a source","must","Claude"],
+  ["6 tutorial hints, each shows once","must","Claude"],
+  ["Debrief text for win, close call, and fail","must","Claude"],
+  ["Total story and chat text under about 650 words","must","Claude"],
+  ["Bond hearts 0 to 3 change only the ending lines","nice","Claude"]]},
+ {id:"art",name:"Pixel art",par:"grey",bud:"3.5 h",who:"You",c:"#d6a5ff",done:"Every art slot has a real sprite or a placeholder. One style.",t:[
+  ["Download Cozy Space Planet and Kenney Pixel UI. Read the license inside each zip","must","itch / Kenney"],
+  ["Pick one palette of 16 to 32 colours","must","Piskel"],
+  ["Midjourney: bedroom scene and the kid's notebook map","must","Midjourney"],
+  ["Midjourney: 3 photo cards (campus, lab, training) and the observation window","must","Midjourney"],
+  ["3 crew portraits, shrunk to 32 × 32 and cleaned by hand","must","Midjourney + Piskel"],
+  ["Greenhouse sprite (3×2) with on and off look","must","Piskel"],
+  ["Shelter sprite and alert icon","must","Piskel"],
+  ["Icons: power, battery, air, water, food, crew safety. Shape as well as colour","must","Kenney"],
+  ["Shrink all Midjourney art to the pixel grid and palette","must","Piskel"],
+  ["Drop files into the ArtManifest slots. Placeholders cover the gaps","must","Unity"],
+  ["ASSET_CREDITS.md complete. AI-made art is marked","must","Claude"],
+  ["Locked Lab and Rover Garage icons","nice","Piskel"],
+  ["Title art","nice","Midjourney"]]},
+ {id:"bal",name:"Balance and feel (M5)",h:2,who:"Both",c:"#ffd9a0",done:"Two ways to win. One gentle fail. Tight but fair.",t:[
+  ["Read BALANCE_REPORT.md. Bots: DoNothing fails, ShedLoads wins, StoredEnergy wins","must","You"],
+  ["Play the shed-loads way by hand and win","must","You"],
+  ["Play the stored-energy way by hand and win","must","You"],
+  ["Play do-nothing. The fail is gentle, has a reason, and offers Retry","must","You"],
+  ["First outpost takes about 5 minutes","must","You"],
+  ["Crew chat feels alive: lines change when the base changes","must","You"],
+  ["Water is finite but not punishing","nice","You"],
+  ["Star rating on the debrief","nice","Claude"]]},
+ {id:"polish",name:"Art, data cards and polish (M6)",h:3.5,who:"Claude",c:"#6fd3c0",done:"One pixel style. Readable at 1080p. Credits in.",t:[
+  ["Swap real art into the game. Check at 1920×1080","must","Claude"],
+  ["Real data cards show: DONKI flare class and times, RadLab ISS card, Real data badge","must","Claude"],
+  ["Data credits screen is in. No NASA logo anywhere","must","Claude"],
+  ["Every status uses colour plus icon plus text","must","You"],
+  ["Sunrise ending: solar output climbs on the HUD","must","Claude"],
+  ["Console clean","must","Unity"],
+  ["Pop on place. Cable glow. Alert blink","nice","Claude"],
+  ["Free CC0 sounds and a Mute button","nice","Kenney audio"],
+  ["Stars twinkle. Earth in the sky","nice","Claude"]]},
+ {id:"test",name:"Testing with people (M7)",h:2.5,who:"You",c:"#8fb4ff",done:"3 players finished it. Notes written.",t:[
+  ["Run all automated tests. All green","must","Unity"],
+  ["Play start to end 3 times. Zero console errors","must","You"],
+  ["Try to break it: spam click, build on edges, pause in the storm, spam chat","must","You"],
+  ["Tester 1: a child age 7 to 12 if you can","must","You"],
+  ["Testers 2 and 3: people who have not seen it","must","You"],
+  ["Stay silent. Watch where they get stuck. Write it down","must","You"],
+  ["Ask: What was the battery for? What did the alert mean? Who did you talk to? Want to play more?","must","You"],
+  ["Time each run. Goal: 12 to 16 minutes","must","You"],
+  ["Did anyone care about a crew member? Write their words","nice","You"],
+  ["Save one tester quote for the project page","nice","You"]]},
+ {id:"fix",name:"Fix round",h:2,who:"Both",c:"#f39a8f",done:"Top 3 problems fixed. Then stop.",t:[
+  ["List every problem. Pick only the top 3","must","You"],
+  ["Fix the place where most testers got stuck","must","Claude"],
+  ["Fix any crash, soft lock, or chat dead end","must","Claude"],
+  ["Re-run all tests after the fixes","must","Unity"],
+  ["Feature freeze. No new things after this","must","You"]]},
+ {id:"build",name:"Build and trailer",h:2.5,who:"Both",c:"#8fb4ff",done:"Playable link works. Demo video is public.",t:[
+  ["WebGL build. Upload to itch.io or GitHub Pages","must","Unity"],
+  ["Open the link on another computer. Play it with no internet to NASA and no key","must","You"],
+  ["Windows or Mac build as backup","nice","Unity"],
+  ["Record clips: Ch. 1 drawing, outpost and greenhouse, a crew chat, the storm choice, the sunrise ending","must","OBS"],
+  ["Cut the demo to the length the 2026 guide allows","must","CapCut"],
+  ["Order: kid dreams, base built, crew, storm, sunrise, message home","must","You"],
+  ["Add English subtitles","must","CapCut"],
+  ["4 screenshots and 1 cover image","must","You"],
+  ["Upload video. Set link to public","must","YouTube"]]},
+ {id:"submit",name:"Submit and final check",h:2,who:"Both",c:"#f2b84b",done:"Submitted. Confirmation seen.",t:[
+  ["Project page: summary in 3 short sentences","must","Claude"],
+  ["Explain how it meets the challenge and each judging point","must","Claude"],
+  ["List NASA and CSA data used: DONKI, RadLab, POWER, LOLA, OSDR, CSA","must","You"],
+  ["List other references, assets and tools","must","You"],
+  ["State AI use: Claude for code and text, Midjourney for some art","must","You"],
+  ["Say: not endorsed by NASA, CSA, Sara Seager or Chris Hadfield. The astronaut path is a dream","must","You"],
+  ["Local impact note: who it helps in Mississauga and Toronto","must","You"],
+  ["README: Unity version, how to open, controls, demo path","must","Claude"],
+  ["Repo is public. Search it for your key. Zero hits","must","You"],
+  ["Click every link while logged out","must","You"],
+  ["Submit at least 1 hour before the deadline","must","You"],
+  ["Screenshot the confirmation","nice","You"]]},
+ {id:"buffer",name:"Buffer",h:1.5,who:"You",c:"#aeb0d0",done:"Unused is fine.",t:[
+  ["Keep this time empty. Things break","must",""],
+  ["If free: thank the testers and back up the project","nice","You"]]}
+];
+/* ---------- storage ---------- */
+const KEY="mapmakers-board-v2";let S={c:{},hour:0,must:false,hide:false,start:0,auto:false};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+/* ---------- tasks finished by Claude Code (pre-checked; untick by hand if you disagree) ---------- */
+const CLAUDE_DONE=["kick-3","kick-6","kick-7","sim-0","sim-1","sim-2","sim-3","sim-4","sim-5","story-3","story-4","story-8","story-9","story-10","story-11"];
+CLAUDE_DONE.forEach(id=>{if(!(id in S.c))S.c[id]=true});
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+
+/* ---------- timeline ---------- */
+let acc=0;PH.forEach(p=>{
+  if(p.par){const host=PH.find(x=>x.id===p.par);p.s=host.s;p.e=host.e}
+  else{p.s=acc;acc+=p.h;p.e=acc}
+  const tr=el("tr");tr.id="tl-"+p.id;
+  tr.innerHTML=`<td class="n">${p.s} to ${p.e}${p.par?" (alongside)":""}</td><td>${p.name}</td><td>${p.who}</td><td class="n">${p.par?p.bud:p.h+" h"}</td><td>${p.done}</td>`;
+  $("#timeline").append(tr)});
+function syncClock(){if(S.auto&&S.start){let h=(Date.now()-S.start)/36e5;S.hour=Math.min(25,Math.max(0,Math.round(h*2)/2))}}
+function paintHour(){const h=+S.hour;$("#hour").value=h;$("#hourOut").textContent="Hour "+h;
+  const seq=PH.filter(p=>!p.par);
+  const cur=seq.find(p=>h>=p.s&&h<p.e)||seq[seq.length-1];
+  PH.forEach(p=>$("#tl-"+p.id).classList.toggle("now",(h>=p.s&&h<p.e)||p===cur));
+  const alongside=PH.filter(p=>p.par&&h>=p.s&&h<p.e).map(p=>p.name);
+  const late=PH.filter(p=>p.e<=h&&p.t.some((t,i)=>t[1]==="must"&&!S.c[p.id+"-"+i]));
+  $("#hourTip").textContent=late.length?"Behind: must-do tasks still open in "+late.map(p=>p.name).join(", ")+". See the cut list on page 4.":"Now: "+cur.name+(alongside.length?". Also running: "+alongside.join(", "):"")+". On track.";
+  $("#clockNote").textContent=S.auto&&S.start?"Clock started at "+new Date(S.start).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"Clock is off. Slider is manual."}
+$("#hour").addEventListener("input",e=>{S.hour=+e.target.value;S.auto=false;save();paintHour()});
+$("#startNow").onclick=()=>{S.start=Date.now();S.auto=true;S.hour=0;save();paintHour()};
+$("#stopClock").onclick=()=>{S.auto=false;save();paintHour()};
+setInterval(()=>{if(S.auto){syncClock();save();paintHour()}},60000);
+
+/* ---------- pixel icon ---------- */
+function icon(col){const c=document.createElement("canvas");c.width=c.height=7;c.className="ico";const x=c.getContext("2d");
+  x.fillStyle=col;[[2,0,3,1],[1,1,5,1],[0,2,7,3],[1,5,5,1],[2,6,3,1]].forEach(r=>x.fillRect(...r));
+  x.fillStyle="#1b1f3a";x.fillRect(2,2,1,1);x.fillRect(4,4,2,1);return c}
+
+/* ---------- tasks ---------- */
+PH.forEach(p=>{
+  const d=el("details");d.open=true;d.id="ph-"+p.id;
+  const sm=el("summary");sm.append(icon(p.c));
+  sm.append(el("div","",`<h3>${p.name}</h3><div class="sub">${p.par?"Alongside the greybox build ("+p.bud+")":"Hours "+p.s+" to "+p.e} · ${p.who}. Done when: ${p.done}</div>`));
+  sm.append(el("div","meta",`<span id="ct-${p.id}"></span><div class="mini"><i id="mb-${p.id}"></i></div>`));
+  d.append(sm);const inner=el("div","inner");
+  p.t.forEach((t,i)=>{const id=p.id+"-"+i;const row=el("div","task");row.dataset.tag=t[1];
+    const who=t[2]?`<span class="pill ${t[2]==="You"?"you":"tool"}">${t[2]}</span>`:"";
+    row.innerHTML=`<input type="checkbox" id="${id}"><label for="${id}">${t[0]}</label><div class="tags">${who}<span class="pill ${t[1]}">${t[1]}</span></div>`;
+    inner.append(row)});
+  d.append(inner);$("#tasklist").append(d);
+});
+function paintTasks(){let all=0,dn=0;
+  PH.forEach(p=>{let a=p.t.length,k=0;p.t.forEach((t,i)=>{const id=p.id+"-"+i,b=document.getElementById(id),on=!!S.c[id];b.checked=on;b.closest(".task").classList.toggle("done",on);if(on)k++});
+    $("#ct-"+p.id).textContent=k+" / "+a;$("#mb-"+p.id).style.width=(100*k/a)+"%";all+=a;dn+=k});
+  $("#tbar").style.width=(100*dn/all)+"%";$("#tnum").textContent=dn+" / "+all+" done";
+  $("#tasklist").classList.toggle("must-only",!!S.must);$("#tasklist").classList.toggle("hide-done",!!S.hide);
+  $("#swMust").checked=!!S.must;$("#swHide").checked=!!S.hide;paintHour();}
+$("#tasklist").addEventListener("change",e=>{if(e.target.type==="checkbox"){S.c[e.target.id]=e.target.checked;save();paintTasks()}});
+$("#swMust").addEventListener("change",e=>{S.must=e.target.checked;save();paintTasks()});
+$("#swHide").addEventListener("change",e=>{S.hide=e.target.checked;save();paintTasks()});
+$("#openAll").onclick=()=>document.querySelectorAll("#tasklist details").forEach(d=>d.open=true);
+$("#closeAll").onclick=()=>document.querySelectorAll("#tasklist details").forEach(d=>d.open=false);
+let armed=false;$("#reset").onclick=e=>{if(!armed){armed=true;e.target.textContent="Click again to clear all";setTimeout(()=>{armed=false;e.target.textContent="Reset checks"},3000);return}
+  S.c={};save();armed=false;e.target.textContent="Reset checks";paintTasks()};
+syncClock();paintTasks();
+
+/* ---------- tabs ---------- */
+const PAGES=["story","plan","tasks","ship"];
+function show(){let p=location.hash.slice(1);if(!PAGES.includes(p))p="story";
+  PAGES.forEach(n=>{$("#p-"+n).classList.toggle("on",n===p)});
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.p===p))}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{location.hash=b.dataset.p;show();window.scrollTo({top:0})});
+window.addEventListener("hashchange",show);show();
+
+/* ---------- pixel scene ---------- */
+(function(){const c=$("#scene"),x=c.getContext("2d"),W=240,H=72;const r=(col,a,b,w,h)=>{x.fillStyle=col;x.fillRect(a,b,w,h)};
+  r("#0d1024",0,0,W,H);let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+  for(let i=0;i<70;i++)r(rnd()>.8?"#f2b84b":"#cfd3ff",Math.floor(rnd()*W),Math.floor(rnd()*44),1,1);
+  // Earth, low in the sky
+  for(let y=-7;y<=7;y++)for(let q=-7;q<=7;q++)if(q*q+y*y<=50)r((q+y*2)%5===0||(q*y)%7===3?"#6fd3c0":"#4d7fe0",212+q,22+y,1,1);
+  // ground
+  r("#8a8ca6",0,50,W,22);r("#a3a5bd",0,50,W,2);
+  [[20,58,10],[70,64,7],[150,60,12],[215,66,8],[110,68,5]].forEach(([a,b,w])=>{r("#6d6f8a",a,b,w,2);r("#b9bbd0",a+1,b+2,w-2,1)});
+  // dome
+  for(let y=0;y<14;y++){const w=Math.round(Math.sqrt(196-y*y)*1.1);r(y<5?"#e9ecff":"#c9cdea",120-w,50-14+(14-y)-1,w*2,1)}
+  r("#f2b84b",112,44,5,4);r("#f2b84b",122,44,5,4);r("#3b4170",118,45,3,5);
+  // life support + battery
+  r("#dfe3f7",142,42,12,8);r("#6fd3c0",144,44,3,3);r("#4d7fe0",149,44,3,3);
+  r("#dfe3f7",160,45,8,5);r("#f2b84b",161,46,4,3);
+  // solar panels
+  [[58,0],[76,0],[94,0]].forEach(([a])=>{r("#3b4170",a+5,46,2,5);r("#2b4fa8",a,40,12,6);r("#6f9bff",a+1,41,4,2);r("#6f9bff",a+7,41,4,2);r("#6f9bff",a+1,44,4,1);r("#6f9bff",a+7,44,4,1)});
+  // greenhouse
+  r("#cfe9d6",190,42,20,8);r("#3f9e6a",192,44,16,5);r("#7fd18f",194,43,2,3);r("#7fd18f",199,43,2,4);r("#7fd18f",204,43,2,3);
+  // cables
+  r("#f2b84b",64,52,56,1);r("#f2b84b",134,52,56,1);
+  // dish
+  r("#3b4170",176,40,1,10);r("#dfe3f7",172,37,9,3);r("#f39a8f",176,35,1,2);
+  // astronaut
+  r("#ffffff",38,45,4,6);r("#f2b84b",39,46,2,2);r("#c9cdea",37,47,1,3);r("#c9cdea",42,47,1,3);
+  // flag
+  r("#dfe3f7",30,40,1,11);r("#f39a8f",31,40,2,4);r("#ffffff",33,40,2,4);r("#f39a8f",35,40,2,4);
+})();
+</script>
+</body>
+</html>

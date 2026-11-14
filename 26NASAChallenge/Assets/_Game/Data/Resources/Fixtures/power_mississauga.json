@@ -1,0 +1,41 @@
+{
+  "source": "NASA POWER (Prediction Of Worldwide Energy Resources), climatology API",
+  "query_url": "https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=ALLSKY_SFC_SW_DWN&community=RE&latitude=43.59&longitude=-79.64&format=JSON",
+  "retrieved_utc": "2026-11-14T15:51:58Z",
+  "units": "kW-hr/m^2/day",
+  "license_note": "NASA data is generally not copyrighted in the United States. Credit NASA. No NASA logo and no implied endorsement.",
+  "classification": "NASA-derived",
+  "parameter": "ALLSKY_SFC_SW_DWN (all-sky surface shortwave downward irradiance)",
+  "place": "Mississauga, Ontario (latitude 43.59, longitude -79.64, approximate)",
+  "period": "25-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2025)",
+  "months": [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
+  ],
+  "monthly": [
+    1.4304,
+    2.1329,
+    3.3583,
+    4.5146,
+    5.5008,
+    6.0821,
+    6.0043,
+    5.2846,
+    4.1647,
+    2.5003,
+    1.608,
+    1.1652
+  ],
+  "annual": 3.6518,
+  "note": "Earth-surface sunlight. Never used as lunar power."
+}

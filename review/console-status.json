@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "command": "command console",
+  "data": {
+    "command": "console",
+    "parameters": {},
+    "result": {
+      "entries": [],
+      "cursor": 89,
+      "session": "53358986c6d5440880636d7d0a24d80e",
+      "returned": 0,
+      "dropped": false,
+      "reset": false,
+      "counts": {
+        "error": 5,
+        "warn": 19,
+        "log": 65
+      },
+      "groundTruth": {
+        "sampledUtc": "2026-11-14T16:29:16.2019073Z",
+        "ageMs": 356,
+        "compilationFailed": false,
+        "compiling": false,
+        "consoleErrors": 0,
+        "consoleWarnings": 2,
+        "consoleLogs": 12,
+        "seeded": true
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7800,
+      "projectPath": "26NASAChallenge/"
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -1,0 +1,75 @@
+{
+  "source": "NASA Open Science Data Repository (OSDR)",
+  "query_url": "https://osdr.nasa.gov/osdr/data/search?type=cgene&size=5&term=<accession>",
+  "retrieved_utc": "2026-11-14T15:51:58Z",
+  "units": "text (study titles)",
+  "license_note": "NASA data is generally not copyrighted in the United States. Credit NASA. No NASA logo and no implied endorsement. Study titles belong to their authors; cards link to the study page. See OSDR terms of use.",
+  "classification": "NASA-derived",
+  "note": "Titles are copied from OSDR. Kid lines are simplified summaries of the title only.",
+  "cards": [
+    {
+      "accession": "OSD-268",
+      "topic": "plants",
+      "title": "Microbiological and nutritional analysis of lettuce crops grown on the International Space Station-VEG01B",
+      "kidLine": "Scientists tested lettuce grown on the Space Station.",
+      "organism": "Microbiota",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-268"
+    },
+    {
+      "accession": "OSD-767",
+      "topic": "plants",
+      "title": "Stress and light spectral quality influence the transcriptome of a tomato crop on the International Space Station",
+      "kidLine": "A tomato crop grew on the Space Station under different lights.",
+      "organism": "Solanum lycopersicum",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-767"
+    },
+    {
+      "accession": "OSD-622",
+      "topic": "plants",
+      "title": "Microgravity effects on leaf morphology, cell structure, carbon metabolism and mRNA expression of dwarf wheat",
+      "kidLine": "Dwarf wheat was grown in microgravity to study its leaves.",
+      "organism": "Triticum aestivum",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-622"
+    },
+    {
+      "accession": "OSD-678",
+      "topic": "plants",
+      "title": "Light has a principal role in the Arabidopsis transcriptomic response to the spaceflight environment",
+      "kidLine": "Light changes how a small plant reacts to spaceflight.",
+      "organism": "Arabidopsis thaliana",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-678"
+    },
+    {
+      "accession": "OSD-412",
+      "topic": "plants",
+      "title": "Spatial characterization of microbial communities on multi-species leafy greens grown simultaneously in the Veggie vegetable production systems on the International Space Station VEG-03D",
+      "kidLine": "Leafy greens grew together in the Veggie garden on the station.",
+      "organism": "Microbiota",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-412"
+    },
+    {
+      "accession": "OSD-7",
+      "topic": "plants",
+      "title": "The Arabidopsis spaceflight transcriptome: a comparison of whole plants to discrete root, hypocotyl and shoot responses to the orbital environment",
+      "kidLine": "Roots and shoots of a plant react differently to spaceflight.",
+      "organism": "Arabidopsis thaliana",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-7"
+    },
+    {
+      "accession": "OSD-342",
+      "topic": "health",
+      "title": "Targeting myostatin/activin A protects against skeletal muscle and bone loss during spaceflight [plasma proteomics]",
+      "kidLine": "Mice on the station helped study muscle and bone loss.",
+      "organism": "Mus musculus",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-342"
+    },
+    {
+      "accession": "OSD-401",
+      "topic": "health",
+      "title": "Alternative splicing regulates the physiological adaptation of the mouse hind limb postural and phasic muscles to microgravity",
+      "kidLine": "Mouse leg muscles change as they adapt to space.",
+      "organism": "Mus musculus",
+      "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-401"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+    "name": "Mapmakers.Tests.EditMode",
+    "rootNamespace": "Mapmakers.Tests",
+    "references": [
+        "Mapmakers.Sim",
+        "Mapmakers.Game",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

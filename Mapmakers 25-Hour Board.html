@@ -223,6 +223,9 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 <li><b>M0</b> Unity 6000.6.7f1, URP 2D, new Input System only, Web build module installed. Editor driven live through unity-cli.</li>
 <li><b>M1</b> Pure C# sim + 29 EditMode tests, all green in the open Editor (power deficit, load shedding, storm does not cut solar, greenhouse, placement, determinism).</li>
 <li><b>M2</b> Six real fixtures fetched 2026-11-14 (none synthetic): DONKI X5.8 flare 2024-05-11, RadLab ISS, LOLA south-pole crop, POWER Mississauga, 8 OSDR cards, 3 CSA cards. Loaders, Story.json (646 words story + chat), DATA_SOURCES.md. 38/38 EditMode tests green. Issues: api.nasa.gov DONKI FLR 404 (CCMC fallback used); RadLab unit page HTTP 500; TESS Deputy role not verifiable today, so not stated in game.</li>
+<li><b>Codex execution, Nov 14</b> Planning briefs copied into the Unity root; GitHub backup exists. <a href="26NASAChallenge/SCIENCE_SOURCES.md">Source checks</a> now verify Hadfield, Seager's former TESS Deputy role, RadLab units and CSA reuse terms. <a href="26NASAChallenge/BALANCE_REPORT.md">Balance report</a> generated from the unchanged bots/settings. <a href="26NASAChallenge/TEST_PLAN.md">Test plan</a>, learning checks, scenario calculations, 141-row assumptions table and submission drafts are prepared. <b>53/53 EditMode tests passed</b>, including 9 timing/reset tests; current console has 0 errors and 1 warning. Screen buttons and scenes still need connecting; no human tests or browser build are claimed.</li>
+<li><b>Submission guide checked</b> Supplied PDF: video <b>30 seconds maximum</b> or <b>7 slides maximum</b>; global deadline Nov 15, 11:59 p.m. in the event time zone; AI images/video need visible labels. <a href="26NASAChallenge/SUBMISSION_REQUIREMENTS.md">Requirements and conflicts</a>. The separate judging guide and local-event confirmation remain open.</li>
+<li><b>Reserved for Opus/team</b> Art/palette/asset choice, scene layout, dialogue edits, game balance/pacing, child-scene review against the guide's under-18 likeness clause, final demo edit, human testing and submission. Earlier pre-checks for cards/hints describe existing text only: one-sentence card review and showing hints once in the game are still pending. Full gameplay rows below stay open until their screens actually work.</li>
 </ul></div>
 <div id="tasklist"></div>
 </section>
@@ -240,7 +243,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 <tr><td>Relevance</td><td>It trains a junior astronaut: power, air, water, food, hazards.</td></tr>
 <tr><td>Presentation</td><td>Short demo with English subtitles. Clean page.</td></tr>
 </table></div>
-<p class="src">These five are from the 2025 guide. The 2026 guide came out Nov 13. Read it first for demo length, deadline and AI rules. The 2026 challenge page blocked my reader, so check its text yourself.</p>
+<p class="src">These five headings also appear in the supplied 2026 Project Submission Guide. <a href="26NASAChallenge/SUBMISSION_REQUIREMENTS.md">Recorded limits</a>: video at most 30 seconds or up to 7 slides. The separate detailed judging guide and original challenge page still need review.</p>
 
 <h2>Award fit</h2>
 <div class="tw"><table>
@@ -379,7 +382,7 @@ const PH=[
   ["Open the link on another computer. Play it with no internet to NASA and no key","must","You"],
   ["Windows or Mac build as backup","nice","Unity"],
   ["Record clips: Ch. 1 drawing, outpost and greenhouse, a crew chat, the storm choice, the sunrise ending","must","OBS"],
-  ["Cut the demo to the length the 2026 guide allows","must","CapCut"],
+  ["Demo video: 30 seconds or less (or a deck of up to 7 slides), per the supplied 2026 guide","must","CapCut"],
   ["Order: kid dreams, base built, crew, storm, sunrise, message home","must","You"],
   ["Add English subtitles","must","CapCut"],
   ["4 screenshots and 1 cover image","must","You"],
@@ -401,11 +404,29 @@ const PH=[
   ["Keep this time empty. Things break","must",""],
   ["If free: thank the testers and back up the project","nice","You"]]}
 ];
+/* Technical deliverables already required by the briefs. Append to keep existing checkbox IDs stable. */
+const EXECUTION_DOCS=[
+  ["sim","SCIENCE_SOURCES.md: primary-source checks documented","26NASAChallenge/SCIENCE_SOURCES.md"],
+  ["bal","BALANCE_REPORT.md: existing bots run and unchanged values recorded","26NASAChallenge/BALANCE_REPORT.md"],
+  ["test","TEST_PLAN.md: manual script and blank tester results prepared","26NASAChallenge/TEST_PLAN.md"],
+  ["test","PLAYER_LEARNING.md: agreed learning and crew-chat checks documented","26NASAChallenge/PLAYER_LEARNING.md"],
+  ["sim","SCIENCE_ASSUMPTIONS.csv: 141 existing settings/reference rows classified","26NASAChallenge/SCIENCE_ASSUMPTIONS.csv"],
+  ["bal","SCENARIOS.md: agreed scenario calculations and bot outcomes documented","26NASAChallenge/SCENARIOS.md"],
+  ["grey","Pause/speed/reset state execution tested; screen buttons still pending","26NASAChallenge/Assets/_Game/Scripts/Game/GameSession.cs"],
+  ["art","Current asset inventory written; final art/license entries still pending","26NASAChallenge/ASSET_CREDITS.md"],
+  ["submit","Submission text drafted; final page and video still pending","26NASAChallenge/SUBMISSION_NOTES.md"],
+  ["submit","Development README completed; verified player click guide still pending","26NASAChallenge/README.md"],
+  ["kick","Supplied submission guide read and limits recorded; judging guide still pending","26NASAChallenge/SUBMISSION_REQUIREMENTS.md"]
+];
+const EXECUTION_DOC_IDS=EXECUTION_DOCS.map(([phase,title,path])=>{
+  const p=PH.find(p=>p.id===phase),id=phase+"-"+p.t.length;
+  p.t.push([`<a href="${path}">${title}</a>`,"must","Codex"]);return id;
+});
 /* ---------- storage ---------- */
 const KEY="mapmakers-board-v2";let S={c:{},hour:0,must:false,hide:false,start:0,auto:false};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
 /* ---------- tasks finished by Claude Code (pre-checked; untick by hand if you disagree) ---------- */
-const CLAUDE_DONE=["kick-3","kick-6","kick-7","sim-0","sim-1","sim-2","sim-3","sim-4","sim-5","story-3","story-4","story-8","story-9","story-10","story-11"];
+const CLAUDE_DONE=["kick-2","kick-3","kick-4","kick-6","kick-7","sim-0","sim-1","sim-2","sim-3","sim-4","sim-5","story-0","story-3","story-4","story-8","story-9","story-10","story-11","grey-11","test-0",...EXECUTION_DOC_IDS];
 CLAUDE_DONE.forEach(id=>{if(!(id in S.c))S.c[id]=true});
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s),el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};

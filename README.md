@@ -12,7 +12,7 @@ A Unity 2D educational lunar-base game in development for the 2026 NASA Space Ap
 
 The simulation, building-placement rules, offline data loaders, story text, and automated tests are implemented. **The visible map, player controls, and connected game scenes are still being built.** The current scene does not yet offer a playable game.
 
-On November 14, 2026, all **44 Mapmakers EditMode tests passed** in the open Unity editor. Tests include power storage, load priorities, greenhouse resource use, placement, deterministic stepping, fixture loading, dialogue limits, and scripted mission strategies.
+On November 14, 2026, all **53 Mapmakers EditMode tests passed** in the open Unity editor. Tests include power storage, load priorities, greenhouse resource use, placement, deterministic stepping, fixture loading, dialogue limits, scripted mission strategies, and the new pause/speed/reset execution code. The screen controls still need connecting.
 
 To rerun them, open Unity's Test Runner and run the EditMode tests in `Mapmakers.Tests`. Full player testing and a WebGL build remain pending.
 
@@ -26,6 +26,9 @@ To rerun them, open Unity's Test Runner and run the EditMode tests in `Mapmakers
 | `26NASAChallenge/Assets/_Game/Tests/EditMode/` | Automated tests |
 | `26NASAChallenge/tools/` | Optional data refresh script and fetch log |
 | `26NASAChallenge/DATA_SOURCES.md` | Data provenance and unresolved research checks |
+| `26NASAChallenge/README.md` | Unity development commands and current technical handoff |
+| `26NASAChallenge/BALANCE_REPORT.md` | Generated existing-bot results and unchanged settings |
+| `26NASAChallenge/TEST_PLAN.md` | Manual testing script and blank tester record |
 | `CLAUDE.md` | Game design and implementation brief |
 | `CLAUDE_CODE_MASTER_PROMPT.md` | Build requirements and milestones |
 | `RESEARCH_AGENT_BRIEF.md` | Science and research requirements |

@@ -25,7 +25,7 @@ The game uses the flare class, the dates and the order of events. The game's hou
 **RadLab.** 408 rows from 2024-05-11 00:00–06:00 UTC. Median 4.14 µGy/h (min 1.39, max 28.2). The ISS is in low Earth orbit, inside Earth's magnetic field. The card states that this is **not a Moon dose** and that the game's safety meter is made up.
 
 **LOLA illumination.** A 20×15 crop; each tile is the mean of 2×2 map pixels (60 m pixels, so 120 m per tile). Top-left pixel line 2604, sample 2480. Centre about 89.81° S, 197.5° E, about 5.7 km from the south pole, near the rim of Shackleton crater. Values range from 3.6 % to 71.1 % lit. These are long-term averages, not live shadows. The first CSV data row is the top of the map.
-Game mapping (fictional balance, in `Balance.json → terrain`): `sun = 0.5 + 0.5 × min(1, percent / 65)`; tiles below 10 % are blocked (permanent shadow), plus a few hand-placed rock tiles.
+Game mapping (fictional balance, in `Balance.json → terrain`): `sun = 0.5 + 0.5 × min(1, percent / 65)`; tiles below 10 % are blocked, plus a few hand-placed rock tiles. The 10 % construction threshold is a gameplay rule, not evidence that a tile is permanently shadowed; nonzero average illumination means some light is received.
 
 **NASA POWER.** 25-year monthly climatology (January 2001 – December 2025) at an approximate Mississauga point. June 6.08, December 1.17, annual 3.65 kW-hr/m²/day. The card's "about five times more in June than in December" is the ratio 6.08 / 1.17 ≈ 5.2.
 
@@ -39,7 +39,7 @@ Game mapping (fictional balance, in `Balance.json → terrain`): `sun = 0.5 + 0.
 - `api.nasa.gov/DONKI/GST` returned HTTP 429 once (the `DEMO_KEY` rate limit). The CCMC fallback was used.
 - `NASA_API_KEY` was not set in the build environment, so `DEMO_KEY` was used.
 - `kauai.ccmc.gsfc.nasa.gov` was unreachable; `ccmc.gsfc.nasa.gov` worked.
-- The RadLab units documentation page returned HTTP 500 on 2026-11-14. The unit (µGy/h) is taken from the research brief and the column name; **please confirm it**.
+- The RadLab units documentation page returned HTTP 500 during the initial fetch. Rechecked on 2026-11-14: the [official API field table](https://visualization.osdr.nasa.gov/radlab/gui/data-api/) explicitly gives `absorbed_dose_rate` in µGy/hour and `dose_equivalent_rate` in µSv/hour. This resolves the unit check; the ISS sample remains a comparison, not a Moon dose.
 - The LOLA crop position was computed from the label's polar stereographic projection. Orientation was checked only against the known position of Shackleton crater.
 - The CSA `pageModified` dates could not be parsed and are stored as empty strings.
 
@@ -47,5 +47,5 @@ Game mapping (fictional balance, in `Balance.json → terrain`): `sun = 0.5 + 0.
 
 - NASA data is generally not copyrighted in the United States. Credit NASA. No NASA logo or insignia and no implied endorsement.
 - OSDR study titles belong to their authors; cards link to the study pages.
-- CSA content: the fixture records "Non-commercial educational use with credit. No endorsement implied. Commercial use needs written permission." **Please re-check this against the CSA terms page before submission.**
+- CSA content: the fixture records "Non-commercial educational use with credit. No endorsement implied. Commercial use needs written permission." Checked on 2026-11-14 against the [CSA terms page](https://www.asc-csa.gc.ca/eng/terms.asp): educational non-commercial reproduction requires accurate use, source credit, and no implied association/endorsement. Commercial redistribution requires prior written permission, and third-party materials have separate rights. This records the published terms; it grants no logo or third-party-media permission.
 - In-game Data credits line: "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA (PDS), CSA. Not endorsed by NASA or CSA."

@@ -1,5 +1,7 @@
 # Unity progress review — 14 November 2026
 
+Historical baseline before the later execution pass. The board and `26NASAChallenge/README.md` now record the subsequent technical work: 53 passing EditMode tests, timing/reset state code, generated balance report and new documentation. The 44-test baseline and missing-file inventory below describe the earlier review, not the latest state.
+
 Compared against `../CLAUDE.md`, `../RESEARCH_AGENT_BRIEF.md`, and `../CLAUDE_CODE_MASTER_PROMPT.md`. This was a review; no game source, packages, scenes, or balance values were changed.
 
 ## Verified in the open editor

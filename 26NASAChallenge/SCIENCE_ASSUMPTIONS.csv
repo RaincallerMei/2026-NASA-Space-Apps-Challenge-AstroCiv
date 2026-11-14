@@ -1,0 +1,142 @@
+variable,unit,value_or_range,source,classification,confidence,gameplay_use
+dtHours,game hours,0.05,Balance.json: dtHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+realSecondsPerGameHour,real seconds/game hour at 1x,5,Balance.json: realSecondsPerGameHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+startClockHour,game hours,8,Balance.json: startClockHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+startSupplies,build points,150,Balance.json: startSupplies,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+startWaterL,L,100,Balance.json: startWaterL,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+startMeals,meals,20,Balance.json: startMeals,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+startAirHours,game hours,24,Balance.json: startAirHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+airCapHours,game hours,24,Balance.json: airCapHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+crewCount,count,3,Balance.json: crewCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+mealsPerCrewPerDay,meals/crew member/game day,3,Balance.json: mealsPerCrewPerDay,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+airRefillPerHour,air-hours/game hour,2,Balance.json: airRefillPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+airDrainPerHour,air-hours/game hour,1,Balance.json: airDrainPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+restoreBatteryFraction,fraction,0.5,Balance.json: restoreBatteryFraction,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+safetyRecoverPerHour,safety points/game hour,1,Balance.json: safetyRecoverPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+safetyNoAirPerHour,safety points/game hour,6,Balance.json: safetyNoAirPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+safetyNoFoodPerHour,safety points/game hour,2,Balance.json: safetyNoFoodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+noFoodGraceHours,game hours,6,Balance.json: noFoodGraceHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+radiationOutsidePerHour,safety points/game hour,10,Balance.json: radiationOutsidePerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+radiationUnshelteredPerHour,safety points/game hour,6,Balance.json: radiationUnshelteredPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+safetyFailThreshold,safety points (0-100),50,Balance.json: safetyFailThreshold,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+safetyFailHours,game hours,2,Balance.json: safetyFailHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+closeCallSafety,safety points (0-100),70,Balance.json: closeCallSafety,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+perfectSafety,safety points (0-100),95,Balance.json: perfectSafety,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+harvestMeals,meals,3,Balance.json: harvestMeals,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+harvestSupplyReward,build points,30,Balance.json: harvestSupplyReward,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+startMaxBatteries,count,1,Balance.json: startMaxBatteries,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+unlockedMaxBatteries,count,2,Balance.json: unlockedMaxBatteries,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+sunriseHours,game hours,3,Balance.json: sunriseHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+storm.leadHours,game hours,3,Balance.json: storm.leadHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+storm.evaPromptHour,game hours,2,Balance.json: storm.evaPromptHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+storm.onsetHour,game hours,4,Balance.json: storm.onsetHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+storm.decayHour,game hours,10,Balance.json: storm.decayHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+storm.endHour,game hours,12,Balance.json: storm.endHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+storm.recallWalkHours,game hours,1.5,Balance.json: storm.recallWalkHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+storm.selfReturnDelayHours,game hours,1,Balance.json: storm.selfReturnDelayHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+shadow.warningHours,game hours,2,Balance.json: shadow.warningHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+shadow.durationHours,game hours,3,Balance.json: shadow.durationHours,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+shadow.factor,fraction,0.7,Balance.json: shadow.factor,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+terrain.sunFloor,fraction,0.5,Balance.json: terrain.sunFloor,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+terrain.sunFullAtPercent,percent,65,Balance.json: terrain.sunFullAtPercent,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+terrain.blockedBelowPercent,percent,10,Balance.json: terrain.blockedBelowPercent,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+terrain.rockTiles,"tile x,y pairs","[7, 11, 8, 11, 12, 6, 6, 3, 13, 2, 14, 2, 10, 13]",Balance.json: terrain.rockTiles,fictional balance,Exact shipped setting; not a measured terrain product,Blocked construction tiles
+buildings.Habitat.width,tiles,3,Balance.json: buildings.Habitat.width,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.height,tiles,3,Balance.json: buildings.Habitat.height,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.cost,build points,30,Balance.json: buildings.Habitat.cost,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.maxCount,count,1,Balance.json: buildings.Habitat.maxCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.generationKW,kW,0,Balance.json: buildings.Habitat.generationKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.demandKW,kW,1,Balance.json: buildings.Habitat.demandKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.priority,priority rank (lower is more critical),1,Balance.json: buildings.Habitat.priority,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.batteryKWh,kWh,0,Balance.json: buildings.Habitat.batteryKWh,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.batteryRateKW,kW,0,Balance.json: buildings.Habitat.batteryRateKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.waterInLph,L/game-hour,0,Balance.json: buildings.Habitat.waterInLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.waterReturnLph,L/game-hour,0,Balance.json: buildings.Habitat.waterReturnLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.foodPerHour,meals/game hour,0,Balance.json: buildings.Habitat.foodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Habitat.airBonusPerHour,air-hours/game hour,0,Balance.json: buildings.Habitat.airBonusPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.width,tiles,2,Balance.json: buildings.SolarArray.width,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.height,tiles,2,Balance.json: buildings.SolarArray.height,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.cost,build points,10,Balance.json: buildings.SolarArray.cost,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.maxCount,count,4,Balance.json: buildings.SolarArray.maxCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.generationKW,kW,3,Balance.json: buildings.SolarArray.generationKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.demandKW,kW,0,Balance.json: buildings.SolarArray.demandKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.priority,priority rank (lower is more critical),0,Balance.json: buildings.SolarArray.priority,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.batteryKWh,kWh,0,Balance.json: buildings.SolarArray.batteryKWh,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.batteryRateKW,kW,0,Balance.json: buildings.SolarArray.batteryRateKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.waterInLph,L/game-hour,0,Balance.json: buildings.SolarArray.waterInLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.waterReturnLph,L/game-hour,0,Balance.json: buildings.SolarArray.waterReturnLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.foodPerHour,meals/game hour,0,Balance.json: buildings.SolarArray.foodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.SolarArray.airBonusPerHour,air-hours/game hour,0,Balance.json: buildings.SolarArray.airBonusPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.width,tiles,1,Balance.json: buildings.Battery.width,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.height,tiles,2,Balance.json: buildings.Battery.height,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.cost,build points,12,Balance.json: buildings.Battery.cost,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.maxCount,count,1,Balance.json: buildings.Battery.maxCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.generationKW,kW,0,Balance.json: buildings.Battery.generationKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.demandKW,kW,0,Balance.json: buildings.Battery.demandKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.priority,priority rank (lower is more critical),0,Balance.json: buildings.Battery.priority,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.batteryKWh,kWh,4,Balance.json: buildings.Battery.batteryKWh,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.batteryRateKW,kW,3,Balance.json: buildings.Battery.batteryRateKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.waterInLph,L/game-hour,0,Balance.json: buildings.Battery.waterInLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.waterReturnLph,L/game-hour,0,Balance.json: buildings.Battery.waterReturnLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.foodPerHour,meals/game hour,0,Balance.json: buildings.Battery.foodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Battery.airBonusPerHour,air-hours/game hour,0,Balance.json: buildings.Battery.airBonusPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.width,tiles,2,Balance.json: buildings.LifeSupport.width,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.height,tiles,2,Balance.json: buildings.LifeSupport.height,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.cost,build points,20,Balance.json: buildings.LifeSupport.cost,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.maxCount,count,1,Balance.json: buildings.LifeSupport.maxCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.generationKW,kW,0,Balance.json: buildings.LifeSupport.generationKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.demandKW,kW,4,Balance.json: buildings.LifeSupport.demandKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.priority,priority rank (lower is more critical),1,Balance.json: buildings.LifeSupport.priority,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.batteryKWh,kWh,0,Balance.json: buildings.LifeSupport.batteryKWh,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.batteryRateKW,kW,0,Balance.json: buildings.LifeSupport.batteryRateKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.waterInLph,L/game-hour,0,Balance.json: buildings.LifeSupport.waterInLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.waterReturnLph,L/game-hour,0,Balance.json: buildings.LifeSupport.waterReturnLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.foodPerHour,meals/game hour,0,Balance.json: buildings.LifeSupport.foodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.LifeSupport.airBonusPerHour,air-hours/game hour,0,Balance.json: buildings.LifeSupport.airBonusPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.width,tiles,1,Balance.json: buildings.Communications.width,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.height,tiles,1,Balance.json: buildings.Communications.height,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.cost,build points,8,Balance.json: buildings.Communications.cost,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.maxCount,count,1,Balance.json: buildings.Communications.maxCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.generationKW,kW,0,Balance.json: buildings.Communications.generationKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.demandKW,kW,1,Balance.json: buildings.Communications.demandKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.priority,priority rank (lower is more critical),4,Balance.json: buildings.Communications.priority,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.batteryKWh,kWh,0,Balance.json: buildings.Communications.batteryKWh,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.batteryRateKW,kW,0,Balance.json: buildings.Communications.batteryRateKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.waterInLph,L/game-hour,0,Balance.json: buildings.Communications.waterInLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.waterReturnLph,L/game-hour,0,Balance.json: buildings.Communications.waterReturnLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.foodPerHour,meals/game hour,0,Balance.json: buildings.Communications.foodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Communications.airBonusPerHour,air-hours/game hour,0,Balance.json: buildings.Communications.airBonusPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.width,tiles,3,Balance.json: buildings.Greenhouse.width,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.height,tiles,2,Balance.json: buildings.Greenhouse.height,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.cost,build points,25,Balance.json: buildings.Greenhouse.cost,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.maxCount,count,1,Balance.json: buildings.Greenhouse.maxCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.generationKW,kW,0,Balance.json: buildings.Greenhouse.generationKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.demandKW,kW,4,Balance.json: buildings.Greenhouse.demandKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.priority,priority rank (lower is more critical),3,Balance.json: buildings.Greenhouse.priority,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.batteryKWh,kWh,0,Balance.json: buildings.Greenhouse.batteryKWh,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.batteryRateKW,kW,0,Balance.json: buildings.Greenhouse.batteryRateKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.waterInLph,L/game-hour,5,Balance.json: buildings.Greenhouse.waterInLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.waterReturnLph,L/game-hour,4,Balance.json: buildings.Greenhouse.waterReturnLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.foodPerHour,meals/game hour,0.5,Balance.json: buildings.Greenhouse.foodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Greenhouse.airBonusPerHour,air-hours/game hour,0.25,Balance.json: buildings.Greenhouse.airBonusPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.width,tiles,2,Balance.json: buildings.Shelter.width,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.height,tiles,2,Balance.json: buildings.Shelter.height,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.cost,build points,15,Balance.json: buildings.Shelter.cost,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.maxCount,count,1,Balance.json: buildings.Shelter.maxCount,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.generationKW,kW,0,Balance.json: buildings.Shelter.generationKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.demandKW,kW,2,Balance.json: buildings.Shelter.demandKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.priority,priority rank (lower is more critical),2,Balance.json: buildings.Shelter.priority,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.batteryKWh,kWh,0,Balance.json: buildings.Shelter.batteryKWh,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.batteryRateKW,kW,0,Balance.json: buildings.Shelter.batteryRateKW,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.waterInLph,L/game-hour,0,Balance.json: buildings.Shelter.waterInLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.waterReturnLph,L/game-hour,0,Balance.json: buildings.Shelter.waterReturnLph,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.foodPerHour,meals/game hour,0,Balance.json: buildings.Shelter.foodPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+buildings.Shelter.airBonusPerHour,air-hours/game hour,0,Balance.json: buildings.Shelter.airBonusPerHour,fictional balance,Exact shipped setting; not validated as real equipment,Existing simulation
+greenhouse.recycledFraction,fraction,0.8,Balance.json: Greenhouse waterReturnLph / waterInLph,fictional balance,Derived exactly from configuration,Water recycling
+crewMealsPerHour,meals/game hour,0.375,Balance.json: crewCount * mealsPerCrewPerDay / 24,fictional balance,Derived exactly from configuration,Food consumption
+mississauga.annualSunlight,kW-hr/m^2/day,3.6518,https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=ALLSKY_SFC_SW_DWN&community=RE&latitude=43.59&longitude=-79.64&format=JSON,NASA-derived,Saved NASA response; see retrieval date in fixture,Existing local-impact card; Earth surface only
+storm.eventMetadata,times in UTC; flare class = GOES X-ray class; CME speed in km/s; Kp index (0-9),See saved fixture,https://ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=2024-05-10&endDate=2024-05-12 ; https://api.nasa.gov/DONKI/CME?startDate=2024-05-10&endDate=2024-05-12 ; https://api.nasa.gov/DONKI/SEP?startDate=2024-05-10&endDate=2024-05-12 ; https://ccmc.gsfc.nasa.gov/DONKI/WS/get/GST?startDate=2024-05-10&endDate=2024-05-12,NASA-derived,Source-derived reference; not simulation performance data,Existing card / source display
+biology.studyCards,text (study titles),See saved fixture,https://osdr.nasa.gov/osdr/data/search?type=cgene&size=5&term=<accession>,NASA-derived,Source-derived reference; not simulation performance data,Existing card / source display
+greenhouse.scienceCards,text,See saved fixture,https://www.asc-csa.gc.ca/eng/youth-educators/toolkits/food-production/,CSA-derived,Source-derived reference; not simulation performance data,Existing card / source display
+radlab_iss_sample,absorbed_dose_rate in microgray per hour (uGy/h),See saved fixture,https://visualization.osdr.nasa.gov/radlab/api/?spacecraft=ISS&instrument=DosTel&timestamp%3E=2024-05-11T00:00&timestamp%3C=2024-05-11T06:00&absorbed_dose_rate&format=csv,NASA-derived,Saved source-derived sample; see DATA_SOURCES.md,ISS reference card; not lunar dose
+illumination_grid,"percent of time the tile is sunlit (average solar disc visibility), 0-100",See saved fixture,http://imbrium.mit.edu/EXTRAS/ILLUMINATION/IMG/AVGVISIB_85S_060M_201608.IMG (HTTP Range request for the crop rows); https://pgda.gsfc.nasa.gov/products/69,simplified,Saved source-derived sample; see DATA_SOURCES.md,20x15 tile sunlight; not live shadows

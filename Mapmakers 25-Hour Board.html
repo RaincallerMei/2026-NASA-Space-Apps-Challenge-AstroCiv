@@ -220,6 +220,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 </div>
 <div class="card" id="runlog"><h3>Claude Code run log</h3>
 <ul class="src" id="runlogList">
+<li><b>Tutorial and sequence verified</b> Open <b>Assets/_Game/Scenes/Boot.unity</b> and press Play. Dream → Habitat/Solar/Greenhouse drawing tasks → teacher → three photo cards → commander → persistent outpost/shadow/harvest → storm → debrief → window/message ending → Blueprint v2. <b>57/57 tests passed</b>, including the complete campaign, timer safety, enforced placement order and failure/Retry guards. <a href="26NASAChallenge/GAMEPLAY_SEQUENCE.md">Sequence details</a> · <a href="review/campaign-tests.json">Test evidence</a> · <a href="review/tutorial-greybox.png">Tutorial screenshot</a>. Story scenes use labelled greybox/text placeholders; final art and crew chat remain separate.</li>
 <li><b>Functional Main scene — verified</b> Runtime ticking, clickable 20×15 greybox map, footprint preview/rejection reasons, six core buildings plus Shelter, inspection/toggles, totals/rates/warnings, Pause/1×/2×/4×, Reset/Retry, crew recall, DONKI warning and text debrief are connected. <b>55/55 tests passed after fixes</b> (53 EditMode + 2 real-scene PlayMode), including win/debrief and failure/retry. <a href="review/runtime-tests.json">Test evidence</a> · <a href="review/mission-greybox.png">1080p screenshot</a>. Open Assets/_Game/Scenes/Main.unity and press Play. Final Tilemap artwork, tutorial, chat and illustrated ending remain for Opus.</li>
 <li><b>M0</b> Unity 6000.6.7f1, URP 2D, new Input System only, Web build module installed. Editor driven live through unity-cli.</li>
 <li><b>M1</b> Pure C# sim + 29 EditMode tests, all green in the open Editor (power deficit, load shedding, storm does not cut solar, greenhouse, placement, determinism).</li>
@@ -430,6 +431,7 @@ try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
 const CLAUDE_DONE=["kick-2","kick-3","kick-4","kick-6","kick-7","sim-0","sim-1","sim-2","sim-3","sim-4","sim-5","story-0","story-3","story-4","story-8","story-9","story-10","story-11","grey-11","test-0",...EXECUTION_DOC_IDS];
 // Verified functional outpost work; story, art and human-play tasks stay separate.
 CLAUDE_DONE.push("grey-0","grey-1","grey-2","grey-3","grey-4","grey-9","bal-7","polish-5");
+CLAUDE_DONE.push("grey-5","grey-10"); // Functional tutorial/ending; illustrated art is still pending.
 CLAUDE_DONE.forEach(id=>{if(!(id in S.c))S.c[id]=true});
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s),el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};

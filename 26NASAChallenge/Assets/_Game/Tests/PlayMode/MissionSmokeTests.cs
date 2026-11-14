@@ -77,7 +77,7 @@ namespace Mapmakers.Tests
             LogAssert.NoUnexpectedReceived();
         }
 
-        static void Place(MissionController game,MissionView view,BuildingType type)
+        internal static void Place(MissionController game,MissionView view,BuildingType type)
         {
             var sim=game.Session.Simulator;var s=game.Session.State;var def=sim.balance.Def(type);
             int bx=-1,by=-1;double best=-1;

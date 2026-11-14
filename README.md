@@ -10,9 +10,11 @@ A Unity 2D educational lunar-base game in development for the 2026 NASA Space Ap
 
 ## Current progress
 
-The simulation, building-placement rules, offline data loaders and story text are implemented. A functional greybox Main scene now connects the map, controls, resource display, storm actions and text debrief. The story tutorial, crew-chat screen, final artwork and WebGL build remain in development. Open `26NASAChallenge/Assets/_Game/Scenes/Main.unity` and press Play.
+The simulation, building-placement rules, offline data loaders and story text are implemented. A functional greybox Main scene now connects the map, controls, resource display, storm actions and text debrief. The tutorial and chapter sequence are now connected using the existing story text. Crew-chat visuals, final artwork and WebGL remain in development. Open `26NASAChallenge/Assets/_Game/Scenes/Boot.unity` and press Play; see `26NASAChallenge/GAMEPLAY_SEQUENCE.md`.
 
 On November 14, 2026, the initial combined run passed **55 tests**: 53 EditMode and two real-scene PlayMode tests. These include the full winning outpost/storm/debrief route and failure/Retry. Final verification evidence is saved under `review/runtime-tests.json` after UI fixes.
+
+The tutorial/campaign update passes **57 tests**: 53 EditMode and four PlayMode tests, including Boot through Blueprint v2. Evidence: `review/campaign-tests.json`. Story scenes currently use labelled text/greybox placeholders.
 
 To rerun them, open Unity's Test Runner and run the EditMode tests in `Mapmakers.Tests`. Full player testing and a WebGL build remain pending.
 

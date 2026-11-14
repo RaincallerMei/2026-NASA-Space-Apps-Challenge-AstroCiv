@@ -2,9 +2,9 @@
 
 Open this folder in **Unity 6000.6.7f1** through Unity Hub. This is the folder with `Assets`, `Packages`, and `ProjectSettings`. Do not upgrade the editor or packages.
 
-The simulation now has a functional greybox Main scene with a clickable map, resource display, placement/inspection, pause/speed/retry controls, storm actions and a debrief. The story tutorial, crew-chat screen, final artwork and browser build remain pending.
+The simulation now has a functional greybox Main scene with a clickable map, resource display, placement/inspection, pause/speed/retry controls, storm actions and a debrief. The functional tutorial and chapter sequence are connected; the crew-chat screen, final artwork and browser build remain pending.
 
-Open `Assets/_Game/Scenes/Main.unity` and press Play. Pick a building on the right, then click the map; choose Inspect to select existing buildings. Use the selected-system button for optional loads. Recall Yuki while the radio is powered, place the unlocked Shelter and switch it on, and manage optional demand through the storm. Reset / Retry starts over. Existing balance values are unchanged.
+Open `Assets/_Game/Scenes/Boot.unity` and press Play for the full tutorial and campaign. Main is the direct outpost development shortcut. Pick a building on the right, then click the map; choose Inspect to select existing buildings. Use the selected-system button for optional loads. Recall Yuki while the radio is powered, place the unlocked Shelter and switch it on, and manage optional demand through the storm. Reset / Retry starts over. Existing balance values are unchanged.
 
 ## Work already specified
 
@@ -32,7 +32,7 @@ Refresh source data only if requested: `python tools/fetch_data.py`. It reads NA
 
 ## Scope of the playable greybox
 
-Map placement/inspection, optional load toggles, Pause/1x/2x/4x, recall and Retry are connected. Main starts directly at the outpost; the existing simulation advances through shadow, harvest, storm and sunrise to a text debrief. The full story route, crew reply screen and illustrated ending remain for Opus. This map uses plain uGUI cells, not final Tilemap artwork. The original untitled editor scene was preserved as WorkspaceSnapshot.unity and is excluded from the build scene list.
+Map placement/inspection, optional load toggles, Pause/1x/2x/4x, recall and Retry are connected. Boot starts the drawing tutorial in Prologue, then loads Main for commander instructions and the persistent outpost. The simulation advances through shadow, harvest, storm and sunrise to the debrief; Continue shows the existing ending lines and Blueprint v2. See GAMEPLAY_SEQUENCE.md. Crew replies and final illustrated scenes remain for Opus. This map uses plain uGUI cells, not final Tilemap artwork. The original untitled editor scene was preserved as WorkspaceSnapshot.unity and is excluded from the build scene list.
 
 ## Handoff documents
 

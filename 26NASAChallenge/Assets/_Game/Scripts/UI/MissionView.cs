@@ -15,7 +15,9 @@ namespace Mapmakers.UI
         MissionController game;
         RectTransform root;
         Font font;
-        Text hud, notices, info, banner, debrief;
+        Text hud, notices, info, banner, debrief, chapterText;
+        Button continueStory;
+        readonly System.Collections.Generic.Dictionary<BuildingType,Button> buildButtons = new System.Collections.Generic.Dictionary<BuildingType,Button>();
         Button toggle, recall;
         Image[,] tiles;
         Text[,] labels;
@@ -25,6 +27,7 @@ namespace Mapmakers.UI
         public Button[,] TileButtons { get; private set; }
         public Button RecallButton => recall;
         public Button RetryButton { get; private set; }
+        public Button ContinueButton => continueStory;
 
         void Start()
         {
@@ -57,7 +60,7 @@ namespace Mapmakers.UI
             foreach(BuildingType type in System.Enum.GetValues(typeof(BuildingType)))
             {
                 var choice=type; var def=game.Session.Simulator.balance.Def(type);
-                MakeButton(def.displayName+" ("+def.cost+")",1070,180+row++*49,390,44,()=>game.ChooseBuilding(choice));
+                buildButtons[type]=MakeButton(def.displayName+" ("+def.cost+")",1070,180+row++*49,390,44,()=>game.ChooseBuilding(choice));
             }
             MakeButton("Inspect / cancel placement",1070,530,390,44,()=>game.ChooseBuilding(null));
             Label("Locked: Lab, Rover Garage\nLater missions",1070,580,390,55,21);
@@ -69,6 +72,10 @@ namespace Mapmakers.UI
             RetryButton=MakeButton("Reset / Retry",560,950,220,48,()=>game.ResetMission());
             Label("Choose a building to place. Inspect to switch optional systems.\nTiles: # blocked, . sunlit. Building labels include on/off status.",30,1008,1860,62,20);
             debrief=Label("Debrief",1070,925,820,90,22);
+            chapterText=Label("Story",1070,650,820,260,25);
+            continueStory=MakeButton("Continue",1480,560,410,48,()=>game.ContinueStory());
+            MakeButton("Replay tutorial",1480,1030,400,40,()=>game.ReplayTutorial());
+            MakeButton("Hints on / off",1070,1030,380,40,()=>{game.HintsEnabled=!game.HintsEnabled;Refresh();});
             Refresh();
         }
         void Update() { if(game!=null && (step!=game.Session.State.step || revision!=game.Revision)) Refresh(); }
@@ -82,7 +89,19 @@ namespace Mapmakers.UI
             hud.text="Power "+N(r.generationKW)+" / "+N(r.demandKW)+" kW    Battery "+N(s.batteryKWh)+" / "+N(sim.BatteryCapacity(s))+" kWh ("+N(r.batteryFlowKW)+" kW)\n"
                 +"Air "+N(s.airHours)+" h ("+N(r.airPerHour)+"/h)    Water "+N(s.waterL)+" L ("+N(r.waterPerHour)+"/h)    Food "+N(s.meals)+" ("+N(r.foodPerHour)+"/h)\n"
                 +"Safety "+N(s.safety)+"/100 ("+N(r.safetyPerHour)+"/h)    Supplies "+s.supplies+"    "+SimText.Clock(s.timeHours,sim.balance.startClockHour)+"   Speed "+session.Speed+"x";
+            if(game.StartWithTutorial)hud.text="Your notebook drawing — no crew timer.\nPower in: "+N(r.generationKW)+" kW    Power out: "+N(r.demandKW)+" kW\nDrawing supplies: "+s.supplies;
             banner.text=s.stage+" | "+s.stormPhase+" | "+(s.events.Count>0?s.events[s.events.Count-1].text:game.Message);
+            bool playing=game.Phase==MissionController.Chapter.Outpost;
+            chapterText.gameObject.SetActive(!playing && game.Phase!=MissionController.Chapter.Debrief);
+            chapterText.text=game.Phase+"\n\n"+game.StoryText;
+            if(game.IsDrawing) chapterText.text+="\n\n"+StoryData.Load().Story("p_locked");
+            notices.gameObject.SetActive(playing || game.Phase==MissionController.Chapter.Debrief);
+            continueStory.gameObject.SetActive(game.CanContinue);
+            foreach(var pair in buildButtons)pair.Value.interactable=game.CanChooseBuilding(pair.Key);
+            if(!playing)banner.text=game.Phase+" | "+game.StoryText;
+            if(game.Phase==MissionController.Chapter.Intro)banner.text="The Dream — bedroom / notebook (placeholder)";
+            if(game.Phase==MissionController.Chapter.Photos)banner.text="Photo card "+(game.StoryIndex+1)+" of 3 (placeholder)";
+            if(game.Phase==MissionController.Chapter.Ending)banner.text="Observation window / old drawing (placeholder)";
             for(int y=0;y<sim.terrain.height;y++)for(int x=0;x<sim.terrain.width;x++)
             {
                 var b=Placement.BuildingAt(sim.balance,s,x,y);
@@ -97,14 +116,17 @@ namespace Mapmakers.UI
                 for(int dy=0;dy<d.height;dy++)for(int dx=0;dx<d.width;dx++) if(sim.terrain.InBounds(hoverX+dx,hoverY+dy))
                 { tiles[hoverX+dx,hoverY+dy].color=check.Ok?new Color(.2f,.65f,.75f):new Color(.85f,.4f,.1f); labels[hoverX+dx,hoverY+dy].text=check.Ok?"+":"X"; }
             }
-            var selected=s.Find(game.SelectedId);toggle.interactable=selected!=null&&sim.balance.Def(selected.type).optional&&!session.Finished;
+            var selected=s.Find(game.SelectedId);toggle.interactable=playing&&selected!=null&&sim.balance.Def(selected.type).optional&&!session.Finished;
             if(selected==null)info.text="Select Inspect, then click a building.";
             else { var d=sim.balance.Def(selected.type);info.text=d.displayName+"\n"+d.blurb+"\nMakes "+N(d.generationKW)+" kW\nUses "+N(d.demandKW)+" kW\n"+(selected.type==BuildingType.Battery?"Storage: shared battery reserve":selected.enabled?(selected.powered?"Powered":"Waiting for power"):"Switched off"); }
             recall.interactable=!session.Finished&&sim.CanRecall(s,out _);
             var warnings=new StringBuilder(game.Message+"\n"+preview+"\n");foreach(var warning in r.warnings)warnings.AppendLine(warning.text);
             if(s.stormPhase!=StormPhase.None) { var data=FixtureLoader.Donki();warnings.AppendLine("Real data: DONKI "+data.flare.classType+"\n"+data.flare.beginTime+" | Crew: "+s.geologist); }
+            if(game.HintsEnabled)warnings.AppendLine(game.Hint);
             notices.text=warnings.ToString();
-            if(session.Finished) { var result=game.Result;var story=StoryData.Load();debrief.text=story.Debrief(result.kind==OutcomeKind.Win?"title_win":result.kind==OutcomeKind.CloseCall?"title_close":"title_fail")+"  Stars: "+result.stars+"\n"+(s.failed?story.Debrief("fail_"+s.failReason):story.Debrief("sci_warning"))+"\nReset / Retry to start again."; }
+            if(game.IsDrawing && game.HintsEnabled)chapterText.text+="\n\n"+game.Hint;
+            if(game.IsDrawing)debrief.text="Power in: "+N(r.generationKW)+" kW\nPower out: "+N(r.demandKW)+" kW\nThis is your drawing. No crew timer runs.";
+            else if(session.Finished) { var result=game.Result;var story=StoryData.Load();debrief.text=story.Debrief(result.kind==OutcomeKind.Win?"title_win":result.kind==OutcomeKind.CloseCall?"title_close":"title_fail")+"  Stars: "+result.stars+"\n"+(s.failed?story.Debrief("fail_"+s.failReason):story.Debrief("sci_warning"))+"\nReset / Retry to start again."; }
             else debrief.text="Game values are fictional balance.\nNASA/CSA references; no endorsement.";
         }
         static string N(double value)=>SimText.Num(value);

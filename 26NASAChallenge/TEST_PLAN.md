@@ -25,6 +25,8 @@ Run both modes with `unity command test run --mode all --filter Mapmakers --asyn
 
 ## Remaining full-story integration checks
 
+Campaign update: Boot/Prologue and the story sequence are connected. The combined run now passes **57/57** (53 EditMode, 4 PlayMode). `CampaignSmokeTests` follows the complete tutorial/photo/commander/outpost/storm/debrief/ending/Blueprint route and verifies reset/failure guards. Evidence: `../review/campaign-tests.json`. Final illustrated scenes, physical mouse play and crew-chat UI still need their separate checks.
+
 1. Load the completed Main scene through Boot/Menu.
 2. Place Habitat, Solar Arrays, Battery, Life Support, Communications and Greenhouse using their runtime commands.
 3. Advance to the existing storm warning without changing balance values.
@@ -32,7 +34,7 @@ Run both modes with `unity command test run --mode all --filter Mapmakers --asyn
 5. Reach the debrief and ending, then Retry.
 6. Assert mission outcome and zero errors/warnings from game code. Separately record package warnings.
 
-The Main/outpost portion is connected. Boot/Menu, the story tutorial, crew-chat UI and illustrated ending remain pending and must be covered when added. A simulation-only test is not a replacement for these scene checks.
+Boot/Prologue/Main and the functional text ending are now covered by scene tests. Crew-chat UI, final illustrated scenes and physical mouse/usability checks remain pending. A simulation-only test is not a replacement for those checks.
 
 ## Five-minute usability script
 

@@ -1,0 +1,23 @@
+[
+  {"action":"click","x":0.86,"y":0.92,"after":0.5},
+  {"action":"record-start"},
+  {"action":"wait","seconds":2},
+  {"action":"click","x":0.86,"y":0.92,"after":2},
+  {"action":"click","x":0.86,"y":0.92,"after":2},
+  {"action":"click","x":0.86,"y":0.92,"after":2},
+  {"action":"record-stop","name":"04_crew"},
+  {"action":"click","x":0.86,"y":0.92,"after":0.3},
+  {"action":"click","x":0.86,"y":0.92,"after":0.3},
+  {"action":"click","x":0.86,"y":0.92,"after":0.3},
+  {"action":"click","x":0.86,"y":0.92,"after":0.3},
+  {"action":"click","x":0.86,"y":0.92,"after":0.3},
+  {"action":"click","x":0.86,"y":0.92,"after":0.7},
+  {"action":"click","x":0.50,"y":0.677,"after":0.8},
+  {"action":"record-start"},
+  {"action":"wait","seconds":2.2},
+  {"action":"click","x":0.5,"y":0.4,"after":2.4},
+  {"action":"click","x":0.5,"y":0.4,"after":2.2},
+  {"action":"record-stop","name":"05_launch"},
+  {"action":"click","x":0.95,"y":0.05,"after":0.8},
+  {"action":"screenshot","name":"commander-brief"}
+]

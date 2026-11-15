@@ -8,7 +8,7 @@ AstroCiv: Mapmakers of the Moon
 
 ## High-Level Project Summary
 
-AstroCiv: Mapmakers of the Moon is a story-driven space-engineering game for children aged 7–12, built in Unity. Players turn a dream of exploring space into a working lunar outpost by balancing electricity, air, water and food, supporting a fictional crew, and responding to a solar-storm warning. Saved NASA and Canadian Space Agency resources connect the game's decisions to real space science while keeping its simplified rules clearly separate from real mission engineering.
+Want to explore the Moon and Mars? AstroCiv: Mapmakers of the Moon puts children aged 7–12 in command of a space outpost. Build a home, grow food, balance power and life support, and protect your crew during a solar storm. NASA data connects the challenge to real science; a fictional story beginning in Mississauga, Ontario, makes that adventure personal. Guided missions and Free Build turn curiosity into a cycle of building, testing and improving. Our goal is to help the next generation see themselves as people who can ask scientific questions and solve problems, in space and at home.
 
 ## Link to Project Demo
 
@@ -26,31 +26,35 @@ Use the browser address only after the anonymous-access check passes; see `PUBLI
 
 ## Detailed Project Description
 
-### What it does
+### The issue that inspired us: space curiosity needs somewhere to go
 
-AstroCiv introduces children to the interdependent systems that keep a space outpost running. Its fictional story begins in Mississauga, Ontario, and follows a young person's dream into a future role as commander. Players place buildings on a grid, compare their needs and outputs, and keep a crew supplied with power, air, water and food. A solar-storm scenario asks them to protect the crew and plan reserve capacity. Story missions and Free Build offer guided and exploratory ways to experiment, with a Mars/Jezero setting extending the theme beyond the Moon.
+A child can dream about the Moon and Mars long before they can explain how people would live there. We built AstroCiv around that gap between being excited by space and having a chance to make scientific decisions for yourself. Energy, clean water, food and caring for people are connected challenges on Earth as well as in space. Helping children explore those connections matters: the next generation will inherit problems that require curiosity, persistence and an understanding of how one decision affects a whole system.
 
-### How it works
+Our story begins with a child in Mississauga, Ontario, imagining a future among the stars. That local beginning gives our project its purpose: make space exploration feel like something a child in our community can take part in, starting with a game they can play today.
 
-The game uses a deterministic C# simulation with building costs, resource production and consumption, terrain/placement rules, a mission clock and scripted events. Players can pause to think and change simulation speed. Crew dialogue is scripted; the game does not call a live AI model or require a player's API key. Evaluation screens explain outcomes and invite another attempt. The WebGL version packages the game for browser delivery; the Unity source is public for inspection and rebuilding.
+### Our solution: put the player in command
 
-### How science supports the experience
+AstroCiv: Mapmakers of the Moon is a story-driven space-engineering game for ages 7–12, built in Unity and playable in a desktop browser. Players build an outpost, grow food, balance electricity, air and water, and look after a fictional crew. Guided lessons and crew training introduce the systems; story missions and Free Build let players experiment on the Moon and Mars.
 
-Historical NASA DONKI space-weather records supply context for the storm scenario. Saved NASA resources also support illumination, Earth sunlight, life-science cards and a Mars terrain example. We distinguish historical observations and source-derived values from simplified gameplay settings. The game is an educational systems model, not a radiation predictor, astronaut qualification tool or realistic habitat-design simulator. A solar warning does not itself switch off solar panels; lighting and radiation hazards are separate concepts.
+The fun comes from making a plan and discovering whether it works. Where should the solar panels go? Can the base power its air supply and greenhouse? When a solar-storm warning arrives, can you bring the crew inside and power their shelter in time? Players can pause, inspect their base and try a different design. Mission reports explain what worked and what to improve, giving each attempt a reason to become a better one.
 
-### Benefits, intended impact and next steps
+NASA data has a visible role in the experience. Saved LRO/LOLA illumination values influence lunar solar output; MOLA heights shape the Mars terrain; historical DONKI events give the storm scenario real-world context. NASA life-science and Canadian Space Agency food resources connect the greenhouse to actual research. Source observations and simplified game rules are identified separately. The simulation is educational, with fictional balance values and storm timing; it does not predict radiation or design real habitats.
 
-Our goal is to make tradeoffs tangible: adding a building creates new needs, batteries help with energy gaps, and protecting people matters alongside expanding a base. The Mississauga setting connects a local child's curiosity to a wider space story. Automated simulation and scene checks support development, but we have not established learning outcomes through a formal study. Next steps are beginner playtests, clearer onboarding, accessibility review and careful tuning based on observed confusion.
+Our playable browser demo lets judges build, inspect resources and experience the missions themselves. Placing solar power changes the energy available to air support and food production. In the storm mission, recalling the crew and powering the shelter turns a warning into a protective action. These decisions and their visible consequences demonstrate our central idea: science becomes something the player uses to care for people.
 
-### Tools and implementation
+### Why it stands out, who it can help, and where it goes next
 
-Unity 6000.6.7f1, C#, JSON configuration and offline fixtures, Python data/documentation/image-processing tools, and a WebGL browser build. GitHub stores the source and GitHub Pages is the intended public host. AI assistance and image generation are disclosed separately below; third-party materials retain their own credits. See the repository's test plan, science assumptions and AI-use log for evidence and limitations.
+AstroCiv brings together a colourful pixel-art adventure, a personal Ontario story, connected resource systems and traceable NASA data. Its distinctive promise is that learning happens inside the decisions that make the game engaging. A greenhouse needs resources; a growing outpost needs planning; a crew needs protection. Players have a reason to understand the science because their next decision depends on it.
 
-Not endorsed by NASA, CSA, Sara Seager or Chris Hadfield. The astronaut path is fictional and aspirational, not a promised career route.
+For children in Ontario, we hope the journey from a familiar hometown to a space outpost makes a future in science feel imaginable. For families, libraries and classrooms, the browser game could become a starting point for conversations about energy, food, resilience and teamwork. The same habits of asking questions, testing ideas and improving a design matter when caring for our own communities and planet. These are intended benefits; we have not yet measured learning outcomes.
+
+We want to keep developing AstroCiv with children and educators: observe where beginners get stuck, improve readability and accessibility, and develop classroom activities that connect each mission to its science sources. Later missions could explore more resource and environmental tradeoffs. Our ambition is to help a generation move from “I want to explore” to “I can learn how to build, investigate and help.”
+
+Built with Unity, C#, offline NASA/CSA reference files and a WebGL browser build. Source code, data provenance, asset credits and AI-use disclosures accompany the project. NASA and CSA do not endorse AstroCiv; its story and astronaut journey are fictional.
 
 ## Use of Super Intelligence (SI)
 
-Yes. We used ChatGPT, Claude Code and OpenAI Codex to assist with planning, implementation, tests, research checks, story text, documentation and gameplay design. The project logs record the available tool/model and prompt evidence and mark missing session details. All project-created art is AI-created: Midjourney produced story illustrations, ChatGPT's image tool produced sprite masters, and AI-authored image-processing/procedural scripts produced derivatives and additional graphics. The team provided direction and references; final human review and approval must be recorded rather than assumed. Crew dialogue is scripted, and no live AI runs during play. NASA/CSA source data is credited separately from generated content. Audio tools and tracks researched during this session are candidates only; no AI-generated or downloaded music/SFX is claimed as integrated.
+Yes. We used ChatGPT, Claude Code and OpenAI Codex to assist with planning, implementation, tests, research checks, story text, documentation and gameplay design. The project logs record the available tool/model and prompt evidence and mark missing session details. All project-created art is AI-created: Midjourney produced story illustrations, ChatGPT's image tool produced sprite masters, and AI-authored image-processing/procedural scripts produced derivatives and additional graphics. The team provided direction and references; final human review and approval must be recorded rather than assumed. Crew dialogue is scripted, and no live AI runs during play. NASA/CSA source data is credited separately from generated content. The trailer uses the user-supplied instrumental track Starry Twinkles, whose embedded metadata identifies Suno generation. Its source and AI audio acknowledgement are included in the trailer credits and video metadata. Recording/editing was automated with Chrome and FFmpeg; the footage comes from the real game. Other downloaded audio and any runtime integration are credited separately.
 
 Review before pasting: update this statement if audio is subsequently created or imported. The guide requires visible indicators on generated images/video, and descriptive-text plus metadata acknowledgement for generated audio/code/data. Check actual coverage in the final demo/build. Do not invent missing model versions. The guide says this form answer is used for data collection and is not shown to judges; in-project indicators remain visible to them.
 
@@ -71,26 +75,38 @@ The repository's `26NASAChallenge/DATA_SOURCES.md`, `SCIENCE_SOURCES.md`, `SCIEN
 
 Canadian Space Agency resources provide Tomatosphere and space-food context, plus factual biographies used as inspiration. Credit: © Canadian Space Agency. NASA/CSA resources and names do not imply endorsement. See [CSA Tomatosphere](https://www.asc-csa.gc.ca/eng/educators/tomatosphere.asp) and the project's science-source record for exact references and reuse notes.
 
-Implementation tools include Unity 6000.6.7f1 and the packages listed in `26NASAChallenge/Packages/manifest.json`; C# and Python; Git/GitHub; ChatGPT, Claude Code and Codex; Midjourney and image-processing tools. The full asset inventory, AI methods and available provenance are in `26NASAChallenge/ASSET_CREDITS.md` and `Work Log and Review/AI_USE_LOG.md`. Engine/template material is credited separately from project-created art. No candidate music or SFX should be listed as used until a specific file is actually integrated and credited.
+Implementation tools include Unity 6000.6.7f1 and the packages listed in `26NASAChallenge/Packages/manifest.json`; C# and Python; Git/GitHub; ChatGPT, Claude Code and Codex; Midjourney and image-processing tools. The full asset inventory, AI methods and available provenance are in `26NASAChallenge/ASSET_CREDITS.md` and `Work Log and Review/AI_USE_LOG.md`. Engine/template material is credited separately from project-created art. Game audio (integrated Nov 15; not AI-generated): "Dream Culture", "Space Jazz" and "Cipher" by Kevin MacLeod (incompetech.com), licensed under Creative Commons: By Attribution 4.0 License (http://creativecommons.org/licenses/by/4.0/), volume levelled and compressed for the web; "Cat caffe" and "Cue" by TAD (opengameart.org/content/lofi-compilation), CC0; sound effects from "Interface Sounds" by Kenney (kenney.nl), CC0. The same credits appear on the in-game Data & Credits page; per-file details are in `26NASAChallenge/ASSET_CREDITS.md`.
 
 Before submission, add any final audio, fonts, libraries, demo-editing software or other materials absent from those records. Free/open-source content must still be referenced, and applicable permissions must be retained.
 
 ## Demo plan: choose one format
 
-**30-second video outline (record only working screens):**
+**Pitch direction:** “Space curiosity becomes decisions that matter.” The issue is the gap between being excited about space and being able to practise scientific thinking. The solution is a game where building, growing food and protecting a crew require the player to use that thinking. Our distinction is the combination of an Ontario child's journey, connected systems and real NASA references. The intended impact is curiosity, confidence and a reason to keep learning.
 
-| Time | Visual | Spoken or caption draft |
+**Recommended hook:** “Want to explore the Moon and Mars?” Answer it immediately with actual gameplay. A second hook to try is “Could you keep a crew alive on the Moon?” The first sells adventure; the second creates a challenge. Choose one opening. Keep stargazing language for the wider dream: telescope observation and round-the-clock star research are not playable features.
+
+**28-second video outline — 29 seconds maximum for this edit:**
+
+| Time | Actual gameplay / visual | Spoken line |
 |---|---|---|
-| 0–2 s | Project and team title | “We're [TEAM NAME].” |
-| 2–5 s | Child's drawing / game title | “How can children practise space engineering?” |
-| 5–10 s | Place a building, reveal resources | “AstroCiv turns a dream into a lunar outpost.” |
-| 10–20 s | Power/greenhouse loop, crew and storm choice | “Balance power, air, water and food. Protect your crew. NASA data connects choices to space science.” |
-| 20–28 s | Evaluation, hopeful ending, public game address | “Every great civilization starts with a dream. Try it, learn, and build again.” |
-| 28–30 s | Credits/AI labels remain visible | Leave a margin before the 30-second maximum. |
+| 0–3 s | Open on a thriving Moon base, then a quick Mars terrain shot. Overlay the title, confirmed team name and selected challenge without delaying gameplay. | “Want to explore the Moon and Mars?” |
+| 3–8 s | Brief Ontario childhood image, then cut straight to the player placing a Habitat. Caption: “Ages 7–12 · You are the commander.” | “Space science can feel far away. AstroCiv puts kids in command.” |
+| 8–15 s | Three clear actions: place a building, show the greenhouse working, then respond to the storm warning and show the crew sheltered. Use a prepared mission; trim waiting time. | “Build a base. Grow food. Protect your crew from a solar storm.” |
+| 15–18 s | Show a real-data card and the lunar sunlight overlay. Caption: “NASA data · simplified simulation.” | “Real NASA data shapes your decisions.” |
+| 18–24 s | Show a mission report with one improvement, then an improved base. Briefly echo the Ontario story. Caption: “From an Ontario dream to your own outpost.” | “From an Ontario dream to your own outpost: build, test, try again.” |
+| 24–28 s | Hold a beautiful active base with crew and a readable closing card: “Your crew needs you. Play AstroCiv.” Keep the public game address visible; put its clickable link beside the hosted video. | “Your crew needs you. Play AstroCiv.” |
 
-Use the real confirmed team name. Keep important text large, caption speech, retain required generated-content indicators, and verify the exported file's actual runtime. Avoid recording child testers or adding real under-18 voices/likenesses. The guide's broader under-18 likeness wording also needs the team's review against the Terms & Conditions for fictional child art; this session makes no eligibility determination.
+**Continuous voiceover (54 words):**
 
-**Alternative: up to 7 English slides, including title/intro:** (1) project/team/member names and selected challenge; (2) beginner problem; (3) how the player builds/supports the crew; (4) storm decision and consequence; (5) NASA/CSA data and explicit simplifications; (6) implementation, evidence and limits; (7) public game/source links and next steps. Use real screenshots and concise captions.
+> Want to explore the Moon and Mars? Space science can feel far away. AstroCiv puts kids in command. Build a base. Grow food. Protect your crew from a solar storm. Real NASA data shapes your decisions. From an Ontario dream to your own outpost: build, test, try again. Your crew needs you. Play AstroCiv.
+
+The suggested timing is a rehearsal target, not a measured recording. Aim to finish speech by about 27 seconds and hold the closing card through 28 seconds; use the remaining second only if needed. Rehearse aloud and measure the final export. Shorten a line if necessary so the delivery has room to breathe.
+
+**What viewers should understand:** Children see a place they want to build and a crew they want to help. Judges see the educational problem, a working solution, a specific NASA connection and the reason to open the playable game. The longer description carries the community impact and development plans; the video earns those claims through visible play.
+
+**Editing priorities:** Show meaningful gameplay in the opening seconds. Keep each action and its result together; crop or zoom so the relevant resource change, warning or crew status is legible. Use large English captions, short overlays and music below speech. Show the game's feedback rather than calling it “the best” or claiming proven learning results. Retain existing credits and required generated-content indicators. Use only working screens from the build being submitted. The current trailer is source material for this revised edit; this outline does not mean the MP4 has been recut or a voiceover recorded.
+
+**Alternative: up to 7 English slides, including title/intro:** (1) title, confirmed team/member names, selected challenge and hook; (2) curiosity-to-action problem and why it matters; (3) building and resource decisions; (4) storm choice and crew outcome; (5) NASA/CSA connections and the game's distinctive combination; (6) intended Ontario/world impact and future development; (7) public playable link, source link and invitation to try. Use real screenshots and concise captions. Keep the existing submission-guide checks below for final review.
 
 ## Submission procedure and deadline
 

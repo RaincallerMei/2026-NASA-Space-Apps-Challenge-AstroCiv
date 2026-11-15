@@ -15,6 +15,8 @@ namespace Mapmakers.Sim
         public string geologistName = "Yuki";
         // Scheduled events and the first-harvest reward run only in missions (off in the drawing and in unit tests).
         public bool missionEnabled = true;
+        // Off in Tutorial 2: reserves can run low, but the run never stops.
+        public bool canFail = true;
         // Placement links, the base area, soil and the rover (off in the drawing and in plain power tests).
         public bool layoutRules = true;
         bool previewing;
@@ -318,7 +320,7 @@ namespace Mapmakers.Sim
             s.timeHours = s.step * dt;
             if (previewing) return s;
             if (missionEnabled) UpdateHarvest(s);
-            CheckFailure(s);
+            if (canFail) CheckFailure(s);
             if (!s.Finished && scenario.Timed && s.timeHours >= scenario.durationHours - Eps) EndRun(s, MissionEnd.Deadline, FailReason.None);
             return s;
         }

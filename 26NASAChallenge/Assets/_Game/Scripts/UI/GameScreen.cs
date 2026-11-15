@@ -19,6 +19,7 @@ namespace Mapmakers.UI
         public const int Side = 420;
         const float CounterInterval = 0.2f;
         const int Gap = 16;
+        const int WikiBottom = BottomBar + Gap + 12;
 
         MissionRun run;
         RectTransform root;
@@ -28,7 +29,7 @@ namespace Mapmakers.UI
 
         public MissionRun Run => run;
 
-        sealed class Chip { public Text label, value, rate; public string name, id, detail; }
+        sealed class Chip { public Text label, value, rate; public string name, id, detail; public RectTransform box; }
         readonly List<Chip> chips = new List<Chip>();
         Image hintBox, hintIcon;
         Text hintText;
@@ -64,11 +65,14 @@ namespace Mapmakers.UI
             BuildTopBar();
             BuildCrew();
             BuildWikiButton();
+            MusicPlayer.Build(root, new Vector2(-20, -(TopBar + Gap)), Side);
             BuildInformation();
             BuildObjectives();
             BuildSelectionPanel();
             BuildBottomBar();
             BuildHint();
+            if (run.IsTraining) BuildGuide();
+            BuildLowMarks();
             BuildOverlays();
             coach = CoachMark.Create(root);
         }
@@ -93,6 +97,7 @@ namespace Mapmakers.UI
             {
                 var chip = new Chip { name = names[i], id = ids[i] };
                 var box = UIKit.Panel(bar.transform, Palette.Alpha(Palette.Panel, 0.9f), "Chip " + names[i]);
+                chip.box = box.rectTransform;
                 box.rectTransform.TopLeft(134 + i * 152, 8, 146, 80);
                 UIKit.Icon(box.transform, ids[i], 40).TopLeftOf(8, 20);
                 chip.label = UIKit.Label(box.transform, names[i], 20, Palette.Ice, TextAnchor.MiddleLeft, FontStyle.Bold);
@@ -100,11 +105,13 @@ namespace Mapmakers.UI
                 chip.label.resizeTextForBestFit = true;
                 chip.label.resizeTextMinSize = 15;
                 chip.label.resizeTextMaxSize = 20;
+                chip.label.verticalOverflow = VerticalWrapMode.Truncate;
                 chip.value = UIKit.Label(box.transform, "", 30, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
                 chip.value.rectTransform.TopLeft(54, 26, 92, 32);
                 chip.value.resizeTextForBestFit = true;
                 chip.value.resizeTextMinSize = 20;
                 chip.value.resizeTextMaxSize = 30;
+                chip.value.verticalOverflow = VerticalWrapMode.Truncate;
                 chip.rate = UIKit.Label(box.transform, "", 18, Palette.Ice, TextAnchor.MiddleLeft);
                 chip.rate.rectTransform.TopLeft(54, 56, 92, 22);
                 var c = chip;
@@ -134,9 +141,10 @@ namespace Mapmakers.UI
             }
             var r = s.step > 0 ? s.report : power;
             var b = run.sim.balance;
-            double net = r.generationKW - r.servedKW;
-            SetChip(0, Signed(net) + " kW", "", net >= 0 ? Palette.Mint : Palette.Amber,
-                "Now: Solar Arrays make " + Num(r.generationKW) + " kW and the base uses " + Num(r.servedKW) + " kW.");
+            double net = r.generationKW - r.demandKW;
+            SetChip(0, Signed(net) + " kW", "", net >= -1e-6 ? Palette.Mint : Palette.Amber,
+                "Now: Solar Arrays make " + Num(r.generationKW) + " kW and the base needs " + Num(r.demandKW) + " kW."
+                + (r.servedKW + 1e-6 < r.demandKW ? " Some buildings have no power." : ""));
             double cap = run.sim.BatteryCapacity(s);
             SetChip(1, cap > 0 ? Num(s.batteryKWh) + "/" + Num(cap) : "none", Rate(r.batteryFlowKW),
                 cap > 0 && s.batteryKWh < cap * 0.25 ? Palette.Amber : Palette.Hull,
@@ -149,13 +157,51 @@ namespace Mapmakers.UI
                 "Now: " + Num(s.soil) + " bags. The Greenhouse needs " + b.Def(BuildingType.Greenhouse).soilCost + ".");
             SetChip(6, Num(s.safety) + "%", "", s.safety < 70 ? Palette.Danger : Palette.Mint, "Now: " + Num(s.safety) + "%.");
             SetChip(7, s.supplies.ToString(), "", Palette.Hull, "You have " + s.supplies + " supplies.");
+            RefreshLowMarks(r);
         }
 
         Color Level(double amount, double rate)
         {
+            int severity = Severity(amount, rate);
+            return severity == 2 ? Palette.Danger : severity == 1 ? Palette.Amber : Palette.Hull;
+        }
+
+        // 0 fine, 1 runs out within warnHours, 2 within criticalHours.
+        int Severity(double amount, double rate)
+        {
             double hours = MissionRun.HoursLeft(amount, rate);
             var b = run.sim.balance;
-            return hours <= b.criticalHours ? Palette.Danger : hours <= b.warnHours ? Palette.Amber : Palette.Hull;
+            return hours <= b.criticalHours ? 2 : hours <= b.warnHours ? 1 : 0;
+        }
+
+        // ---------- low resources: a pulsing ring and an arrow on the top bar ----------
+
+        readonly List<LowMark> lowMarks = new List<LowMark>();
+
+        public LowMark LowMarkOf(string chipId)
+        {
+            int i = chips.FindIndex(c => c.id == chipId);
+            return i < 0 || i >= lowMarks.Count ? null : lowMarks[i];
+        }
+
+        void BuildLowMarks()
+        {
+            if (run.IsDrawing) return;
+            var layer = UIKit.Rect(root, "Low Resource Marks").Stretch();
+            foreach (var chip in chips) lowMarks.Add(LowMark.Create(layer, chip.box));
+        }
+
+        void RefreshLowMarks(StepReport r)
+        {
+            var s = run.State;
+            bool live = run.Running;
+            double batteryHours = r.batteryFlowKW < -1e-6 ? s.batteryKWh / -r.batteryFlowKW : double.PositiveInfinity;
+            lowMarks[0].Set(live && r.unmetCriticalKW > 0 ? 2 : 0, "No power!");
+            lowMarks[1].Set(live && run.sim.BatteryCapacity(s) > 0 && batteryHours < run.sim.balance.warnHours ? 1 : 0, "Battery low");
+            lowMarks[2].Set(live ? Severity(s.airHours, r.airPerHour) : 0, "Air low!");
+            lowMarks[3].Set(live ? Severity(s.waterL, r.waterPerHour) : 0, "Water low!");
+            lowMarks[4].Set(live ? Severity(s.meals, r.foodPerHour) : 0, "Food low!");
+            lowMarks[6].Set(live && s.safety < 70 ? 2 : 0, "Crew in danger!");
         }
 
         static string Signed(double v) => (v >= 0 ? "+" : "") + Num(v);
@@ -212,7 +258,8 @@ namespace Mapmakers.UI
             if (run.IsDrawing || run.Ended || ModalOpen) return;
             if (run.Phase == RunPhase.Briefing) { run.StartMission(); RefreshTime(); return; }
             run.clock.TogglePause();
-            RefreshTime();
+            AudioDirector.Play(run.clock.Paused ? Sfx.Pause : Sfx.Resume);
+            Refresh();
         }
 
         // Plays at this speed (and resumes if the player had paused).
@@ -231,6 +278,7 @@ namespace Mapmakers.UI
             var speeds = MissionClock.Speeds;
             int i = System.Array.IndexOf(speeds, run.clock.Speed);
             run.clock.SetSpeed(speeds[(i + 1) % speeds.Length]);
+            AudioDirector.Play(Sfx.Speed);
             RefreshTime();
         }
 
@@ -248,7 +296,7 @@ namespace Mapmakers.UI
                 + SimText.Clock(s.timeHours, run.sim.balance.startClockHour, dayHours);
             clockText.text = clock + (paused ? "   PAUSED" : "");
             clockText.color = paused ? Palette.Amber : Palette.Hull;
-            evalText.text = run.Ended ? "Inspection now" : "Inspection in " + SimText.Duration(run.TimeLeft, run.Planet.dayWord, dayHours);
+            evalText.text = run.IsTraining ? "Practice: no time limit" : run.Ended ? "Inspection now" : "Inspection in " + SimText.Duration(run.TimeLeft, run.Planet.dayWord, dayHours);
             float done = run.Duration > 0 ? Mathf.Clamp01((float)(s.timeHours / run.Duration)) : 0;
             evalFill.rectTransform.sizeDelta = new Vector2(350 * done, 7);
             evalFill.color = done > 0.85f ? Palette.Amber : Palette.Cyan;
@@ -256,7 +304,7 @@ namespace Mapmakers.UI
 
         // ---------- crew (left) ----------
 
-        sealed class CrewRow { public string id; public Text name, role; public Image badge; public string seenWhen = ""; public string postedWhen; }
+        sealed class CrewRow { public string id; public Text name, role; public Image badge; public RectTransform button; public string seenWhen = ""; public string postedWhen; }
         readonly List<CrewRow> crewRows = new List<CrewRow>();
         RectTransform crewList;
 
@@ -276,6 +324,7 @@ namespace Mapmakers.UI
                 var row = new CrewRow { id = member.id };
                 string id = member.id;
                 var button = UIKit.Button(crewList, "", () => OpenChat(id), Palette.Alpha(Palette.Panel, 0.95f));
+                row.button = button.GetComponent<RectTransform>();
                 button.GetComponent<RectTransform>().TopLeft(0, 32 + i * 72, Side, 64);
                 var face = UIKit.Rect(button.transform, "Face").gameObject.AddComponent<Image>();
                 face.sprite = UIKit.CircleSprite;
@@ -325,7 +374,7 @@ namespace Mapmakers.UI
         void BuildWikiButton()
         {
             wikiButton = UIKit.Button(root, "", () => OpenWiki(), Palette.Azure, Palette.Hull, 28);
-            wikiButton.GetComponent<RectTransform>().Anchor(new Vector2(0, 0), new Vector2(0, 0), new Vector2(20, BottomBar + Gap), new Vector2(Side, 64));
+            wikiButton.GetComponent<RectTransform>().Anchor(new Vector2(0, 0), new Vector2(0, 0), new Vector2(20, WikiBottom), new Vector2(Side, 64));
             UIKit.Icon(wikiButton.transform, "info", 40).rectTransform.Anchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(16, 0), new Vector2(40, 40));
             UIKit.Label(wikiButton.transform, "Wiki & Help  (H)", 28, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.Stretch(72, 0, 8, 0);
             Tip.Add(wikiButton, () => new TipContent("Wiki & Help", "info", "Every building, resource, crew member and event explained. The game pauses while it is open."), false);
@@ -334,6 +383,7 @@ namespace Mapmakers.UI
         public void OpenWiki(string page = null)
         {
             if (Wiki.IsOpen || EndShowing) return;
+            run.TrainingAction("wiki");
             run.clock.Hold();
             Wiki.Open(page ?? WikiPageForNow(), () => { run.clock.Release(); Refresh(); });
         }
@@ -350,17 +400,19 @@ namespace Mapmakers.UI
 
         sealed class Message { public string icon, text; public Color color; }
         readonly List<Message> messages = new List<Message>();
+        readonly Dictionary<string, Button> alertButtons = new Dictionary<string, Button>();
         RectTransform infoList;
         Image infoPanel;
         string shownInfo = "";
-        float InfoHeight => 1080 - TopBar - Gap - (BottomBar + Gap + ObjectivesHeight) - Gap;
+        float InfoTop => TopBar + Gap + MusicPlayer.Height + Gap;
+        float InfoHeight => 1080 - InfoTop - (BottomBar + Gap + ObjectivesHeight) - Gap;
 
         public int MessageCount => messages.Count;
 
         void BuildInformation()
         {
             infoPanel = UIKit.Panel(root, Palette.Alpha(Palette.Panel, 0.95f), "Information");
-            infoPanel.rectTransform.Anchor(new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -(TopBar + Gap)), new Vector2(Side, InfoHeight));
+            infoPanel.rectTransform.Anchor(new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -InfoTop), new Vector2(Side, InfoHeight));
             UIKit.Icon(infoPanel.transform, "alert", 30).TopLeftOf(14, 10);
             var infoTitle = UIKit.Label(infoPanel.transform, "INFORMATION", 24, Palette.Cyan, TextAnchor.MiddleLeft, FontStyle.Bold);
             infoTitle.rectTransform.TopLeft(54, 8, 300, 34);
@@ -383,7 +435,9 @@ namespace Mapmakers.UI
             foreach (var a in alerts) key += a.level + a.text + a.actionEnabled + "|";
             if (key == shownInfo) return;
             shownInfo = key;
+            SoundNewAlerts(alerts);
             UIKit.Clear(infoList);
+            alertButtons.Clear();
             float width = Side - 20, y = 0, max = InfoHeight - 60;
             foreach (var alert in alerts)
             {
@@ -403,6 +457,7 @@ namespace Mapmakers.UI
                     var button = UIKit.Button(card.transform, alert.actionLabel, () => action(), alert.level == AlertLevel.Danger ? Palette.Danger : Palette.Azure, Palette.Hull, 22);
                     button.GetComponent<RectTransform>().TopLeft(64, 74, 250, 44);
                     button.interactable = alert.actionEnabled;
+                    alertButtons[alert.icon] = button;
                 }
                 y += h + 8;
             }
@@ -422,6 +477,29 @@ namespace Mapmakers.UI
             }
         }
 
+        // A warning or danger that was not on the list a moment ago makes one short sound.
+        readonly HashSet<string> heardAlerts = new HashSet<string>();
+
+        void SoundNewAlerts(List<Alert> alerts)
+        {
+            var now = new HashSet<string>();
+            bool warning = false, danger = false;
+            foreach (var a in alerts)
+            {
+                if (a.level == AlertLevel.Info) continue;
+                string id = a.level + a.icon;
+                now.Add(id);
+                if (heardAlerts.Contains(id)) continue;
+                if (a.level == AlertLevel.Danger) danger = true;
+                else warning = true;
+            }
+            heardAlerts.Clear();
+            heardAlerts.UnionWith(now);
+            if (run.Phase == RunPhase.Briefing) return;
+            if (danger) AudioDirector.Play(Sfx.Alert);
+            else if (warning) AudioDirector.Play(Sfx.Warning);
+        }
+
         static Color AlertColor(AlertLevel level) => level == AlertLevel.Danger ? Palette.Danger : level == AlertLevel.Warning ? Palette.Amber : Palette.Cyan;
 
         // ---------- objectives (right, bottom): a checklist that ticks itself ----------
@@ -430,7 +508,8 @@ namespace Mapmakers.UI
         readonly List<ObjectiveRow> objectives = new List<ObjectiveRow>();
         Text objectivesTitle;
         const int ObjectiveRowHeight = 46;
-        float ObjectivesHeight => 92 + Mathf.Max(3, run.goals.Length) * ObjectiveRowHeight;
+        int ObjectiveRows => run.IsTraining ? TrainingRows : Mathf.Max(3, run.goals.Length);
+        float ObjectivesHeight => 92 + ObjectiveRows * ObjectiveRowHeight;
 
         void BuildObjectives()
         {
@@ -441,9 +520,10 @@ namespace Mapmakers.UI
             objectivesTitle.rectTransform.TopLeft(54, 8, Side - 70, 34);
             Tip.Add(objectivesTitle, () => new TipContent("Objectives", "check", "This level's checklist. Each one gets a tick when it is done. Yellow box = do this next."), false);
             UIKit.Label(panel.transform, LevelCaption(), 18, Palette.Muted, TextAnchor.MiddleLeft).rectTransform.TopLeft(16, 44, Side - 32, 26);
-            for (int i = 0; i < run.goals.Length; i++)
+            int count = run.IsTraining ? TrainingRows : run.goals.Length;
+            for (int i = 0; i < count; i++)
             {
-                var row = new ObjectiveRow { id = run.goals[i] };
+                var row = new ObjectiveRow { id = run.IsTraining ? "" : run.goals[i] };
                 var rt = UIKit.Rect(panel.transform, "Objective " + row.id).TopLeft(14, 78 + i * ObjectiveRowHeight, Side - 28, ObjectiveRowHeight - 4);
                 row.box = UIKit.Panel(rt, Palette.Space, "Box");
                 row.box.rectTransform.TopLeft(0, 6, 30, 30);
@@ -452,6 +532,9 @@ namespace Mapmakers.UI
                 row.check.rectTransform.anchoredPosition = Vector2.zero;
                 row.text = UIKit.Label(rt, "", 21, Palette.Ice, TextAnchor.MiddleLeft);
                 row.text.rectTransform.TopLeft(42, 0, Side - 72, ObjectiveRowHeight - 4);
+                row.text.resizeTextForBestFit = true;
+                row.text.resizeTextMinSize = 15;
+                row.text.resizeTextMaxSize = 21;
                 string id = row.id;
                 if (id == "core_base") Tip.Add(row.box, () => new TipContent("Six base parts", "Habitat", CoreBaseDetail()));
                 objectives.Add(row);
@@ -473,6 +556,7 @@ namespace Mapmakers.UI
 
         void RefreshObjectives()
         {
+            if (run.IsTraining) { RefreshTrainingObjectives(); return; }
             var catalog = LevelCatalog.Load();
             int met = 0;
             bool currentFound = false;
@@ -493,6 +577,7 @@ namespace Mapmakers.UI
                 if (now && !row.met && shownRevision > 0)
                 {
                     UIFx.Pop(row.box.transform);
+                    AudioDirector.Play(Sfx.Objective);
                     Post("Objective done: " + catalog.GoalLabel(row.id), "check", Palette.Mint);
                 }
                 row.met = now;
@@ -526,7 +611,7 @@ namespace Mapmakers.UI
 
         void RefreshHint()
         {
-            bool show = run.HintsOn && !string.IsNullOrEmpty(run.Hint) && !run.Ended;
+            bool show = run.HintsOn && !string.IsNullOrEmpty(run.Hint) && !run.Ended && !WaitingForFirstPlay;
             hintBox.gameObject.SetActive(show);
             if (!show) return;
             hintText.text = "<b>Tip:</b> " + Keywords.Mark(run.Hint, true);
@@ -549,17 +634,23 @@ namespace Mapmakers.UI
             HighlightBuildings(run.IsDrawing && run.State.buildings.Count == 0);
         }
 
+        // A level opens with time stopped. Until the first Play, an arrow points at the Play button.
+        bool WaitingForFirstPlay => run.Running && run.State.step == 0 && run.clock.UserPaused && playButton != null && !run.BuildChoice.HasValue;
+
         RectTransform CoachTarget(out string message)
         {
             message = "";
-            if (!run.HintsOn || run.Ended || ModalOpen || Wiki.IsOpen || run.Phase == RunPhase.Briefing) return null;
+            if (run.Ended || ModalOpen || Wiki.IsOpen || run.Phase == RunPhase.Briefing) return null;
+            if (run.IsTraining) return TrainingTarget(out message);
+            if (WaitingForFirstPlay)
+            {
+                message = "Time is stopped. Press Play when ready";
+                return (RectTransform)playButton.transform;
+            }
+            if (!run.HintsOn) return null;
             bool learning = run.IsDrawing || (run.level != null && run.level.id == "L2" && run.State.Count(BuildingType.Habitat) == 0);
             if (!learning) return null;
-            if (run.BuildChoice.HasValue)
-            {
-                message = run.BuildChoice == BuildingType.SolarArray ? "Click bright ground. Green glow = good spots" : "Now click the map to place it";
-                return map;
-            }
+            if (run.BuildChoice.HasValue) return null;
             if (run.IsDrawing && run.DrawingReady)
             {
                 message = "All done! Press Finish";
@@ -584,7 +675,9 @@ namespace Mapmakers.UI
             HandleKeys();
             if (run == null) return;
             run.Tick(Time.unscaledDeltaTime);
+            run.UpdateTraining();
             foreach (var e in run.TakeEvents()) HandleEvent(e);
+            if (run.IsTraining && run.Training.Done && !trainingEndShown) ShowTrainingEnd();
             if (run.Ended) ShowEnd();
             if (run.Revision != shownRevision) Refresh();
             else if (Time.unscaledTime >= nextCounters) RefreshCounters();
@@ -632,6 +725,7 @@ namespace Mapmakers.UI
             RefreshSelection(power);
             RefreshBottomBar();
             RefreshHint();
+            RefreshGuide();
             statusText.text = Keywords.Mark(status);
             statusText.color = statusIsError ? Palette.Amber : Palette.Ice;
         }
@@ -643,6 +737,7 @@ namespace Mapmakers.UI
             RefreshTopBar(run.Power);
             RefreshTime();
             RefreshInformation();
+            RefreshGuide();
             if (run.Selected != null) RefreshSelection(run.Power);
         }
 

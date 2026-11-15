@@ -147,7 +147,9 @@ namespace Mapmakers.UI
             var lines = new List<string>();
             lines.Add(page != null ? page.summary : def.blurb);
             lines.AddRange(Facts(def, soilRules));
-            if (page != null && !string.IsNullOrEmpty(page.best)) lines.Add("Best spot: " + page.best);
+            // The drawing has no links or base area yet, so only the sunlight advice applies there.
+            if (!soilRules) { if (type == BuildingType.SolarArray) lines.Add("Best spot: bright ground. More sun, more power."); }
+            else if (page != null && !string.IsNullOrEmpty(page.best)) lines.Add("Best spot: " + page.best);
             return new TipContent(def.displayName, type.ToString(), string.Join("\n", lines));
         }
 
@@ -176,6 +178,7 @@ namespace Mapmakers.UI
         public static void Open(string pageId = null, Action onClose = null, bool allowReplay = false)
         {
             if (IsOpen) Close();
+            AudioDirector.Play(Sfx.WindowOpen);
             closed = onClose;
             replay = allowReplay;
             var help = HelpData.Load();
@@ -222,6 +225,7 @@ namespace Mapmakers.UI
         public static void Close()
         {
             if (!IsOpen) return;
+            AudioDirector.Play(Sfx.WindowClose);
             UnityEngine.Object.Destroy(open);
             open = null;
             content = null;
@@ -312,6 +316,8 @@ namespace Mapmakers.UI
         RectTransform root, arrow, label;
         Text text;
         Vector2 point;
+        int side;
+        bool below;
 
         public static CoachMark Create(RectTransform root)
         {
@@ -349,14 +355,21 @@ namespace Mapmakers.UI
         public bool Showing => gameObject.activeSelf;
         public string Message => text.text;
 
-        // Points at the top centre of a UI element.
+        // Points at the top centre of a UI element. Near the bottom of the screen the label sits beside the arrow,
+        // so it never covers the panels above. Near the top it points up from below. It is always kept on screen.
         public void Point(RectTransform target, string message)
         {
             var corners = new Vector3[4];
             target.GetWorldCorners(corners);
-            var top = (corners[1] + corners[2]) / 2;
-            point = (Vector2)root.InverseTransformPoint(top) + new Vector2(0, 6);
-            text.text = Keywords.Mark(message, true);
+            var top = (Vector2)root.InverseTransformPoint((corners[1] + corners[2]) / 2);
+            below = top.y > root.rect.height * 0.3f;
+            point = below ? (Vector2)root.InverseTransformPoint((corners[0] + corners[3]) / 2) - new Vector2(0, 6) : top + new Vector2(0, 6);
+            bool low = point.y < -root.rect.height * 0.3f;
+            side = !low ? 0 : point.x < 0 ? 1 : -1;
+            label.pivot = below ? new Vector2(0.5f, 1) : side == 0 ? new Vector2(0.5f, 0) : side > 0 ? new Vector2(0, 0) : new Vector2(1, 0);
+            arrow.localEulerAngles = new Vector3(0, 0, below ? 180 : 0);
+            string marked = Keywords.Mark(message, true);
+            if (text.text != marked) { text.text = marked; LayoutRebuilder.ForceRebuildLayoutImmediate(label); }
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
         }
@@ -366,8 +379,13 @@ namespace Mapmakers.UI
         void Update()
         {
             float bob = UIFx.Calm ? 0 : Mathf.Abs(Mathf.Sin(Time.unscaledTime * 4)) * 12;
+            if (below) bob = -bob;
             arrow.anchoredPosition = point + new Vector2(0, bob);
-            label.anchoredPosition = point + new Vector2(0, bob + 50);
+            var pos = point + (below ? new Vector2(0, bob - 50) : side == 0 ? new Vector2(0, bob + 50) : new Vector2(side * 34, bob + 4));
+            float half = root.rect.width / 2 - 8, w = label.rect.width;
+            float left = pos.x - w * label.pivot.x;
+            pos.x += Mathf.Max(0, -half - left) - Mathf.Max(0, left + w - half);
+            label.anchoredPosition = pos;
         }
     }
 }

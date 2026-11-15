@@ -8,7 +8,7 @@ namespace Mapmakers.Data
     [Serializable]
     public class LevelDef
     {
-        public string id, tag, title, subtitle, planet, mode, before, after, startBase, lesson;
+        public string id, tag, title, subtitle, planet, mode, before, after, startBase;
         public double durationHours;
         public int seed = -1;
         public int startSupplies = -1;
@@ -20,7 +20,7 @@ namespace Mapmakers.Data
         public ScheduledEvent[] events = new ScheduledEvent[0];
 
         public bool IsDrawing => mode == "drawing";
-        public bool IsLesson => mode == "lesson";
+        public bool IsTraining => mode == "training";
         public string Label => string.IsNullOrEmpty(tag) ? id : tag;
         public PlanetProfile Planet => PlanetProfile.Get(planet);
 
@@ -91,7 +91,8 @@ namespace Mapmakers.Data
             {
                 planet = level.Planet,
                 missionEnabled = !level.IsDrawing,
-                layoutRules = !level.IsDrawing
+                layoutRules = !level.IsDrawing,
+                canFail = !level.IsTraining
             };
         }
 

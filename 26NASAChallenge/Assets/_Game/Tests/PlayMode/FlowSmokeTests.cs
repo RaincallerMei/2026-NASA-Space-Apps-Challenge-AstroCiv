@@ -48,6 +48,8 @@ namespace Mapmakers.Tests
             yield return "mapmakers.best.free";
             yield return "mapmakers.hints";
             yield return "mapmakers.suggest";
+            yield return "mapmakers.music";
+            yield return "mapmakers.sounds";
         }
 
         [SetUp]
@@ -101,12 +103,6 @@ namespace Mapmakers.Tests
             yield return WaitForScene(until);
         }
 
-        static IEnumerator NextLesson(string id)
-        {
-            yield return WaitFor(() => Object.FindAnyObjectByType<LessonScreen>() is var l && l != null && l.Lesson != null && l.Lesson.id == id && !l.Done);
-            yield return null;
-        }
-
         static void CloseWindows(GameScreen game)
         {
             for (int i = 0; i < 20 && game.ModalOpen; i++) game.PressModal(0);
@@ -116,6 +112,7 @@ namespace Mapmakers.Tests
         static IEnumerator Play(GameScreen game, double hours = 400, Action<MissionRun> everyHour = null)
         {
             var run = game.Run;
+            run.clock.SetPaused(false);
             run.clock.SetSpeed(4);
             for (int i = 0; i < hours * 2 && !run.Ended; i++)
             {
@@ -204,6 +201,69 @@ namespace Mapmakers.Tests
         }
 
         [UnityTest]
+        public IEnumerator Audio_MusicFollowsTheScene_StoryGoesBack_PlayerSkipsSongs()
+        {
+            Progress.SoundsOn = true;
+            Progress.MusicOn = true;
+            SceneManager.LoadScene(Flow.MenuScene);
+            yield return WaitForScene(Flow.MenuScene);
+            var audio = AudioDirector.Instance;
+            Assert.AreEqual(MusicMode.Menu, audio.Mode);
+
+            Flow.StartLevel("L1");
+            yield return WaitForScene(Flow.CutsceneScene);
+            Assert.AreEqual(MusicMode.Cutscene, audio.Mode);
+            var cutscene = Object.FindAnyObjectByType<CutsceneScreen>();
+            cutscene.Back();
+            Assert.AreEqual(0, cutscene.Slide + cutscene.Line, "nothing comes before the first line");
+            cutscene.Advance();
+            cutscene.Advance();
+            Assert.AreEqual(1, cutscene.Slide);
+            yield return new WaitForSecondsRealtime(0.7f);
+            cutscene.Back();
+            Assert.AreEqual(0, cutscene.Slide, "back from a new picture returns to the one before");
+            Assert.AreEqual(1, cutscene.Line, "and to its last line");
+            yield return new WaitForSecondsRealtime(0.7f);
+            cutscene.Back();
+            Assert.AreEqual(0, cutscene.Line);
+            cutscene.Leave();
+
+            yield return WaitForScene(Flow.GameScene);
+            Assert.AreEqual(MusicMode.Game, audio.Mode);
+            yield return WaitFor(() => audio.Current != null && Array.IndexOf(AudioDirector.GameTracks, audio.Current) >= 0, 5);
+            var first = audio.Current;
+            audio.Next();
+            yield return WaitFor(() => audio.Current != first, 5);
+            audio.TogglePause();
+            Assert.IsTrue(audio.UserPaused);
+            audio.Previous();
+            Assert.IsFalse(audio.UserPaused, "picking a song plays it");
+
+            var game = Game();
+            CloseWindows(game);
+            game.Run.Choose(BuildingType.Habitat);
+            game.ClickTile(2, 2);
+            yield return null;
+            Assert.AreEqual(Sfx.Place, audio.LastEffect, "placing a building has its own sound");
+            game.OpenWiki();
+            yield return null;
+            Assert.AreEqual(Sfx.WindowOpen, audio.LastEffect, "the Wiki opens like every other window");
+            Wiki.Close();
+            yield return null;
+            Assert.AreEqual(Sfx.WindowClose, audio.LastEffect, "and closes like every other window");
+            CloseWindows(game);
+            yield return new WaitForSecondsRealtime(0.1f);
+            var menu =Array.Find(Object.FindObjectsByType<UnityEngine.UI.Button>(), b => UIKit.LabelOf(b) != null && UIKit.LabelOf(b).text == "Menu");
+            menu.onClick.Invoke();
+            Assert.IsTrue(game.ModalOpen, "the menu window opened");
+            yield return null;
+            Assert.AreEqual(Sfx.WindowOpen, audio.LastEffect, "the menu is a window too");
+            game.CloseModal();
+            yield return null;
+            Assert.AreEqual(Sfx.WindowClose, audio.LastEffect);
+        }
+
+        [UnityTest]
         public IEnumerator StoryMission_BriefingIsPaused_IdleRunsOutOfAir_RetryStartsFresh()
         {
             Flow.StartLevel("L2");
@@ -215,6 +275,14 @@ namespace Mapmakers.Tests
             Assert.AreEqual(0.0, run.State.timeHours, "nothing moves before Start mission");
             game.PressModal(0);
             Assert.AreEqual(RunPhase.Running, run.Phase);
+            for (int i = 0; i < 10; i++) yield return null;
+            Assert.AreEqual(0.0, run.State.timeHours, "time waits for the player's first Play");
+            Assert.IsTrue(game.CoachShowing, "an arrow points at Play");
+            StringAssert.Contains("Play", game.CoachMessage);
+            game.TogglePause();
+            Assert.IsFalse(run.clock.Paused, "Play starts time");
+            yield return null;
+            Assert.IsFalse(game.CoachShowing && game.CoachMessage.Contains("Play"), "the Play arrow goes away");
 
             yield return Play(game);
             Assert.IsTrue(run.Ended);
@@ -231,10 +299,9 @@ namespace Mapmakers.Tests
         }
 
         [UnityTest]
-        public IEnumerator Onboarding_Tutorial_TeacherLesson_MeetTheCrew_ThenTheOutpost()
+        public IEnumerator Onboarding_Tutorial_MeetTheCrew_ThenTheOutpost()
         {
             foreach (var id in new[] { "L1", "T2", "L2" }) PlayerPrefs.DeleteKey("mapmakers.passed." + id);
-            foreach (var lesson in HelpData.Load().lessons) PlayerPrefs.DeleteKey("mapmakers.lesson." + lesson.id);
             Progress.SuggestionsOn = true;
 
             Flow.StartLevel("L1");
@@ -262,12 +329,8 @@ namespace Mapmakers.Tests
             yield return WaitForScene(Flow.ResultsScene);
             Flow.Continue();
 
-            yield return NextLesson("lesson_teacher");
-            var teacher = Object.FindAnyObjectByType<LessonScreen>();
-            Assert.IsFalse(teacher.CanSkip, "the first teacher lesson is required");
-            for (int i = 0; i < 30 && !teacher.Done; i++) teacher.Next();
             yield return WaitForScene(Flow.MenuScene);
-            Assert.IsTrue(Progress.LessonSeen("lesson_teacher"));
+            Assert.IsNull(Object.FindAnyObjectByType<LessonScreen>(), "no text lesson after the drawing");
             Assert.IsTrue(Progress.IsUnlocked("T2"));
             Assert.IsFalse(Progress.IsUnlocked("L2"), "the crew comes before the outpost");
 
@@ -275,28 +338,96 @@ namespace Mapmakers.Tests
             yield return WaitForScene(Flow.CutsceneScene);
             Assert.AreEqual("c_years", Flow.CutsceneId, "the time jump leads into the space agency");
             Object.FindAnyObjectByType<CutsceneScreen>().Leave();
-            yield return NextLesson("lesson_crew");
-            var crew = Object.FindAnyObjectByType<LessonScreen>();
-            Assert.IsFalse(crew.CanSkip, "meeting the crew is required the first time");
-            for (int i = 0; i < 30 && !crew.Done; i++) crew.Next();
-            yield return WaitForScene(Flow.MenuScene);
+            yield return WaitForScene(Flow.GameScene);
+            yield return null;
+            var training = Game();
+            Assert.IsTrue(training.Run.IsTraining);
+            CloseWindows(training);
+            yield return PlayTraining(training);
+            Assert.AreEqual("Training complete!", training.ModalTitle);
             Assert.IsTrue(Progress.Passed("T2"));
             Assert.IsTrue(Progress.IsUnlocked("L2"));
-
-            Flow.StartLevel("T2");
-            yield return WaitForScene(Flow.CutsceneScene);
-            Object.FindAnyObjectByType<CutsceneScreen>().Leave();
-            yield return NextLesson("lesson_crew");
-            var replay = Object.FindAnyObjectByType<LessonScreen>();
-            Assert.IsTrue(replay.CanSkip, "a seen lesson can be skipped");
-            replay.Finish();
+            training.PressModal(1);
             yield return WaitForScene(Flow.MenuScene);
 
             Flow.StartLevel("L2");
             yield return WaitForScene(Flow.CutsceneScene);
-            Assert.AreEqual("c_launch", Flow.CutsceneId, "seen lessons are not forced again");
+            Assert.AreEqual("c_launch", Flow.CutsceneId, "no lesson before the outpost");
             yield return SkipStory(Flow.GameScene);
             Assert.IsNotNull(Game());
+        }
+
+        // Follows the crew through the real screen: the banner and the arrow must show every step.
+        static IEnumerator PlayTraining(GameScreen game)
+        {
+            var run = game.Run;
+            var unseen = new List<string>();
+            string step = "";
+            bool guided = false;
+            for (int frame = 0; frame < 4000 && !run.Training.Done; frame++)
+            {
+                if (run.Training.Current.id != step)
+                {
+                    if (step != "" && !guided) unseen.Add(step);
+                    step = run.Training.Current.id;
+                    guided = false;
+                }
+                guided |= game.GuideShowing && game.CoachShowing;
+                if (guided) TrainingAct(game, run.Training.Current);
+                for (int i = 0; i < 4; i++) run.Tick(0.25);
+                yield return null;
+                if (Wiki.IsOpen) Wiki.Close();
+                for (int i = 0; i < 20 && game.ModalOpen && !run.Training.Done; i++) game.CloseModal();
+            }
+            Assert.IsTrue(run.Training.Done, "stuck at " + run.Training.Current?.id);
+            Assert.IsEmpty(unseen, "steps without banner and arrow");
+            Assert.IsFalse(run.Ended);
+            yield return null;
+        }
+
+        static void TrainingAct(GameScreen game, TrainingStep step)
+        {
+            var run = game.Run;
+            var parts = step.done.Split(':');
+            switch (parts[0])
+            {
+                case "next": game.PressGuideNext(); return;
+                case "chat": game.OpenChat(parts[1]); return;
+                case "wiki": game.OpenWiki(); return;
+                case "speed": game.CycleSpeed(); return;
+                case "paused":
+                case "halt":
+                case "playing": game.TogglePause(); return;
+                case "recall": run.Recall(); return;
+                case "built": TrainingBuild(game, (BuildingType)Enum.Parse(typeof(BuildingType), parts[1])); return;
+                case "power": TrainingBuild(game, BuildingType.SolarArray); return;
+                case "select":
+                case "off":
+                case "on":
+                    var b = run.State.First((BuildingType)Enum.Parse(typeof(BuildingType), parts[1]));
+                    if (b == null) return;
+                    if (parts[0] == "select") game.ClickTile(b.x, b.y);
+                    else if (b.enabled == (parts[0] == "off")) run.Toggle(b.id);
+                    return;
+            }
+        }
+
+        static void TrainingBuild(GameScreen game, BuildingType type)
+        {
+            var run = game.Run;
+            if (!run.CanBuild(type, out _)) return;
+            int before = run.State.buildings.Count;
+            run.Choose(type);
+            var spots = Layout.Suggest(run.sim, run.State, type);
+            var t = run.sim.terrain;
+            for (int y = 0; y < t.height; y++)
+                for (int x = 0; x < t.width; x++)
+                    spots.Add((x, y));
+            foreach (var (x, y) in spots)
+            {
+                game.ClickTile(x, y);
+                if (run.State.buildings.Count > before) return;
+            }
         }
 
         [UnityTest]
@@ -308,6 +439,9 @@ namespace Mapmakers.Tests
             CloseWindows(game);
             var run = game.Run;
             run.StartMission();
+            Assert.IsTrue(run.clock.Paused, "time waits for Play");
+            game.TogglePause();
+            Assert.IsFalse(run.clock.Paused, "Play starts time");
 
             Assert.AreEqual(1, run.clock.Speed);
             game.CycleSpeed();
@@ -350,6 +484,28 @@ namespace Mapmakers.Tests
             run.Deselect();
             yield return null;
             Assert.Greater(game.MessageCount, messages, "a finished objective is announced in Information");
+        }
+
+        // A resource that runs low is circled on the top bar with a pulsing ring and an arrow; a full one is not.
+        [UnityTest]
+        public IEnumerator LowResource_IsCircled_WithAnArrow()
+        {
+            yield return StartFree();
+            var game = Game();
+            CloseWindows(game);
+            var run = game.Run;
+            Assert.IsTrue(run.clock.Paused, "rates come from the preview, so this works with time stopped");
+            yield return null;
+            Assert.IsFalse(game.LowMarkOf("air").gameObject.activeSelf, "a full air reserve is not circled");
+            run.State.airHours = 3;
+            yield return WaitFor(() => game.LowMarkOf("air").gameObject.activeSelf, 2);
+            Assert.AreEqual(2, game.LowMarkOf("air").Severity, "3 hours of air is danger");
+            Assert.AreEqual("Air low!", game.LowMarkOf("air").Message);
+            Assert.IsFalse(game.LowMarkOf("supplies").gameObject.activeSelf);
+            run.State.airHours = run.sim.balance.criticalHours + 1;
+            yield return WaitFor(() => game.LowMarkOf("air").Severity == 1, 2);
+            run.State.airHours = 36;
+            yield return WaitFor(() => !game.LowMarkOf("air").gameObject.activeSelf, 2);
         }
 
         [UnityTest]

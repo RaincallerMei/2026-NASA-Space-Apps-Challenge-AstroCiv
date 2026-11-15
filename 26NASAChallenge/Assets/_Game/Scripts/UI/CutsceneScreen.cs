@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Mapmakers.UI
 {
-    // Full-screen story pictures with one short line at a time. Click, Space or Enter continues. Skip leaves.
+    // Full-screen story pictures with one short line at a time. Click, Space, Enter or Right continues; Left or Back goes back a line. Skip leaves.
     public sealed class CutsceneScreen : MonoBehaviour
     {
         CutsceneDef cutscene;
@@ -18,6 +18,7 @@ namespace Mapmakers.UI
         CanvasGroup pictureGroup;
         Text caption;
         Text counter;
+        Button backButton;
         int slide, line;
         bool busy, done;
 
@@ -73,8 +74,12 @@ namespace Mapmakers.UI
 
             caption = UIKit.Label(band.transform, "", 40, Palette.Hull, TextAnchor.MiddleCenter);
             caption.rectTransform.Stretch(160, 20, 160, 50);
-            var hint = UIKit.Label(band.transform, "Click to continue", 22, Palette.Ice, TextAnchor.LowerRight);
+            var hint = UIKit.Label(band.transform, "Click or → to continue · ← to go back", 22, Palette.Ice, TextAnchor.LowerRight);
             hint.rectTransform.Stretch(40, 0, 40, 18);
+            backButton = UIKit.Button(band.transform, "Back", Back, Palette.PanelLight, Palette.Hull, 24);
+            backButton.GetComponent<RectTransform>().Anchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(24, 12), new Vector2(120, 60));
+            var next = UIKit.Button(band.transform, "Next", Advance, Palette.Azure, Palette.Hull, 24);
+            next.GetComponent<RectTransform>().Anchor(new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(-24, 12), new Vector2(120, 60));
             counter = UIKit.Label(band.transform, "", 20, Palette.Muted, TextAnchor.LowerLeft);
             counter.rectTransform.Stretch(40, 0, 40, 18);
 
@@ -87,13 +92,15 @@ namespace Mapmakers.UI
         {
             var keys = Keyboard.current;
             if (keys == null || done) return;
-            if (keys.spaceKey.wasPressedThisFrame || keys.enterKey.wasPressedThisFrame) Advance();
+            if (keys.spaceKey.wasPressedThisFrame || keys.enterKey.wasPressedThisFrame || keys.rightArrowKey.wasPressedThisFrame) Advance();
+            if (keys.leftArrowKey.wasPressedThisFrame || keys.backspaceKey.wasPressedThisFrame) Back();
             if (keys.escapeKey.wasPressedThisFrame) Leave();
         }
 
         public void Advance()
         {
             if (busy || done) return;
+            AudioDirector.Play(Sfx.LineNext);
             if (line + 1 < cutscene.slides[slide].lines.Length)
             {
                 line++;
@@ -108,10 +115,24 @@ namespace Mapmakers.UI
             Leave();
         }
 
-        void ShowSlide(int index, bool fade)
+        // Goes back one line; from a slide's first line, back to the last line of the slide before.
+        public void Back()
+        {
+            if (busy || done || (slide == 0 && line == 0)) return;
+            AudioDirector.Play(Sfx.LineBack);
+            if (line > 0)
+            {
+                line--;
+                ShowLine();
+                return;
+            }
+            ShowSlide(slide - 1, true, cutscene.slides[slide - 1].lines.Length - 1);
+        }
+
+        void ShowSlide(int index, bool fade, int startLine = 0)
         {
             slide = index;
-            line = 0;
+            line = Mathf.Max(0, startLine);
             if (fade) StartCoroutine(FadeTo(cutscene.slides[index]));
             else SetPicture(cutscene.slides[index].image);
             ShowLine();
@@ -154,6 +175,7 @@ namespace Mapmakers.UI
         {
             caption.text = story.Story(cutscene.slides[slide].lines[line]);
             counter.text = (slide + 1) + " / " + cutscene.slides.Length;
+            backButton.interactable = slide > 0 || line > 0;
         }
 
         public void Leave()

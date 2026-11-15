@@ -53,6 +53,7 @@ namespace Mapmakers.UI
         public void CloseModal()
         {
             if (openModal == null) return;
+            AudioDirector.Play(Sfx.WindowClose);
             Destroy(openModal);
             openModal = null;
             ModalTitle = "";
@@ -72,6 +73,7 @@ namespace Mapmakers.UI
         void Render(ModalSpec spec)
         {
             run.clock.Hold();
+            AudioDirector.Play(Sfx.WindowOpen);
             var holder = UIKit.Rect(modalLayer, "Window " + spec.title).Stretch();
             openModal = holder.gameObject;
             ModalTitle = spec.title;
@@ -143,11 +145,19 @@ namespace Mapmakers.UI
 
         void ShowStartCard()
         {
+            if (run.IsTraining)
+            {
+                ShowModal(Modal(run.level.Label + ": " + run.Title,
+                    "A practice base at the space agency. Priya, Yuki and Mateo show you every part of a real mission.\n"
+                    + "No time limit here, and nothing can go badly wrong.\nRead the yellow crew card on the left, then follow the yellow arrow.",
+                    "crew", new ModalButton("Start training", run.StartMission)));
+                return;
+            }
             var catalog = LevelCatalog.Load();
             var body = new StringBuilder(run.mode == GameMode.Free ? run.Subtitle + "\nEvents come at random times. Watch the alerts." : run.Subtitle);
             if (!run.IsDrawing)
                 body.Append("\nInspection in ").Append(SimText.Duration(run.Duration, run.Planet.dayWord, run.Planet.dayHours))
-                    .Append(". Keep the crew safe until then.");
+                    .Append(". Keep the crew safe until then.\nTime starts when you press Play (top right).");
             if (run.level != null && run.level.id == "L2")
                 body.Append("\nRight side: Information and your Objectives. Bottom left: Wiki.");
             if (run.IsDrawing)
@@ -181,6 +191,8 @@ namespace Mapmakers.UI
 
         void HandleEvent(SimEvent e)
         {
+            var sound = EventSound(e.code);
+            if (sound.HasValue) AudioDirector.Play(sound.Value);
             switch (e.code)
             {
                 case "shadow_warning":
@@ -188,7 +200,7 @@ namespace Mapmakers.UI
                     break;
                 case "shadow_start":
                     Post(e.text, "power", Palette.Amber);
-                    if (Explain("dim")) ShowModal(Modal(run.Planet.dimmingName, "Less sun means less power.\nRest the Greenhouse or use battery power.", "power"));
+                    if (!run.IsTraining && Explain("dim")) ShowModal(Modal(run.Planet.dimmingName, "Less sun means less power.\nRest the Greenhouse or use battery power.", "power"));
                     break;
                 case "battery_unlock":
                     Post(e.text, "battery", Palette.Mint);
@@ -220,7 +232,7 @@ namespace Mapmakers.UI
                     break;
                 case "critical_out":
                     Post(run.NoPowerText(), "power", Palette.Danger);
-                    if (Explain("critical")) ShowModal(NoPowerWindow());
+                    if (!run.IsTraining && Explain("critical")) ShowModal(NoPowerWindow());
                     break;
                 case "brownout":
                     Post(e.text, "power", Palette.Amber);
@@ -241,6 +253,28 @@ namespace Mapmakers.UI
                 case "storm_over":
                     Post(e.text, "info");
                     break;
+            }
+        }
+
+        static Sfx? EventSound(string code)
+        {
+            switch (code)
+            {
+                case "storm_warning":
+                case "storm_onset":
+                case "critical_out":
+                    return Sfx.Alert;
+                case "shadow_warning":
+                case "shadow_start":
+                case "fault":
+                case "brownout":
+                    return Sfx.Warning;
+                case "battery_unlock":
+                case "first_harvest":
+                case "sunrise_start":
+                    return Sfx.GoodNews;
+                default:
+                    return null;
             }
         }
 
@@ -268,7 +302,7 @@ namespace Mapmakers.UI
         void FixFirstBroken()
         {
             foreach (var b in run.State.buildings)
-                if (b.broken) { run.Repair(b.id); return; }
+                if (b.broken) { if (run.Repair(b.id)) AudioDirector.Play(Sfx.Repair); return; }
         }
 
         static string StormBadge()
@@ -283,6 +317,7 @@ namespace Mapmakers.UI
         public void OpenChat(string crewId)
         {
             if (ModalOpen || run.IsDrawing || run.Ended) return;
+            run.TrainingAction("chat:" + crewId);
             var member = story.Crew(crewId);
             var entry = CrewChat.Entry(story, crewId, run);
             var row = crewRows.Find(r => r.id == crewId);
@@ -298,11 +333,12 @@ namespace Mapmakers.UI
             ShowModal(spec);
         }
 
+        // Back shows the crew member's line and replies again, so a missed line can be read twice.
         void Answer(CrewMember member, ChatReply reply)
         {
             bool ok = CrewChat.Apply(reply, run);
             string answer = ok ? reply.answer : "I can't hear you. The radio needs power.";
-            ShowModal(Modal(member.name, "\"" + answer + "\"", null, new ModalButton("Close")));
+            ShowModal(Modal(member.name, "\"" + answer + "\"", null, new ModalButton("Back", () => OpenChat(member.id), false), new ModalButton("Close")));
         }
 
         // ---------- pause menu ----------
@@ -318,7 +354,8 @@ namespace Mapmakers.UI
             spec.buttons.Add(new ModalButton("Restart this level", Flow.Retry, false));
             spec.buttons.Add(new ModalButton("Tips: " + (run.HintsOn ? "On" : "Off"), ToggleHints, false));
             spec.buttons.Add(new ModalButton("Calm motion: " + (Progress.ReducedMotion ? "On" : "Off"), ToggleCalm, false));
-            spec.buttons.Add(new ModalButton("Data & Credits", () => ShowModal(Modal("Data & Credits", MenuScreen.CreditsText, null)), false));
+            spec.buttons.Add(new ModalButton("Music & sounds", OpenSound, false));
+            spec.buttons.Add(new ModalButton("Data & Credits", () => ShowModal(Modal("Data & Credits", MenuScreen.CreditsText + "\n\n" + MenuScreen.AudioCreditsText, null)), false));
             spec.buttons.Add(new ModalButton("Quit to menu", () => Flow.ToMenu(run.mode == GameMode.Free ? "free" : "story"), false));
             ShowModal(spec);
         }
@@ -328,6 +365,17 @@ namespace Mapmakers.UI
             run.HintsOn = !run.HintsOn;
             Progress.HintsOn = run.HintsOn;
             OpenPause();
+        }
+
+        void OpenSound()
+        {
+            var spec = Modal("Music & sounds", "Use the music player at the top right to skip or pause songs.", "music");
+            spec.vertical = true;
+            spec.buttons.Clear();
+            spec.buttons.Add(new ModalButton("Music: " + (Progress.MusicOn ? "On" : "Off"), () => { Progress.MusicOn = !Progress.MusicOn; OpenSound(); }, false));
+            spec.buttons.Add(new ModalButton("Sound effects: " + (Progress.SoundsOn ? "On" : "Off"), () => { Progress.SoundsOn = !Progress.SoundsOn; OpenSound(); }, false));
+            spec.buttons.Add(new ModalButton("Back", OpenPause));
+            ShowModal(spec);
         }
 
         void ToggleCalm()

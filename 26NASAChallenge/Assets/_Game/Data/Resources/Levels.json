@@ -1,5 +1,5 @@
 {
-  "note": "Story Mode levels, cutscenes and goal labels. Mission lengths and event hours are fictional game design (game hours; 1x speed = 2 real seconds per hour). Cutscene lines are ids from Story.json. L4 uses the real Jezero crater heights (MOLA). Lessons (lesson_*) live in Help.json. 'needs' lists lessons that must be seen once before a level starts.",
+  "note": "Story Mode levels, cutscenes and goal labels. Mission lengths and event hours are fictional game design (game hours; 1x speed = 2 real seconds per hour). Cutscene lines are ids from Story.json. L4 uses the real Jezero crater heights (MOLA). Lessons (lesson_*) and the Tutorial 2 training steps live in Help.json. T2 uses a generated practice map (seed), not NASA data. 'needs' lists lessons that must be seen once before a level starts (none at the moment).",
   "levels": [
     {
       "id": "L1",
@@ -8,7 +8,7 @@
       "planet": "Moon",
       "mode": "drawing",
       "before": "c_dream",
-      "after": "lesson_teacher",
+      "after": "",
       "build": [
         "Habitat",
         "SolarArray",
@@ -28,15 +28,13 @@
       "id": "T2",
       "tag": "Tutorial 2",
       "title": "Meet the Crew",
-      "subtitle": "Meet the three people you will lead.",
-      "planet": "Earth",
-      "mode": "lesson",
+      "subtitle": "Your crew shows you a whole mission.",
+      "planet": "Moon",
+      "mode": "training",
       "before": "c_years",
-      "lesson": "lesson_crew",
       "after": "",
-      "needs": [
-        "lesson_teacher"
-      ],
+      "seed": 7,
+      "startSupplies": 200,
       "goals": [],
       "events": [],
       "durationHours": 0
@@ -78,11 +76,7 @@
         }
       ],
       "durationHours": 96,
-      "tag": "Level 1",
-      "needs": [
-        "lesson_teacher",
-        "lesson_crew"
-      ]
+      "tag": "Level 1"
     },
     {
       "id": "L3",
@@ -213,6 +207,13 @@
     {
       "id": "c_years",
       "slides": [
+        {
+          "image": "classroom",
+          "lines": [
+            "p_teacher1",
+            "p_teacher2"
+          ]
+        },
         {
           "image": "graduation",
           "lines": [

@@ -1,0 +1,5 @@
+[
+  {"action":"click","x":0.12,"y":0.677,"after":1},
+  {"action":"key","key":"Escape","after":1},
+  {"action":"screenshot","name":"tutorial-brief"}
+]

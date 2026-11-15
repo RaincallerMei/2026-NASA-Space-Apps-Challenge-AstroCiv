@@ -72,6 +72,8 @@ namespace Mapmakers.UI
             { "rover", new[] { "............", ".....k......", ".....kk.....", "..kkkkkkkk..", ".kwwwwwwwwk.", ".kwcwwwwcwk.", ".kkkkkkkkkk.", "kddkkddkkddk", "kddk.kdk.kdk", ".kk...k...k." } },
             { "pause", new[] { "............", "..kkk..kkk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kkk..kkk.." } },
             { "play", new[] { "..kk........", "..kwk.......", "..kwwk......", "..kwwwk.....", "..kwwwwk....", "..kwwwk.....", "..kwwk......", "..kwk.......", "..kk........" } },
+            { "skip", new[] { "............", ".kk....kkk..", ".kwk...kwk..", ".kwwk..kwk..", ".kwwwk.kwk..", ".kwwwwkkwk..", ".kwwwk.kwk..", ".kwwk..kwk..", ".kwk...kwk..", ".kk....kkk.." } },
+            { "music", new[] { "....kkkkkkk.", "....kwwwwwk.", "....kwkkkwk.", "....kwk.kwk.", "....kwk.kwk.", "....kwk.kwk.", "..kkkwkkkwk.", ".kwwwwkwwwk.", ".kwwwwkwwwk.", "..kkkk.kkk.." } },
             { "clock", new[] { "...kkkkkk...", "..kwwwwwwk..", ".kwwwkwwwwk.", ".kwwwkwwwwk.", ".kwwwkkkwwk.", ".kwwwwwwwwk.", "..kwwwwwwk..", "...kkkkkk..." } },
             { "lock", new[] { "....kkkk....", "...k....k...", "...k....k...", "..kkkkkkkk..", "..kyyyyyyk..", "..kyyykyyk..", "..kyyykyyk..", "..kyyyyyyk..", "..kkkkkkkk.." } },
             { "star", new[] { ".....kk.....", ".....yk.....", "....kyyk....", "kkkkkyykkkkk", ".kyyyyyyyyk.", "..kyyyyyyk..", "...kyyyyk...", "..kyykkyyk..", "..kyk..kyk..", ".kk......kk." } },
@@ -330,12 +332,16 @@ namespace Mapmakers.UI
             colors.disabledColor = new Color(0.45f, 0.45f, 0.5f, 0.6f);
             colors.colorMultiplier = 1.2f;
             button.colors = colors;
+            var sound = IsBack(text) ? Sfx.Back : Sfx.Click;
+            button.onClick.AddListener(() => AudioDirector.Play(sound));
             if (onClick != null) button.onClick.AddListener(onClick);
             image.gameObject.AddComponent<ButtonJuice>();
             var label = Label(image.transform, text, size, foreground ?? Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold);
             label.rectTransform.Stretch(8, 4, 8, 4);
             return button;
         }
+
+        static bool IsBack(string text) => text == "Back" || text == "Close" || text == "Cancel" || text == "Later" || text == "X";
 
         public static Text LabelOf(Button button) => button.GetComponentInChildren<Text>();
 

@@ -1,0 +1,9 @@
+[
+  {"action":"click","x":0.5,"y":0.605,"after":0.7},
+  {"action":"click","x":0.72,"y":0.136,"after":0.3},
+  {"action":"record-start"},
+  {"action":"wait","seconds":9},
+  {"action":"record-stop","name":"06_mission"},
+  {"action":"screenshot","name":"clean-mission"},
+  {"action":"click","x":0.728,"y":0.045,"after":0.2}
+]

@@ -131,7 +131,7 @@ namespace Mapmakers.UI
 
             var badge = UIKit.Panel(root, Palette.Alpha(Palette.Ink, 0.88f), "Map Data");
             badge.rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(1, 0), new Vector2(w / 2 - 6, -(top + h - 6)), new Vector2(260, 38));
-            UIKit.Label(badge.transform, run.mode == GameMode.Free ? "Made-up map  (i)" : "Real NASA map data  (i)", 20, Palette.Cyan, TextAnchor.MiddleCenter, FontStyle.Bold)
+            UIKit.Label(badge.transform, run.mode == GameMode.Free ? "Made-up map  (i)" : run.IsTraining ? "Practice map  (i)" : "Real NASA map data  (i)", 20, Palette.Cyan, TextAnchor.MiddleCenter, FontStyle.Bold)
                 .rectTransform.Stretch();
             Tip.Add(badge, () => new TipContent("About this map", "info", MapSource()));
         }
@@ -212,6 +212,7 @@ namespace Mapmakers.UI
         string MapSource()
         {
             if (run.mode == GameMode.Free) return "Made-up map. Brighter ground gets more sun.\nBrown dots: soft soil. Blue dots: water.";
+            if (run.IsTraining) return "Made-up practice map, not NASA data. Brighter ground gets more sun.\nBrown dots: soft soil. Blue dots: ice.";
             if (run.Planet.id == "Mars") return "Map: real heights of Jezero crater\n(NASA MGS MOLA, simplified). Brown: lake mud. Teal: wet clay.";
             return "Map: real sunlight at the Moon's south pole\n(NASA LRO/LOLA, simplified). Brown: soft soil. Blue: ice.";
         }
@@ -501,6 +502,7 @@ namespace Mapmakers.UI
                 if (result.Ok)
                 {
                     SetStatus(run.sim.balance.Def(type).displayName + " built.");
+                    AudioDirector.Play(Sfx.Place);
                     Refresh();
                     var def = run.sim.balance.Def(type);
                     UIFx.Ripple(fxLayer, TilePos(x, y), new Vector2(def.width * Tile, def.height * Tile));
@@ -509,16 +511,20 @@ namespace Mapmakers.UI
                 else
                 {
                     SetStatus(result.message, true);
+                    AudioDirector.Play(Sfx.Invalid);
                     UIFx.Shake(ghost.transform);
                 }
                 return;
             }
+            int before = run.SelectedId;
             run.ClickTile(x, y);
+            if (run.SelectedId != 0 && run.SelectedId != before) AudioDirector.Play(Sfx.Inspect);
             SetStatus("");
         }
 
         public void CancelBuild()
         {
+            if (run.BuildChoice.HasValue) AudioDirector.Play(Sfx.Back);
             run.Deselect();
             SetStatus("");
         }
@@ -529,13 +535,14 @@ namespace Mapmakers.UI
         Image selectionIcon;
         Text selectionName, selectionInfo, selectionState;
         Button toggleButton, fixButton, removeButton, cancelButton, suggestButton;
-        float SelectionHeight => Mathf.Min(run.IsDrawing ? 560 : 1080, 1080 - BottomBar - Gap - 64 - Gap - LeftTop - Gap);
+        float SelectionTop => LeftTop + (run.IsTraining ? GuideHeight + Gap : 0);
+        float SelectionHeight => Mathf.Min(run.IsDrawing ? 560 : 1080, 1080 - WikiBottom - 64 - Gap - SelectionTop);
 
         void BuildSelectionPanel()
         {
             float h = SelectionHeight;
             selection = UIKit.Panel(root, Palette.Alpha(Palette.Panel, 0.97f), "Selection");
-            selection.rectTransform.TopLeft(20, LeftTop, Side, h);
+            selection.rectTransform.TopLeft(20, SelectionTop, Side, h);
             selectionIcon = UIKit.Icon(selection.transform, "Habitat", 56);
             selectionIcon.TopLeftOf(18, 16);
             selectionName = UIKit.Label(selection.transform, "", 28, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
@@ -546,18 +553,34 @@ namespace Mapmakers.UI
             selectionState.rectTransform.TopLeft(20, 78, Side - 40, 30);
             selectionInfo = UIKit.Label(selection.transform, "", 21, Palette.Ice, TextAnchor.UpperLeft);
             selectionInfo.rectTransform.TopLeft(20, 112, Side - 40, h - 112 - 76);
+            selectionInfo.gameObject.SetActive(!run.IsTraining);
 
             float buttons = h - 70;
-            toggleButton = UIKit.Button(selection.transform, "Turn off", () => run.Toggle(run.SelectedId), Palette.Azure, Palette.Hull, 22);
+            toggleButton = UIKit.Button(selection.transform, "Turn off", ToggleSelected, Palette.Azure, Palette.Hull, 22);
             toggleButton.GetComponent<RectTransform>().TopLeft(20, buttons, 180, 54);
-            fixButton = UIKit.Button(selection.transform, "Fix", () => run.Repair(run.SelectedId), Palette.Amber, Palette.Ink, 22);
+            fixButton = UIKit.Button(selection.transform, "Fix", RepairSelected, Palette.Amber, Palette.Ink, 22);
             fixButton.GetComponent<RectTransform>().TopLeft(20, buttons, 180, 54);
-            removeButton = UIKit.Button(selection.transform, "Remove", () => run.Remove(run.SelectedId), Palette.PanelLight, Palette.Ice, 22);
+            removeButton = UIKit.Button(selection.transform, "Remove", RemoveSelected, Palette.PanelLight, Palette.Ice, 22);
             removeButton.GetComponent<RectTransform>().TopLeft(Side - 160, buttons, 140, 54);
             cancelButton = UIKit.Button(selection.transform, "Cancel", CancelBuild, Palette.PanelLight, Palette.Hull, 22);
             cancelButton.GetComponent<RectTransform>().TopLeft(20, buttons, 150, 54);
             suggestButton = UIKit.Button(selection.transform, "", ToggleSuggestions, Palette.PanelLight, Palette.Hull, 20);
             suggestButton.GetComponent<RectTransform>().TopLeft(Side - 230, buttons, 210, 54);
+        }
+
+        void ToggleSelected()
+        {
+            if (run.Toggle(run.SelectedId)) AudioDirector.Play(run.Selected != null && run.Selected.enabled ? Sfx.PowerOn : Sfx.PowerOff);
+        }
+
+        void RepairSelected()
+        {
+            if (run.Repair(run.SelectedId)) AudioDirector.Play(Sfx.Repair);
+        }
+
+        void RemoveSelected()
+        {
+            if (run.Remove(run.SelectedId)) AudioDirector.Play(Sfx.Remove);
         }
 
         void ToggleSuggestions()
@@ -667,8 +690,6 @@ namespace Mapmakers.UI
             bar.rectTransform.anchoredPosition = Vector2.zero;
             bar.rectTransform.sizeDelta = new Vector2(0, BottomBar);
 
-            buildingsTitle = UIKit.Label(bar.transform, "BUILDINGS  <color=#B9C3CF>· pick one, then click the map</color>", 24, Palette.Cyan, TextAnchor.MiddleLeft, FontStyle.Bold);
-            buildingsTitle.rectTransform.TopLeft(18, 4, 900, 32);
 
             statusText = UIKit.Label(root, "", 23, Palette.Ice, TextAnchor.MiddleCenter);
             statusText.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, BottomBar + 6), new Vector2(1000, 36));
@@ -677,7 +698,10 @@ namespace Mapmakers.UI
             int i = 0;
             foreach (var type in run.buildable) AddCard(bar.transform, i++, type, null);
             AddCard(bar.transform, i++, null, "Lab");
-            if (!run.buildable.Contains(BuildingType.RoverGarage)) AddCard(bar.transform, i, null, "Rover Garage");
+            if (!run.buildable.Contains(BuildingType.RoverGarage)) AddCard(bar.transform, i++, null, "Rover Garage");
+
+            buildingsTitle = UIKit.Label(bar.transform, "BUILDINGS\n<size=21><color=#CDEAF4>Pick one, then click the map.</color></size>", 30, Palette.Cyan, TextAnchor.MiddleLeft, FontStyle.Bold);
+            buildingsTitle.rectTransform.TopLeft(16 + i * 142 + 12, 22, 360, 92);
 
             if (run.IsDrawing)
             {
@@ -704,7 +728,7 @@ namespace Mapmakers.UI
         {
             var card = new BuildCard { type = type };
             var button = UIKit.Button(bar, "", () => ClickCard(card), Palette.PanelLight);
-            button.GetComponent<RectTransform>().TopLeft(16 + index * 142, 38, 134, 92);
+            button.GetComponent<RectTransform>().TopLeft(16 + index * 142, 22, 134, 92);
             card.button = button;
             card.glow = button.gameObject.AddComponent<Outline>();
             card.glow.effectColor = Palette.Amber;
@@ -719,6 +743,7 @@ namespace Mapmakers.UI
             card.name.resizeTextMinSize = 13;
             card.name.resizeTextMaxSize = 18;
             card.name.horizontalOverflow = HorizontalWrapMode.Wrap;
+            card.name.verticalOverflow = VerticalWrapMode.Truncate;
             card.cost = UIKit.Label(button.transform, type.HasValue ? CostText(type.Value) : "Later", 18, Palette.Amber, TextAnchor.UpperRight, FontStyle.Bold);
             card.cost.rectTransform.TopLeft(52, 6, 76, 24);
             card.count = UIKit.Label(button.transform, "", 17, Palette.Ice, TextAnchor.UpperRight);
@@ -746,11 +771,12 @@ namespace Mapmakers.UI
         void ClickCard(BuildCard card)
         {
             if (ModalOpen || run.Ended) return;
-            if (!card.type.HasValue) { SetStatus(card.lockedWhy, true); return; }
+            if (!card.type.HasValue) { SetStatus(card.lockedWhy, true); AudioDirector.Play(Sfx.Invalid); return; }
             var type = card.type.Value;
-            if (run.BuildChoice == type) { CancelBuild(); return; }
-            if (!run.CanBuild(type, out string why)) { SetStatus(run.sim.balance.Def(type).displayName + ": " + why, true); UIFx.Shake(card.button.transform); return; }
+            if (run.BuildChoice == type) { CancelBuild(); AudioDirector.Play(Sfx.Back); return; }
+            if (!run.CanBuild(type, out string why)) { SetStatus(run.sim.balance.Def(type).displayName + ": " + why, true); AudioDirector.Play(Sfx.Invalid); UIFx.Shake(card.button.transform); return; }
             run.Choose(type);
+            AudioDirector.Play(Sfx.PickCard);
             SetStatus("Click the map to place the " + run.sim.balance.Def(type).displayName + ". Right-click or Cancel to stop.");
         }
 

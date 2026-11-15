@@ -1,0 +1,86 @@
+{
+  "file": "AstroCiv_Trailer_28s.mp4",
+  "durationSeconds": 28.0,
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "frames": 840,
+  "videoCodec": "H.264",
+  "audioCodec": "AAC",
+  "musicFile": "Art\\BGM\\Starry Twinkles.mp3",
+  "musicExcerptSeconds": [
+    18,
+    46
+  ],
+  "musicSourceSha256": "cd7ecf671e316426f5f42beddd7c8e48e0ae819ed8167085431aae5b296f80a4",
+  "musicMeanDb": -20.7,
+  "musicPeakDb": -5.7,
+  "shots": [
+    {
+      "file": "01_menu.webm",
+      "start": 0,
+      "seconds": 3,
+      "caption": "YOUR CREW. YOUR CALL.",
+      "name": "menu",
+      "timelineStart": 0
+    },
+    {
+      "file": "05_launch.webm",
+      "start": 0,
+      "seconds": 4,
+      "caption": "A DREAM BECOMES A MISSION.",
+      "name": "launch",
+      "timelineStart": 3
+    },
+    {
+      "file": "02_building.webm",
+      "start": 0.15,
+      "seconds": 6,
+      "caption": "BUILD A HOME BEYOND EARTH.",
+      "name": "build",
+      "timelineStart": 7
+    },
+    {
+      "file": "04_crew.webm",
+      "start": 0,
+      "seconds": 5,
+      "caption": "EVERY BUILDING SUPPORTS SOMEONE.",
+      "name": "crew",
+      "timelineStart": 13
+    },
+    {
+      "file": "06_mission.webm",
+      "start": 0,
+      "seconds": 6,
+      "caption": "BALANCE RESOURCES. PLAN AHEAD.",
+      "name": "mission",
+      "timelineStart": 18
+    },
+    {
+      "name": "closing title",
+      "timelineStart": 24,
+      "seconds": 4
+    }
+  ],
+  "provenance": "Actual Unity WebGL gameplay captured with Chrome canvas MediaRecorder; AI-assisted shot selection and editing by OpenAI Codex. Game art is AI-created. Music: Starry Twinkles by raincalleer, generated with Suno, song f5182621-6979-42be-864b-69517b18be60. No synthetic gameplay footage.",
+  "status": "local draft; not uploaded or submitted",
+  "videoSha256": "d662021dc5bd1c9efb050912208dfcadc68226c62c354456df1dea5aac75f7ab",
+  "captureBuild": {
+    "BuildResultName": "Succeeded",
+    "PlatformName": "WebGL",
+    "BuildStartedAt": "2026-11-15T06:15:30.1136286Z",
+    "TotalTimeMs": 753886,
+    "TotalErrors": 0,
+    "TotalWarnings": 354,
+    "BuildSessionGUID": "0137f4adc28fa1b429bc1a2b43fddb98",
+    "unityVersion": "6000.6.7f1"
+  },
+  "review": {
+    "decodedFrames": 840,
+    "durationVerified": true,
+    "audioPresent": true,
+    "audioClippingDetected": false,
+    "contactSheetVisuallyReviewed": true,
+    "humanListeningReviewRecorded": false
+  }
+}

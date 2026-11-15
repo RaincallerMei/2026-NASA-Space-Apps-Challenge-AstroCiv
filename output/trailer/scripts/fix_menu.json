@@ -1,0 +1,10 @@
+[
+  {"action":"js","code":"document.querySelector('#unity-container').style.transform='none';document.querySelector('#unity-container').style.left='0px';document.querySelector('#unity-container').style.top='0px';true"},
+  {"action":"wait","seconds":1},
+  {"action":"screenshot","name":"menu-fixed"},
+  {"action":"record-start"},
+  {"action":"wait","seconds":5},
+  {"action":"record-stop","name":"01_menu"},
+  {"action":"click","x":0.5,"y":0.398,"after":0.7},
+  {"action":"screenshot","name":"story-selection"}
+]

@@ -195,6 +195,94 @@ namespace Mapmakers.UI
         }
     }
 
+    // Circles a top-bar resource that is running low: a pulsing ring around it and a bouncing arrow with a short
+    // label under it, so the player notices it while looking at the map. Pulses at most 1.5 times a second.
+    public sealed class LowMark : MonoBehaviour
+    {
+        RectTransform target, self, ring, arrow, label;
+        Image ringImage, arrowImage, labelImage;
+        Text text;
+        bool danger;
+
+        public int Severity { get; private set; }
+        public string Message => text.text;
+
+        public static LowMark Create(RectTransform layer, RectTransform target)
+        {
+            var self = UIKit.Rect(layer, "Low " + target.name);
+            self.anchorMin = self.anchorMax = self.pivot = new Vector2(0.5f, 0.5f);
+            var mark = self.gameObject.AddComponent<LowMark>();
+            mark.target = target;
+            mark.self = self;
+
+            mark.ringImage = Part(self, "Ring", UIFx.RingSprite);
+            mark.ringImage.type = Image.Type.Sliced;
+            mark.ringImage.pixelsPerUnitMultiplier = 0.25f;
+            mark.ring = mark.ringImage.rectTransform;
+
+            mark.arrowImage = Part(self, "Arrow", UIKit.ArrowSprite);
+            mark.arrow = mark.arrowImage.rectTransform;
+            mark.arrow.pivot = new Vector2(0.5f, 0);
+            mark.arrow.sizeDelta = new Vector2(40, 40);
+            mark.arrow.localEulerAngles = new Vector3(0, 0, 180);
+            var outline = mark.arrowImage.gameObject.AddComponent<Outline>();
+            outline.effectColor = Palette.Ink;
+            outline.effectDistance = new Vector2(2, -2);
+
+            mark.labelImage = UIKit.Panel(self, Palette.Amber, "Label");
+            mark.labelImage.raycastTarget = false;
+            mark.label = mark.labelImage.rectTransform;
+            mark.label.anchorMin = mark.label.anchorMax = new Vector2(0.5f, 0.5f);
+            mark.label.pivot = new Vector2(0.5f, 1);
+            mark.label.sizeDelta = new Vector2(170, 36);
+            mark.text = UIKit.Label(mark.label, "", 22, Palette.Ink, TextAnchor.MiddleCenter, FontStyle.Bold);
+            mark.text.rectTransform.Stretch();
+            mark.text.raycastTarget = false;
+            self.gameObject.SetActive(false);
+            return mark;
+        }
+
+        static Image Part(RectTransform parent, string name, Sprite sprite)
+        {
+            var image = UIKit.Rect(parent, name).gameObject.AddComponent<Image>();
+            image.sprite = sprite;
+            image.raycastTarget = false;
+            var rt = image.rectTransform;
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+            return image;
+        }
+
+        // 0 hides the mark, 1 is a yellow warning, 2 is red danger.
+        public void Set(int severity, string message)
+        {
+            bool appeared = severity > 0 && Severity == 0;
+            Severity = severity;
+            gameObject.SetActive(severity > 0);
+            if (severity == 0) return;
+            danger = severity > 1;
+            var color = danger ? Palette.Danger : Palette.Amber;
+            ringImage.color = arrowImage.color = labelImage.color = color;
+            text.color = danger ? Palette.Hull : Palette.Ink;
+            text.text = message;
+            if (appeared) UIFx.Pop(label);
+        }
+
+        void LateUpdate()
+        {
+            var bounds = target.rect;
+            self.position = target.TransformPoint(bounds.center);
+            self.sizeDelta = bounds.size;
+            float wave = UIFx.Calm ? 1 : 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * Mathf.PI * 2 * (danger ? 1.5f : 1f));
+            ring.anchoredPosition = Vector2.zero;
+            ring.sizeDelta = bounds.size + Vector2.one * (12 + 12 * wave);
+            ringImage.color = Palette.Alpha(ringImage.color, 0.55f + 0.45f * wave);
+            float bob = UIFx.Calm ? 0 : Mathf.Abs(Mathf.Sin(Time.unscaledTime * 4)) * 10;
+            float bottom = -bounds.height / 2 - 14;
+            arrow.anchoredPosition = new Vector2(0, bottom - bob);
+            label.anchoredPosition = new Vector2(0, bottom - 44 - bob);
+        }
+    }
+
     // Gently pulses a layer (placement suggestions) so it reads as a hint, not a wall.
     public sealed class GlowPulse : MonoBehaviour
     {

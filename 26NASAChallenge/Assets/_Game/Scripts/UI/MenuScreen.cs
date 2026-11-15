@@ -18,6 +18,13 @@ namespace Mapmakers.UI
             "Power, cost and safety numbers are made up for the game.\n" +
             "Chris Hadfield and Sara Seager are named as inspiration only.\nThey do not endorse this game.";
 
+        public const string AudioCreditsText =
+            "Music: \"Dream Culture\", \"Space Jazz\" and \"Cipher\" by Kevin MacLeod (incompetech.com).\n" +
+            "Licensed under Creative Commons: By Attribution 4.0 License. creativecommons.org/licenses/by/4.0/\n" +
+            "Changes: volume levelled and compressed for the web; gameplay songs play in random order.\n" +
+            "Music: \"Cat caffe\" and \"Cue\" by TAD (opengameart.org/content/lofi-compilation). CC0.\n" +
+            "Sound effects: \"Interface Sounds\" by Kenney (kenney.nl). CC0.";
+
         RectTransform root;
         readonly Dictionary<string, GameObject> panels = new Dictionary<string, GameObject>();
         readonly FreeSettings free = new FreeSettings { seed = FreeSettings.NewSeed() };
@@ -71,9 +78,23 @@ namespace Mapmakers.UI
             MenuButton(panel, "Wiki & Help", -630, () => Wiki.Open(null, null, true), Palette.PanelLight);
             MenuButton(panel, "Data & Credits", -730, () => Show("credits"), Palette.PanelLight);
 
+            SoundToggle(panel, 0, "Music", () => Progress.MusicOn, v => Progress.MusicOn = v);
+            SoundToggle(panel, 1, "Sounds", () => Progress.SoundsOn, v => Progress.SoundsOn = v);
+
             var foot = UIKit.Label(panel, "Not endorsed by NASA or CSA.", 20, Palette.Muted, TextAnchor.MiddleCenter);
             foot.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 40), new Vector2(800, 30));
             return panel.gameObject;
+        }
+
+        static void SoundToggle(Transform parent, int slot, string name, System.Func<bool> get, System.Action<bool> set)
+        {
+            Button button = null;
+            button = UIKit.Button(parent, name + ": " + (get() ? "On" : "Off"), () =>
+            {
+                set(!get());
+                UIKit.LabelOf(button).text = name + ": " + (get() ? "On" : "Off");
+            }, Palette.PanelLight, Palette.Hull, 22);
+            button.GetComponent<RectTransform>().Anchor(new Vector2(1, 0), new Vector2(1, 0), new Vector2(-40 - slot * 196, 40), new Vector2(180, 52));
         }
 
         static void MenuButton(Transform parent, string text, float y, UnityEngine.Events.UnityAction action, Color color)
@@ -98,12 +119,12 @@ namespace Mapmakers.UI
                 var card = UIKit.Panel(panel, Palette.Alpha(Palette.Panel, 0.94f), "Level " + level.id);
                 card.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(start + i * (width + gap), -10), new Vector2(width, 470));
 
-                bool tutorial = level.IsDrawing || level.IsLesson;
+                bool tutorial = level.IsDrawing || level.IsTraining;
                 var number = UIKit.Panel(card.transform, level.planet == "Mars" ? Palette.MarsRust : tutorial ? Palette.Leaf : Palette.Azure, "Number");
                 number.rectTransform.TopLeft(24, 24, 72, 72);
                 UIKit.Label(number.transform, level.Label.Substring(level.Label.LastIndexOf(' ') + 1), 40, Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold).rectTransform.Stretch();
                 UIKit.Label(card.transform, level.Label, 24, level.planet == "Mars" ? Palette.MarsSand : Palette.Cyan, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.TopLeft(112, 28, 220, 30);
-                string when = level.IsLesson ? "Meet your crew" : level.IsDrawing ? "Learn to build" : "About " + Mathf.CeilToInt((float)(level.durationHours * BalanceLoader.Load().realSecondsPerGameHour / 60)) + " min at 1×";
+                string when = level.IsTraining ? "Practice run" : level.IsDrawing ? "Learn to build" : "About " + Mathf.CeilToInt((float)(level.durationHours * BalanceLoader.Load().realSecondsPerGameHour / 60)) + " min at 1×";
                 UIKit.Label(card.transform, level.planet + " · " + when, 20, Palette.Ice).rectTransform.TopLeft(112, 62, 220, 30);
 
                 UIKit.Label(card.transform, level.title, 36, Palette.Hull, TextAnchor.UpperLeft, FontStyle.Bold).rectTransform.TopLeft(24, 120, width - 48, 50);
@@ -141,9 +162,9 @@ namespace Mapmakers.UI
                 var catalog = LevelCatalog.Load();
                 int index = catalog.IndexOf(level.id);
                 string previous = index > 0 ? catalog.levels[index - 1].Label : "";
-                grade.text = !open ? "Finish " + previous + " first" : level.IsLesson ? (Progress.Passed(level.id) ? "Done!" : "New!")
+                grade.text = !open ? "Finish " + previous + " first" : level.IsTraining ? (Progress.Passed(level.id) ? "Done!" : "New!")
                     : best >= 0 ? "Best: " + Grader.Letter(best) + "  " + best + "/100" : "New!";
-                if (level.IsLesson && open) UIKit.LabelOf(play).text = Progress.Passed(level.id) ? "Watch again" : "Start";
+                if (level.IsTraining && open) UIKit.LabelOf(play).text = Progress.Passed(level.id) ? "Play again" : "Start";
                 grade.fontSize = open ? 30 : 22;
                 grade.color = open ? Palette.Amber : Palette.Muted;
                 UIKit.Clear(stars);
@@ -212,8 +233,8 @@ namespace Mapmakers.UI
             var panel = UIKit.Rect(root, "Credits").Stretch();
             Header(panel, "Data & Credits", "");
             var box = UIKit.Panel(panel, Palette.Alpha(Palette.Panel, 0.94f), "Credits Box");
-            box.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, -20), new Vector2(1200, 520));
-            UIKit.Label(box.transform, CreditsText, 28, Palette.Hull, TextAnchor.MiddleCenter).rectTransform.Stretch(50, 40, 50, 40);
+            box.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, -10), new Vector2(1560, 740));
+            UIKit.Label(box.transform, CreditsText + "\n\n" + AudioCreditsText, 24, Palette.Hull, TextAnchor.MiddleCenter).rectTransform.Stretch(40, 30, 40, 30);
             BackButton(panel);
             return panel.gameObject;
         }

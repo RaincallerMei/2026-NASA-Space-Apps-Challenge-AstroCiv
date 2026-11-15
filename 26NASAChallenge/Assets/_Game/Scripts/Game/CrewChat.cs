@@ -19,7 +19,8 @@ namespace Mapmakers.Game
                 case "engineer":
                     if (s.StormActive) return "storm";
                     double cap = run.sim.BatteryCapacity(s);
-                    if (s.report.Has("loads_off") || (cap > 0 && s.batteryKWh < 0.4 * cap && s.report.batteryFlowKW < 0)) return "battery_low";
+                    // Only talk about a draining battery when there is one.
+                    if (cap > 0 && (s.report.Has("loads_off") || (s.batteryKWh < 0.4 * cap && s.report.batteryFlowKW < 0))) return "battery_low";
                     if (s.Count(BuildingType.Battery) >= 2) return "two_batteries";
                     return "default";
                 case "botanist":

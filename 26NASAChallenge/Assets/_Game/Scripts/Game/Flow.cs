@@ -213,7 +213,6 @@ namespace Mapmakers.Game
         static readonly Queue<string> pending = new Queue<string>();
 
         // Required lessons the player has not seen yet come first; then the level's own story.
-        // A lesson level (Tutorial 2) is only story and lesson, then back to the level list.
         public static void StartLevel(string levelId)
         {
             Mode = GameMode.Story;
@@ -223,13 +222,6 @@ namespace Mapmakers.Game
             foreach (var id in Level.needs)
                 if (!Progress.LessonSeen(id)) sequence.Add(id);
             sequence.Add(Level.before);
-            if (Level.IsLesson)
-            {
-                sequence.Add(Level.lesson);
-                MenuPanel = "story";
-                PlaySequence(sequence, MenuScene);
-                return;
-            }
             PlaySequence(sequence, GameScene);
         }
 
@@ -264,7 +256,6 @@ namespace Mapmakers.Game
         public static void SceneDone(string id)
         {
             if (HelpData.Load().Lesson(id) != null) Progress.MarkLessonSeen(id);
-            if (Mode == GameMode.Story && Level != null && Level.IsLesson && Level.lesson == id) Progress.MarkPassed(Level.id);
             NextScene();
         }
 
@@ -364,6 +355,18 @@ namespace Mapmakers.Game
         {
             get => PlayerPrefs.GetInt(Prefix + "calm", 0) == 1;
             set { PlayerPrefs.SetInt(Prefix + "calm", value ? 1 : 0); PlayerPrefs.Save(); }
+        }
+
+        public static bool MusicOn
+        {
+            get => PlayerPrefs.GetInt(Prefix + "music", 1) == 1;
+            set { PlayerPrefs.SetInt(Prefix + "music", value ? 1 : 0); PlayerPrefs.Save(); }
+        }
+
+        public static bool SoundsOn
+        {
+            get => PlayerPrefs.GetInt(Prefix + "sounds", 1) == 1;
+            set { PlayerPrefs.SetInt(Prefix + "sounds", value ? 1 : 0); PlayerPrefs.Save(); }
         }
 
         public static void Record(MissionResult result)

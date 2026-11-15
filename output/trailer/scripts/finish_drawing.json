@@ -1,0 +1,11 @@
+[
+  {"action":"click","x":0.72,"y":0.136,"after":0.25},
+  {"action":"record-start"},
+  {"action":"click","x":0.11,"y":0.945,"after":0.4},
+  {"action":"click","x":0.30,"y":0.48,"after":0.7},
+  {"action":"click","x":0.11,"y":0.945,"after":0.4},
+  {"action":"click","x":0.30,"y":0.34,"after":1},
+  {"action":"record-stop","name":"03_power"},
+  {"action":"click","x":0.90,"y":0.945,"after":1},
+  {"action":"screenshot","name":"drawing-result"}
+]

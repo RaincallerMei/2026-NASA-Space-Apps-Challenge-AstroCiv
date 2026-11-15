@@ -49,7 +49,9 @@ namespace Mapmakers.Game
         readonly List<SimEvent> newEvents = new List<SimEvent>();
         MissionResult result;
 
+        public Training Training { get; private set; }
         public bool IsDrawing => level != null && level.IsDrawing;
+        public bool IsTraining => Training != null;
         public bool Ended => Phase == RunPhase.Ended;
         public bool Running => Phase == RunPhase.Running && !IsDrawing;
         public PlanetProfile Planet => sim.planet;
@@ -83,6 +85,7 @@ namespace Mapmakers.Game
             {
                 run.UsedStarterBase = !LevelSetup.LoadBase(run.sim, run.State, Progress.LoadBase(level.startBase));
             }
+            if (level.IsTraining) run.Training = new Training(HelpData.Load().training);
             run.ShowHint(level.IsDrawing ? "h_build" : "h_habitat");
             return run;
         }
@@ -102,12 +105,13 @@ namespace Mapmakers.Game
 
         // ---------- time ----------
 
-        // Starts the clock after the briefing.
+        // Ends the briefing. Time stays stopped until the player presses Play.
         public void StartMission()
         {
             if (Phase != RunPhase.Briefing) return;
             Phase = RunPhase.Running;
             clock.Start();
+            clock.SetPaused(true);
             ShowHint("h_clock");
             Changed();
         }
@@ -157,6 +161,7 @@ namespace Mapmakers.Game
             var def = sim.balance.Def(type);
             if (Ended) { why = "The mission has ended."; return false; }
             if (!buildable.Contains(type)) { why = "Not in this level."; return false; }
+            if (IsTraining && !Training.Allows(type)) { why = "Your crew will show you this soon."; return false; }
             if (!Placement.IsUnlocked(State, type)) { why = "Unlocks after the first harvest."; return false; }
             int max = Placement.MaxCount(sim, State, type);
             if (State.Count(type) >= max) { why = type == BuildingType.Battery && max == 1 ? "A second one unlocks later." : "All built."; return false; }
@@ -209,7 +214,7 @@ namespace Mapmakers.Game
             {
                 double left = b.powerLossToleranceHours - s.criticalOutHours;
                 list.Add(new Alert { level = AlertLevel.Danger, icon = "power",
-                    text = NoPowerText() + " Mission stops in " + SimText.Duration(left) + ".",
+                    text = NoPowerText() + (sim.canFail ? " Mission stops in " + SimText.Duration(left) + "." : ""),
                     actionLabel = GreenhouseOn() ? "Rest Greenhouse" : null, action = GreenhouseOn() ? (Action)RestGreenhouse : null });
             }
             else if (r.Has("loads_off"))
@@ -426,9 +431,30 @@ namespace Mapmakers.Game
 
         void ShowHint(string id, bool evenIfSeen = false)
         {
+            if (IsTraining) return;
             if (!seenHints.Add(id) && !evenIfSeen) return;
             Hint = story.Hint(id);
             HintId = id;
+        }
+
+        // ---------- Tutorial 2 ----------
+
+        // Checked every frame, also while paused, because many steps are orders given with time stopped.
+        public void UpdateTraining()
+        {
+            if (!IsTraining || Ended || Phase == RunPhase.Briefing) return;
+            int before = State.events.Count;
+            if (!Training.Advance(this)) return;
+            if (BuildChoice.HasValue && Training.Current?.target != "card:" + BuildChoice.Value) BuildChoice = null;
+            for (int i = before; i < State.events.Count; i++) newEvents.Add(State.events[i]);
+            Changed();
+        }
+
+        public void TrainingAction(string action)
+        {
+            if (!IsTraining) return;
+            Training.Mark(action);
+            UpdateTraining();
         }
 
         // ---------- ending ----------

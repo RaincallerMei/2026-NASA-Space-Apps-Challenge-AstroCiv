@@ -1,0 +1,6 @@
+[
+  {"action":"click","x":0.11,"y":0.945,"after":0.3},
+  {"action":"click","x":0.37,"y":0.55,"after":0.8},
+  {"action":"click","x":0.90,"y":0.945,"after":1.0},
+  {"action":"screenshot","name":"drawing-finish"}
+]

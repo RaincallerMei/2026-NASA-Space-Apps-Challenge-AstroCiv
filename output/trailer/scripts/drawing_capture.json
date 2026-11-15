@@ -1,0 +1,13 @@
+[
+  {"action":"click","x":0.365,"y":0.65,"after":0.5},
+  {"action":"click","x":0.72,"y":0.136,"after":0.3},
+  {"action":"record-start"},
+  {"action":"click","x":0.04,"y":0.945,"after":0.7},
+  {"action":"click","x":0.40,"y":0.43,"after":1.2},
+  {"action":"click","x":0.11,"y":0.945,"after":0.7},
+  {"action":"click","x":0.50,"y":0.43,"after":1.2},
+  {"action":"click","x":0.185,"y":0.945,"after":0.7},
+  {"action":"click","x":0.43,"y":0.60,"after":1.2},
+  {"action":"screenshot","name":"drawing-built"},
+  {"action":"record-stop","name":"02_building"}
+]

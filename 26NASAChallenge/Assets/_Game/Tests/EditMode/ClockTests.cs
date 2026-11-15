@@ -111,6 +111,10 @@ namespace Mapmakers.Tests
             run.Tick(1);
             Assert.AreEqual(0.0, run.State.timeHours, "the briefing is paused");
             run.StartMission();
+            run.Tick(1);
+            Assert.AreEqual(0.0, run.State.timeHours, "time waits for the player's first Play");
+            Assert.IsTrue(run.clock.UserPaused);
+            run.clock.SetPaused(false);
             for (int i = 0; i < 4; i++) run.Tick(0.25);
             Assert.AreEqual(0.5, run.State.timeHours, 1e-9);
             run.clock.Hold();
@@ -123,7 +127,6 @@ namespace Mapmakers.Tests
         {
             var run = MissionRun.ForLevel(LevelCatalog.Load().Level("L2"));
             run.StartMission();
-            run.clock.SetPaused(true);
             run.Choose(BuildingType.Habitat);
             Assert.IsTrue(run.Place(8, 5).Ok);
             run.Tick(1);
@@ -135,6 +138,7 @@ namespace Mapmakers.Tests
         {
             var run = MissionRun.ForLevel(LevelCatalog.Load().Level("L2"));
             run.StartMission();
+            run.clock.SetPaused(false);
             run.clock.SetSpeed(4);
             for (int i = 0; i < 400 && !run.Ended; i++) run.Tick(0.25);
             Assert.IsTrue(run.Ended);
@@ -157,6 +161,7 @@ namespace Mapmakers.Tests
         {
             var run = MissionRun.ForLevel(LevelCatalog.Load().Level("L2"));
             run.StartMission();
+            run.clock.SetPaused(false);
             run.clock.SetSpeed(4);
             for (int i = 0; i < 400 && run.State.airHours > 10; i++) run.Tick(0.25);
             var alert = run.Alerts().Find(a => a.icon == "air");

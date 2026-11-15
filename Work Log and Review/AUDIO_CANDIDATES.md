@@ -2,6 +2,10 @@
 
 Researched 15 November 2026. These are candidates, not imported assets. Source pages and stated licenses were checked; no listening test, loop edit, or in-game mix is claimed. Mood descriptions below are selection judgments based on creator descriptions/tags, not measured audio analysis. Start with the starred choices and audition them against the actual scenes.
 
+**Team update, November 15:** the user has downloaded music into `Art/BGM/` and Kenney Interface Sounds into `Art/kenney_interface-sounds/`. This shortlist remains the research record; file selection/import status is separate. `Art/BGM/Starry Twinkles.mp3` is the user-selected trailer music. Its embedded metadata identifies creator `raincalleer`, Suno generation, and song ID `f5182621-6979-42be-864b-69517b18be60`. The account tier/rights are not established by metadata. The audio-generation prompt document was removed at the user's request; no additional AI audio generation is requested.
+
+**Integrated in the game, November 15 (Claude Code):** Dream Culture (menu), Space Jazz (story and lessons), Cipher, Cat caffe and Cue (gameplay, shuffled), and 26 Kenney Interface Sounds. Credits and the event-to-file table are in [ASSET_CREDITS.md](../26NASAChallenge/ASSET_CREDITS.md#game-audio--integrated-november-15-2026).
+
 ## Main menu: soothing, cozy, space-adjacent lo-fi
 
 | Candidate / creator | Listen and download | Free-use terms | Fit and audition notes |
@@ -38,7 +42,7 @@ The TAD page includes reports of automated video claims involving some tracks fr
 | [Kenney Sci-fi Sounds](https://kenney.nl/assets/sci-fi-sounds) | 70 files | Radio messages, rover/machine cues, construction completion, storm notification textures | CC0 |
 | [Kenney Digital Audio](https://kenney.nl/assets/digital-audio) | 60 files | Resource pickup, objective completion, short warning and result stingers | CC0 |
 
-These are pack-level recommendations, not verified assignments to individual filenames. Audition soft options for this children's game; avoid loud weapon/explosion sounds. For a level win, try a short positive multi-note cue; for a failed attempt, a gentle descending cue; for warnings, a distinctive two-tone signal paired with visible text. Generate missing cues using [the prompt library](AUDIO_CREATION_PROMPTS.md).
+These are pack-level recommendations, not verified assignments to individual filenames. Audition soft options for this children's game; avoid loud weapon/explosion sounds. For a level win, try a short positive multi-note cue; for a failed attempt, a gentle descending cue; for warnings, a distinctive two-tone signal paired with visible text. Use the team's downloaded Kenney pack as the starting point.
 
 ## Rights and public repository use
 

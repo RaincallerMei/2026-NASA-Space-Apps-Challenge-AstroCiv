@@ -50,4 +50,4 @@ Game mapping (fictional balance, in `Balance.json → terrain`): `sun = 0.5 + 0.
 - NASA data is generally not copyrighted in the United States. Credit NASA. No NASA logo or insignia and no implied endorsement.
 - OSDR study titles belong to their authors; cards link to the study pages.
 - CSA content: the fixture records "Non-commercial educational use with credit. No endorsement implied. Commercial use needs written permission." Checked on 2026-11-14 against the [CSA terms page](https://www.asc-csa.gc.ca/eng/terms.asp): educational non-commercial reproduction requires accurate use, source credit, and no implied association/endorsement. Commercial redistribution requires prior written permission, and third-party materials have separate rights. This records the published terms; it grants no logo or third-party-media permission.
-- In-game Data credits line: "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA (PDS), CSA. Not endorsed by NASA or CSA."
+- In-game Data credits line: "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA and MGS/MOLA (PDS), CSA. Not endorsed by NASA or CSA."

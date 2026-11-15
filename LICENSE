@@ -1,0 +1,39 @@
+MIT License
+
+Copyright (c) 2026 the AstroCiv team (Mapmakers of the Moon)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---------------------------------------------------------------------------
+Third-party material
+
+The MIT License above covers the team's own code and project-created art.
+It does not cover the following, which keep their own terms:
+
+- Music by Kevin MacLeod (incompetech.com): CC BY 4.0.
+- Music by TAD (opengameart.org): CC0.
+- Kenney "Interface Sounds" (kenney.nl): CC0.
+- NASA data (DONKI, OSDR, POWER, LRO/LOLA, MGS/MOLA): credit NASA; no NASA
+  logo and no implied endorsement.
+- Canadian Space Agency content: (c) Canadian Space Agency; non-commercial
+  educational use with credit.
+- Unity engine and packages: Unity's own license terms.
+
+See 26NASAChallenge/ASSET_CREDITS.md and 26NASAChallenge/DATA_SOURCES.md
+for full details.

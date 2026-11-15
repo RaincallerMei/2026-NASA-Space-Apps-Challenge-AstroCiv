@@ -129,7 +129,7 @@ namespace Mapmakers.UI
         {
             var keys = Keyboard.current;
             if (keys == null || done || Wiki.IsOpen) return;
-            if (keys.enterKey.wasPressedThisFrame || keys.spaceKey.wasPressedThisFrame) Next();
+            if (keys.enterKey.wasPressedThisFrame || keys.spaceKey.wasPressedThisFrame || keys.rightArrowKey.wasPressedThisFrame) Next();
             if (keys.backspaceKey.wasPressedThisFrame || keys.leftArrowKey.wasPressedThisFrame) Back();
             if (keys.escapeKey.wasPressedThisFrame && CanSkip) Finish();
         }
@@ -137,13 +137,16 @@ namespace Mapmakers.UI
         public void Next()
         {
             if (done) return;
+            AudioDirector.Play(Sfx.LineNext);
             if (step + 1 < lesson.steps.Length) Show(step + 1);
             else Finish();
         }
 
         public void Back()
         {
-            if (!done && step > 0) Show(step - 1);
+            if (done || step == 0) return;
+            AudioDirector.Play(Sfx.LineBack);
+            Show(step - 1);
         }
 
         public void Finish()
@@ -205,7 +208,7 @@ namespace Mapmakers.UI
             speakerRole.text = narrator ? "" : crew != null ? crew.role : speaker.role;
             if (narrator) return;
             portrait.color = crew != null ? GameScreen.CrewColor(id) : id == "you" ? Palette.Azure : Palette.LunarGray;
-            portraitLetter.text = id == "you" ? "You" : speakerName.text.Substring(0, 1);
+            portraitLetter.text = id == "you" ? "You" : crew != null ? crew.name.Substring(0, 1) : speakerRole.text.Substring(0, 1);
             portraitLetter.fontSize = id == "you" ? 36 : 60;
         }
 
@@ -232,8 +235,12 @@ namespace Mapmakers.UI
 
         void FlowArrow()
         {
-            var icon = UIKit.Icon(cards, "next", 48);
-            icon.color = Palette.Amber;
+            var arrow = UIKit.Rect(cards, "Arrow").gameObject.AddComponent<Image>();
+            arrow.sprite = UIKit.ArrowSprite;
+            arrow.color = Palette.Amber;
+            arrow.raycastTarget = false;
+            arrow.rectTransform.sizeDelta = new Vector2(44, 44);
+            arrow.rectTransform.localRotation = Quaternion.Euler(0, 0, 90);
         }
 
         void Option(string label, UnityEngine.Events.UnityAction action)

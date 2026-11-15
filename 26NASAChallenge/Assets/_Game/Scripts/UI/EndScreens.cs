@@ -103,6 +103,7 @@ namespace Mapmakers.UI
 
         void BuildFailure(MissionResult r)
         {
+            AudioDirector.Play(Sfx.MissionStopped);
             var card = Card(Palette.Amber);
             UIKit.Label(card, story.Debrief("title_fail"), 52, Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold)
                 .rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -40), new Vector2(1000, 70));
@@ -340,7 +341,7 @@ namespace Mapmakers.UI
             reveal.seconds = UIFx.Calm ? 0 : BeatSeconds;
             var gradeGroup = grade.gameObject.AddComponent<CanvasGroup>();
             gradeGroup.alpha = UIFx.Calm ? 1 : 0;
-            reveal.done = () => { gradeGroup.alpha = 1; UIFx.Pop(circle.transform); };
+            reveal.done = () => { gradeGroup.alpha = 1; UIFx.Pop(circle.transform); AudioDirector.Play(Sfx.MissionDone); };
 
             SkipButton(card);
             string menu = run.mode == GameMode.Free ? "free" : "story";

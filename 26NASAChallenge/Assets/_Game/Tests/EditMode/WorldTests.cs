@@ -160,13 +160,13 @@ namespace Mapmakers.Tests
             Assert.AreEqual(5, catalog.levels.Length);
             Assert.IsTrue(catalog.levels[0].IsDrawing, "tutorial 1 is the untimed drawing");
             Assert.AreEqual(0, catalog.levels[0].durationHours);
-            Assert.IsTrue(catalog.levels[1].IsLesson, "tutorial 2 meets the crew");
+            Assert.IsTrue(catalog.levels[1].IsTraining, "tutorial 2: the crew trains the player");
             Assert.AreEqual("Mars", catalog.levels[4].planet);
 
             double minutes = 0;
             foreach (var level in catalog.levels)
             {
-                foreach (var id in new[] { level.before, level.after, level.lesson })
+                foreach (var id in new[] { level.before, level.after })
                     if (!string.IsNullOrEmpty(id)) Assert.IsTrue(catalog.HasScene(id), level.id + " scene " + id);
                 foreach (var id in level.needs) Assert.IsNotNull(HelpData.Load().Lesson(id), level.id + " needs " + id);
                 Assert.IsFalse(string.IsNullOrEmpty(level.tag), level.id + " has a label");
@@ -176,7 +176,7 @@ namespace Mapmakers.Tests
                     Assert.DoesNotThrow(() => { var k = e.Kind; }, level.id + " event " + e.kind);
                     Assert.Less(e.hour, level.durationHours, level.id + " event after the evaluation");
                 }
-                if (!level.IsDrawing && !level.IsLesson) Assert.Greater(level.durationHours, 0, level.id);
+                if (!level.IsDrawing && !level.IsTraining) Assert.Greater(level.durationHours, 0, level.id);
                 minutes += level.durationHours * BalanceLoader.Load().realSecondsPerGameHour / 60;
             }
             Assert.That(minutes, Is.InRange(8, 13), "timed play at 1x leaves room for the tutorial and story in 12-16 minutes");
@@ -238,6 +238,7 @@ namespace Mapmakers.Tests
         {
             var run = MissionRun.ForLevel(LevelCatalog.Load().Level("L3"));
             run.StartMission();
+            run.clock.SetPaused(false);
             run.clock.SetSpeed(4);
             for (int i = 0; i < 200 && run.State.stormsStarted == 0; i++) run.Tick(0.25);
             Assert.AreEqual("storm_outside", CrewChat.When("geologist", run));

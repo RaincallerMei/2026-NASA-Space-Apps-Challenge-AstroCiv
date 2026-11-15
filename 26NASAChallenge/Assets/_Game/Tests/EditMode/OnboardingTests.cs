@@ -68,8 +68,7 @@ namespace Mapmakers.Tests
                 }
                 Assert.LessOrEqual(words, 200, lesson.id + " required part stays short: " + words + " words");
             }
-            Assert.IsTrue(Help.Lesson("lesson_teacher").required);
-            Assert.IsTrue(Help.Lesson("lesson_crew").required);
+            Assert.IsNull(Help.Lesson("lesson_teacher"), "the crew teaches the teacher's lesson in Tutorial 2");
         }
 
         // Every number the Wiki teaches is checked against the simulation settings.
@@ -78,6 +77,8 @@ namespace Mapmakers.Tests
         {
             var r = B.layout;
             StringAssert.Contains(r.cableGap + " tiles", PageText("b_SolarArray"));
+            StringAssert.Contains("power for " + SimText.Num(B.powerLossToleranceHours) + " hours", PageText("ending"));
+            StringAssert.Contains("below " + SimText.Num(B.safetyFailThreshold) + "% for " + SimText.Num(B.safetyFailHours) + " hours", PageText("ending"));
             StringAssert.Contains(Math.Round(r.longCableLoss * 100) + "%", PageText("b_SolarArray"));
             StringAssert.Contains(SimText.Num(B.Def(BuildingType.SolarArray).generationKW) + " kW", PageText("b_SolarArray"));
             StringAssert.Contains(r.cableGap + " tiles", PageText("b_Battery"));
@@ -145,6 +146,7 @@ namespace Mapmakers.Tests
             run.StartMission();
             run.Choose(BuildingType.Habitat);
             Assert.IsTrue(run.Place(8, 6).Ok || run.Place(4, 4).Ok || run.Place(10, 8).Ok, "room for a Habitat");
+            run.clock.SetPaused(false);
             run.clock.SetSpeed(1);
             for (int i = 0; i < 20 && run.State.events.Find(e => e.code == "critical_out") == null; i++) run.Tick(0.25);
             Assert.IsNotNull(run.State.events.Find(e => e.code == "critical_out"), "the Habitat alone has no power");
@@ -211,13 +213,13 @@ namespace Mapmakers.Tests
         }
 
         [Test]
-        public void Onboarding_RunsTeacherThenCrewThenOutpost()
+        public void Onboarding_RunsDrawingThenCrewThenOutpost()
         {
             var catalog = LevelCatalog.Load();
-            Assert.AreEqual("lesson_teacher", catalog.Level("L1").after);
-            CollectionAssert.AreEqual(new[] { "lesson_teacher" }, catalog.Level("T2").needs);
-            Assert.AreEqual("lesson_crew", catalog.Level("T2").lesson);
-            CollectionAssert.AreEqual(new[] { "lesson_teacher", "lesson_crew" }, catalog.Level("L2").needs);
+            Assert.AreEqual("", catalog.Level("L1").after, "no text lesson after the drawing");
+            CollectionAssert.IsEmpty(catalog.Level("T2").needs);
+            Assert.IsTrue(catalog.Level("T2").IsTraining);
+            CollectionAssert.IsEmpty(catalog.Level("L2").needs);
             Assert.Less(catalog.IndexOf("L1"), catalog.IndexOf("T2"));
             Assert.Less(catalog.IndexOf("T2"), catalog.IndexOf("L2"));
         }

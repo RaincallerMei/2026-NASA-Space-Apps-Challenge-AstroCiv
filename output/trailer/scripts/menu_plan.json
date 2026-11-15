@@ -1,0 +1,7 @@
+[
+  {"action":"record-start"},
+  {"action":"wait","seconds":4.5},
+  {"action":"record-stop","name":"01_menu"},
+  {"action":"click","x":0.5,"y":0.398,"after":0.8},
+  {"action":"screenshot","name":"story-selection"}
+]

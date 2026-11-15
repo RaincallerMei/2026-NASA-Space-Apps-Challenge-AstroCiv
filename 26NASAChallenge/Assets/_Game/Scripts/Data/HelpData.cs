@@ -26,6 +26,10 @@ namespace Mapmakers.Data
         public LessonStep[] steps = new LessonStep[0];
     }
 
+    // One step of Tutorial 2. 'done' and 'start' are read by Training; 'target' is what the arrow points at.
+    [Serializable]
+    public class TrainingStep { public string id, speaker, text, goal, target, done, start; }
+
     [Serializable]
     public class WikiPage
     {
@@ -41,6 +45,7 @@ namespace Mapmakers.Data
         public string[] sections;
         public Speaker[] speakers;
         public Lesson[] lessons;
+        public TrainingStep[] training;
         public WikiPage[] wiki;
 
         public const string ResourcePath = "Help";

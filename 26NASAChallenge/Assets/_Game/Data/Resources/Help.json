@@ -1,176 +1,51 @@
 {
-  "note": "Wiki pages and onboarding lessons. Every rule here must match Balance.json and the simulation (Simulator.cs, Layout.cs). Live numbers (costs, kW, sizes) are added by code from Balance.json. Lessons marked required must be seen once before the levels that list them in 'needs'; after that they can be skipped or replayed from the Wiki.",
+  "note": "Wiki pages and onboarding lessons. Every rule here must match Balance.json and the simulation (Simulator.cs, Layout.cs). Live numbers (costs, kW, sizes) are added by code from Balance.json. Lessons marked required must be seen once before the levels that list them in 'needs'; after that they can be skipped or replayed from the Wiki. The teacher's lesson was removed on 2026-11-15: Tutorial 2 teaches its content through the crew. 'training' is Tutorial 2: one step at a time, each done when its 'done' condition holds (Training.cs); 'target' is what the arrow points at; 'start' begins an event.",
   "speakers": [
     { "id": "teacher", "name": "Your teacher", "role": "Teacher" },
     { "id": "narrator", "name": "", "role": "" },
     { "id": "you", "name": "You", "role": "Commander" }
   ],
   "sections": [ "Start here", "Buildings", "Resources", "Links", "Crew", "Events", "Map", "Lessons" ],
-  "lessons": [
-    {
-      "id": "lesson_teacher",
-      "title": "Teacher's Lesson",
-      "image": "classroom",
-      "fallback": "",
-      "required": true,
-      "steps": [
-        {
-          "speaker": "teacher",
-          "text": "A civilization needs more than buildings. It needs people, resources, science and a plan.",
-          "more": "Let's turn your drawing into a plan a real crew could live in."
-        },
-        {
-          "speaker": "teacher",
-          "text": "Great drawing! Each building on it has a job.",
-          "cards": [
-            { "icon": "Habitat", "title": "Habitat", "text": "Home for the crew. Uses power." },
-            { "icon": "SolarArray", "title": "Solar Array", "text": "Makes power from sunlight." },
-            { "icon": "Greenhouse", "title": "Greenhouse", "text": "Grows food. Needs soil, water, power." }
-          ],
-          "more": "A real base also needs Air Support, a Battery, a Radio Dish and a Rover Garage. You will meet them later."
-        },
-        {
-          "speaker": "teacher",
-          "text": "A base runs on resources. You will see them at the top of the screen.",
-          "cards": [
-            { "icon": "power", "title": "Power", "text": "From Solar Arrays." },
-            { "icon": "air", "title": "Air", "text": "Oxygen to breathe." },
-            { "icon": "water", "title": "Water", "text": "To drink and to grow plants." },
-            { "icon": "food", "title": "Food", "text": "Meals for the crew." },
-            { "icon": "soil", "title": "Soil", "text": "For the Greenhouse." },
-            { "icon": "supplies", "title": "Supplies", "text": "Pay for new buildings." }
-          ],
-          "more": "Hover over or tap any number in the top bar to see what it means."
-        },
-        {
-          "speaker": "teacher",
-          "text": "Buildings make, store and use resources.",
-          "flow": true,
-          "cards": [
-            { "icon": "SolarArray", "title": "Solar Array", "text": "makes power" },
-            { "icon": "Battery", "title": "Battery", "text": "stores spare power" },
-            { "icon": "Habitat", "title": "Habitat", "text": "uses power" }
-          ],
-          "more": "Air Support uses power to make air. The Greenhouse uses power and water to make food. If power out is bigger than power in, the Battery drains."
-        },
-        {
-          "speaker": "teacher",
-          "text": "Buildings help each other when they are close.",
-          "cards": [
-            { "icon": "Battery", "title": "Battery", "text": "Near Solar Arrays: no wasted power." },
-            { "icon": "LifeSupport", "title": "Air Support", "text": "Next to the Habitat: more air." },
-            { "icon": "Greenhouse", "title": "Greenhouse", "text": "Next to Air Support: saves power." },
-            { "icon": "RoverGarage", "title": "Rover Garage", "text": "Near soil and water: quick trips." }
-          ],
-          "more": "When you pick a building, green glowing tiles show good spots. They are only tips: you may build on any allowed tile."
-        },
-        {
-          "speaker": "teacher",
-          "text": "Plan first, then build. Four rules to start:",
-          "cards": [
-            { "icon": "Habitat", "title": "1. Habitat first", "text": "The base grows around it." },
-            { "icon": "SolarArray", "title": "2. Bright ground", "text": "Solar Arrays love sun." },
-            { "icon": "power", "title": "3. Power in > out", "text": "Watch the top bar." },
-            { "icon": "air", "title": "4. Air first", "text": "Air before plants." }
-          ],
-          "more": "Stuck? Press Wiki at the bottom left. It explains every building, resource and event.",
-          "button": "Thank you!"
-        }
-      ]
-    },
-    {
-      "id": "lesson_crew",
-      "title": "Meet the Crew",
-      "image": "agency",
-      "fallback": "launch",
-      "required": true,
-      "steps": [
-        {
-          "speaker": "narrator",
-          "text": "Years later, at the space agency. Today you meet the crew you will lead."
-        },
-        {
-          "speaker": "engineer",
-          "text": "Hi, Commander! I'm Priya, the engineer. I love a careful plan.",
-          "cards": [
-            { "icon": "SolarArray", "title": "Solar Arrays", "text": "I look after them." },
-            { "icon": "Battery", "title": "Battery", "text": "I keep it charged." },
-            { "icon": "power", "title": "Power", "text": "Every building needs it." }
-          ]
-        },
-        {
-          "speaker": "engineer",
-          "text": "My job is power. Your job: keep power in bigger than power out.",
-          "replies": [
-            { "text": "What if power runs short?", "answer": "The base switches off what can wait. Air Support stays on longest." },
-            { "text": "Why does air come first?", "answer": "Air Support makes our air. Without power, the air runs down." }
-          ],
-          "more": "When power runs short, things switch off in this order: Radio Dish and Rover Garage, then Greenhouse, then Shelter."
-        },
-        {
-          "speaker": "botanist",
-          "text": "I'm Mateo, the botanist. Plants make me happy, and they feed us!",
-          "cards": [
-            { "icon": "Greenhouse", "title": "Greenhouse", "text": "Where I grow food." },
-            { "icon": "food", "title": "Food", "text": "Three meals a day each." }
-          ]
-        },
-        {
-          "speaker": "botanist",
-          "text": "My Greenhouse needs soil, water and power. Yuki's rover brings the soil and water.",
-          "flow": true,
-          "cards": [
-            { "icon": "RoverGarage", "title": "Rover Garage", "text": "sends the rover" },
-            { "icon": "soil", "title": "Soil", "text": "6 bags to build" },
-            { "icon": "Greenhouse", "title": "Greenhouse", "text": "grows food" }
-          ],
-          "replies": [
-            { "text": "Where should the Rover Garage go?", "answer": "Near brown soil dots and blue water dots. Short trips are faster." }
-          ],
-          "more": "The rover fetches soil first. When there is enough for the Greenhouse, it fetches water."
-        },
-        {
-          "speaker": "geologist",
-          "text": "I'm Yuki, the geologist. I explore outside, study rocks and search for minerals and ice.",
-          "cards": [
-            { "icon": "rover", "title": "Rover", "text": "I drive it." },
-            { "icon": "ore", "title": "Rocks", "text": "Clues about the Moon." }
-          ]
-        },
-        {
-          "speaker": "geologist",
-          "text": "When I'm far away, call me on the Radio Dish. Without power, I can't hear you.",
-          "cards": [
-            { "icon": "Communications", "title": "Radio Dish", "text": "Keep it powered." }
-          ]
-        },
-        {
-          "speaker": "geologist",
-          "text": "Sometimes the Sun throws out fast particles: a solar storm. Mission control warns us first.",
-          "flow": true,
-          "cards": [
-            { "icon": "alert", "title": "1. Warning", "text": "Read the Information panel." },
-            { "icon": "Communications", "title": "2. Call Yuki", "text": "Use the Radio Dish." },
-            { "icon": "Shelter", "title": "3. Shelter on", "text": "Keep it powered." }
-          ],
-          "replies": [
-            { "text": "Do the solar panels stop?", "answer": "No. The Sun still shines. Solar Arrays keep working." },
-            { "text": "What should I watch?", "answer": "Warnings in the Information panel, and my name in the crew list." }
-          ],
-          "more": "The particles arrive about 12 hours after the warning. Crew outside, or without a powered Shelter, lose crew safety."
-        },
-        {
-          "speaker": "you",
-          "text": "My crew counts on me: power for Priya, soil and water for Mateo, a radio link for Yuki.",
-          "cards": [
-            { "icon": "power", "title": "Priya", "text": "Power" },
-            { "icon": "soil", "title": "Mateo", "text": "Soil and water" },
-            { "icon": "Communications", "title": "Yuki", "text": "Radio link" }
-          ],
-          "button": "Let's go!"
-        }
-      ]
-    }
+  "lessons": [],
+  "training": [
+    {"id": "p_hello", "speaker": "engineer", "text": "Hi, Commander! I'm Priya, the engineer. Welcome to our practice base at the space agency.", "goal": "Click Priya to say hi.", "target": "crew:engineer", "done": "chat:engineer"},
+    {"id": "play", "speaker": "engineer", "text": "Time is stopped, so nothing moves yet. Press Play at the top right to start the clock.", "goal": "Press Play to start time.", "target": "play", "done": "playing"},
+    {"id": "pause", "speaker": "engineer", "text": "Time is running! Press the same button to pause. You can still build and give orders while paused.", "goal": "Press Pause.", "target": "play", "done": "halt"},
+    {"id": "fast", "speaker": "engineer", "text": "This button runs time 2× or 4× faster. Speed up when the base is calm.", "goal": "Press the speed button: 2× or 4×.", "target": "speed", "done": "speed"},
+    {"id": "habitat", "speaker": "engineer", "text": "Let's build! The Habitat is the crew's home. Pick its card. Glowing green tiles are good spots.", "goal": "Build the Habitat.", "target": "card:Habitat", "done": "built:Habitat"},
+    {"id": "supplies", "speaker": "engineer", "text": "The Habitat cost Supplies. Every building does. Your Supplies are at the end of the top bar.", "goal": "Supplies: press Next.", "target": "chip:supplies", "done": "next"},
+    {"id": "air", "speaker": "engineer", "text": "Next, Air Support. It uses power to make the air we breathe. Put it right next to the Habitat.", "goal": "Build Air Support next to the Habitat.", "target": "card:LifeSupport", "done": "built:LifeSupport"},
+    {"id": "solar", "speaker": "engineer", "text": "Both need power. Solar Arrays turn sunlight into power. Bright ground is best.", "goal": "Build a Solar Array on bright ground.", "target": "card:SolarArray", "done": "built:SolarArray"},
+    {"id": "power", "speaker": "engineer", "text": "See Power at the top? Power in must beat power out, so it should show +.", "goal": "Add Solar Arrays until Power shows +.", "target": "chip:power", "done": "power"},
+    {"id": "battery", "speaker": "engineer", "text": "A Battery stores spare power for later. Within 2 tiles of a Solar Array, no power is wasted.", "goal": "Build a Battery near a Solar Array.", "target": "card:Battery", "done": "built:Battery"},
+    {"id": "lifeline", "speaker": "engineer", "text": "Air, Water and Food keep us alive. If any one of them reaches 0, the mission ends!", "goal": "Air, Water, Food: press Next.", "target": "chip:air", "done": "next"},
+    {"id": "outage", "speaker": "engineer", "text": "An empty Battery alone is fine. If Habitat or Air Support lose power for {outage}, the mission ends.", "goal": "Power rule: press Next.", "target": "chip:power", "done": "next"},
+    {"id": "warnings", "speaker": "engineer", "text": "When something runs low, a ring and an arrow point at it. Hover any number to learn more.", "goal": "Warnings: press Next.", "target": "chip:water", "done": "next"},
+    {"id": "y_hello", "speaker": "geologist", "text": "Hi, I'm Yuki, the geologist! I explore outside and look for minerals and ice.", "goal": "Click Yuki to say hi.", "target": "crew:geologist", "done": "chat:geologist"},
+    {"id": "radio", "speaker": "geologist", "text": "When I'm far away, you call me on the Radio Dish. It needs power to work.", "goal": "Build the Radio Dish.", "target": "card:Communications", "done": "built:Communications"},
+    {"id": "rover", "speaker": "geologist", "text": "My rover brings soil, then water. Build its garage near the brown soil dots.", "goal": "Build the Rover Garage near soil.", "target": "card:RoverGarage", "done": "built:RoverGarage"},
+    {"id": "power_rover", "speaker": "engineer", "text": "The Radio Dish and the rover use power too. Keep Power at +.", "goal": "Keep Power at +.", "target": "chip:power", "done": "power"},
+    {"id": "m_hello", "speaker": "botanist", "text": "Hello! I'm Mateo, the botanist. I grow our food in the Greenhouse.", "goal": "Click Mateo to say hi.", "target": "crew:botanist", "done": "chat:botanist"},
+    {"id": "run", "speaker": "botanist", "text": "My Greenhouse needs 6 bags of soil, and rover trips take time. Let time run, fast if you like!", "goal": "Press Play to let time run.", "target": "play", "done": "playing"},
+    {"id": "soil", "speaker": "botanist", "text": "Watch Soil at the top. The rover brings 2 bags on each trip.", "goal": "Wait for 6 bags of soil.", "target": "chip:soil", "done": "soil"},
+    {"id": "greenhouse", "speaker": "botanist", "text": "Now my Greenhouse! Put it next to Air Support. They share air pipes and save power.", "goal": "Build the Greenhouse next to Air Support.", "target": "card:Greenhouse", "done": "built:Greenhouse"},
+    {"id": "power_plants", "speaker": "engineer", "text": "Plants need power too. If Power shows −, add a Solar Array.", "goal": "Keep Power at +.", "target": "chip:power", "done": "power"},
+    {"id": "harvest", "speaker": "botanist", "text": "Plants drink water, and now the rover brings it. Let's wait for the first harvest!", "goal": "Grow the first harvest.", "target": "chip:food", "done": "harvest"},
+    {"id": "shadow", "speaker": "engineer", "text": "Uh oh, a long shadow! Less sun means less power. Let's save some. Click the Greenhouse.", "goal": "Click the Greenhouse on the map.", "target": "building:Greenhouse", "done": "select:Greenhouse", "start": "shadow"},
+    {"id": "rest", "speaker": "engineer", "text": "Press Turn off. The plants can rest. Air Support always stays on.", "goal": "Turn off the Greenhouse.", "target": "toggle:Greenhouse", "done": "off:Greenhouse"},
+    {"id": "shadow_wait", "speaker": "engineer", "text": "Now the Battery helps us. When power out beats power in, it drains. Wait for the sun.", "goal": "Wait for the shadow to pass.", "target": "chip:battery", "done": "shadow_over"},
+    {"id": "back_on", "speaker": "botanist", "text": "The sun is back! Please turn my Greenhouse on again.", "goal": "Turn the Greenhouse back on.", "target": "toggle:Greenhouse", "done": "on:Greenhouse"},
+    {"id": "battery2", "speaker": "engineer", "text": "You got through the dark, so a second Battery is unlocked. Put it near a Solar Array.", "goal": "Build a second Battery.", "target": "card:Battery", "done": "built:Battery:2"},
+    {"id": "storm", "speaker": "geologist", "text": "Storm warning! Solar particles arrive in 12 hours, and I'm outside! First, stop time.", "goal": "Press Pause.", "target": "play", "done": "paused", "start": "storm"},
+    {"id": "recall", "speaker": "geologist", "text": "Time stands still, but you can still give orders. Call me in with the Radio Dish!", "goal": "Call Yuki inside.", "target": "alert:crew", "done": "recall"},
+    {"id": "shelter", "speaker": "geologist", "text": "Now build the Shelter within 2 tiles of the Habitat. It shields us from particles.", "goal": "Build the Shelter near the Habitat.", "target": "card:Shelter", "done": "built:Shelter"},
+    {"id": "shelter_on", "speaker": "geologist", "text": "A new Shelter starts switched off to save power. Turn it on now!", "goal": "Turn on the Shelter.", "target": "alert:Shelter", "done": "on:Shelter"},
+    {"id": "resume", "speaker": "engineer", "text": "All set. Press Play to start time again.", "goal": "Press Play.", "target": "play", "done": "playing"},
+    {"id": "storm_wait", "speaker": "geologist", "text": "We're in the Shelter. If Crew safety stays low too long, the mission ends. Wait for the all clear.", "goal": "Stay safe until the storm ends.", "target": "chip:crew", "done": "storm_over"},
+    {"id": "wiki", "speaker": "engineer", "text": "Forgot something? The Wiki explains every building, resource and event. Open it any time.", "goal": "Open the Wiki.", "target": "wiki", "done": "wiki"},
+    {"id": "time_limit", "speaker": "geologist", "text": "Real missions have a time limit. This flag counts down to the inspection.", "goal": "Time limit: press Next.", "target": "eval", "done": "next"},
+    {"id": "grade", "speaker": "botanist", "text": "At inspection, mission control grades your base: S, A, B or C. Running out of time is not failing.", "goal": "Grades: press Next.", "target": "eval", "done": "next"},
+    {"id": "plan", "speaker": "engineer", "text": "{level} lasts {mission}: about {minutes} minutes at 1×. Pause to think, speed up when it's calm.", "goal": "Press Next to finish.", "target": "speed", "done": "next"}
   ],
   "wiki": [
     {
@@ -182,7 +57,7 @@
         { "icon": "SolarArray", "text": "3. Build Solar Arrays on bright ground. Power in must beat power out." },
         { "icon": "Battery", "text": "4. Put a Battery within 2 tiles of your Solar Arrays to save spare power." },
         { "icon": "RoverGarage", "text": "5. A Rover Garage near soil and water fetches soil for the Greenhouse." },
-        { "icon": "pause", "text": "6. Pause any time to think. When time runs out, your base is inspected. That is not a failure." }
+        { "icon": "pause", "text": "6. Time starts when you press Play. Pause any time to think. When time runs out, your base is inspected. That is not a failure." }
       ]
     },
     {
@@ -204,6 +79,18 @@
         { "icon": "build", "text": "Click a building card, then click the map. Right-click or press Cancel to stop." },
         { "icon": "info", "text": "Click a building on the map to see what it needs. Some can be turned off." },
         { "icon": "pause", "text": "Space: pause or resume. H: open this Wiki. Esc: menu." }
+      ]
+    },
+    {
+      "id": "ending", "section": "Start here", "title": "What ends a mission", "icon": "alert",
+      "summary": "Keep Air, Water and Food above 0 and the Habitat powered.",
+      "rows": [
+        { "icon": "air", "text": "Air at 0: the mission stops." },
+        { "icon": "water", "text": "Water at 0: the mission stops." },
+        { "icon": "food", "text": "Food at 0: the mission stops." },
+        { "icon": "power", "text": "Habitat or Air Support without power for 10 hours: the mission stops. An empty Battery alone does not stop it." },
+        { "icon": "crew", "text": "Crew safety below 50% for 2 hours in a solar storm: the mission stops." },
+        { "icon": "flag", "text": "The inspection at the end of the countdown is not a failure. It gives your grade." }
       ]
     },
     {
@@ -455,22 +342,17 @@
       ]
     },
     {
-      "id": "l_teacher", "section": "Lessons", "title": "Teacher's Lesson", "icon": "star", "lesson": "lesson_teacher",
-      "summary": "Buildings, resources and planning.",
+      "id": "l_crew", "section": "Lessons", "title": "Tutorial 2: Practice Base", "icon": "crew",
+      "summary": "Priya, Yuki and Mateo show you a whole mission. Play it again from Story Mode.",
       "rows": [
-        { "icon": "SolarArray", "text": "Solar Arrays make power. A Battery stores it. Buildings use it." },
-        { "icon": "air", "text": "Resources: power, air, water, food, soil and supplies." },
-        { "icon": "next", "text": "Close buildings help each other." },
-        { "icon": "Habitat", "text": "Habitat first, bright ground for Solar Arrays, power in beats power out, air before plants." }
-      ]
-    },
-    {
-      "id": "l_crew", "section": "Lessons", "title": "Meet the Crew", "icon": "crew", "lesson": "lesson_crew",
-      "summary": "Priya, Mateo and Yuki.",
-      "rows": [
-        { "icon": "power", "text": "Priya needs steady power." },
-        { "icon": "soil", "text": "Mateo needs soil and water from the rover." },
-        { "icon": "Communications", "text": "Yuki needs a powered Radio Dish. Call her in when a storm warning comes." }
+        { "icon": "pause", "text": "Priya: Play starts time, the same button pauses, the speed button runs 2× or 4×." },
+        { "icon": "power", "text": "Priya: Habitat, Air Support, Solar Arrays, Battery. Keep Power at +." },
+        { "icon": "air", "text": "Air, Water or Food at 0 ends a mission. A ring and an arrow show what runs low." },
+        { "icon": "Communications", "text": "Yuki: the Radio Dish keeps you in contact. Her rover brings soil, then water." },
+        { "icon": "Greenhouse", "text": "Mateo: the Greenhouse needs 6 soil and sits next to Air Support." },
+        { "icon": "power", "text": "Long shadow: less sun. Turn off the Greenhouse to save power." },
+        { "icon": "alert", "text": "Storm warning: Pause, call Yuki in, switch on the Shelter, press Play." },
+        { "icon": "flag", "text": "Missions have a time limit. At inspection you get a grade: S, A, B or C." }
       ]
     }
   ]

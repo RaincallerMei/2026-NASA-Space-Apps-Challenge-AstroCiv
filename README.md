@@ -6,7 +6,7 @@ A Unity space-engineering game for ages 7–12, created for the 2026 NASA Space 
 
 Use a current desktop browser with WebGL support. No Unity installation, GitHub account, NASA API key or sign-in is needed for the hosted game. The initial Unity download is about 70 MB; allow it to finish. Mobile performance and touch controls are not guaranteed. The current publishing/access evidence is recorded in [PUBLIC_ACCESS_CHECK.md](Work%20Log%20and%20Review/PUBLIC_ACCESS_CHECK.md).
 
-The available browser snapshot currently predates the newest onboarding source edits. See the verification record for build freshness and any unresolved rebuild findings.
+The WebGL build completed on November 15, 2026 and includes the latest onboarding, wiki and interface source changes. See the verification record for build and public browser checks.
 
 ## Controls
 

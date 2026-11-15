@@ -178,7 +178,7 @@ namespace Mapmakers.Tests
         public void Story_HasHints_Cards_FailureText_AndTheFinalMessage()
         {
             var story = StoryData.Load();
-            Assert.AreEqual(10, story.hints.Length);
+            Assert.AreEqual(18, story.hints.Length, "10 tips plus 8 \"Next:\" and suggestion tips");
             Assert.GreaterOrEqual(story.cards.Length, 9);
             foreach (var reason in new[] { "NoAir", "NoFood", "NoWater", "PowerLoss", "RadiationOutside", "RadiationNoShelter" })
             {

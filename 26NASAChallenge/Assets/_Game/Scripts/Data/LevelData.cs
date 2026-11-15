@@ -8,17 +8,20 @@ namespace Mapmakers.Data
     [Serializable]
     public class LevelDef
     {
-        public string id, title, subtitle, planet, mode, before, after, startBase;
+        public string id, tag, title, subtitle, planet, mode, before, after, startBase, lesson;
         public double durationHours;
         public int seed = -1;
         public int startSupplies = -1;
         public int maxBatteries = 1;
         public bool shelterUnlocked, saveBase;
         public string[] build = new string[0];
+        public string[] needs = new string[0];
         public string[] goals = new string[0];
         public ScheduledEvent[] events = new ScheduledEvent[0];
 
         public bool IsDrawing => mode == "drawing";
+        public bool IsLesson => mode == "lesson";
+        public string Label => string.IsNullOrEmpty(tag) ? id : tag;
         public PlanetProfile Planet => PlanetProfile.Get(planet);
 
         public Scenario MakeScenario()
@@ -53,6 +56,9 @@ namespace Mapmakers.Data
         }
 
         public LevelDef Level(string id) => Array.Find(levels, l => l.id == id);
+
+        // A cutscene from this file or a lesson from Help.json.
+        public bool HasScene(string id) => Cutscene(id) != null || HelpData.Load().Lesson(id) != null;
         public CutsceneDef Cutscene(string id) => string.IsNullOrEmpty(id) ? null : Array.Find(cutscenes, c => c.id == id);
 
         public string GoalLabel(string id)

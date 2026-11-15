@@ -91,7 +91,7 @@ namespace Mapmakers.Sim
                     break;
                 case BuildingType.Greenhouse:
                     list.Add(Link("plants", GapTo(balance, s, BuildingType.LifeSupport, x, y, w, h, ignoreId) <= r.plantLoopGap,
-                        "Shares air with Life Support.", "Put it next to Life Support to share air."));
+                        "Shares air with Air Support.", "Put it next to Air Support to share air."));
                     break;
                 case BuildingType.Shelter:
                     list.Add(Link("shelter", GapTo(balance, s, BuildingType.Habitat, x, y, w, h, ignoreId) <= r.shelterGap,
@@ -110,6 +110,43 @@ namespace Mapmakers.Sim
         public static List<LinkCheck> Checks(Balance balance, TerrainGrid terrain, SimState s, PlacedBuilding b)
         {
             return Checks(balance, terrain, s, b.type, b.x, b.y, b.id);
+        }
+
+        // Optional tips: allowed spots where every link is met. Solar Arrays also want the brightest ground,
+        // and ignore the Battery link until a Battery exists. Never a rule: any allowed spot can still be used.
+        public static List<(int x, int y)> Suggest(Simulator sim, SimState s, BuildingType type)
+        {
+            var result = new List<(int x, int y)>();
+            var balance = sim.balance;
+            var terrain = sim.terrain;
+            var def = balance.Def(type);
+            bool solar = type == BuildingType.SolarArray;
+            if (!solar && (!sim.layoutRules || Checks(balance, terrain, s, type, 0, 0).Count == 0)) return result;
+            if (sim.layoutRules && type != BuildingType.Habitat && s.Count(BuildingType.Habitat) == 0) return result;
+            bool hasBattery = s.Count(BuildingType.Battery) > 0;
+            var spots = new List<(int x, int y, double sun)>();
+            double bestSun = 0;
+            for (int y = 0; y < terrain.height; y++)
+                for (int x = 0; x < terrain.width; x++)
+                {
+                    if (!Placement.Fits(sim, s, type, x, y)) continue;
+                    if (sim.layoutRules && !LinksMet(Checks(balance, terrain, s, type, x, y), solar && !hasBattery)) continue;
+                    double sun = terrain.AverageSun(x, y, def.width, def.height);
+                    bestSun = Math.Max(bestSun, sun);
+                    spots.Add((x, y, sun));
+                }
+            foreach (var spot in spots)
+                if (!solar || spot.sun >= bestSun - BrightMargin) result.Add((spot.x, spot.y));
+            return result;
+        }
+
+        const double BrightMargin = 0.08;
+
+        static bool LinksMet(List<LinkCheck> checks, bool ignoreCable)
+        {
+            foreach (var c in checks)
+                if (!c.met && !(ignoreCable && c.id == "cable")) return false;
+            return true;
         }
 
         static LinkCheck Link(string id, bool met, string good, string bad) => new LinkCheck { id = id, met = met, good = good, bad = bad };

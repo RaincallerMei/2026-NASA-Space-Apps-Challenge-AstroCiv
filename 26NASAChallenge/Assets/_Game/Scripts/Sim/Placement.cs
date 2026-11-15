@@ -44,7 +44,15 @@ namespace Mapmakers.Sim
                 return PlacementResult.Fail(PlacementReason.NeedSoil, "Needs " + def.soilCost + " bags of soil. A rover brings soil.");
             if (sim.layoutRules && type != BuildingType.Habitat && s.Count(BuildingType.Habitat) == 0)
                 return PlacementResult.Fail(PlacementReason.HabitatFirst, "Place the Habitat first. The base grows around it.");
+            return CheckGround(sim, s, type, x, y);
+        }
 
+        // Footprint, terrain, overlap and base area only (no cost, count or unlock rules).
+        public static PlacementResult CheckGround(Simulator sim, SimState s, BuildingType type, int x, int y)
+        {
+            var balance = sim.balance;
+            var terrain = sim.terrain;
+            var def = balance.Def(type);
             for (int dy = 0; dy < def.height; dy++)
             {
                 for (int dx = 0; dx < def.width; dx++)
@@ -62,6 +70,8 @@ namespace Mapmakers.Sim
                 return PlacementResult.Fail(PlacementReason.OutsideBase, "Too far from the Habitat. Stay inside the base area.");
             return new PlacementResult { reason = PlacementReason.Ok, message = "" };
         }
+
+        public static bool Fits(Simulator sim, SimState s, BuildingType type, int x, int y) => CheckGround(sim, s, type, x, y).Ok;
 
         public static bool InsideBase(Simulator sim, SimState s, int x, int y, int w, int h)
         {

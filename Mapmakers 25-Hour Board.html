@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mapmakers 25-Hour Board</title>
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -75,6 +76,20 @@ summary .mini i{display:block;height:100%;background:var(--ok);width:0}
 input[type=range]{width:100%;accent-color:var(--lamp)}
 .clock output{font-family:var(--display);font-size:20px;color:var(--lamp);min-width:92px;text-align:right}
 .src{font-size:13.5px;color:var(--muted)}
+.runlog summary{grid-template-columns:1fr auto}
+.runlog summary::after{content:"+";font-size:24px;color:var(--lamp)}
+.runlog[open] summary::after{content:"−"}
+.runlog summary small{display:block;font:13px var(--body);color:var(--muted);margin-top:4px}
+#runlogList{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+#runlogList li{padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);line-height:1.65}
+#runlogList li>b:first-child{display:block;color:var(--lamp);font:17px var(--display);margin-bottom:6px}
+.draft{margin:16px 0}
+.draft label{display:block;font:19px var(--display);color:var(--lamp);margin-bottom:8px}
+.draft textarea{display:block;width:100%;resize:vertical;min-height:90px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:12px;font:15px/1.6 var(--body)}
+.draft .draft-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
+textarea:focus-visible{outline:3px solid var(--ok);outline-offset:2px}
+.submit-steps li{margin:10px 0}
+.status-note{color:var(--muted);font-size:13px}
 @media (max-width:480px){h1{font-size:24px}.task{grid-template-columns:auto 1fr}.tags{grid-column:2;justify-content:flex-start}}
 </style>
 </head>
@@ -90,6 +105,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
   <button role="tab" data-p="tasks">3 Task list</button>
   <button role="tab" data-p="ship">4 Ship it</button>
   <button role="tab" data-p="ai">5 AI use</button>
+  <button role="tab" data-p="submit">6 Submission desk</button>
 </nav>
 
 <!-- ================= STORY ================= -->
@@ -220,11 +236,12 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
   <button class="btn" id="closeAll">Close all</button>
   <button class="btn" id="reset">Reset checks</button>
 </div>
-<div class="card" id="runlog"><h3>Claude Code run log</h3>
+<details class="runlog" id="runlog"><summary><span><h3>Claude Code run log</h3><small>Historical checkpoints and evidence · expand to read</small></span></summary><div class="inner">
 <ul class="src" id="runlogList">
+<li><b>Publication and submission desk, Nov 15</b> Added page 6 with all eight guide fields, copyable drafts, browser-local saving, demo limits and submission steps. Audio research includes <a href="Work%20Log%20and%20Review/AUDIO_CANDIDATES.md">nine music candidates and free SFX packs</a> plus <a href="Work%20Log%20and%20Review/AUDIO_CREATION_PROMPTS.md">creation tools and prompts</a>; no audio is claimed as imported. Desktop/mobile board checks passed. <a href="Work%20Log%20and%20Review/PUBLIC_ACCESS_CHECK.md">Public access and build freshness</a> records the publishing result and any rebuild limitations. Historical checkpoints below describe their own builds.</li>
 <li><b>AI-use record reconciled, Nov 14</b> Added page 5 and the <a href="Work%20Log%20and%20Review/AI_USE_LOG.md">maintained AI-use log</a>: purpose, method, tool, prompt/output evidence, review and unknown details. Team confirms <b>all project-created art is AI-created</b>. Seven Midjourney cutscene originals matched to imports by SHA-256; the available AstroCiv pack has 142 exported PNGs. Credits and submission text updated. Historical milestone/test records below are retained; this documentation pass did not rerun game tests or prove cloud-agent completion.</li>
-<li><b>Tutorial and sequence verified</b> Open <b>Assets/_Game/Scenes/Boot.unity</b> and press Play. Dream → Habitat/Solar/Greenhouse drawing tasks → teacher → three photo cards → commander → persistent outpost/shadow/harvest → storm → debrief → window/message ending → Blueprint v2. <b>57/57 tests passed</b>, including the complete campaign, timer safety, enforced placement order and failure/Retry guards. <a href="26NASAChallenge/GAMEPLAY_SEQUENCE.md">Sequence details</a> · <a href="review/campaign-tests.json">Test evidence</a> · <a href="review/tutorial-greybox.png">Tutorial screenshot</a>. Story scenes use labelled greybox/text placeholders; final art and crew chat remain separate.</li>
-<li><b>Functional Main scene — verified</b> Runtime ticking, clickable 20×15 greybox map, footprint preview/rejection reasons, six core buildings plus Shelter, inspection/toggles, totals/rates/warnings, Pause/1×/2×/4×, Reset/Retry, crew recall, DONKI warning and text debrief are connected. <b>55/55 tests passed after fixes</b> (53 EditMode + 2 real-scene PlayMode), including win/debrief and failure/retry. <a href="review/runtime-tests.json">Test evidence</a> · <a href="review/mission-greybox.png">1080p screenshot</a>. Open Assets/_Game/Scenes/Main.unity and press Play. Final Tilemap artwork, tutorial, chat and illustrated ending remain for Opus.</li>
+<li><b>Tutorial and sequence verified</b> Open <b>Assets/_Game/Scenes/Boot.unity</b> and press Play. Dream → Habitat/Solar/Greenhouse drawing tasks → teacher → three photo cards → commander → persistent outpost/shadow/harvest → storm → debrief → window/message ending → Blueprint v2. <b>57/57 tests passed</b>, including the complete campaign, timer safety, enforced placement order and failure/Retry guards. <a href="26NASAChallenge/GAMEPLAY_SEQUENCE.md">Sequence details</a> · <a href="Work%20Log%20and%20Review/campaign-tests.json">Test evidence</a> · <a href="Work%20Log%20and%20Review/tutorial-greybox.png">Tutorial screenshot</a>. Story scenes use labelled greybox/text placeholders; final art and crew chat remain separate.</li>
+<li><b>Functional Main scene — verified</b> Runtime ticking, clickable 20×15 greybox map, footprint preview/rejection reasons, six core buildings plus Shelter, inspection/toggles, totals/rates/warnings, Pause/1×/2×/4×, Reset/Retry, crew recall, DONKI warning and text debrief are connected. <b>55/55 tests passed after fixes</b> (53 EditMode + 2 real-scene PlayMode), including win/debrief and failure/retry. <a href="Work%20Log%20and%20Review/runtime-tests.json">Test evidence</a> · <a href="Work%20Log%20and%20Review/mission-greybox.png">1080p screenshot</a>. Open Assets/_Game/Scenes/Main.unity and press Play. Final Tilemap artwork, tutorial, chat and illustrated ending remain for Opus.</li>
 <li><b>M0</b> Unity 6000.6.7f1, URP 2D, new Input System only, Web build module installed. Editor driven live through unity-cli.</li>
 <li><b>M1</b> Pure C# sim + 29 EditMode tests, all green in the open Editor (power deficit, load shedding, storm does not cut solar, greenhouse, placement, determinism).</li>
 <li><b>M2</b> Six real fixtures fetched 2026-11-14 (none synthetic): DONKI X5.8 flare 2024-05-11, RadLab ISS, LOLA south-pole crop, POWER Mississauga, 8 OSDR cards, 3 CSA cards. Loaders, Story.json (646 words story + chat), DATA_SOURCES.md. 38/38 EditMode tests green. Issues: api.nasa.gov DONKI FLR 404 (CCMC fallback used); RadLab unit page HTTP 500; TESS Deputy role not verifiable today, so not stated in game.</li>
@@ -232,18 +249,19 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 <li><b>Submission guide checked</b> Supplied PDF: video <b>30 seconds maximum</b> or <b>7 slides maximum</b>; global deadline Nov 15, 11:59 p.m. in the event time zone; AI images/video need visible labels. <a href="26NASAChallenge/SUBMISSION_REQUIREMENTS.md">Requirements and conflicts</a>. The separate judging guide and local-event confirmation remain open.</li>
 <li><b>Redesign, Nov 14</b> Separate scenes: Menu, Cutscene, Game, Results. Story Mode with 4 levels (Tutorial, Commander, Solar Storm, Mars Base); each unlocks the next. Free Build: random map and random events per seed. Civ-style Next Day turns with a tomorrow forecast. Grades: score /100, S 81+, A 61+, B 31+, C 0+, with stars. Crew chat, event cards, DONKI Real-data badge, RadLab card, Data &amp; Credits screen, locked Lab/Rover cards. 7 AI cutscenes wired in with a visible AI watermark. 55 EditMode + 3 PlayMode tests green. Open: under-18 likeness in cutscenes, WebGL build, final art.</li>
 <li><b>Reserved for Opus/team</b> Art/palette/asset choice, scene layout, dialogue edits, game balance/pacing, child-scene review against the guide's under-18 likeness clause, final demo edit, human testing and submission. Earlier pre-checks for cards/hints describe existing text only: one-sentence card review and showing hints once in the game are still pending. Full gameplay rows below stay open until their screens actually work.</li>
-</ul></div>
+</ul></div></details>
 <div id="tasklist"></div>
 </section>
 
 <!-- ================= SHIP ================= -->
 <section class="page" id="p-ship">
 <div class="big"><span class="lab">Big picture</span>Judges see the project page and the demo first. Maybe never the code. Spend real time on those two.</div>
+<p><a href="#submit">Open the Submission desk →</a> Copyable drafts for every guide field, the deadline and the exact submit procedure.</p>
 
 <h2>What judges score</h2>
 <div class="tw"><table>
 <tr><th>Criteria</th><th>Our answer</th></tr>
-<tr><td>Impact</td><td>Kids 7 to 12 in Mississauga and Toronto see a local path to space.</td></tr>
+<tr><td>Impact</td><td>Designed for kids 7 to 12; local inspiration connects curiosity to space. Learning outcomes still need testing.</td></tr>
 <tr><td>Creativity</td><td>A childhood drawing becomes the real base. Crew you can talk to.</td></tr>
 <tr><td>Validity</td><td>Sim with tests. Real NASA data in fixtures. Sources file. Made-up numbers labelled.</td></tr>
 <tr><td>Relevance</td><td>It trains a junior astronaut: power, air, water, food, hazards.</td></tr>
@@ -257,7 +275,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 <tr><td>Most Inspirational</td><td>The ending message. The "Possibility" moment with Hadfield and Seager.</td></tr>
 <tr><td>Best Use of Storytelling</td><td>Story told by play: crew chat, events, the sunrise ending.</td></tr>
 <tr><td>Art &amp; Technology</td><td>One pixel style everywhere. A working sim under it.</td></tr>
-<tr><td>Local Impact</td><td>Mississauga kid, U of T, Ontario names. A real local kid playtest. A plan to show it at a school or library.</td></tr>
+<tr><td>Local Impact</td><td>Mississauga setting and Ontario inspiration. Record real playtest findings if collected; school/library outreach is a proposed next step.</td></tr>
 </table></div>
 
 <h2>If you run late, cut in this order</h2>
@@ -283,6 +301,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 <!-- ================= AI USE ================= -->
 <section class="page" id="p-ai">
 <div class="big"><span class="lab">AI-use record</span>All project-created art is AI-created. Track each AI session: what it helped with, how it was made, its inputs and outputs, and what was actually checked.</div>
+<p class="src">Nov 15: Codex researched audio sources/terms, drafted audio prompts and submission fields, edited this board and prepared GitHub Pages publication. Audio remains proposed. No event submission or human approval is claimed. See section 13 of the maintained log and the public-access record for final checks.</p>
 <p><a href="Work%20Log%20and%20Review/AI_USE_LOG.md"><b>Open the maintained AI-use log and entry template</b></a> · <a href="26NASAChallenge/ASSET_CREDITS.md">Art provenance</a> · <a href="26NASAChallenge/SUBMISSION_NOTES.md">Submission disclosure</a></p>
 <p class="src">Reconciled November 14, 2026. Times in the log use America/Toronto. Commit checkpoints are not exact prompt times; file-copy dates are not generation dates. Missing model names, prompts and job IDs stay marked as not recorded.</p>
 <h2>Recorded moments</h2>
@@ -307,8 +326,112 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 </ol>
 <p class="src">This page summarizes the repository log; it does not save AI entries into browser storage. Edit the linked Markdown file to keep a durable team record. Existing task checks still save in this browser only. Python/Unity are tools rather than AI models; NASA/CSA source data is credited separately. Crew dialogue is scripted, with no live AI during play.</p>
 </section>
-</div>
 
+<!-- ================= SUBMISSION ================= -->
+<section class="page" id="p-submit">
+<div class="big"><span class="lab">Submission desk · draft only</span>Prepare the form here, then submit on Space Apps. This board does not submit your project or accept terms.</div>
+<p>Based on <a href="NASA%20Website/Project%20Submission%20Guide.pdf">the supplied Project Submission Guide</a>, pages 2–13 and 15. <a href="Work%20Log%20and%20Review/SUBMISSION_DRAFT.md">Full Markdown draft and checklist</a> · <a href="Work%20Log%20and%20Review/PUBLIC_ACCESS_CHECK.md">Public game verification</a></p>
+<h2>Deadline and required links</h2>
+<div class="grid g3">
+<div class="card"><h3>November 15 · 11:59 p.m.</h3><p>Use the confirmed Local Event time zone, or the Team Owner's residence zone for Universal Event. If Toronto applies: Sunday, November 15, 2026, 11:59 p.m. EST. Team target: 10:59 p.m.</p><p class="sub">Confirm any earlier Local Lead deadline and all members' event acceptance.</p></div>
+<div class="card"><h3>One explanatory demo</h3><p>Video <b>30 seconds or less</b>, OR <b>up to 7 slides</b>, including title/intro. Use English; other spoken languages need English subtitles. Host externally and test without login.</p></div>
+<div class="card"><h3>One final-project link</h3><p><a href="https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/">Open the browser game</a> · <a href="https://github.com/RaincallerMei/2026-NASA-Space-Apps-Challenge-AstroCiv">Public source</a></p><p class="sub">Confirm the verification record before submitting. The playable link is separate from the required video/deck.</p></div>
+</div>
+<h2>Copyable form drafts</h2>
+<p class="sub">Edit these working copies and replace square-bracket inputs. Drafts autosave only in this browser; the Markdown file is the shared baseline. No text-field limits are given in the supplied guide: follow the live form if it adds limits.</p>
+<p class="sub">Audio research: <a href="Work%20Log%20and%20Review/AUDIO_CANDIDATES.md">music/SFX shortlist</a> · <a href="Work%20Log%20and%20Review/AUDIO_CREATION_PROMPTS.md">creation tools and prompts</a>. Candidates are not used assets.</p>
+<article class="card draft"><label for="draft-name">Project Name</label>
+<textarea id="draft-name" data-draft="name" rows="2" spellcheck="true">AstroCiv: Mapmakers of the Moon</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-name">Copy draft</button><button type="button" class="btn" data-restore="draft-name">Restore baseline</button><span class="status-note" id="status-name" role="status" aria-live="polite"></span></div></article>
+<article class="card draft"><label for="draft-summary">High-Level Project Summary</label>
+<textarea id="draft-summary" data-draft="summary" rows="6" spellcheck="true">AstroCiv: Mapmakers of the Moon is a story-driven space-engineering game for children aged 7–12, built in Unity. Players turn a dream of exploring space into a working lunar outpost by balancing electricity, air, water and food, supporting a fictional crew, and responding to a solar-storm warning. Saved NASA and Canadian Space Agency resources connect the game&#x27;s decisions to real space science while keeping its simplified rules clearly separate from real mission engineering.</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-summary">Copy draft</button><button type="button" class="btn" data-restore="draft-summary">Restore baseline</button><span class="status-note" id="status-summary" role="status" aria-live="polite"></span></div></article>
+<article class="card draft"><label for="draft-demo">Link to Project Demo</label>
+<textarea id="draft-demo" data-draft="demo" rows="5" spellcheck="true">[PUBLIC DEMO URL — upload an English slide deck of no more than 7 slides, including title/intro, OR a video of 30 seconds or less. Test without signing in.]
+
+The playable game link is separate from this required explanatory demo. A repository or game alone does not replace the required demo format.</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-demo">Copy draft</button><button type="button" class="btn" data-restore="draft-demo">Restore baseline</button><span class="status-note" id="status-demo" role="status" aria-live="polite"></span></div></article>
+<article class="card draft"><label for="draft-project">Link to Final Project</label>
+<textarea id="draft-project" data-draft="project" rows="7" spellcheck="true">Intended browser game: https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/
+
+Source and documentation: https://github.com/RaincallerMei/2026-NASA-Space-Apps-Challenge-AstroCiv
+
+Use the browser address only after the anonymous-access check passes; see `PUBLIC_ACCESS_CHECK.md` for the final verification record. The source repository is a public fallback for inspection, but requires Unity to run locally.</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-project">Copy draft</button><button type="button" class="btn" data-restore="draft-project">Restore baseline</button><span class="status-note" id="status-project" role="status" aria-live="polite"></span></div></article>
+<article class="card draft"><label for="draft-description">Detailed Project Description</label>
+<textarea id="draft-description" data-draft="description" rows="16" spellcheck="true">### What it does
+
+AstroCiv introduces children to the interdependent systems that keep a space outpost running. Its fictional story begins in Mississauga, Ontario, and follows a young person&#x27;s dream into a future role as commander. Players place buildings on a grid, compare their needs and outputs, and keep a crew supplied with power, air, water and food. A solar-storm scenario asks them to protect the crew and plan reserve capacity. Story missions and Free Build offer guided and exploratory ways to experiment, with a Mars/Jezero setting extending the theme beyond the Moon.
+
+### How it works
+
+The game uses a deterministic C# simulation with building costs, resource production and consumption, terrain/placement rules, a mission clock and scripted events. Players can pause to think and change simulation speed. Crew dialogue is scripted; the game does not call a live AI model or require a player&#x27;s API key. Evaluation screens explain outcomes and invite another attempt. The WebGL version packages the game for browser delivery; the Unity source is public for inspection and rebuilding.
+
+### How science supports the experience
+
+Historical NASA DONKI space-weather records supply context for the storm scenario. Saved NASA resources also support illumination, Earth sunlight, life-science cards and a Mars terrain example. We distinguish historical observations and source-derived values from simplified gameplay settings. The game is an educational systems model, not a radiation predictor, astronaut qualification tool or realistic habitat-design simulator. A solar warning does not itself switch off solar panels; lighting and radiation hazards are separate concepts.
+
+### Benefits, intended impact and next steps
+
+Our goal is to make tradeoffs tangible: adding a building creates new needs, batteries help with energy gaps, and protecting people matters alongside expanding a base. The Mississauga setting connects a local child&#x27;s curiosity to a wider space story. Automated simulation and scene checks support development, but we have not established learning outcomes through a formal study. Next steps are beginner playtests, clearer onboarding, accessibility review and careful tuning based on observed confusion.
+
+### Tools and implementation
+
+Unity 6000.6.7f1, C#, JSON configuration and offline fixtures, Python data/documentation/image-processing tools, and a WebGL browser build. GitHub stores the source and GitHub Pages is the intended public host. AI assistance and image generation are disclosed separately below; third-party materials retain their own credits. See the repository&#x27;s test plan, science assumptions and AI-use log for evidence and limitations.
+
+Not endorsed by NASA, CSA, Sara Seager or Chris Hadfield. The astronaut path is fictional and aspirational, not a promised career route.</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-description">Copy draft</button><button type="button" class="btn" data-restore="draft-description">Restore baseline</button><span class="status-note" id="status-description" role="status" aria-live="polite"></span></div></article>
+<article class="card draft"><label for="draft-si">Use of Super Intelligence (SI)</label>
+<textarea id="draft-si" data-draft="si" rows="12" spellcheck="true">Yes. We used ChatGPT, Claude Code and OpenAI Codex to assist with planning, implementation, tests, research checks, story text, documentation and gameplay design. The project logs record the available tool/model and prompt evidence and mark missing session details. All project-created art is AI-created: Midjourney produced story illustrations, ChatGPT&#x27;s image tool produced sprite masters, and AI-authored image-processing/procedural scripts produced derivatives and additional graphics. The team provided direction and references; final human review and approval must be recorded rather than assumed. Crew dialogue is scripted, and no live AI runs during play. NASA/CSA source data is credited separately from generated content. Audio tools and tracks researched during this session are candidates only; no AI-generated or downloaded music/SFX is claimed as integrated.
+
+Review before pasting: update this statement if audio is subsequently created or imported. The guide requires visible indicators on generated images/video, and descriptive-text plus metadata acknowledgement for generated audio/code/data. Check actual coverage in the final demo/build. Do not invent missing model versions. The guide says this form answer is used for data collection and is not shown to judges; in-project indicators remain visible to them.</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-si">Copy draft</button><button type="button" class="btn" data-restore="draft-si">Restore baseline</button><span class="status-note" id="status-si" role="status" aria-live="polite"></span></div></article>
+<article class="card draft"><label for="draft-nasa">NASA Data</label>
+<textarea id="draft-nasa" data-draft="nasa" rows="14" spellcheck="true">We use saved NASA resources so gameplay does not require a live NASA API connection:
+
+- **CCMC DONKI:** historical flare/CME/particle-event metadata used for space-weather context and a scripted warning. It is not a live alert or a lunar dose forecast. [NASA CCMC DONKI](https://ccmc.gsfc.nasa.gov/tools/DONKI/).
+- **OSDR RadLab:** a saved ISS absorbed-dose-rate comparison card, explicitly separate from lunar conditions. [NASA RadLab](https://visualization.osdr.nasa.gov/radlab/).
+- **LRO/LOLA:** saved lunar polar illumination information supporting a simplified tile sunlight example; it is not a site-specific mission guarantee. [LRO LOLA](https://lola.gsfc.nasa.gov/).
+- **NASA POWER:** Earth solar climatology for an approximate Mississauga location, used as a familiar comparison rather than lunar sunlight. [NASA POWER](https://power.larc.nasa.gov/).
+- **NASA OSDR:** linked space-life-science study cards providing background for the greenhouse theme. [NASA OSDR](https://osdr.nasa.gov/).
+- **Mars Global Surveyor MOLA:** saved Jezero-area heights used for a simplified Mars terrain/placement example. [MOLA dataset](https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg016/).
+
+The repository&#x27;s `26NASAChallenge/DATA_SOURCES.md`, `SCIENCE_SOURCES.md`, `SCIENCE_ASSUMPTIONS.csv` and fixture metadata provide the specific provenance, retrieval dates, units and distinctions between data and invented balance values. Keep this inventory aligned with the final build; do not describe optional sources as implemented mechanics.</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-nasa">Copy draft</button><button type="button" class="btn" data-restore="draft-nasa">Restore baseline</button><span class="status-note" id="status-nasa" role="status" aria-live="polite"></span></div></article>
+<article class="card draft"><label for="draft-references">Space Agency Partner Data and Other References</label>
+<textarea id="draft-references" data-draft="references" rows="12" spellcheck="true">Canadian Space Agency resources provide Tomatosphere and space-food context, plus factual biographies used as inspiration. Credit: © Canadian Space Agency. NASA/CSA resources and names do not imply endorsement. See [CSA Tomatosphere](https://www.asc-csa.gc.ca/eng/educators/tomatosphere.asp) and the project&#x27;s science-source record for exact references and reuse notes.
+
+Implementation tools include Unity 6000.6.7f1 and the packages listed in `26NASAChallenge/Packages/manifest.json`; C# and Python; Git/GitHub; ChatGPT, Claude Code and Codex; Midjourney and image-processing tools. The full asset inventory, AI methods and available provenance are in `26NASAChallenge/ASSET_CREDITS.md` and `Work Log and Review/AI_USE_LOG.md`. Engine/template material is credited separately from project-created art. No candidate music or SFX should be listed as used until a specific file is actually integrated and credited.
+
+Before submission, add any final audio, fonts, libraries, demo-editing software or other materials absent from those records. Free/open-source content must still be referenced, and applicable permissions must be retained.</textarea>
+<div class="draft-tools"><button type="button" class="btn" data-copy="draft-references">Copy draft</button><button type="button" class="btn" data-restore="draft-references">Restore baseline</button><span class="status-note" id="status-references" role="status" aria-live="polite"></span></div></article>
+<h2>Demo outline</h2>
+<div class="tw"><table><tr><th>Video time</th><th>Show and say</th></tr>
+<tr><td>0–5 s</td><td>Actual team name and challenge: How can children practise space engineering?</td></tr>
+<tr><td>5–10 s</td><td>Title, drawing and building placement: AstroCiv turns a dream into a lunar outpost.</td></tr>
+<tr><td>10–20 s</td><td>Power, greenhouse and storm decision: balance resources, protect the crew, connect choices to NASA science.</td></tr>
+<tr><td>20–28 s</td><td>Evaluation and ending, public game URL: Every great civilization starts with a dream. Try it, learn, and build again.</td></tr>
+<tr><td>28–30 s</td><td>Leave a runtime margin; keep credits and required generated-content indicators readable.</td></tr></table></div>
+<p class="src">Seven-slide alternative: team/title/challenge → beginner problem → player experience → storm choice → NASA/CSA data → implementation/evidence/limits → links/next steps. Include member names and only working screens. Full script is in the Markdown draft.</p>
+<h2>Submission procedure</h2>
+<ol class="submit-steps">
+<li>Confirm everyone is accepted at the same event. Verify its deadline and time zone with your Local Lead.</li>
+<li>Space Apps profile icon → <b>My Team</b> → <b>Project</b> → <b>Edit</b>. Use the edit lock while one person works; teammates can override it.</li>
+<li>Complete every required field. Click <b>Save Progress</b> often. Saving alone does not submit the project.</li>
+<li>Upload JPG/PNG/GIF images up to 10 MB. Host videos/documents externally; no direct video/document uploads. All submitted text and linked materials must be English, with English subtitles for non-English speech.</li>
+<li>Test both demo and final project links without login, password, registration or permission requests. Start a mission from the public game. Review the public-access record; ask an outside visitor to repeat the check.</li>
+<li>Review source/asset permissions and originality. The guide requires generated image/video watermarks, and descriptive-text plus metadata acknowledgement for generated audio/code/data. Generated content must not contain NASA branding/design elements.</li>
+<li>Review the guide's under-18 likeness clause against the final project and demo. Do not record child testers or use their voices/likenesses. The team must resolve how the Terms &amp; Conditions apply to fictional child art; this draft makes no eligibility determination.</li>
+<li>A team member reviews and checks <b>Terms and Conditions</b> and <b>Confirm All Work is Original</b>, then clicks <b>Submit for Judging</b> before the deadline.</li>
+<li>Verify the confirmation banner/message and save evidence. If editing again before the deadline, save/resubmit as needed and verify confirmation again. Only the last saved submission is reviewed.</li>
+</ol>
+<p class="src">Optional: request FortiGuard classification if site filtering blocks judges. After submission, download the participant certificate through Profile → Participant Information; use a desktop and Letter paper size.</p>
+<h2>Real inputs still needed</h2>
+<ul><li>Confirmed team/member names, event acceptance, time zone and any earlier local deadline.</li><li>Public demo link and verified runtime/slide count.</li><li>Final human review, real playtest evidence if available, asset/AI disclosures, and any unresolved build/access findings.</li><li>Human terms acceptance, submission and confirmation evidence.</li></ul>
+<p class="src">The separate detailed Judging and Awards Guide and live team form were not inspected in this pass. Do not mark them done merely because this page exists.</p>
+</section>
+
+</div>
 <script>
 /* ---------- phases. t = [text, must|nice, who/tool]. par = runs alongside another phase ---------- */
 const PH=[
@@ -526,8 +649,32 @@ let armed=false;$("#reset").onclick=e=>{if(!armed){armed=true;e.target.textConte
   S.c={};save();armed=false;e.target.textContent="Reset checks";paintTasks()};
 syncClock();paintTasks();
 
+
+/* Submission drafts: browser-local working copies, separate from task checks. */
+const draftKey="mapmakers-submission-drafts-v1",draftState={},baselines={};
+try{Object.assign(draftState,JSON.parse(localStorage.getItem(draftKey)||"{}"))}catch(e){}
+document.querySelectorAll("textarea[data-draft]").forEach(t=>{
+  baselines[t.id]=t.value;
+  if(typeof draftState[t.dataset.draft]==="string")t.value=draftState[t.dataset.draft];
+  t.addEventListener("input",()=>{
+    draftState[t.dataset.draft]=t.value;
+    const status=document.getElementById("status-"+t.dataset.draft);
+    try{localStorage.setItem(draftKey,JSON.stringify(draftState));status.textContent="Saved in this browser"}
+    catch(e){status.textContent="Storage unavailable: copy your edits before closing"}
+  });
+});
+document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",async()=>{
+  const t=document.getElementById(b.dataset.copy),status=document.getElementById("status-"+t.dataset.draft);
+  try{await navigator.clipboard.writeText(t.value);status.textContent="Copied"}
+  catch(e){t.focus();t.select();status.textContent="Text selected. Press Ctrl+C or Command+C."}
+}));
+document.querySelectorAll("[data-restore]").forEach(b=>b.addEventListener("click",()=>{
+  if(!confirm("Replace this field's edits with the shared baseline?"))return;
+  const t=document.getElementById(b.dataset.restore);t.value=baselines[t.id];t.dispatchEvent(new Event("input"));
+}));
+
 /* ---------- tabs ---------- */
-const PAGES=["story","plan","tasks","ship","ai"];
+const PAGES=["story","plan","tasks","ship","ai","submit"];
 function show(){let p=location.hash.slice(1);if(!PAGES.includes(p))p="story";
   PAGES.forEach(n=>{$("#p-"+n).classList.toggle("on",n===p)});
   document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.p===p))}

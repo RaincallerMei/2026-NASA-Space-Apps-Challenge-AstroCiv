@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mapmakers.Data;
 using Mapmakers.Game;
 using Mapmakers.Sim;
 using UnityEngine;
@@ -14,6 +15,11 @@ namespace Mapmakers.UI
         RectTransform map, buildingLayer, fxLayer;
         Image[,] tiles;
         Image[,] zoneShade;
+        Image[,] suggestShade;
+        RectTransform suggestLayer;
+        readonly HashSet<(int x, int y)> suggested = new HashSet<(int, int)>();
+        string suggestKey = "";
+        int hoverBuilding;
         Image ghost, ghostArt;
         Image rover, walker;
         Vector2 walkerPos;
@@ -62,14 +68,15 @@ namespace Mapmakers.UI
             float w = terrain.width * Tile, h = terrain.height * Tile;
             float top = TopBar + (1080 - TopBar - BottomBar - h) / 2;
             var frame = UIKit.Panel(root, Palette.Ink, "Map Frame");
-            frame.rectTransform.TopLeft((1920 - w) / 2 - 8, top - 8, w + 16, h + 16);
+            frame.rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -(top - 8)), new Vector2(w + 16, h + 16));
 
             var background = UIKit.Rect(root, "Map").gameObject.AddComponent<Image>();
             background.color = run.IsDrawing ? Palette.Hex("0B1A35") : Palette.Hex("2A3346");
             map = background.rectTransform;
-            map.TopLeft((1920 - w) / 2, top, w, h);
+            map.anchorMin = map.anchorMax = new Vector2(0.5f, 1);
             map.pivot = new Vector2(0, 0);
-            map.anchoredPosition = new Vector2((1920 - w) / 2, -(top + h));
+            map.sizeDelta = new Vector2(w, h);
+            map.anchoredPosition = new Vector2(-w / 2, -(top + h));
             var input = background.gameObject.AddComponent<MapInput>();
             input.screen = this;
 
@@ -90,6 +97,20 @@ namespace Mapmakers.UI
                     zoneShade[x, y].color = Palette.Alpha(Palette.Space, 0.55f);
                     zoneShade[x, y].enabled = false;
                 }
+            suggestLayer = UIKit.Rect(map, "Suggestions");
+            suggestLayer.Stretch();
+            suggestLayer.gameObject.AddComponent<CanvasGroup>().blocksRaycasts = false;
+            suggestLayer.gameObject.AddComponent<GlowPulse>();
+            suggestShade = new Image[terrain.width, terrain.height];
+            for (int y = 0; y < terrain.height; y++)
+                for (int x = 0; x < terrain.width; x++)
+                {
+                    suggestShade[x, y] = MapImage(suggestLayer, "Suggest", TilePos(x, y) + Vector2.one * 3, new Vector2(Tile - 6, Tile - 6));
+                    suggestShade[x, y].sprite = UIKit.PanelSprite;
+                    suggestShade[x, y].type = Image.Type.Sliced;
+                    suggestShade[x, y].color = Palette.Alpha(Palette.Mint, 0.5f);
+                    suggestShade[x, y].enabled = false;
+                }
 
             buildingLayer = UIKit.Rect(map, "Buildings");
             buildingLayer.Stretch();
@@ -108,8 +129,11 @@ namespace Mapmakers.UI
             fxLayer = UIKit.Rect(map, "Effects");
             fxLayer.Stretch();
 
-            var source = UIKit.Label(root, MapSource(), 18, Palette.Muted, TextAnchor.LowerRight);
-            source.rectTransform.Anchor(new Vector2(1, 0), new Vector2(1, 0), new Vector2(-20, BottomBar + 10), new Vector2(Side, 70));
+            var badge = UIKit.Panel(root, Palette.Alpha(Palette.Ink, 0.88f), "Map Data");
+            badge.rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(1, 0), new Vector2(w / 2 - 6, -(top + h - 6)), new Vector2(260, 38));
+            UIKit.Label(badge.transform, run.mode == GameMode.Free ? "Made-up map  (i)" : "Real NASA map data  (i)", 20, Palette.Cyan, TextAnchor.MiddleCenter, FontStyle.Bold)
+                .rectTransform.Stretch();
+            Tip.Add(badge, () => new TipContent("About this map", "info", MapSource()));
         }
 
         static Image MapImage(RectTransform parent, string name, Vector2 pos, Vector2 size)
@@ -237,8 +261,38 @@ namespace Mapmakers.UI
             order.Sort((a, b) => Top(b).CompareTo(Top(a)));
             for (int i = 0; i < order.Count; i++) views[order[i].id].body.transform.SetSiblingIndex(i);
             RefreshZone();
+            RefreshSuggestions();
             RefreshGhost();
         }
+
+        // Optional green glow on good spots for the chosen building (Layout.Suggest). Never a placement rule.
+        void RefreshSuggestions()
+        {
+            var type = run.BuildChoice;
+            bool show = type.HasValue && Progress.SuggestionsOn && !run.Ended;
+            string key = show ? type.Value + ":" + run.State.buildings.Count + ":" + run.State.nextId : "";
+            if (key == suggestKey) return;
+            suggestKey = key;
+            suggested.Clear();
+            var t = run.sim.terrain;
+            var cover = new bool[t.width, t.height];
+            if (show)
+            {
+                var def = run.sim.balance.Def(type.Value);
+                foreach (var spot in Layout.Suggest(run.sim, run.State, type.Value))
+                {
+                    suggested.Add(spot);
+                    for (int dy = 0; dy < def.height; dy++)
+                        for (int dx = 0; dx < def.width; dx++)
+                            if (t.InBounds(spot.x + dx, spot.y + dy)) cover[spot.x + dx, spot.y + dy] = true;
+                }
+            }
+            for (int y = 0; y < t.height; y++)
+                for (int x = 0; x < t.width; x++)
+                    suggestShade[x, y].enabled = cover[x, y];
+        }
+
+        public int SuggestedCount => suggested.Count;
 
         int Top(PlacedBuilding b) => b.y + run.sim.balance.Def(b.type).height;
 
@@ -390,8 +444,9 @@ namespace Mapmakers.UI
             var type = run.BuildChoice.Value;
             var def = run.sim.balance.Def(type);
             var check = run.sim.CanPlace(run.State, type, hoverX, hoverY);
+            bool good = check.Ok && suggested.Contains((hoverX, hoverY));
             ghost.gameObject.SetActive(true);
-            ghost.color = Palette.Alpha(check.Ok ? Palette.Cyan : Palette.Danger, 0.55f);
+            ghost.color = Palette.Alpha(!check.Ok ? Palette.Danger : good ? Palette.Mint : Palette.Cyan, 0.6f);
             ghost.rectTransform.anchoredPosition = TilePos(hoverX, hoverY) + Vector2.one * 2;
             ghost.rectTransform.sizeDelta = new Vector2(def.width * Tile - 4, def.height * Tile - 4);
             ghostArt.sprite = PixelArt.Building(type);
@@ -404,15 +459,36 @@ namespace Mapmakers.UI
             if (run.sim.layoutRules)
                 foreach (var c in Layout.Checks(run.sim.balance, run.sim.terrain, run.State, type, hoverX, hoverY))
                     parts.Add((c.met ? "+ " : "- ") + c.Text);
-            SetStatus(parts.Count == 0 ? "Good spot." : string.Join("   ", parts));
+            if (good) parts.Insert(0, "Suggested spot!");
+            SetStatus(parts.Count == 0 ? "You can build here." : string.Join("   ", parts));
         }
 
-        public void Hover(int x, int y)
+        public void Hover(int x, int y) => Hover(x, y, Vector2.zero);
+
+        // While placing: move the ghost. Otherwise: explain the building under the pointer.
+        public void Hover(int x, int y, Vector2 screen)
         {
             if (x == hoverX && y == hoverY) return;
             hoverX = x;
             hoverY = y;
-            if (run.BuildChoice.HasValue) RefreshGhost();
+            if (run.BuildChoice.HasValue) { RefreshGhost(); return; }
+            var b = x < 0 ? null : Placement.BuildingAt(run.sim.balance, run.State, x, y);
+            int id = b == null ? 0 : b.id;
+            if (id == hoverBuilding) return;
+            hoverBuilding = id;
+            if (b == null) { TooltipView.Hide(map); return; }
+            var tip = HelpText.Building(run.sim.balance, b.type, run.sim.layoutRules);
+            tip.body = StateText(b) + "\n" + tip.body.Split('\n')[0] + "\nClick it to see more.";
+            TooltipView.Show(map, tip, screen);
+        }
+
+        string StateText(PlacedBuilding b)
+        {
+            var def = run.sim.balance.Def(b.type);
+            if (b.broken) return "Broken.";
+            if (!b.enabled) return "Switched off.";
+            if (def.demandKW > 0 && !b.powered && run.State.step > 0 && !run.IsDrawing) return "No power!";
+            return "Working.";
         }
 
         public void ClickTile(int x, int y)
@@ -447,50 +523,67 @@ namespace Mapmakers.UI
             SetStatus("");
         }
 
-        // ---------- selection panel ----------
+        // ---------- selection panel (left): the selected building, or the building being placed ----------
 
         Image selection;
         Image selectionIcon;
         Text selectionName, selectionInfo, selectionState;
-        Button toggleButton, fixButton, removeButton;
+        Button toggleButton, fixButton, removeButton, cancelButton, suggestButton;
+        float SelectionHeight => Mathf.Min(run.IsDrawing ? 560 : 1080, 1080 - BottomBar - Gap - 64 - Gap - LeftTop - Gap);
 
         void BuildSelectionPanel()
         {
+            float h = SelectionHeight;
             selection = UIKit.Panel(root, Palette.Alpha(Palette.Panel, 0.97f), "Selection");
-            selection.rectTransform.TopLeft(20, 1080 - BottomBar - 20 - 380, Side, 380);
+            selection.rectTransform.TopLeft(20, LeftTop, Side, h);
             selectionIcon = UIKit.Icon(selection.transform, "Habitat", 56);
-            selectionIcon.TopLeftOf(20, 20);
-            selectionName = UIKit.Label(selection.transform, "", 30, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
-            selectionName.rectTransform.TopLeft(90, 20, Side - 150, 56);
+            selectionIcon.TopLeftOf(18, 16);
+            selectionName = UIKit.Label(selection.transform, "", 28, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
+            selectionName.rectTransform.TopLeft(86, 16, Side - 146, 56);
             var close = UIKit.Button(selection.transform, "X", () => run.Deselect(), Palette.PanelLight, Palette.Hull, 22);
             close.GetComponent<RectTransform>().TopLeft(Side - 56, 16, 40, 40);
-            selectionInfo = UIKit.Label(selection.transform, "", 21, Palette.Ice, TextAnchor.UpperLeft);
-            selectionInfo.rectTransform.TopLeft(20, 86, Side - 40, 170);
             selectionState = UIKit.Label(selection.transform, "", 24, Palette.Mint, TextAnchor.MiddleLeft, FontStyle.Bold);
-            selectionState.rectTransform.TopLeft(20, 258, Side - 40, 34);
+            selectionState.rectTransform.TopLeft(20, 78, Side - 40, 30);
+            selectionInfo = UIKit.Label(selection.transform, "", 21, Palette.Ice, TextAnchor.UpperLeft);
+            selectionInfo.rectTransform.TopLeft(20, 112, Side - 40, h - 112 - 76);
 
+            float buttons = h - 70;
             toggleButton = UIKit.Button(selection.transform, "Turn off", () => run.Toggle(run.SelectedId), Palette.Azure, Palette.Hull, 22);
-            toggleButton.GetComponent<RectTransform>().TopLeft(20, 306, 180, 54);
+            toggleButton.GetComponent<RectTransform>().TopLeft(20, buttons, 180, 54);
             fixButton = UIKit.Button(selection.transform, "Fix", () => run.Repair(run.SelectedId), Palette.Amber, Palette.Ink, 22);
-            fixButton.GetComponent<RectTransform>().TopLeft(20, 306, 180, 54);
+            fixButton.GetComponent<RectTransform>().TopLeft(20, buttons, 180, 54);
             removeButton = UIKit.Button(selection.transform, "Remove", () => run.Remove(run.SelectedId), Palette.PanelLight, Palette.Ice, 22);
-            removeButton.GetComponent<RectTransform>().TopLeft(Side - 160, 306, 140, 54);
+            removeButton.GetComponent<RectTransform>().TopLeft(Side - 160, buttons, 140, 54);
+            cancelButton = UIKit.Button(selection.transform, "Cancel", CancelBuild, Palette.PanelLight, Palette.Hull, 22);
+            cancelButton.GetComponent<RectTransform>().TopLeft(20, buttons, 150, 54);
+            suggestButton = UIKit.Button(selection.transform, "", ToggleSuggestions, Palette.PanelLight, Palette.Hull, 20);
+            suggestButton.GetComponent<RectTransform>().TopLeft(Side - 230, buttons, 210, 54);
+        }
+
+        void ToggleSuggestions()
+        {
+            Progress.SuggestionsOn = !Progress.SuggestionsOn;
+            suggestKey = "?";
+            Refresh();
         }
 
         void RefreshSelection(StepReport power)
         {
+            if (run.BuildChoice.HasValue) { ShowPlacing(run.BuildChoice.Value); return; }
             var b = run.Selected;
             selection.gameObject.SetActive(b != null);
-            if (crewList != null) crewList.gameObject.SetActive(b == null);
+            cancelButton.gameObject.SetActive(false);
+            suggestButton.gameObject.SetActive(false);
             if (b == null) return;
             var def = run.sim.balance.Def(b.type);
             var s = run.State;
             selectionIcon.sprite = Icons.Get(b.type.ToString());
             selectionName.text = def.displayName;
 
-            var info = def.blurb;
+            var page = HelpData.Load().BuildingPage(b.type.ToString());
+            var info = page != null ? page.summary : def.blurb;
             if (def.generationKW > 0) info += "\nMakes " + Num(run.sim.SolarOutput(s, b)) + " kW here.";
-            if (def.demandKW > 0) info += "\nUses " + Num(run.sim.DemandOf(s, b)) + " kW.";
+            if (def.demandKW > 0) info += "\nUses " + Num(run.sim.DemandOf(s, b)) + " kW." + (def.optional ? "" : " Always on.");
             if (def.batteryKWh > 0) info += "\nStores " + Num(def.batteryKWh) + " kWh.";
             if (b.type == BuildingType.RoverGarage)
             {
@@ -499,14 +592,15 @@ namespace Mapmakers.UI
             }
             if (run.sim.layoutRules)
                 foreach (var c in Layout.Checks(run.sim.balance, run.sim.terrain, s, b))
-                    info += "\n" + (c.met ? "+ " : "- ") + c.Text;
-            selectionInfo.text = info;
+                    info += "\n" + (c.met ? "Good: " : "Tip: ") + c.Text;
+            if (page != null && page.rows.Length > 1) info += "\nWhy it matters: " + page.rows[page.rows.Length - 1].text;
+            selectionInfo.text = Keywords.Mark(info);
 
             string state;
             Color color;
             if (b.broken) { state = "Broken"; color = Palette.Danger; }
-            else if (!b.enabled) { state = "Off"; color = Palette.LunarGray; }
-            else if (def.demandKW > 0 && !b.powered && s.step > 0) { state = "No power"; color = Palette.Amber; }
+            else if (!b.enabled) { state = "Switched off"; color = Palette.LunarGray; }
+            else if (def.demandKW > 0 && !b.powered && s.step > 0) { state = "No power!"; color = Palette.Amber; }
             else { state = "Working"; color = Palette.Mint; }
             selectionState.text = state;
             selectionState.color = color;
@@ -520,16 +614,49 @@ namespace Mapmakers.UI
             removeButton.gameObject.SetActive(!run.Ended && !(b.type == BuildingType.Habitat && s.buildings.Count > 1));
         }
 
+        bool CanSuggest(BuildingType type) =>
+            type == BuildingType.SolarArray || (run.sim.layoutRules && Layout.Checks(run.sim.balance, run.sim.terrain, run.State, type, 0, 0).Count > 0);
+
+        // What the chosen building does, what it costs, where it works best, and how to read the map colours.
+        void ShowPlacing(BuildingType type)
+        {
+            selection.gameObject.SetActive(true);
+            toggleButton.gameObject.SetActive(false);
+            fixButton.gameObject.SetActive(false);
+            removeButton.gameObject.SetActive(false);
+            cancelButton.gameObject.SetActive(true);
+            bool canSuggest = CanSuggest(type);
+            suggestButton.gameObject.SetActive(canSuggest);
+            UIKit.LabelOf(suggestButton).text = "Suggestions: " + (Progress.SuggestionsOn ? "On" : "Off");
+
+            var def = run.sim.balance.Def(type);
+            selectionIcon.sprite = Icons.Get(type.ToString());
+            selectionName.text = "Placing: " + def.displayName;
+            selectionState.text = "Click the map to build";
+            selectionState.color = Palette.Cyan;
+            var tip = HelpText.Building(run.sim.balance, type, run.sim.layoutRules);
+            var lines = new List<string> { tip.body, "" };
+            if (canSuggest && Progress.SuggestionsOn)
+                lines.Add(SuggestedCount > 0 ? "Green glow: suggested spots. Only a tip: you may build on any allowed tile." : "No perfect spot right now. Any allowed spot still works.");
+            if (run.sim.layoutRules && run.State.Count(BuildingType.Habitat) > 0) lines.Add("Dark area: outside your base. You cannot build there.");
+            lines.Add("Red outline: that spot is blocked.");
+            selectionInfo.text = Keywords.Mark(string.Join("\n", lines));
+        }
+
         static string Trip(double hours) => double.IsInfinity(hours) ? "too far" : SimText.Num(hours) + " h";
 
-        // ---------- bottom bar: build cards and time controls ----------
+        // ---------- bottom bar: Buildings ----------
 
-        sealed class BuildCard { public BuildingType? type; public Button button; public Text name, cost, count; public Image icon; public string lockedWhy; }
+        sealed class BuildCard { public BuildingType? type; public Button button; public Text name, cost, count; public Image icon; public Outline glow; public string lockedWhy; }
         readonly List<BuildCard> cards = new List<BuildCard>();
-        Button playButton, finishButton;
-        Image playIcon;
-        readonly List<(Button button, int speed)> speedButtons = new List<(Button, int)>();
-        Text countdownText;
+        Button finishButton;
+        Text buildingsTitle;
+
+        static readonly Dictionary<BuildingType, string> Outputs = new Dictionary<BuildingType, string>
+        {
+            { BuildingType.SolarArray, "power" }, { BuildingType.Battery, "battery" }, { BuildingType.LifeSupport, "air" },
+            { BuildingType.Greenhouse, "food" }, { BuildingType.RoverGarage, "soil" }, { BuildingType.Shelter, "crew" }
+        };
 
         void BuildBottomBar()
         {
@@ -540,8 +667,11 @@ namespace Mapmakers.UI
             bar.rectTransform.anchoredPosition = Vector2.zero;
             bar.rectTransform.sizeDelta = new Vector2(0, BottomBar);
 
-            statusText = UIKit.Label(root, "", 22, Palette.Ice, TextAnchor.MiddleCenter);
-            statusText.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, BottomBar + 6), new Vector2(1060, 34));
+            buildingsTitle = UIKit.Label(bar.transform, "BUILDINGS  <color=#B9C3CF>· pick one, then click the map</color>", 24, Palette.Cyan, TextAnchor.MiddleLeft, FontStyle.Bold);
+            buildingsTitle.rectTransform.TopLeft(18, 4, 900, 32);
+
+            statusText = UIKit.Label(root, "", 23, Palette.Ice, TextAnchor.MiddleCenter);
+            statusText.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, BottomBar + 6), new Vector2(1000, 36));
             statusText.rectTransform.pivot = new Vector2(0.5f, 0);
 
             int i = 0;
@@ -552,60 +682,15 @@ namespace Mapmakers.UI
             if (run.IsDrawing)
             {
                 finishButton = UIKit.Button(bar.transform, "Finish", PressFinish, Palette.Azure, Palette.Hull, 34);
-                finishButton.GetComponent<RectTransform>().Anchor(new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(-20, 0), new Vector2(330, 96));
-                return;
-            }
-            BuildTimeControls(bar.transform);
-        }
-
-        void BuildTimeControls(Transform bar)
-        {
-            countdownText = UIKit.Label(bar, "", 20, Palette.Ice, TextAnchor.MiddleCenter, FontStyle.Bold);
-            countdownText.rectTransform.Anchor(new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -6), new Vector2(330, 30));
-
-            playButton = UIKit.Button(bar, "", TogglePause, Palette.Azure, Palette.Hull, 22);
-            playButton.GetComponent<RectTransform>().Anchor(new Vector2(1, 0), new Vector2(1, 0), new Vector2(-266, 12), new Vector2(84, 72));
-            playIcon = UIKit.Icon(playButton.transform, "pause", 44);
-            playIcon.rectTransform.anchorMin = playIcon.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            playIcon.rectTransform.anchoredPosition = Vector2.zero;
-
-            for (int k = 0; k < MissionClock.Speeds.Length; k++)
-            {
-                int speed = MissionClock.Speeds[k];
-                var b = UIKit.Button(bar, speed + "x", () => SetSpeed(speed), Palette.PanelLight, Palette.Hull, 26);
-                b.GetComponent<RectTransform>().Anchor(new Vector2(1, 0), new Vector2(1, 0), new Vector2(-20 - (2 - k) * 80, 12), new Vector2(72, 72));
-                speedButtons.Add((b, speed));
+                finishButton.GetComponent<RectTransform>().Anchor(new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(-20, -10), new Vector2(330, 96));
             }
         }
 
-        public void TogglePause()
+        // During the first lesson the Buildings label glows so a new player knows where to look.
+        void HighlightBuildings(bool on)
         {
-            if (run.IsDrawing || run.Ended || ModalOpen) return;
-            if (run.Phase == RunPhase.Briefing) { run.StartMission(); RefreshTime(); return; }
-            run.clock.TogglePause();
-            RefreshTime();
-        }
-
-        public void SetSpeed(int speed)
-        {
-            if (run.Ended) return;
-            run.clock.SetSpeed(speed);
-            if (run.clock.UserPaused) run.clock.SetPaused(false);
-            RefreshTime();
-        }
-
-        // Countdown follows simulation time, so it stops while paused and speeds up at 2x and 4x.
-        void RefreshTime()
-        {
-            if (run.IsDrawing || countdownText == null) return;
-            bool paused = run.clock.Paused;
-            playIcon.sprite = Icons.Get(paused ? "play" : "pause");
-            playButton.image.color = paused ? Palette.Amber : Palette.Azure;
-            foreach (var (button, speed) in speedButtons)
-                button.image.color = speed == run.clock.Speed && !paused ? Palette.Azure : Palette.PanelLight;
-            string left = SimText.Duration(run.TimeLeft, run.Planet.dayWord, run.Planet.dayHours);
-            countdownText.text = run.Ended ? "Inspection" : "Evaluation in " + left + (paused ? "  ·  Paused" : "");
-            countdownText.color = paused ? Palette.Amber : Palette.Ice;
+            if (buildingsTitle == null) return;
+            buildingsTitle.color = on && Mathf.PingPong(Time.unscaledTime * 2, 1) > 0.5f ? Palette.Amber : Palette.Cyan;
         }
 
         public void PressFinish()
@@ -619,22 +704,36 @@ namespace Mapmakers.UI
         {
             var card = new BuildCard { type = type };
             var button = UIKit.Button(bar, "", () => ClickCard(card), Palette.PanelLight);
-            button.GetComponent<RectTransform>().TopLeft(16 + index * 142, 12, 134, 100);
+            button.GetComponent<RectTransform>().TopLeft(16 + index * 142, 38, 134, 92);
             card.button = button;
+            card.glow = button.gameObject.AddComponent<Outline>();
+            card.glow.effectColor = Palette.Amber;
+            card.glow.effectDistance = new Vector2(4, -4);
+            card.glow.enabled = false;
             card.icon = UIKit.Icon(button.transform, type.HasValue ? type.Value.ToString() : "lock", 40);
-            card.icon.TopLeftOf(10, 10);
+            card.icon.TopLeftOf(10, 8);
             string name = type.HasValue ? run.sim.balance.Def(type.Value).displayName : lockedName;
-            card.name = UIKit.Label(button.transform, name, 17, Palette.Hull, TextAnchor.UpperLeft, FontStyle.Bold);
-            card.name.rectTransform.TopLeft(8, 56, 120, 36);
+            card.name = UIKit.Label(button.transform, name, 18, Palette.Hull, TextAnchor.UpperLeft, FontStyle.Bold);
+            card.name.rectTransform.TopLeft(8, 52, 122, 38);
             card.name.resizeTextForBestFit = true;
-            card.name.resizeTextMinSize = 11;
-            card.name.resizeTextMaxSize = 17;
+            card.name.resizeTextMinSize = 13;
+            card.name.resizeTextMaxSize = 18;
             card.name.horizontalOverflow = HorizontalWrapMode.Wrap;
-            card.cost = UIKit.Label(button.transform, type.HasValue ? CostText(type.Value) : "Later", 17, Palette.Amber, TextAnchor.UpperRight, FontStyle.Bold);
-            card.cost.rectTransform.TopLeft(52, 10, 76, 24);
-            card.count = UIKit.Label(button.transform, "", 16, Palette.Muted, TextAnchor.UpperRight);
-            card.count.rectTransform.TopLeft(52, 32, 76, 22);
-            if (!type.HasValue) card.lockedWhy = lockedName + " is for a later mission. Power and people first.";
+            card.cost = UIKit.Label(button.transform, type.HasValue ? CostText(type.Value) : "Later", 18, Palette.Amber, TextAnchor.UpperRight, FontStyle.Bold);
+            card.cost.rectTransform.TopLeft(52, 6, 76, 24);
+            card.count = UIKit.Label(button.transform, "", 17, Palette.Ice, TextAnchor.UpperRight);
+            card.count.rectTransform.TopLeft(80, 28, 48, 22);
+            if (type.HasValue && Outputs.TryGetValue(type.Value, out var output)) UIKit.Icon(button.transform, output, 22).TopLeftOf(54, 29);
+            if (type.HasValue)
+            {
+                var t = type.Value;
+                Tip.Add(button, () => HelpText.Building(run.sim.balance, t, run.sim.layoutRules), false);
+            }
+            else
+            {
+                card.lockedWhy = lockedName + " is for a later mission. Power and people first.";
+                Tip.Add(button, () => new TipContent(lockedName, "lock", card.lockedWhy), false);
+            }
             cards.Add(card);
         }
 
@@ -652,13 +751,15 @@ namespace Mapmakers.UI
             if (run.BuildChoice == type) { CancelBuild(); return; }
             if (!run.CanBuild(type, out string why)) { SetStatus(run.sim.balance.Def(type).displayName + ": " + why, true); UIFx.Shake(card.button.transform); return; }
             run.Choose(type);
-            SetStatus("Click the map to place the " + run.sim.balance.Def(type).displayName + ". Right-click to cancel.");
+            SetStatus("Click the map to place the " + run.sim.balance.Def(type).displayName + ". Right-click or Cancel to stop.");
         }
 
         void RefreshBottomBar()
         {
+            RectTransform coached = coach != null && coach.Showing ? CoachTarget(out _) : null;
             foreach (var card in cards)
             {
+                card.glow.enabled = coached != null && coached == (RectTransform)card.button.transform;
                 if (!card.type.HasValue)
                 {
                     card.button.image.color = Palette.Alpha(Palette.Panel, 0.8f);
@@ -703,10 +804,10 @@ namespace Mapmakers.UI
 
         public void OnPointerMove(PointerEventData e)
         {
-            if (Tile(e, out int x, out int y)) screen.Hover(x, y);
-            else screen.Hover(-1, -1);
+            if (Tile(e, out int x, out int y)) screen.Hover(x, y, e.position);
+            else screen.Hover(-1, -1, e.position);
         }
 
-        public void OnPointerExit(PointerEventData e) => screen.Hover(-1, -1);
+        public void OnPointerExit(PointerEventData e) => screen.Hover(-1, -1, e.position);
     }
 }

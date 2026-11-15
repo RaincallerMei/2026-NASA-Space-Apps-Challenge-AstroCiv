@@ -210,13 +210,34 @@ namespace Mapmakers.Game
         public static MissionResult LastResult { get; private set; }
         public static string MenuPanel = "main";
 
+        static readonly Queue<string> pending = new Queue<string>();
+
+        // Required lessons the player has not seen yet come first; then the level's own story.
+        // A lesson level (Tutorial 2) is only story and lesson, then back to the level list.
         public static void StartLevel(string levelId)
         {
             Mode = GameMode.Story;
             Level = LevelCatalog.Load().Level(levelId);
             Free = null;
-            if (LevelCatalog.Load().Cutscene(Level.before) != null) PlayCutscene(Level.before, GameScene);
-            else Load(GameScene);
+            var sequence = new List<string>();
+            foreach (var id in Level.needs)
+                if (!Progress.LessonSeen(id)) sequence.Add(id);
+            sequence.Add(Level.before);
+            if (Level.IsLesson)
+            {
+                sequence.Add(Level.lesson);
+                MenuPanel = "story";
+                PlaySequence(sequence, MenuScene);
+                return;
+            }
+            PlaySequence(sequence, GameScene);
+        }
+
+        // Replays one lesson from the Wiki, then returns to the menu.
+        public static void ReplayLesson(string lessonId)
+        {
+            MenuPanel = "main";
+            PlaySequence(new[] { lessonId }, MenuScene);
         }
 
         public static void StartFree(FreeSettings settings)
@@ -227,10 +248,34 @@ namespace Mapmakers.Game
             Load(GameScene);
         }
 
-        public static void PlayCutscene(string id, string then)
+        public static void PlayCutscene(string id, string then) => PlaySequence(new[] { id }, then);
+
+        public static void PlaySequence(IEnumerable<string> ids, string then)
         {
-            CutsceneId = id;
+            pending.Clear();
+            var catalog = LevelCatalog.Load();
+            foreach (var id in ids)
+                if (catalog.HasScene(id)) pending.Enqueue(id);
             AfterCutscene = then;
+            NextScene();
+        }
+
+        // Called when a cutscene or lesson ends (finished or skipped).
+        public static void SceneDone(string id)
+        {
+            if (HelpData.Load().Lesson(id) != null) Progress.MarkLessonSeen(id);
+            if (Mode == GameMode.Story && Level != null && Level.IsLesson && Level.lesson == id) Progress.MarkPassed(Level.id);
+            NextScene();
+        }
+
+        static void NextScene()
+        {
+            if (pending.Count == 0)
+            {
+                Load(AfterCutscene);
+                return;
+            }
+            CutsceneId = pending.Dequeue();
             Load(CutsceneScene);
         }
 
@@ -256,7 +301,7 @@ namespace Mapmakers.Game
         {
             MenuPanel = Mode == GameMode.Story ? "story" : "free";
             var result = LastResult;
-            if (Mode == GameMode.Story && result != null && result.canContinue && LevelCatalog.Load().Cutscene(Level.after) != null)
+            if (Mode == GameMode.Story && result != null && result.canContinue && LevelCatalog.Load().HasScene(Level.after))
             {
                 PlayCutscene(Level.after, MenuScene);
                 return;
@@ -287,6 +332,26 @@ namespace Mapmakers.Game
             var catalog = LevelCatalog.Load();
             int i = catalog.IndexOf(levelId);
             return i <= 0 || Passed(catalog.levels[i - 1].id);
+        }
+
+        public static bool LessonSeen(string lessonId) => PlayerPrefs.GetInt(Prefix + "lesson." + lessonId, 0) == 1;
+
+        public static void MarkLessonSeen(string lessonId)
+        {
+            PlayerPrefs.SetInt(Prefix + "lesson." + lessonId, 1);
+            PlayerPrefs.Save();
+        }
+
+        public static void MarkPassed(string levelId)
+        {
+            PlayerPrefs.SetInt(Prefix + "passed." + levelId, 1);
+            PlayerPrefs.Save();
+        }
+
+        public static bool SuggestionsOn
+        {
+            get => PlayerPrefs.GetInt(Prefix + "suggest", 1) == 1;
+            set { PlayerPrefs.SetInt(Prefix + "suggest", value ? 1 : 0); PlayerPrefs.Save(); }
         }
 
         public static bool HintsOn
@@ -334,6 +399,7 @@ namespace Mapmakers.Game
                 PlayerPrefs.DeleteKey(Prefix + "base." + level.id);
                 PlayerPrefs.DeleteKey(Prefix + "basescore." + level.id);
             }
+            foreach (var lesson in HelpData.Load().lessons) PlayerPrefs.DeleteKey(Prefix + "lesson." + lesson.id);
             PlayerPrefs.DeleteKey(Prefix + "best.free");
             PlayerPrefs.Save();
         }

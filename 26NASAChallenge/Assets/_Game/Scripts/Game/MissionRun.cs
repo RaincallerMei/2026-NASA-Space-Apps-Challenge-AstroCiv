@@ -43,6 +43,7 @@ namespace Mapmakers.Game
         public int SelectedId { get; private set; }
         public int Revision { get; private set; }
         public string Hint { get; private set; } = "";
+        public string HintId { get; private set; } = "";
         public bool HintsOn = Progress.HintsOn;
         readonly HashSet<string> seenHints = new HashSet<string>();
         readonly List<SimEvent> newEvents = new List<SimEvent>();
@@ -200,7 +201,7 @@ namespace Mapmakers.Game
                 list.Add(new Alert { level = AlertLevel.Danger, icon = "Shelter", text = s.Count(BuildingType.Shelter) == 0 ? "Build a Shelter for the storm." : "Turn on the Shelter.",
                     actionLabel = s.Count(BuildingType.Shelter) == 0 ? "Build" : "Turn on", action = ShelterAction });
 
-            AddReserve(list, "air", "Air", s.airHours, r.airPerHour, s.Count(BuildingType.LifeSupport) == 0 ? "Build Life Support." : sim.LifeSupportProblem(s), null, null);
+            AddReserve(list, "air", "Air", s.airHours, r.airPerHour, s.Count(BuildingType.LifeSupport) == 0 ? "Build " + sim.balance.Def(BuildingType.LifeSupport).displayName + "." : sim.LifeSupportProblem(s), null, null);
             AddReserve(list, "water", "Water", s.waterL, r.waterPerHour, WaterTip(), GreenhouseOn() ? "Rest Greenhouse" : null, GreenhouseOn() ? (Action)RestGreenhouse : null);
             AddReserve(list, "food", "Food", s.meals, r.foodPerHour, FoodTip(), null, null);
 
@@ -208,7 +209,7 @@ namespace Mapmakers.Game
             {
                 double left = b.powerLossToleranceHours - s.criticalOutHours;
                 list.Add(new Alert { level = AlertLevel.Danger, icon = "power",
-                    text = "Life Support or the Habitat has no power! Mission stops in " + SimText.Duration(left) + ".",
+                    text = NoPowerText() + " Mission stops in " + SimText.Duration(left) + ".",
                     actionLabel = GreenhouseOn() ? "Rest Greenhouse" : null, action = GreenhouseOn() ? (Action)RestGreenhouse : null });
             }
             else if (r.Has("loads_off"))
@@ -234,6 +235,39 @@ namespace Mapmakers.Game
                 list.Add(new Alert { level = AlertLevel.Info, icon = "power", text = Planet.dimmingName + ": less sun for " + SimText.Duration(s.shadowEndsAt - s.timeHours) + "." });
             if (list.Count > 3) list.RemoveRange(3, list.Count - 3);
             return list;
+        }
+
+        // Names of critical buildings (Habitat, Air Support) that are built, switched on and have no power right now.
+        public List<string> UnpoweredCritical()
+        {
+            var names = new List<string>();
+            foreach (var b in State.buildings)
+            {
+                var def = sim.balance.Def(b.type);
+                if (def.priority <= 1 && def.demandKW > 0 && b.enabled && !b.powered && !names.Contains(def.displayName)) names.Add(def.displayName);
+            }
+            return names;
+        }
+
+        public string NoPowerText()
+        {
+            var names = UnpoweredCritical();
+            if (names.Count == 0) return "Critical systems have no power!";
+            return string.Join(" and ", names) + (names.Count > 1 ? " have" : " has") + " no power!";
+        }
+
+        // The order a new commander usually builds a base in. Used for "Next:" tips.
+        static readonly BuildingType[] BuildOrder =
+        {
+            BuildingType.Habitat, BuildingType.LifeSupport, BuildingType.SolarArray, BuildingType.Battery,
+            BuildingType.Communications, BuildingType.RoverGarage, BuildingType.Greenhouse
+        };
+
+        public BuildingType? NextToBuild()
+        {
+            foreach (var type in BuildOrder)
+                if (buildable.Contains(type) && State.Count(type) == 0) return type;
+            return null;
         }
 
         void AddReserve(List<Alert> list, string icon, string name, double amount, double rate, string tip, string label, Action action)
@@ -312,8 +346,7 @@ namespace Mapmakers.Game
             if (!placed.Ok) return placed;
             if (!CanBuild(type, out _)) BuildChoice = null;
             if (IsDrawing && State.Count(BuildingType.Greenhouse) > 0 && !Goals.PowerPositive(sim, State)) ShowHint("h_power", true);
-            else if (!IsDrawing && type == BuildingType.Habitat) ShowHint("h_zone");
-            else if (!IsDrawing) ShowHint("h_info");
+            else if (!IsDrawing) ShowNextHint(type);
             Changed();
             return placed;
         }
@@ -370,9 +403,24 @@ namespace Mapmakers.Game
             return ok;
         }
 
+        // After a placement: warn first if power out beats power in, otherwise point at the next useful building.
+        void ShowNextHint(BuildingType placed)
+        {
+            var power = Power;
+            if (power.demandKW > power.generationKW + 1e-6 && State.Count(BuildingType.SolarArray) > 0)
+            {
+                ShowHint("n_power");
+                return;
+            }
+            var next = NextToBuild();
+            if (next.HasValue) ShowHint("n_" + next.Value, placed == BuildingType.Habitat);
+            else ShowHint("h_info");
+        }
+
         public void DismissHint()
         {
             Hint = "";
+            HintId = "";
             Changed();
         }
 
@@ -380,6 +428,7 @@ namespace Mapmakers.Game
         {
             if (!seenHints.Add(id) && !evenIfSeen) return;
             Hint = story.Hint(id);
+            HintId = id;
         }
 
         // ---------- ending ----------

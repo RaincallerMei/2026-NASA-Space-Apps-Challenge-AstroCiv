@@ -1,6 +1,6 @@
 # Submission requirements from the supplied guide
 
-Source: repository-root `Project Submission Guide.pdf`, printed from the [official Project Submission Guide](https://www.spaceappschallenge.org/resources/project-submission-guide/) on November 14, 2026. All 16 pages were read; pages 7 and 13 were also rendered and inspected. The live URL returned 502 in this session, so these findings refer to the supplied copy, not a fresh live-page retrieval.
+Source: [`NASA Website/Project Submission Guide.pdf`](../NASA%20Website/Project%20Submission%20Guide.pdf), printed from the [official Project Submission Guide](https://www.spaceappschallenge.org/resources/project-submission-guide/) on November 14, 2026. All 16 pages were read; pages 7 and 13 were also rendered and inspected. The live URL returned 502 in the original review, so these findings refer to the supplied copy, not a fresh live-page retrieval. On November 15, the supplied copy was reread and the form/submit pages visually checked for the [new field-by-field draft](../Work%20Log%20and%20Review/SUBMISSION_DRAFT.md) and the board's Submission desk.
 
 | Requirement | Exact operational limit / action | PDF pages |
 |---|---|---|

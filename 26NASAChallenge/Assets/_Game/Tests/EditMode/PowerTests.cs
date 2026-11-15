@@ -127,7 +127,7 @@ namespace Mapmakers.Tests
             s = sim.Advance(s, 4.5);
             var brownout = s.events.Find(e => e.code == "brownout");
             Assert.IsNotNull(brownout);
-            StringAssert.Contains("Not enough power. Switched off: Communications", brownout.text);
+            StringAssert.Contains("Not enough power. Switched off: Radio Dish", brownout.text);
             var off = s.report.warnings.Find(w => w.code == "loads_off");
             Assert.IsNotNull(off);
             StringAssert.Contains("demand 10 kW > supply 9 kW", off.text);

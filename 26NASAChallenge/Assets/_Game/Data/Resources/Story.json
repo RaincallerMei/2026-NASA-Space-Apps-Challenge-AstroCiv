@@ -22,12 +22,16 @@
   ],
   "story": [
     {
-      "id": "p_night",
-      "text": "Mississauga, Ontario. Night. You are ten and love strategy games."
+      "id": "p_open",
+      "text": "You are a 10-year-old kid in Mississauga, Ontario."
+    },
+    {
+      "id": "p_games",
+      "text": "After school, you build cities in strategy games."
     },
     {
       "id": "p_event",
-      "text": "Today a science fair talked about two people from Ontario."
+      "text": "At a science fair, you hear about two people from Ontario."
     },
     {
       "id": "p_hadfield",
@@ -43,7 +47,7 @@
     },
     {
       "id": "p_draw",
-      "text": "So you draw a Moon base on your map."
+      "text": "So you draw a Moon base."
     },
     {
       "id": "p_locked",
@@ -59,7 +63,7 @@
     },
     {
       "id": "p_card1",
-      "text": "You study astronomy at the University of Toronto."
+      "text": "You grow up and study astronomy."
     },
     {
       "id": "p_card2",
@@ -71,7 +75,7 @@
     },
     {
       "id": "p_jump",
-      "text": "Years later, the Moon fills your window."
+      "text": "Launch day! The Moon is waiting."
     },
     {
       "id": "m_drawing",
@@ -87,7 +91,7 @@
     },
     {
       "id": "m_air",
-      "text": "Good question. Build Life Support to make air."
+      "text": "Good question. Air Support makes the air we breathe."
     },
     {
       "id": "m_shadow",
@@ -189,7 +193,7 @@
       "replies": [
         {
           "text": "What can wait?",
-          "answer": "The Greenhouse can rest. Life Support cannot.",
+          "answer": "The Greenhouse can rest. Air Support cannot.",
           "heart": 0,
           "action": ""
         },
@@ -252,7 +256,7 @@
         },
         {
           "text": "Where do we get soil?",
-          "answer": "A rover brings it.",
+          "answer": "Yuki's rover brings it.",
           "heart": 0,
           "action": ""
         }
@@ -433,7 +437,7 @@
   "hints": [
     {
       "id": "h_build",
-      "text": "Pick a building below. Then click the map."
+      "text": "Pick a building card below. Then click the map."
     },
     {
       "id": "h_habitat",
@@ -470,6 +474,38 @@
     {
       "id": "h_toggle",
       "text": "Short on power? Switch the Greenhouse off for a while."
+    },
+    {
+      "id": "n_LifeSupport",
+      "text": "Next: Air Support, next to the Habitat. It makes air for the crew."
+    },
+    {
+      "id": "n_SolarArray",
+      "text": "Next: Solar Arrays on bright ground. Everything needs power."
+    },
+    {
+      "id": "n_Battery",
+      "text": "Next: a Battery within 2 tiles of your Solar Arrays."
+    },
+    {
+      "id": "n_Communications",
+      "text": "Next: a Radio Dish, so you can call your crew."
+    },
+    {
+      "id": "n_RoverGarage",
+      "text": "Next: a Rover Garage near soil and water. Its rover fetches soil."
+    },
+    {
+      "id": "n_Greenhouse",
+      "text": "Next: the Greenhouse, next to Air Support. It needs 6 soil."
+    },
+    {
+      "id": "n_power",
+      "text": "Power out is bigger than power in! Add a Solar Array or switch something off."
+    },
+    {
+      "id": "h_suggest",
+      "text": "Green glowing tiles are good spots. They are tips, not rules."
     }
   ],
   "cards": [
@@ -633,19 +669,19 @@
     },
     {
       "id": "why_NoAir_missing",
-      "text": "There was no Life Support to make air."
+      "text": "There was no Air Support to make air."
     },
     {
       "id": "why_NoAir_power",
-      "text": "Life Support had no power, so it made no air."
+      "text": "Air Support had no power, so it made no air."
     },
     {
       "id": "fix_NoAir",
-      "text": "Keep Life Support powered."
+      "text": "Keep Air Support powered."
     },
     {
       "id": "fix_NoAir_missing",
-      "text": "Build Life Support next to the Habitat early."
+      "text": "Build Air Support next to the Habitat early."
     },
     {
       "id": "head_NoFood",
@@ -701,11 +737,11 @@
     },
     {
       "id": "why_PowerLoss_out",
-      "text": "Life Support or the Habitat had no power for {hours} hours."
+      "text": "Air Support or the Habitat had no power for {hours} hours."
     },
     {
       "id": "fix_PowerLoss",
-      "text": "Protect Life Support before optional systems."
+      "text": "Protect Air Support before optional systems."
     },
     {
       "id": "head_RadiationOutside",
@@ -765,7 +801,7 @@
     },
     {
       "id": "tip_smart",
-      "text": "Use links: Batteries by Solar Arrays, Life Support by the Habitat."
+      "text": "Use links: Batteries by Solar Arrays, Air Support by the Habitat."
     },
     {
       "id": "tip_crew",

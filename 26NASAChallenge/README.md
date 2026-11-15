@@ -4,6 +4,8 @@ Open this folder in **Unity 6000.6.7f1** through Unity Hub. This is the folder w
 
 ## Play
 
+**[Play the public browser build](https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/)** — no Unity installation or sign-in. See the [public-access verification record](../Work%20Log%20and%20Review/PUBLIC_ACCESS_CHECK.md) for the latest check and limitations.
+
 Open `Assets/_Game/Scenes/Boot.unity` and press Play. The menu offers **Story Mode** (4 levels, each unlocks the next), **Free Build** (random map and events) and **Data & Credits**. Story pictures play in their own Cutscene scene. Play is real time and pausable: each mission opens paused on a briefing, then runs until its evaluation (or stops early if the crew's air, water, food, power or radiation safety fails). Each level ends with a grade (S/A/B/C), a score out of 100 and stars. Full flow: `GAMEPLAY_SEQUENCE.md`.
 
 Controls: click a building card, then click the map. Right-click or Esc cancels. Click a building to inspect it, turn it off or on, fix it or remove it. Click a crew member to talk. Space = pause/resume. 1x/2x/4x buttons set speed. Esc with nothing selected = pause menu (includes "Calm motion").

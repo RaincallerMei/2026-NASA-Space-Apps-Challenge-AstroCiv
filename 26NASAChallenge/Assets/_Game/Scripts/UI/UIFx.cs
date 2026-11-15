@@ -194,4 +194,16 @@ namespace Mapmakers.UI
             graphic.color = new Color(baseColor.r, baseColor.g, baseColor.b, baseColor.a * a);
         }
     }
+
+    // Gently pulses a layer (placement suggestions) so it reads as a hint, not a wall.
+    public sealed class GlowPulse : MonoBehaviour
+    {
+        CanvasGroup group;
+        void Awake() => group = GetComponent<CanvasGroup>();
+        void Update()
+        {
+            if (group == null) return;
+            group.alpha = UIFx.Calm ? 0.85f : 0.55f + 0.45f * Mathf.PingPong(Time.unscaledTime * 1.2f, 1);
+        }
+    }
 }

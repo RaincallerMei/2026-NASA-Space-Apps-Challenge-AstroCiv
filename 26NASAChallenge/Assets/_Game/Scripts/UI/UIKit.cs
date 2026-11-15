@@ -76,8 +76,13 @@ namespace Mapmakers.UI
             { "lock", new[] { "....kkkk....", "...k....k...", "...k....k...", "..kkkkkkkk..", "..kyyyyyyk..", "..kyyykyyk..", "..kyyykyyk..", "..kyyyyyyk..", "..kkkkkkkk.." } },
             { "star", new[] { ".....kk.....", ".....yk.....", "....kyyk....", "kkkkkyykkkkk", ".kyyyyyyyyk.", "..kyyyyyyk..", "...kyyyyk...", "..kyykkyyk..", "..kyk..kyk..", ".kk......kk." } },
             { "star_empty", new[] { ".....kk.....", ".....mk.....", "....kmmk....", "kkkkkmmkkkkk", ".kmmmmmmmmk.", "..kmmmmmmk..", "...kmmmmk...", "..kmmkkmmk..", "..kmk..kmk..", ".kk......kk." } },
+            { "check", new[] { "............", "..........kk", ".........kgk", "........kgk.", ".kk....kgk..", "kggk..kgk...", ".kggkkgk....", "..kgggk.....", "...kgk......", "....k......." } },
+            { "flag", new[] { "..k.........", "..kkkkkkk...", "..kyyyyyyk..", "..kyyyyyyyk.", "..kyyyyyyk..", "..kkkkkkk...", "..k.........", "..k.........", "..k.........", ".kkk........", "kkkkk......." } },
             { "alert", new[] { ".....kk.....", "....kyyk....", "....kyyk....", "...kykkyk...", "...kykkyk...", "..kyykkyyk..", "..kyykkyyk..", ".kyyyyyyyyk.", ".kyyykkyyyk.", "kyyyyyyyyyyk", "kkkkkkkkkkkk" } }
         };
+
+        // True when the id has real art or a drawn icon (unknown ids fall back to the warning icon).
+        public static bool Has(string id) => !string.IsNullOrEmpty(id) && (art.ContainsKey(id) || PixelArt.Icon(id) != null);
 
         public static Sprite Get(string id)
         {
@@ -121,7 +126,8 @@ namespace Mapmakers.UI
         static readonly Dictionary<string, string> icons = new Dictionary<string, string>
         {
             { "power", "Icons/power" }, { "water", "Icons/water" }, { "food", "Icons/food" }, { "air", "Icons/oxygen" },
-            { "alert", "Icons/warning" }, { "info", "Icons/info" }, { "rover", "Vehicles/rover" }, { "battery", "Thumbnails/battery_bank" }
+            { "alert", "Icons/warning" }, { "info", "Icons/info" }, { "rover", "Vehicles/rover" }, { "battery", "Thumbnails/battery_bank" },
+            { "ore", "Icons/ore" }, { "build", "Icons/build" }, { "next", "Icons/next" }, { "repair", "Icons/repair" }, { "research", "Icons/research" }
         };
 
         public static Sprite Load(string path)
@@ -149,7 +155,28 @@ namespace Mapmakers.UI
     public static class UIKit
     {
         static Font font;
-        static Sprite panelSprite, circleSprite;
+        static Sprite panelSprite, circleSprite, arrowSprite;
+
+        // A solid triangle pointing down, for onboarding pointers.
+        public static Sprite ArrowSprite
+        {
+            get
+            {
+                if (arrowSprite) return arrowSprite;
+                const int size = 32;
+                var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+                for (int y = 0; y < size; y++)
+                    for (int x = 0; x < size; x++)
+                    {
+                        float half = (y + 0.5f) / 2f;
+                        float d = Mathf.Abs(x + 0.5f - size / 2f);
+                        tex.SetPixel(x, y, new Color(1, 1, 1, Mathf.Clamp01(half - d + 0.5f)));
+                    }
+                tex.Apply();
+                arrowSprite = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0));
+                return arrowSprite;
+            }
+        }
 
         public static Font Font => font ? font : font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
@@ -202,7 +229,8 @@ namespace Mapmakers.UI
             var scaler = go.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
-            scaler.matchWidthOrHeight = 0.5f;
+            // Expand keeps the whole 1920 x 1080 layout on screen at 16:10, 4:3 and narrow windows.
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             EnsureEventSystem();
             return go.GetComponent<RectTransform>();
         }

@@ -44,3 +44,10 @@ Thumbs.db
 Desktop.ini
 __pycache__/
 *.pyc
+
+# Local verification scratch files
+/tmp/
+
+# GitHub Pages needs the generated WebGL payload, despite the Unity Build rule.
+!/docs/Build/
+!/docs/Build/**

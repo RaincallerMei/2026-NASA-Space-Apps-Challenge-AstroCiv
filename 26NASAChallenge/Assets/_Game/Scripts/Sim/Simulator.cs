@@ -636,10 +636,11 @@ namespace Mapmakers.Sim
 
         public string LifeSupportProblem(SimState s)
         {
-            if (s.Count(BuildingType.LifeSupport) == 0) return "there is no Life Support yet.";
+            string name = balance.Def(BuildingType.LifeSupport).displayName;
+            if (s.Count(BuildingType.LifeSupport) == 0) return "there is no " + name + " yet.";
             var ls = s.First(BuildingType.LifeSupport);
-            if (ls.broken) return "Life Support is broken.";
-            return "Life Support has no power.";
+            if (ls.broken) return name + " is broken.";
+            return name + " has no power.";
         }
 
         void StepSafety(SimState s, StepReport r, double dt)

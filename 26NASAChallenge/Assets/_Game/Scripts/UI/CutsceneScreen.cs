@@ -27,6 +27,12 @@ namespace Mapmakers.UI
 
         void Start()
         {
+            if (HelpData.Load().Lesson(Flow.CutsceneId) != null)
+            {
+                gameObject.AddComponent<LessonScreen>();
+                enabled = false;
+                return;
+            }
             cutscene = LevelCatalog.Load().Cutscene(Flow.CutsceneId);
             story = StoryData.Load();
             if (cutscene == null || cutscene.slides.Length == 0)
@@ -67,7 +73,7 @@ namespace Mapmakers.UI
 
             caption = UIKit.Label(band.transform, "", 40, Palette.Hull, TextAnchor.MiddleCenter);
             caption.rectTransform.Stretch(160, 20, 160, 50);
-            var hint = UIKit.Label(band.transform, "Click to continue", 20, Palette.Muted, TextAnchor.LowerRight);
+            var hint = UIKit.Label(band.transform, "Click to continue", 22, Palette.Ice, TextAnchor.LowerRight);
             hint.rectTransform.Stretch(40, 0, 40, 18);
             counter = UIKit.Label(band.transform, "", 20, Palette.Muted, TextAnchor.LowerLeft);
             counter.rectTransform.Stretch(40, 0, 40, 18);
@@ -154,7 +160,7 @@ namespace Mapmakers.UI
         {
             if (done) return;
             done = true;
-            Flow.Load(Flow.AfterCutscene);
+            Flow.SceneDone(Flow.CutsceneId);
         }
     }
 }

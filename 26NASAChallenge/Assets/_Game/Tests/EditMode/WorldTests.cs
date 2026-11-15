@@ -153,27 +153,30 @@ namespace Mapmakers.Tests
         }
 
         [Test]
-        public void Levels_HaveFourStages_TimedMissions_ValidCutscenes_AndGoalLabels()
+        public void Levels_HaveTwoTutorialsAndThreeMissions_ValidScenes_AndGoalLabels()
         {
             var catalog = LevelCatalog.Load();
             var story = StoryData.Load();
-            Assert.AreEqual(4, catalog.levels.Length);
-            Assert.IsTrue(catalog.levels[0].IsDrawing, "level 1 is the untimed drawing");
+            Assert.AreEqual(5, catalog.levels.Length);
+            Assert.IsTrue(catalog.levels[0].IsDrawing, "tutorial 1 is the untimed drawing");
             Assert.AreEqual(0, catalog.levels[0].durationHours);
-            Assert.AreEqual("Mars", catalog.levels[3].planet);
+            Assert.IsTrue(catalog.levels[1].IsLesson, "tutorial 2 meets the crew");
+            Assert.AreEqual("Mars", catalog.levels[4].planet);
 
             double minutes = 0;
             foreach (var level in catalog.levels)
             {
-                foreach (var id in new[] { level.before, level.after })
-                    if (!string.IsNullOrEmpty(id)) Assert.IsNotNull(catalog.Cutscene(id), level.id + " cutscene " + id);
+                foreach (var id in new[] { level.before, level.after, level.lesson })
+                    if (!string.IsNullOrEmpty(id)) Assert.IsTrue(catalog.HasScene(id), level.id + " scene " + id);
+                foreach (var id in level.needs) Assert.IsNotNull(HelpData.Load().Lesson(id), level.id + " needs " + id);
+                Assert.IsFalse(string.IsNullOrEmpty(level.tag), level.id + " has a label");
                 foreach (var goal in level.goals) Assert.AreNotEqual(goal, catalog.GoalLabel(goal), level.id + " goal " + goal);
                 foreach (var e in level.events)
                 {
                     Assert.DoesNotThrow(() => { var k = e.Kind; }, level.id + " event " + e.kind);
                     Assert.Less(e.hour, level.durationHours, level.id + " event after the evaluation");
                 }
-                if (!level.IsDrawing) Assert.Greater(level.durationHours, 0, level.id);
+                if (!level.IsDrawing && !level.IsLesson) Assert.Greater(level.durationHours, 0, level.id);
                 minutes += level.durationHours * BalanceLoader.Load().realSecondsPerGameHour / 60;
             }
             Assert.That(minutes, Is.InRange(8, 13), "timed play at 1x leaves room for the tutorial and story in 12-16 minutes");

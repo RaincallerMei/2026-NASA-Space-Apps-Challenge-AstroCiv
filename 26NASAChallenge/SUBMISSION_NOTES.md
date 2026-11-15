@@ -1,5 +1,7 @@
 # Submission preparation
 
+For current copyable text covering every guide field, use [SUBMISSION_DRAFT.md](../Work%20Log%20and%20Review/SUBMISSION_DRAFT.md) or the board's **Submission desk**. The older planning notes below are historical; [PUBLIC_ACCESS_CHECK.md](../Work%20Log%20and%20Review/PUBLIC_ACCESS_CHECK.md) records the current browser-build/access state.
+
 Draft text based on the agreed briefs and current implementation. **No submission has been made.** The supplied Project Submission Guide PDF has now been read; limits are recorded in [SUBMISSION_REQUIREMENTS.md](SUBMISSION_REQUIREMENTS.md). The separate judging guide, event registration and any earlier local judging deadline remain to be checked.
 
 ## Three-sentence project summary

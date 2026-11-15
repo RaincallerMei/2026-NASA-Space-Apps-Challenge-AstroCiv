@@ -335,9 +335,7 @@ namespace Mapmakers.UI
             if (r.score.capNote.Length > 0)
                 UIKit.Label(grade, r.score.capNote, 20, Palette.Amber, TextAnchor.UpperCenter)
                     .rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -300), new Vector2(360, 60));
-            if (r.tips.Count > 0)
-                UIKit.Label(grade, "Next time: " + r.tips[0], 20, Palette.Mint, TextAnchor.UpperCenter)
-                    .rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -360), new Vector2(360, 80));
+            if (r.tips.Count > 0) ResultsScreen.TipBanner(grade, "Next time: " + r.tips[0], new Vector2(-10, 352), new Vector2(380, 100), 22);
             var reveal = grade.gameObject.AddComponent<EndBeat>();
             reveal.seconds = UIFx.Calm ? 0 : BeatSeconds;
             var gradeGroup = grade.gameObject.AddComponent<CanvasGroup>();

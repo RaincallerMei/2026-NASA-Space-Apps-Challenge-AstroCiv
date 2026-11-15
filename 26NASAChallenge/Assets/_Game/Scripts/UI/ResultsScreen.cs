@@ -97,13 +97,21 @@ namespace Mapmakers.UI
             if (r.Failed) text.Append(r.headline).Append(' ').Append(r.cause).Append('\n');
             foreach (var note in r.notes) text.Append(note).Append('\n');
             UIKit.Label(box.transform, text.ToString().TrimEnd(), 22, Palette.Ice, TextAnchor.UpperLeft).rectTransform.TopLeft(36, 20, 870, 120);
-            var tips = r.Failed ? "Next time: " + r.fix : r.tips.Count > 0 ? "Next time: " + string.Join("  ", r.tips) : "";
+            var tips = r.Failed ? r.fix : string.Join("  ", r.tips);
             if (r.blockedWhy.Length > 0) tips = r.blockedWhy + "\n" + tips;
-            UIKit.Label(box.transform, tips, 22, r.blockedWhy.Length > 0 ? Palette.Amber : Palette.Mint, TextAnchor.UpperLeft, FontStyle.Bold)
-                .rectTransform.TopLeft(36, 150, 870, 100);
+            if (tips.Trim().Length > 0) TipBanner(box.transform, "Next time: " + tips, new Vector2(24, 144), new Vector2(892, 108), 24);
             if (!string.IsNullOrEmpty(r.science))
                 UIKit.Label(box.transform, "Science: " + r.science, 22, Palette.Cyan, TextAnchor.UpperLeft, FontStyle.Italic)
                     .rectTransform.TopLeft(36, 260, 870, 50);
+        }
+
+        // Tips always use the same big yellow banner as in the game.
+        public static void TipBanner(Transform parent, string text, Vector2 topLeft, Vector2 size, int fontSize)
+        {
+            var banner = UIKit.Panel(parent, Palette.Amber, "Tip");
+            banner.rectTransform.TopLeft(topLeft.x, topLeft.y, size.x, size.y);
+            UIKit.Label(banner.transform, Data.Keywords.Mark(text, true), fontSize, Palette.Ink, TextAnchor.MiddleLeft, FontStyle.Bold)
+                .rectTransform.Stretch(18, 6, 18, 6);
         }
 
         static void BuildButtons(RectTransform root, MissionResult r)

@@ -27,10 +27,12 @@ Anything not recorded is marked **not recorded** or **To confirm**. Test results
   - ChatGPT: early planning, UI guide, art brief, cutscene prompt text, asset pack images.
   - Claude Code and Codex: code, tests, data, docs.
   - Midjourney: 7 cutscene images.
-- **In the build today:** 7 Midjourney cutscenes, code-drawn 12×12 icons and greybox shapes.
-- **Not in the build yet:** the 142-sprite AstroCiv pack. It sits in `Art/`, outside the Unity project.
-- **Gaps that block a full replay of the build:** exact times, model versions, full chat transcripts, Midjourney job IDs, the origin of the board and master prompt. See section 8.
-- **Three review flags** for the submission rules (children, a real astronaut, a real university). See section 7.
+- **In the build today:** 7 Midjourney cutscenes, a subset of the AstroCiv pack (commit `307fdac`, Nov 14 21:46) and code-drawn icons.
+- **Not used yet:** corridors, bitmap font, panels, Laboratory, Command hub, Airlock.
+- **Models (team, Nov 14):** Claude Code with Sonnet 5.5 and Opus 5.5. ChatGPT GPT 6.1 Sol and Luna. Midjourney 8.2.
+- **Rough size:** about 3 days of planning and art (Nov 9–11), then one long build day on Nov 14. See section 4b.
+- **Gaps are small.** Chat exports and Midjourney job IDs are nice to have. See section 8.
+- **Review flags** are minor. See section 7.
 
 ---
 
@@ -50,10 +52,10 @@ Anything not recorded is marked **not recorded** or **To confirm**. Test results
 | 10 | Cutscene prompts, then images (images saved 15:07–15:09) | AI-written prompts, Midjourney [T] | 7 PNGs | Yes |
 | 11 | Redesign: scenes, 4 levels, grades, Free Build (18:02) | Claude Code [R] | Menu, Cutscene, Game, Results | Yes |
 | 12 | Real-time spec for a cloud agent (18:08) | Codex [X] | Prompt file | Spec only |
-| 13 | AstroCiv pixel pack (copied 19:41–19:42) | ChatGPT image tool + scripts [G] | 142 PNGs, 3 atlases | **No** |
+| 13 | AstroCiv pixel pack (copied 19:41–19:42, subset in game 21:46) | ChatGPT image tool + scripts [G] | 142 PNGs, 3 atlases | **Subset yes** (commit `307fdac`) |
 | 14 | AI log, credits, disclosure (19:58 onward) | Codex [X], Claude Code | This log | Docs |
 
-**Big-picture conclusion:** the chain from idea to code to art can be rebuilt in order. Steps 4 and 10 have the weakest records.
+**Big-picture conclusion:** the chain from idea to code to art is clear. Steps 4 and 10 have the lightest records, which is fine.
 
 ---
 
@@ -66,12 +68,12 @@ Anything not recorded is marked **not recorded** or **To confirm**. Test results
 | 3 | Master prompt and briefs | [X]: tool unknown. [G]: ChatGPT planned the idea, story and research briefs on Nov 10–11 | **Planning = ChatGPT. Final file author = To confirm** |
 | 4 | Log date | [X]: Nov 14. [G]: Nov 15 | Both kept. Pack copy time is Nov 14 19:42, which fits [G]'s "Nov 14 to 15" |
 | 5 | Pack checks | [X]: 142 PNGs match the manifest hashes. [G]: 743 checks passed | **Both true.** `validation_report.json` shows 142 exports, 743 checks, 0 failed, 256 socket pairs |
-| 6 | Cutscene files | [X]: 7 byte matches to Unity files. [G]: 7 cutscenes planned | **Match.** Prompt-to-file link is weak (section 6a) |
+| 6 | Cutscene files | [X]: 7 byte matches to Unity files. [G]: 7 cutscenes planned | **Match.** Prompts confirmed by team (section 6a) |
 | 7 | Guide location | [G]: "Library file". [R]: `Agent Instructions/` | Use the repo path |
 | 8 | Missing classroom variant `dd730eda` | [X]: not found in `Art/cutscenes/` | Kept as a historical note only |
 | 9 | Dates before the event | [G]: Nov 9–11 work. Board: hackathon days Nov 14–15 | Both kept. Flag in section 8 |
 | 10 | Duplicate rows | Same Nov 14 asset work appeared in [X] section 4b and [G] rows | **Merged into one asset-pack entry (A-pack)** |
-| 11 | Storm cutscene prompt | Prompt 06 asks for a command center and "no text". `storm.png` is a split screen with "SOLAR STORM" text | **Conflict.** `storm.png` came from another prompt version (section 6a) |
+| 11 | Storm cutscene prompt | First pasted prompt 06 was a command center. `storm.png` is a split screen | **Resolved.** Team gave the real split-screen prompt. It replaces prompt 06 |
 
 ---
 
@@ -109,11 +111,30 @@ Anything not recorded is marked **not recorded** or **To confirm**. Test results
 
 | Tool | Used for | Evidence |
 |---|---|---|
-| ChatGPT (model not recorded) | Planning, UI/UX guide, art guide, cutscene prompt text, asset pack images, first AI log | [G] log; `Agent Instructions/` guides |
-| Claude Code (model per session To confirm) | Code, tests, fixtures, UI, docs, board run log | Git commits; `PROGRESS_REVIEW.md` |
-| Codex | Execution pass, balance and source checks, real-time spec, log reconciliation | Board run log; [X] log |
-| Midjourney (version not recorded) | 7 cutscene images | `Art/cutscenes/`; `ASSET_CREDITS.md`; [T] prompts |
+| ChatGPT. **GPT 6.1 Sol and Luna** [T] (which model did which task: not recorded) | Planning, UI/UX guide, art guide, cutscene prompt text, asset pack images, first AI log | [G] log; `Agent Instructions/` guides |
+| Claude Code. **Sonnet 5.5 and Opus 5.5** [T] | Code, tests, fixtures, UI, docs, board run log | Git commits; `PROGRESS_REVIEW.md` |
+| Codex (model not recorded) | Execution pass, balance and source checks, real-time spec, log reconciliation | Board run log; [X] log |
+| Midjourney **8.2** [T] | 7 cutscene images | `Art/cutscenes/`; `ASSET_CREDITS.md`; [T] prompts |
 | Python, Pillow, NumPy | Cleanup, palette, resize, atlas, validation | `Art/AstroCiv_Asset_Pack/Tools/`. **Not AI models** |
+
+### 4b. Rough effort by agent and task
+
+Hours are **estimates** from file and commit times (Nov 14 unless stated). The team can adjust them. Prompt counts are not recorded.
+
+| Agent | Task | Rough hours |
+|---|---|---|
+| ChatGPT (Sol, Luna) | Idea, challenge framing, story, character search (Nov 9–11) | ~6–10 over 3 days |
+| ChatGPT | UI/UX guide, art guide (14:11–14:30) | ~1 |
+| ChatGPT | Cutscene prompts and style fixing | ~1–2 |
+| Midjourney 8.2 | 7 cutscene images (saved 15:07–15:09) | ~1–2 |
+| ChatGPT image tool + scripts | AstroCiv pack: 10 masters, cleanup, validation | ~4–6 |
+| Claude Code (Sonnet, Opus) | Sim, data, tests, map, tutorial (≈10:00–13:47) | ~4 |
+| Claude Code | Redesign: scenes, 4 levels, grades (≈14:30–18:02) | ~3 |
+| Claude Code | Pack integration, real time, Mars level (to 21:46) | ~3 |
+| Codex | Balance, sources, test plan, real-time spec, log | ~2–3 |
+| Claude Code | Merge of logs (this log) | ~1 |
+
+**Conclusion:** about 25–35 agent-hours in total. Most code work was on Nov 14.
 
 ---
 
@@ -149,7 +170,7 @@ Anything not recorded is marked **not recorded** or **To confirm**. Test results
 ### 6a. Cutscenes — Midjourney
 
 All seven are in the build, with a visible "AI-generated image" label.
-Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). Prompt writer: AI. Tool not recorded.
+Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). Prompt writer: AI (tool not recorded). Image tool: Midjourney 8.2.
 
 | Scene | Image |
 |---|---|
@@ -163,22 +184,21 @@ Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). 
 
 **File, prompt and import chain**
 
-| # | Prompt title | Unity file | Original filename starts with | Prompt match |
-|---|---|---|---|---|
-| 01 | Just One More Turn | `bedroom.png` | `Authentic_16_bit_pixel_art_JRPG_cutscene_cozy_chi…_2 (1)` | Loose. Word order differs |
-| 02 | The Astronaut from Ontario | `classroom.png` | `Authentic_16_bit_JRPG_pixel_art_cutscene_in_a_che…_0` | Loose |
-| 03 | Years of Learning | `graduation.png` | `Heartwarming_authentic_16_bit_pixel_art_RPG_cutsc…_1` | Loose |
-| 04 | The Journey Begins | `launch.png` | `Epic_heartwarming_16_bit_pixel_art_space_adventur…_1` | Close |
-| 05 | Welcome to Our New Home | `colony.png` | `Isometric_16_bit_pixel_art_lunar_colony_cutscene._…_1` | Loose |
-| 06 | Our First Solar Storm | `storm.png` | `Dramatic_split_screen_cinematic_cutscene_authenti…_2` | **Mismatch.** Image is a split screen with "SOLAR STORM" text. Prompt asked for no text |
-| 07 | A Message Back to Earth | `message.png` | `Heartwarming_16_bit_pixel_art_sci_fi_RPG_finale.__…_0` | Loose |
+| # | Prompt title | Unity file | Original filename starts with |
+|---|---|---|---|
+| 01 | Just One More Turn | `bedroom.png` | `Authentic_16_bit_pixel_art_JRPG_cutscene_cozy_chi…_2 (1)` |
+| 02 | The Astronaut from Ontario | `classroom.png` | `Authentic_16_bit_JRPG_pixel_art_cutscene_in_a_che…_0` |
+| 03 | Years of Learning | `graduation.png` | `Heartwarming_authentic_16_bit_pixel_art_RPG_cutsc…_1` |
+| 04 | The Journey Begins | `launch.png` | `Epic_heartwarming_16_bit_pixel_art_space_adventur…_1` |
+| 05 | Welcome to Our New Home | `colony.png` | `Isometric_16_bit_pixel_art_lunar_colony_cutscene._…_1` |
+| 06 | Our First Solar Storm | `storm.png` | `Dramatic_split_screen_cinematic_cutscene_authenti…_2` |
+| 07 | A Message Back to Earth | `message.png` | `Heartwarming_16_bit_pixel_art_sci_fi_RPG_finale.__…_0` |
 
 **What this shows**
-- Midjourney file names should copy the start of the prompt. None matches the pasted text word for word.
-- Likely cause: the files came from **earlier prompt versions**. The pasted set is "rewritten".
-- `storm.png` is clearly from a different prompt. [G] mentions a "more dramatic" storm variant with shelter urgency.
+- Team confirmed: the pasted prompts are the main prompts. File names were changed slightly later. **No conflict.**
+- Prompt 06 is the split-screen storm prompt. It asks for the "SOLAR STORM" screens, so the text in `storm.png` is expected.
 - **Import is verified:** all 7 Unity files are byte-identical to the originals ([X] SHA-256, rechecked in C16).
-- Generation order is unknown. Files were saved 15:07–15:09 within two minutes.
+- Files were saved 15:07–15:09. Job IDs are not recorded.
 - `astroCiv idea figure.png` (16:27): AI-created per team. Generator and prompt not recorded.
 - An unused classroom variant `dd730eda` is named in old credits. It is not in the folder now.
 
@@ -227,11 +247,11 @@ Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). 
 | ![astronaut](../Art/AstroCiv_Asset_Pack/Previews/astronaut_contact.png) | ![icons](../Art/AstroCiv_Asset_Pack/Previews/icons_contact.png) |
 
 **Pack limits** (from `validation_report.json`)
-- Never run in Unity. Importer, placement, sorting and animation are untested.
+- A subset is now in Unity (commit `307fdac`). Corridors, font, panels, Laboratory, Command hub, Airlock are not used yet.
 - Not a pixel copy of the reference. Same style family only.
 - Mirrored ground can look repeated on large maps.
 - Font: A–Z, digits, a few symbols.
-- **Not in `26NASAChallenge/Assets`.** Confirmed by folder listing.
+- Subset lives in `Assets/_Game/Art/Resources/AstroCiv/`.
 
 ### 6c. Code-drawn art
 
@@ -246,8 +266,17 @@ Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). 
 
 ## 7. Review flags (rules and honesty)
 
-| # | Flag | Evidence | Rule | Action |
-|---|---|---|---|---|
+Team clarification (Nov 14): the guide's under-18 rule means **real** children. AI-drawn characters are fine. The astronaut, university and city names appear only in the prompts. They are **not named in the game scenes**. So they are not flags.
+
+| # | Item | Status |
+|---|---|---|
+| 1 | Child characters in cutscenes | **Not a flag.** Art, not real people |
+| 2 | Hadfield, University of Toronto, Mississauga in prompts | **Not a flag.** Prompt text only. Not named in the game |
+| 3 | "SOLAR STORM" text in `storm.png` | **Expected.** Prompt 06 asks for it |
+| 4 | AI label on pack art | Keep the visible AI label on screens that use pack art (guide p. 9) |
+| 5 | Real people or logos in final screenshots | Quick check at the end |
+
+---|---|---|---|---|
 | 1 | **Children shown** | Prompts 01–02 ask for an 11-year-old. Classroom image shows several children | Guide p. 13: no under-18 likeness | Team decision. Replace or justify |
 | 2 | **Real astronaut asked for** | Prompt 02: "projected portrait of Canadian astronaut Chris Hadfield". Image shows a suited astronaut with a flag, face hidden by a visor | Brief: names only, no portraits | Check the image. Reword the prompt if rerun |
 | 3 | **Real university and landmark** | Prompt 03 names University of Toronto St. George and University College | Brief: no real organizations unless verified | Verify or make generic. Check no logo |
@@ -259,10 +288,21 @@ Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). 
 
 ## 8. What is missing (can the build be fully recovered?)
 
-**Answer: mostly yes for what was built and in what order. Not yet for who typed what, when, and with which model.**
+**Answer: yes, at the level the team needs.** Build order, tools, models, rough hours and task descriptions are recorded. The rest is optional detail.
 
-| # | Missing | Why it matters | How to fill |
-|---|---|---|---|
+| # | Optional detail | How to fill |
+|---|---|---|
+| 1 | Chat transcripts (ChatGPT, Claude Code, Codex) | Export if needed |
+| 2 | Which ChatGPT model (Sol or Luna) did which task. Codex model | Team recall |
+| 3 | Midjourney job IDs, rerolls | Midjourney history |
+| 4 | Author of the master prompt and board (Nov 14, 09:42–10:00) | Team recall |
+| 5 | Prompts for the 10 pack masters (only a summary exists) | Chat export |
+| 6 | Origin of `approved_reference.png` and the idea figure | Team recall |
+| 7 | Whether the cloud agent ran the real-time prompt (C12) | Agent history |
+| 8 | Human playtests | Run and log |
+| 9 | Pre-event work (Nov 9–11) | Say "planning before the hackathon" in the disclosure |
+
+---|---|---|---|
 | 1 | Chat transcripts: ChatGPT (Nov 9–15), Claude Code sessions, Codex sessions | Real prompts, edits, rejected output | Export chats. Save links here |
 | 2 | Model names and versions, all tools | Disclosure accuracy | Read from each tool's history |
 | 3 | Author of the master prompt, build brief, research brief, board HTML (Nov 14, 09:42–10:00) | Start of the whole chain | Team recall or chat history |
@@ -285,14 +325,14 @@ Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). 
 | # | Item | Status |
 |---|---|---|
 | 1 | Name asset pack tool version | Open (tool = ChatGPT image generation; version not recorded) |
-| 2 | Midjourney job IDs and matching prompt versions | Open |
+| 2 | Midjourney job IDs | Optional |
 | 3 | Seven cutscene source files to Unity names | **Done** (byte match) |
-| 4 | Children, Hadfield portrait, University of Toronto (section 7) | Team decision pending |
+| 4 | Children, Hadfield, University of Toronto (section 7) | **Closed.** Not flags (team, Nov 14) |
 | 5 | Record whether cloud agent ran (C12) | Open |
-| 6 | Wire pack into Unity and add the AI label | Open |
+| 6 | Wire the rest of the pack and keep the AI label | Partly done (subset in `307fdac`) |
 | 7 | Final human approval of AI statement | Open |
 | 8 | Human check of every AI-written fact, number and source | Open |
-| 9 | Export all chat transcripts (section 8, row 1) | Open |
+| 9 | Export chat transcripts | Optional |
 
 ---
 
@@ -316,7 +356,7 @@ Full prompts: [MIDJOURNEY_CUTSCENE_PROMPTS.md](MIDJOURNEY_CUTSCENE_PROMPTS.md). 
 
 ## 11. Project-page disclosure (draft)
 
-We used ChatGPT, Claude Code and OpenAI Codex for planning, game code, tests, source checks, documentation, story text and gameplay design. All project-created art is AI-created. Midjourney made the seven story illustrations. ChatGPT's image tool made the AstroCiv sprite masters. Scripts then cleaned them and produced extra sprites, icons, UI and fonts. The team gave direction and references. Per-session records are incomplete and are marked in the log. The game runs offline with scripted crew dialogue and no live AI. NASA and CSA data are credited separately. They are not claimed as AI-made and do not imply endorsement.
+We used ChatGPT (GPT 6.1 Sol and Luna), Claude Code (Sonnet 5.5 and Opus 5.5) and OpenAI Codex for planning, game code, tests, source checks, documentation, story text and gameplay design. All project-created art is AI-created. Midjourney 8.2 made the seven story illustrations. ChatGPT's image tool made the AstroCiv sprite masters. Scripts then cleaned them and produced extra sprites, icons, UI and fonts. The team gave direction and references. Per-session records are incomplete and are marked in the log. The game runs offline with scripted crew dialogue and no live AI. NASA and CSA data are credited separately. They are not claimed as AI-made and do not imply endorsement.
 
 ---
 
@@ -328,8 +368,18 @@ We used ChatGPT, Claude Code and OpenAI Codex for planning, game code, tests, so
 | Pack PNGs under `Assets/AstroCiv` | 142 |
 | `validation_report.json` | 142 exports, 743 checks, 0 failed, 256 socket pairs |
 | `AI_USAGE_LOG.md` on disk | Not found. Content merged from the attachment |
-| Pack present in Unity project | No |
+| Pack present in Unity project | Subset, in `Assets/_Game/Art/Resources/AstroCiv/` |
 | Images viewed in C16 | `classroom.png`, `storm.png` |
 | Not checked | Midjourney history, chat exports, Unity run, human play |
 
 Files: [prompts](MIDJOURNEY_CUTSCENE_PROMPTS.md) · [generation notes](../Art/AstroCiv_Asset_Pack/GENERATION_NOTES.md) · [pack README](../Art/AstroCiv_Asset_Pack/README.md) · [asset credits](../26NASAChallenge/ASSET_CREDITS.md) · [submission notes](../26NASAChallenge/SUBMISSION_NOTES.md) · [real-time prompt](../Agent%20Instructions/REALTIME_GAMEPLAY_CLOUD_AGENT_PROMPT.md) · [progress review](PROGRESS_REVIEW.md)
+
+## 13. Publication, audio research and submission desk — 15 November 2026
+
+- **Tool:** OpenAI Codex. Exact model/version and session ID not recorded in this artifact; do not infer a model from the app name.
+- **User direction:** publish the latest repository/game for public browser access; research three music candidates for each of menu/cutscene/gameplay and free SFX; provide audio-generation sources/prompts; add guide-based submission drafts to the board and collapse the Claude Code run log.
+- **Inputs/method:** reviewed repository/remote state, current WebGL files, source/credits records and all 16 pages of `NASA Website/Project Submission Guide.pdf`; rendered the guide's form/submission pages; researched primary creator/vendor license and tool pages. Edited Markdown and the existing HTML board; checked it in an isolated headless Chrome profile at desktop/mobile sizes. Used existing GitHub credentials in memory for repository/Pages administration; no credentials were saved in project files.
+- **Outputs:** root/project README play links; `AUDIO_CANDIDATES.md` (nine distinct tracks and three CC0 SFX packs); `AUDIO_CREATION_PROMPTS.md` (three music briefs, per-interaction effects and local procedural-synthesis prompts); `SUBMISSION_DRAFT.md`; `PUBLIC_ACCESS_CHECK.md`; board Submission desk with eight copyable/editable drafts and browser-local saving; collapsed, spaced historical run log. Corrected the submission-guide path and linked current drafts from the older submission notes.
+- **Status:** documentation created and board edited. Audio remains **proposed**, not downloaded/generated/imported/used. No Space Apps submission, terms acceptance, demo publication, team registration or human playtest is claimed. Public deployment and build checks are recorded separately in `PUBLIC_ACCESS_CHECK.md` as they complete.
+- **Checks/review:** board tab/draft count, click disclosure, persisted edits after reload, no overflow at the checked desktop/mobile widths, zero JavaScript exceptions/browser error entries after layout repair. Native disclosure keyboard behavior was not proven by the CDP key simulation. Static WebGL references/WASM header and resource JSON checked. Unity CLI recompilation/test/build attempts encountered connection timeouts; a separate batch build exited at license startup. Do not treat those attempts as passing Unity tests. See the publication record for the final build outcome.
+- **Human involvement:** user supplied goals and the guide; no final human approval/listening test/complete campaign playthrough is recorded for this pass. Other game-source edits present or arriving during the session are not attributed to this documentation pass.

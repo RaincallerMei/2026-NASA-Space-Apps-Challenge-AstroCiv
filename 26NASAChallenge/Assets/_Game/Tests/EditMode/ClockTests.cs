@@ -162,7 +162,7 @@ namespace Mapmakers.Tests
             var alert = run.Alerts().Find(a => a.icon == "air");
             Assert.IsNotNull(alert, "air below the warning level gets an alert");
             StringAssert.Contains("runs out in", alert.text);
-            StringAssert.Contains("Life Support", alert.text);
+            StringAssert.Contains("Air Support", alert.text);
         }
     }
 }

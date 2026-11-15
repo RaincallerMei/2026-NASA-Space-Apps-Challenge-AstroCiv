@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Mapmakers.Data;
 using Mapmakers.Game;
 using Mapmakers.Sim;
 using Mapmakers.UI;
@@ -33,6 +35,77 @@ namespace Mapmakers.Tests
         }
 
         static GameScreen Game() => Object.FindAnyObjectByType<GameScreen>();
+
+        // The tests change saved progress; the player's own progress in the editor is put back afterwards.
+        readonly Dictionary<string, int> savedInts = new Dictionary<string, int>();
+        readonly Dictionary<string, string> savedStrings = new Dictionary<string, string>();
+
+        static IEnumerable<string> IntKeys()
+        {
+            foreach (var level in LevelCatalog.Load().levels)
+                foreach (var kind in new[] { "best.", "passed.", "basescore." }) yield return "mapmakers." + kind + level.id;
+            foreach (var lesson in HelpData.Load().lessons) yield return "mapmakers.lesson." + lesson.id;
+            yield return "mapmakers.best.free";
+            yield return "mapmakers.hints";
+            yield return "mapmakers.suggest";
+        }
+
+        [SetUp]
+        public void SaveProgress()
+        {
+            savedInts.Clear();
+            savedStrings.Clear();
+            foreach (var key in IntKeys())
+                if (PlayerPrefs.HasKey(key)) savedInts[key] = PlayerPrefs.GetInt(key);
+            foreach (var level in LevelCatalog.Load().levels)
+            {
+                string key = "mapmakers.base." + level.id;
+                if (PlayerPrefs.HasKey(key)) savedStrings[key] = PlayerPrefs.GetString(key);
+            }
+        }
+
+        [TearDown]
+        public void RestoreProgress()
+        {
+            if (Wiki.IsOpen) Wiki.Close();
+            foreach (var key in IntKeys())
+            {
+                if (savedInts.TryGetValue(key, out int v)) PlayerPrefs.SetInt(key, v);
+                else PlayerPrefs.DeleteKey(key);
+            }
+            foreach (var level in LevelCatalog.Load().levels)
+            {
+                string key = "mapmakers.base." + level.id;
+                if (savedStrings.TryGetValue(key, out string v)) PlayerPrefs.SetString(key, v);
+                else PlayerPrefs.DeleteKey(key);
+            }
+            PlayerPrefs.Save();
+        }
+
+        // Finishes every story picture and lesson until the target scene opens.
+        static IEnumerator SkipStory(string until)
+        {
+            CutsceneScreen last = null;
+            for (int i = 0; i < 12; i++)
+            {
+                yield return WaitFor(() => SceneManager.GetActiveScene().name == until
+                    || (Object.FindAnyObjectByType<CutsceneScreen>() is var c && c != null && c != last));
+                if (SceneManager.GetActiveScene().name == until) break;
+                last = Object.FindAnyObjectByType<CutsceneScreen>();
+                yield return null;
+                yield return null;
+                var lesson = last.GetComponent<LessonScreen>();
+                if (lesson != null) lesson.Finish();
+                else last.Leave();
+            }
+            yield return WaitForScene(until);
+        }
+
+        static IEnumerator NextLesson(string id)
+        {
+            yield return WaitFor(() => Object.FindAnyObjectByType<LessonScreen>() is var l && l != null && l.Lesson != null && l.Lesson.id == id && !l.Done);
+            yield return null;
+        }
 
         static void CloseWindows(GameScreen game)
         {
@@ -134,9 +207,7 @@ namespace Mapmakers.Tests
         public IEnumerator StoryMission_BriefingIsPaused_IdleRunsOutOfAir_RetryStartsFresh()
         {
             Flow.StartLevel("L2");
-            yield return WaitForScene(Flow.CutsceneScene);
-            Object.FindAnyObjectByType<CutsceneScreen>().Leave();
-            yield return WaitForScene(Flow.GameScene);
+            yield return SkipStory(Flow.GameScene);
             var game = Game();
             var run = game.Run;
             Assert.AreEqual(RunPhase.Briefing, run.Phase);
@@ -157,6 +228,128 @@ namespace Mapmakers.Tests
             Assert.AreEqual(RunPhase.Briefing, again.Run.Phase);
             Assert.AreEqual(0.0, again.Run.State.timeHours);
             Assert.AreEqual(0, again.Run.State.buildings.Count, "retry starts from the intended base, not the stopped one");
+        }
+
+        [UnityTest]
+        public IEnumerator Onboarding_Tutorial_TeacherLesson_MeetTheCrew_ThenTheOutpost()
+        {
+            foreach (var id in new[] { "L1", "T2", "L2" }) PlayerPrefs.DeleteKey("mapmakers.passed." + id);
+            foreach (var lesson in HelpData.Load().lessons) PlayerPrefs.DeleteKey("mapmakers.lesson." + lesson.id);
+            Progress.SuggestionsOn = true;
+
+            Flow.StartLevel("L1");
+            yield return SkipStory(Flow.GameScene);
+            var game = Game();
+            CloseWindows(game);
+            var run = game.Run;
+            run.HintsOn = true;
+            yield return null;
+            yield return null;
+            Assert.IsTrue(game.CoachShowing, "the pointer shows a new player where to start");
+            StringAssert.Contains("Habitat", game.CoachMessage);
+            run.Choose(BuildingType.Habitat);
+            game.ClickTile(2, 2);
+            run.Choose(BuildingType.SolarArray);
+            yield return null;
+            Assert.Greater(game.SuggestedCount, 0, "bright ground glows for the Solar Array");
+            game.ClickTile(3, 10);
+            run.Choose(BuildingType.Greenhouse);
+            game.ClickTile(9, 3);
+            run.Choose(BuildingType.SolarArray);
+            game.ClickTile(1, 13);
+            Assert.IsTrue(run.DrawingReady);
+            game.PressFinish();
+            yield return WaitForScene(Flow.ResultsScene);
+            Flow.Continue();
+
+            yield return NextLesson("lesson_teacher");
+            var teacher = Object.FindAnyObjectByType<LessonScreen>();
+            Assert.IsFalse(teacher.CanSkip, "the first teacher lesson is required");
+            for (int i = 0; i < 30 && !teacher.Done; i++) teacher.Next();
+            yield return WaitForScene(Flow.MenuScene);
+            Assert.IsTrue(Progress.LessonSeen("lesson_teacher"));
+            Assert.IsTrue(Progress.IsUnlocked("T2"));
+            Assert.IsFalse(Progress.IsUnlocked("L2"), "the crew comes before the outpost");
+
+            Flow.StartLevel("T2");
+            yield return WaitForScene(Flow.CutsceneScene);
+            Assert.AreEqual("c_years", Flow.CutsceneId, "the time jump leads into the space agency");
+            Object.FindAnyObjectByType<CutsceneScreen>().Leave();
+            yield return NextLesson("lesson_crew");
+            var crew = Object.FindAnyObjectByType<LessonScreen>();
+            Assert.IsFalse(crew.CanSkip, "meeting the crew is required the first time");
+            for (int i = 0; i < 30 && !crew.Done; i++) crew.Next();
+            yield return WaitForScene(Flow.MenuScene);
+            Assert.IsTrue(Progress.Passed("T2"));
+            Assert.IsTrue(Progress.IsUnlocked("L2"));
+
+            Flow.StartLevel("T2");
+            yield return WaitForScene(Flow.CutsceneScene);
+            Object.FindAnyObjectByType<CutsceneScreen>().Leave();
+            yield return NextLesson("lesson_crew");
+            var replay = Object.FindAnyObjectByType<LessonScreen>();
+            Assert.IsTrue(replay.CanSkip, "a seen lesson can be skipped");
+            replay.Finish();
+            yield return WaitForScene(Flow.MenuScene);
+
+            Flow.StartLevel("L2");
+            yield return WaitForScene(Flow.CutsceneScene);
+            Assert.AreEqual("c_launch", Flow.CutsceneId, "seen lessons are not forced again");
+            yield return SkipStory(Flow.GameScene);
+            Assert.IsNotNull(Game());
+        }
+
+        [UnityTest]
+        public IEnumerator Hud_WikiPauses_SpeedCycles_SuggestionsAndObjectivesUpdate()
+        {
+            Progress.SuggestionsOn = true;
+            yield return StartFree();
+            var game = Game();
+            CloseWindows(game);
+            var run = game.Run;
+            run.StartMission();
+
+            Assert.AreEqual(1, run.clock.Speed);
+            game.CycleSpeed();
+            Assert.AreEqual(2, run.clock.Speed);
+            game.CycleSpeed();
+            Assert.AreEqual(4, run.clock.Speed);
+            game.CycleSpeed();
+            Assert.AreEqual(1, run.clock.Speed);
+            game.TogglePause();
+            Assert.IsTrue(run.clock.Paused);
+            game.CycleSpeed();
+            Assert.IsTrue(run.clock.Paused, "changing speed keeps a pause");
+            game.TogglePause();
+            Assert.IsFalse(run.clock.Paused);
+
+            game.OpenWiki("b_Battery");
+            Assert.IsTrue(Wiki.IsOpen);
+            Assert.AreEqual("b_Battery", Wiki.Page);
+            double before = run.State.timeHours;
+            run.Tick(1);
+            Assert.AreEqual(before, run.State.timeHours, "the mission waits while the Wiki is open");
+            Wiki.Show("e_storm");
+            Assert.AreEqual("e_storm", Wiki.Page);
+            Wiki.Close();
+            Assert.IsFalse(run.clock.Paused, "closing the Wiki resumes");
+
+            run.State.supplies = 500;
+            run.State.soil = 12;
+            Assert.IsTrue(Planner.Place(run.sim, run.State, BuildingType.Habitat, true));
+            Assert.IsTrue(Planner.Place(run.sim, run.State, BuildingType.SolarArray, true));
+            run.Choose(BuildingType.Battery);
+            yield return null;
+            Assert.Greater(game.SuggestedCount, 0, "a Battery gets suggested spots next to the Solar Array");
+            run.Deselect();
+
+            int messages = game.MessageCount;
+            foreach (var type in Simulator.CoreTypes)
+                if (run.State.Count(type) == 0) Planner.Place(run.sim, run.State, type, true);
+            Assert.IsTrue(run.GoalMet("core_base"));
+            run.Deselect();
+            yield return null;
+            Assert.Greater(game.MessageCount, messages, "a finished objective is announced in Information");
         }
 
         [UnityTest]

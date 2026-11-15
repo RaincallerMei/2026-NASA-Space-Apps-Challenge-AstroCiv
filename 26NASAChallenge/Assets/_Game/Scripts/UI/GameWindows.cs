@@ -30,9 +30,6 @@ namespace Mapmakers.UI
         RectTransform modalLayer;
         GameObject openModal;
         readonly Queue<ModalSpec> modalQueue = new Queue<ModalSpec>();
-        CanvasGroup toast;
-        Text toastText;
-        float toastUntil;
         readonly HashSet<string> explained = new HashSet<string>();
 
         public bool ModalOpen => openModal != null;
@@ -40,29 +37,7 @@ namespace Mapmakers.UI
 
         void BuildOverlays()
         {
-            toast = UIKit.Panel(root, Palette.Alpha(Palette.Ink, 0.95f), "Toast").gameObject.AddComponent<CanvasGroup>();
-            var rt = (RectTransform)toast.transform;
-            rt.Anchor(new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -(TopBar + 72)), new Vector2(760, 110));
-            toast.blocksRaycasts = false;
-            toastText = UIKit.Label(toast.transform, "", 25, Palette.Hull, TextAnchor.MiddleCenter);
-            toastText.rectTransform.Stretch(24, 10, 24, 10);
-            toast.alpha = 0;
-
             modalLayer = UIKit.Canvas("Window Canvas", 10);
-        }
-
-        void ShowToast(string text)
-        {
-            if (string.IsNullOrEmpty(text)) return;
-            toastText.text = text;
-            toast.alpha = 1;
-            toastUntil = Time.unscaledTime + 3.5f;
-        }
-
-        void UpdateToast()
-        {
-            if (toast == null || toast.alpha <= 0) return;
-            if (Time.unscaledTime > toastUntil) toast.alpha = Mathf.Max(0, toast.alpha - Time.unscaledDeltaTime * 2);
         }
 
         // ---------- modal windows (one at a time, the rest wait in a queue) ----------
@@ -127,7 +102,7 @@ namespace Mapmakers.UI
             var title = UIKit.Label(head, spec.title, 40, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
             title.rectTransform.Stretch(string.IsNullOrEmpty(spec.icon) ? 0 : 76, 0, 0, 0);
 
-            if (!string.IsNullOrEmpty(spec.body)) UIKit.Label(panel.transform, spec.body, 28, Palette.Ice, TextAnchor.UpperLeft);
+            if (!string.IsNullOrEmpty(spec.body)) UIKit.Label(panel.transform, Keywords.Mark(spec.body), 28, Palette.Ice, TextAnchor.UpperLeft);
             if (!string.IsNullOrEmpty(spec.badge)) UIKit.Label(panel.transform, spec.badge, 20, Palette.Cyan, TextAnchor.UpperLeft);
 
             var row = UIKit.Rect(panel.transform, "Buttons");
@@ -173,15 +148,20 @@ namespace Mapmakers.UI
             if (!run.IsDrawing)
                 body.Append("\nInspection in ").Append(SimText.Duration(run.Duration, run.Planet.dayWord, run.Planet.dayHours))
                     .Append(". Keep the crew safe until then.");
+            if (run.level != null && run.level.id == "L2")
+                body.Append("\nRight side: Information and your Objectives. Bottom left: Wiki.");
+            if (run.IsDrawing)
+                body.Append("\nPick a building card at the bottom, then click the map.");
             if (run.UsedStarterBase) body.Append("\n").Append(story.Debrief("starter_base"));
             body.Append("\n");
             foreach (var goal in run.goals) body.Append("\n•  ").Append(catalog.GoalLabel(goal));
-            string title = run.mode == GameMode.Free ? run.Title : "Level " + (catalog.IndexOf(run.level.id) + 1) + ": " + run.Title;
+            string title = run.mode == GameMode.Free ? run.Title : run.level.Label + ": " + run.Title;
             string label = run.IsDrawing ? "Start drawing" : "Start mission";
             var spec = Modal(title, body.ToString(), run.IsDrawing ? "Habitat" : run.Planet.id == "Mars" ? "SolarArray" : "Habitat",
                 new ModalButton(label, run.StartMission));
             string card = BriefingCard();
             if (card != null) spec.buttons.Add(new ModalButton("Science fact", () => { ShowCard(card); }, false));
+            spec.buttons.Add(new ModalButton("Wiki", () => { OpenWiki("start"); ShowStartCard(); }, false));
             ShowModal(spec);
         }
 
@@ -204,54 +184,82 @@ namespace Mapmakers.UI
             switch (e.code)
             {
                 case "shadow_warning":
-                    ShowToast(e.text);
+                    Post(e.text, "alert", Palette.Amber);
                     break;
                 case "shadow_start":
+                    Post(e.text, "power", Palette.Amber);
                     if (Explain("dim")) ShowModal(Modal(run.Planet.dimmingName, "Less sun means less power.\nRest the Greenhouse or use battery power.", "power"));
-                    else ShowToast(e.text);
                     break;
                 case "battery_unlock":
+                    Post(e.text, "battery", Palette.Mint);
                     ShowModal(Modal("New: a second Battery", "You got through the dark.\nPut it next to a Solar Array.", "battery"));
                     break;
                 case "storm_warning":
-                    var warning = Modal("Solar storm warning!", "Particles arrive in " + SimText.Num(run.sim.balance.storm.onsetHour) + " hours.\nCall "
-                        + run.sim.geologistName + " inside. Turn on the Shelter.\nThe Sun still shines. Solar Arrays keep working.", "alert");
+                    Post(e.text, "alert", Palette.Danger);
+                    var warning = Modal("Solar storm warning!", "Particles arrive in " + SimText.Num(run.sim.balance.storm.onsetHour) + " hours.\n1. Call "
+                        + run.sim.geologistName + " inside with the Radio Dish.\n2. Turn on the Shelter.\nThe Sun still shines. Solar Arrays keep working.", "alert");
                     warning.badge = StormBadge();
                     ShowModal(warning);
                     break;
                 case "storm_onset":
-                    ShowToast("Particles have arrived. Stay in the Shelter.");
+                    Post("Particles have arrived. Stay in the Shelter.", "alert", Palette.Danger);
                     break;
                 case "first_harvest":
+                    Post(e.text, "food", Palette.Mint);
                     var cardId = run.Planet.id == "Mars" ? "c_moxie" : "c_plants";
                     ShowModal(Modal("First harvest!", e.text, "food", new ModalButton("OK"), new ModalButton("Why plants?", () => ShowCard(cardId), false)));
                     break;
                 case "fault":
+                    Post(e.text, "SolarArray", Palette.Amber);
                     ShowModal(Modal("A Solar Array broke", "A tiny space rock hit it.\nFix it for " + run.sim.balance.repairCost + " supplies.", "SolarArray",
                         new ModalButton("Fix now", FixFirstBroken), new ModalButton("Later", null, false)));
                     break;
                 case "sunrise_start":
+                    Post(e.text, "power", Palette.Mint);
                     ShowModal(Modal("Sunrise!", e.text, "power"));
                     break;
                 case "critical_out":
-                    if (Explain("critical")) ShowModal(Modal("Life Support has no power!", "Air stops when Life Support has no power.\n"
-                        + "Switch off what can wait, or add Solar Arrays near a Battery.", "power"));
+                    Post(run.NoPowerText(), "power", Palette.Danger);
+                    if (Explain("critical")) ShowModal(NoPowerWindow());
                     break;
                 case "brownout":
-                    ShowToast("Power ran short. Some systems switched off.");
+                    Post(e.text, "power", Palette.Amber);
                     break;
                 case "placed_RoverGarage":
                     if (Explain("rover") && run.sim.terrain.AnyWater()) ShowCard(run.Planet.id == "Mars" ? "c_mars_sun" : "c_ice");
                     break;
+                case "supply_drop":
+                    Post(e.text, "supplies", Palette.Mint);
+                    break;
+                case "self_return":
+                case "geologist_inside":
+                case "recall":
+                    Post(e.text, "rover", GameScreen.CrewColor("geologist"));
+                    break;
                 case "shadow_end":
                 case "storm_decay":
                 case "storm_over":
-                case "supply_drop":
-                case "self_return":
-                case "geologist_inside":
-                    ShowToast(e.text);
+                    Post(e.text, "info");
                     break;
             }
+        }
+
+        // Explains exactly which critical building lost power and the one thing to do next.
+        // Right after the first Habitat there is often no Air Support and no Solar Array yet, so the text follows the base.
+        ModalSpec NoPowerWindow()
+        {
+            var names = run.UnpoweredCritical();
+            string who = names.Count == 0 ? "Your base" : string.Join(" and ", names);
+            bool many = names.Count > 1;
+            var s = run.State;
+            string body;
+            if (s.Count(BuildingType.SolarArray) == 0)
+                body = who + (many ? " need" : " needs") + " power, but nothing makes power yet.\nBuild a Solar Array on bright ground.";
+            else
+                body = "Power out is bigger than power in, and the Battery is empty.\nAdd a Solar Array near a Battery, or switch off what can wait.";
+            if (names.Contains(run.sim.balance.Def(BuildingType.LifeSupport).displayName)) body += "\nWithout power, Air Support makes no air.";
+            body += "\nIf this lasts " + SimText.Num(run.sim.balance.powerLossToleranceHours) + " hours, the mission stops.";
+            return Modal(who + (many ? " need" : " needs") + " power", body, "power");
         }
 
         // True the first time a topic comes up in this run, so explanations never repeat.
@@ -306,6 +314,7 @@ namespace Mapmakers.UI
             spec.vertical = true;
             spec.buttons.Clear();
             spec.buttons.Add(new ModalButton("Back to the base"));
+            spec.buttons.Add(new ModalButton("Wiki & Help", () => OpenWiki(), false));
             spec.buttons.Add(new ModalButton("Restart this level", Flow.Retry, false));
             spec.buttons.Add(new ModalButton("Tips: " + (run.HintsOn ? "On" : "Off"), ToggleHints, false));
             spec.buttons.Add(new ModalButton("Calm motion: " + (Progress.ReducedMotion ? "On" : "Off"), ToggleCalm, false));

@@ -68,7 +68,8 @@ namespace Mapmakers.UI
 
             MenuButton(panel, "Story Mode", -430, () => Show("story"), Palette.Azure);
             MenuButton(panel, "Free Build", -530, () => Show("free"), Palette.Azure);
-            MenuButton(panel, "Data & Credits", -630, () => Show("credits"), Palette.PanelLight);
+            MenuButton(panel, "Wiki & Help", -630, () => Wiki.Open(null, null, true), Palette.PanelLight);
+            MenuButton(panel, "Data & Credits", -730, () => Show("credits"), Palette.PanelLight);
 
             var foot = UIKit.Label(panel, "Not endorsed by NASA or CSA.", 20, Palette.Muted, TextAnchor.MiddleCenter);
             foot.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 40), new Vector2(800, 30));
@@ -88,20 +89,22 @@ namespace Mapmakers.UI
         GameObject BuildStory()
         {
             var panel = UIKit.Rect(root, "Story").Stretch();
-            Header(panel, "Story Mode", "Play the levels in order. Each one unlocks the next.");
+            Header(panel, "Story Mode", "Two short tutorials, then three missions. Each one unlocks the next.");
             var levels = LevelCatalog.Load().levels;
-            float width = 390, gap = 30, start = -(levels.Length * width + (levels.Length - 1) * gap) / 2 + width / 2;
+            float width = 344, gap = 22, start = -(levels.Length * width + (levels.Length - 1) * gap) / 2 + width / 2;
             for (int i = 0; i < levels.Length; i++)
             {
                 var level = levels[i];
                 var card = UIKit.Panel(panel, Palette.Alpha(Palette.Panel, 0.94f), "Level " + level.id);
                 card.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(start + i * (width + gap), -10), new Vector2(width, 470));
 
-                var number = UIKit.Panel(card.transform, level.planet == "Mars" ? Palette.MarsRust : Palette.Azure, "Number");
+                bool tutorial = level.IsDrawing || level.IsLesson;
+                var number = UIKit.Panel(card.transform, level.planet == "Mars" ? Palette.MarsRust : tutorial ? Palette.Leaf : Palette.Azure, "Number");
                 number.rectTransform.TopLeft(24, 24, 72, 72);
-                UIKit.Label(number.transform, (i + 1).ToString(), 40, Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold).rectTransform.Stretch();
-                UIKit.Label(card.transform, level.planet, 22, level.planet == "Mars" ? Palette.MarsSand : Palette.Cyan).rectTransform.TopLeft(112, 30, 250, 30);
-                UIKit.Label(card.transform, level.IsDrawing ? "Tutorial" : "About " + Mathf.CeilToInt((float)(level.durationHours * BalanceLoader.Load().realSecondsPerGameHour / 60)) + " min at 1x", 22, Palette.Muted).rectTransform.TopLeft(112, 62, 250, 30);
+                UIKit.Label(number.transform, level.Label.Substring(level.Label.LastIndexOf(' ') + 1), 40, Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold).rectTransform.Stretch();
+                UIKit.Label(card.transform, level.Label, 24, level.planet == "Mars" ? Palette.MarsSand : Palette.Cyan, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.TopLeft(112, 28, 220, 30);
+                string when = level.IsLesson ? "Meet your crew" : level.IsDrawing ? "Learn to build" : "About " + Mathf.CeilToInt((float)(level.durationHours * BalanceLoader.Load().realSecondsPerGameHour / 60)) + " min at 1×";
+                UIKit.Label(card.transform, level.planet + " · " + when, 20, Palette.Ice).rectTransform.TopLeft(112, 62, 220, 30);
 
                 UIKit.Label(card.transform, level.title, 36, Palette.Hull, TextAnchor.UpperLeft, FontStyle.Bold).rectTransform.TopLeft(24, 120, width - 48, 50);
                 UIKit.Label(card.transform, level.subtitle, 24, Palette.Ice, TextAnchor.UpperLeft).rectTransform.TopLeft(24, 176, width - 48, 70);
@@ -135,7 +138,12 @@ namespace Mapmakers.UI
                 play.interactable = open;
                 UIKit.LabelOf(play).text = open ? (best >= 0 ? "Play again" : "Play") : "Locked";
                 card.color = Palette.Alpha(open ? Palette.Panel : Palette.Space, 0.94f);
-                grade.text = !open ? "Finish level " + LevelCatalog.Load().IndexOf(level.id) + " first" : best >= 0 ? "Best: " + Grader.Letter(best) + "  " + best + "/100" : "New!";
+                var catalog = LevelCatalog.Load();
+                int index = catalog.IndexOf(level.id);
+                string previous = index > 0 ? catalog.levels[index - 1].Label : "";
+                grade.text = !open ? "Finish " + previous + " first" : level.IsLesson ? (Progress.Passed(level.id) ? "Done!" : "New!")
+                    : best >= 0 ? "Best: " + Grader.Letter(best) + "  " + best + "/100" : "New!";
+                if (level.IsLesson && open) UIKit.LabelOf(play).text = Progress.Passed(level.id) ? "Watch again" : "Start";
                 grade.fontSize = open ? 30 : 22;
                 grade.color = open ? Palette.Amber : Palette.Muted;
                 UIKit.Clear(stars);

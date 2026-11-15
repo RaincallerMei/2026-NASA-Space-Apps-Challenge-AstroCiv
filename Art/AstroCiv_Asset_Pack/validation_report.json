@@ -1,0 +1,4684 @@
+{
+  "summary": {
+    "png_exports": 142,
+    "checks": 743,
+    "passed": 743,
+    "failed": 0,
+    "corridor_socket_pairs": 256
+  },
+  "checks": [
+    {
+      "test": "dimensions:Buildings/command_hub.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Buildings/command_hub.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/command_hub.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/command_hub.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/command_hub.png",
+      "pass": true,
+      "details": [
+        32,
+        10,
+        160,
+        184
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/command_hub.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/command_hub.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/command_hub.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Shadows/command_hub.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/habitat.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Buildings/habitat.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/habitat.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/habitat.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/habitat.png",
+      "pass": true,
+      "details": [
+        21,
+        25,
+        107,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/habitat.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/habitat.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/habitat.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Shadows/habitat.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/greenhouse.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Buildings/greenhouse.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/greenhouse.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/greenhouse.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/greenhouse.png",
+      "pass": true,
+      "details": [
+        23,
+        86,
+        169,
+        184
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/greenhouse.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/greenhouse.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/greenhouse.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Shadows/greenhouse.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/battery_bank.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Buildings/battery_bank.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/battery_bank.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/battery_bank.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/battery_bank.png",
+      "pass": true,
+      "details": [
+        25,
+        40,
+        102,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/battery_bank.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/battery_bank.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/battery_bank.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Shadows/battery_bank.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/communications_dish.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Buildings/communications_dish.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/communications_dish.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/communications_dish.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/communications_dish.png",
+      "pass": true,
+      "details": [
+        50,
+        48,
+        142,
+        184
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/communications_dish.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/communications_dish.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/communications_dish.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Shadows/communications_dish.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/solar_array.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Buildings/solar_array.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/solar_array.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/solar_array.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/solar_array.png",
+      "pass": true,
+      "details": [
+        9,
+        32,
+        119,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/solar_array.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/solar_array.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/solar_array.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Shadows/solar_array.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/regolith_shelter.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Buildings/regolith_shelter.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/regolith_shelter.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/regolith_shelter.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/regolith_shelter.png",
+      "pass": true,
+      "details": [
+        16,
+        107,
+        176,
+        184
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/regolith_shelter.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/regolith_shelter.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/regolith_shelter.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Shadows/regolith_shelter.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/airlock.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Buildings/airlock.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/airlock.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/airlock.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/airlock.png",
+      "pass": true,
+      "details": [
+        38,
+        56,
+        89,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/airlock.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/airlock.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/airlock.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Shadows/airlock.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/laboratory.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Buildings/laboratory.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/laboratory.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/laboratory.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/laboratory.png",
+      "pass": true,
+      "details": [
+        40,
+        55,
+        152,
+        184
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/laboratory.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/laboratory.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/laboratory.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Shadows/laboratory.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/life_support.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Buildings/life_support.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/life_support.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/life_support.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/life_support.png",
+      "pass": true,
+      "details": [
+        41,
+        92,
+        151,
+        184
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/life_support.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/life_support.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/life_support.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Shadows/life_support.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Buildings/rover_garage.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Buildings/rover_garage.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Buildings/rover_garage.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Buildings/rover_garage.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Buildings/rover_garage.png",
+      "pass": true,
+      "details": [
+        17,
+        73,
+        175,
+        184
+      ]
+    },
+    {
+      "test": "dimensions:UI/Thumbnails/rover_garage.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Thumbnails/rover_garage.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Shadows/rover_garage.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Shadows/rover_garage.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Vehicles/rover_six_wheel.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Vehicles/rover_six_wheel.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Vehicles/rover_six_wheel.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Vehicles/rover_six_wheel.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Vehicles/rover_six_wheel.png",
+      "pass": true,
+      "details": [
+        18,
+        54,
+        110,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/idle.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/idle.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/idle.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/idle.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/idle.png",
+      "pass": true,
+      "details": [
+        3,
+        6,
+        28,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_pose.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_pose.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_pose.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_pose.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_pose.png",
+      "pass": true,
+      "details": [
+        3,
+        6,
+        28,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/wave.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/wave.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/wave.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/wave.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/wave.png",
+      "pass": true,
+      "details": [
+        1,
+        6,
+        30,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/tablet.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/tablet.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/tablet.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/tablet.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/tablet.png",
+      "pass": true,
+      "details": [
+        3,
+        6,
+        29,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/repair.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/repair.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/repair.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/repair.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/repair.png",
+      "pass": true,
+      "details": [
+        1,
+        14,
+        31,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SE_0.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SE_0.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SE_0.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SE_0.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SE_0.png",
+      "pass": true,
+      "details": [
+        4,
+        9,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SE_1.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SE_1.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SE_1.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SE_1.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SE_1.png",
+      "pass": true,
+      "details": [
+        5,
+        9,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SE_2.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SE_2.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SE_2.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SE_2.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SE_2.png",
+      "pass": true,
+      "details": [
+        4,
+        9,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SE_3.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SE_3.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SE_3.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SE_3.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SE_3.png",
+      "pass": true,
+      "details": [
+        4,
+        8,
+        28,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Sheets/walk_SE.png",
+      "pass": true,
+      "details": [
+        128,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Sheets/walk_SE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SW_0.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SW_0.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SW_0.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SW_0.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SW_0.png",
+      "pass": true,
+      "details": [
+        4,
+        8,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SW_1.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SW_1.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SW_1.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SW_1.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SW_1.png",
+      "pass": true,
+      "details": [
+        5,
+        8,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SW_2.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SW_2.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SW_2.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SW_2.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SW_2.png",
+      "pass": true,
+      "details": [
+        4,
+        8,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_SW_3.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_SW_3.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_SW_3.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_SW_3.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_SW_3.png",
+      "pass": true,
+      "details": [
+        4,
+        8,
+        28,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Sheets/walk_SW.png",
+      "pass": true,
+      "details": [
+        128,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Sheets/walk_SW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NW_0.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NW_0.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NW_0.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NW_0.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NW_0.png",
+      "pass": true,
+      "details": [
+        4,
+        7,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NW_1.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NW_1.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NW_1.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NW_1.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NW_1.png",
+      "pass": true,
+      "details": [
+        5,
+        8,
+        26,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NW_2.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NW_2.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NW_2.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NW_2.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NW_2.png",
+      "pass": true,
+      "details": [
+        5,
+        7,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NW_3.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NW_3.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NW_3.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NW_3.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NW_3.png",
+      "pass": true,
+      "details": [
+        4,
+        7,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Sheets/walk_NW.png",
+      "pass": true,
+      "details": [
+        128,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Sheets/walk_NW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NE_0.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NE_0.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NE_0.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NE_0.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NE_0.png",
+      "pass": true,
+      "details": [
+        5,
+        7,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NE_1.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NE_1.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NE_1.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NE_1.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NE_1.png",
+      "pass": true,
+      "details": [
+        5,
+        7,
+        26,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NE_2.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NE_2.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NE_2.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NE_2.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NE_2.png",
+      "pass": true,
+      "details": [
+        4,
+        7,
+        27,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Frames/walk_NE_3.png",
+      "pass": true,
+      "details": [
+        32,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Frames/walk_NE_3.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Characters/Frames/walk_NE_3.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Characters/Frames/walk_NE_3.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Characters/Frames/walk_NE_3.png",
+      "pass": true,
+      "details": [
+        4,
+        7,
+        28,
+        44
+      ]
+    },
+    {
+      "test": "dimensions:Characters/Sheets/walk_NE.png",
+      "pass": true,
+      "details": [
+        128,
+        48
+      ]
+    },
+    {
+      "test": "rgba:Characters/Sheets/walk_NE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Moon/crater_small.png",
+      "pass": true,
+      "details": [
+        32,
+        32
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/crater_small.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Moon/crater_small.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Moon/crater_small.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Moon/crater_small.png",
+      "pass": true,
+      "details": [
+        3,
+        12,
+        29,
+        24
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Mars/crater_small.png",
+      "pass": true,
+      "details": [
+        32,
+        32
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/crater_small.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Mars/crater_small.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Mars/crater_small.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Mars/crater_small.png",
+      "pass": true,
+      "details": [
+        3,
+        12,
+        29,
+        24
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Moon/crater_medium.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/crater_medium.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Moon/crater_medium.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Moon/crater_medium.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Moon/crater_medium.png",
+      "pass": true,
+      "details": [
+        5,
+        32,
+        59,
+        56
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Mars/crater_medium.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/crater_medium.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Mars/crater_medium.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Mars/crater_medium.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Mars/crater_medium.png",
+      "pass": true,
+      "details": [
+        5,
+        32,
+        59,
+        56
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Moon/crater_large.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/crater_large.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Moon/crater_large.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Moon/crater_large.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Moon/crater_large.png",
+      "pass": true,
+      "details": [
+        8,
+        75,
+        120,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Mars/crater_large.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/crater_large.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Mars/crater_large.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Mars/crater_large.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Mars/crater_large.png",
+      "pass": true,
+      "details": [
+        8,
+        75,
+        120,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Moon/rocks_small.png",
+      "pass": true,
+      "details": [
+        32,
+        32
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/rocks_small.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Moon/rocks_small.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Moon/rocks_small.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Moon/rocks_small.png",
+      "pass": true,
+      "details": [
+        3,
+        8,
+        29,
+        24
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Mars/rocks_small.png",
+      "pass": true,
+      "details": [
+        32,
+        32
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/rocks_small.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Mars/rocks_small.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Mars/rocks_small.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Mars/rocks_small.png",
+      "pass": true,
+      "details": [
+        3,
+        8,
+        29,
+        24
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Moon/rocks_medium.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/rocks_medium.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Moon/rocks_medium.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Moon/rocks_medium.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Moon/rocks_medium.png",
+      "pass": true,
+      "details": [
+        5,
+        26,
+        59,
+        56
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Mars/rocks_medium.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/rocks_medium.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Mars/rocks_medium.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Mars/rocks_medium.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Mars/rocks_medium.png",
+      "pass": true,
+      "details": [
+        5,
+        26,
+        59,
+        56
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Moon/rocks_large.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/rocks_large.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Moon/rocks_large.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Moon/rocks_large.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Moon/rocks_large.png",
+      "pass": true,
+      "details": [
+        8,
+        62,
+        120,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Mars/rocks_large.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/rocks_large.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Mars/rocks_large.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Mars/rocks_large.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Mars/rocks_large.png",
+      "pass": true,
+      "details": [
+        8,
+        62,
+        120,
+        120
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Moon/ridge.png",
+      "pass": true,
+      "details": [
+        512,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/ridge.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Mars/ridge.png",
+      "pass": true,
+      "details": [
+        512,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/ridge.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Moon/ground_repeat.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/ground_repeat.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Moon/ground_diamond.png",
+      "pass": true,
+      "details": [
+        64,
+        32
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/ground_diamond.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Mars/ground_repeat.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/ground_repeat.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Mars/ground_diamond.png",
+      "pass": true,
+      "details": [
+        64,
+        32
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/ground_diamond.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Space/black_space.png",
+      "pass": true,
+      "details": [
+        512,
+        256
+      ]
+    },
+    {
+      "test": "rgba:Environment/Space/black_space.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Mars/peach_sky.png",
+      "pass": true,
+      "details": [
+        512,
+        256
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/peach_sky.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Space/earth.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Space/earth.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Environment/Space/earth.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Environment/Space/earth.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Environment/Space/earth.png",
+      "pass": true,
+      "details": [
+        7,
+        4,
+        57,
+        56
+      ]
+    },
+    {
+      "test": "dimensions:Environment/Moon/footprints.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/footprints.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Moon/rover_tracks.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Moon/rover_tracks.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Mars/footprints.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/footprints.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Environment/Mars/rover_tracks.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Environment/Mars/rover_tracks.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/command_hub_mars_dust.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/command_hub_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/habitat_mars_dust.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Overlays/habitat_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/greenhouse_mars_dust.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/greenhouse_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/battery_bank_mars_dust.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Overlays/battery_bank_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/communications_dish_mars_dust.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/communications_dish_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/solar_array_mars_dust.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Overlays/solar_array_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/regolith_shelter_mars_dust.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/regolith_shelter_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/airlock_mars_dust.png",
+      "pass": true,
+      "details": [
+        128,
+        128
+      ]
+    },
+    {
+      "test": "rgba:Overlays/airlock_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/laboratory_mars_dust.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/laboratory_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/life_support_mars_dust.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/life_support_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/rover_garage_mars_dust.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/rover_garage_mars_dust.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Overlays/regolith_shelter_mars_surface.png",
+      "pass": true,
+      "details": [
+        192,
+        192
+      ]
+    },
+    {
+      "test": "rgba:Overlays/regolith_shelter_mars_surface.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Corridors/straight_NE_SW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/straight_NE_SW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/straight_NE_SW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/straight_NE_SW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/straight_NE_SW.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/straight_NW_SE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/straight_NW_SE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/straight_NW_SE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/straight_NW_SE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/straight_NW_SE.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/corner_NE_SE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/corner_NE_SE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/corner_NE_SE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/corner_NE_SE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/corner_NE_SE.png",
+      "pass": true,
+      "details": [
+        36,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/corner_SE_SW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/corner_SE_SW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/corner_SE_SW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/corner_SE_SW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/corner_SE_SW.png",
+      "pass": true,
+      "details": [
+        26,
+        21,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/corner_SW_NW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/corner_SW_NW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/corner_SW_NW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/corner_SW_NW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/corner_SW_NW.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        61,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/corner_NW_NE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/corner_NW_NE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/corner_NW_NE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/corner_NW_NE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/corner_NW_NE.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        47
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/tee_NE_SE_SW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/tee_NE_SE_SW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/tee_NE_SE_SW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/tee_NE_SE_SW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/tee_NE_SE_SW.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/tee_SE_SW_NW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/tee_SE_SW_NW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/tee_SE_SW_NW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/tee_SE_SW_NW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/tee_SE_SW_NW.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/tee_SW_NW_NE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/tee_SW_NW_NE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/tee_SW_NW_NE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/tee_SW_NW_NE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/tee_SW_NW_NE.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/tee_NW_NE_SE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/tee_NW_NE_SE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/tee_NW_NE_SE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/tee_NW_NE_SE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/tee_NW_NE_SE.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/cross.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/cross.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/cross.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/cross.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/cross.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/end_NE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/end_NE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/end_NE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/end_NE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/end_NE.png",
+      "pass": true,
+      "details": [
+        36,
+        17,
+        71,
+        47
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/end_SE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/end_SE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/end_SE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/end_SE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/end_SE.png",
+      "pass": true,
+      "details": [
+        36,
+        21,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/end_SW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/end_SW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/end_SW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/end_SW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/end_SW.png",
+      "pass": true,
+      "details": [
+        26,
+        21,
+        61,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/end_NW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/end_NW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/end_NW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/end_NW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/end_NW.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        61,
+        47
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/adapter_NE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/adapter_NE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/adapter_NE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/adapter_NE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/adapter_NE.png",
+      "pass": true,
+      "details": [
+        36,
+        17,
+        71,
+        47
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/adapter_SE.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/adapter_SE.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/adapter_SE.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/adapter_SE.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/adapter_SE.png",
+      "pass": true,
+      "details": [
+        36,
+        21,
+        71,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/adapter_SW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/adapter_SW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/adapter_SW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/adapter_SW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/adapter_SW.png",
+      "pass": true,
+      "details": [
+        26,
+        21,
+        61,
+        52
+      ]
+    },
+    {
+      "test": "dimensions:Corridors/adapter_NW.png",
+      "pass": true,
+      "details": [
+        96,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Corridors/adapter_NW.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "transparency:Corridors/adapter_NW.png",
+      "pass": true,
+      "details": [
+        0,
+        255
+      ]
+    },
+    {
+      "test": "binary_alpha:Corridors/adapter_NW.png",
+      "pass": true,
+      "details": "Standalone sprites have alpha only 0 or 255"
+    },
+    {
+      "test": "padding:Corridors/adapter_NW.png",
+      "pass": true,
+      "details": [
+        26,
+        17,
+        61,
+        47
+      ]
+    },
+    {
+      "test": "dimensions:UI/Panels/resource_bar.png",
+      "pass": true,
+      "details": [
+        384,
+        40
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/resource_bar.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/selection_panel.png",
+      "pass": true,
+      "details": [
+        512,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/selection_panel.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/window.png",
+      "pass": true,
+      "details": [
+        320,
+        224
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/window.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/tooltip.png",
+      "pass": true,
+      "details": [
+        192,
+        64
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/tooltip.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/build_card.png",
+      "pass": true,
+      "details": [
+        80,
+        96
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/build_card.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/nine_slice.png",
+      "pass": true,
+      "details": [
+        32,
+        32
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/nine_slice.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/button_normal.png",
+      "pass": true,
+      "details": [
+        112,
+        32
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/button_normal.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/button_hover.png",
+      "pass": true,
+      "details": [
+        112,
+        32
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/button_hover.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/button_pressed.png",
+      "pass": true,
+      "details": [
+        112,
+        32
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/button_pressed.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Panels/button_disabled.png",
+      "pass": true,
+      "details": [
+        112,
+        32
+      ]
+    },
+    {
+      "test": "rgba:UI/Panels/button_disabled.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/ore.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/ore.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/water.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/water.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/power.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/power.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/food.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/food.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/crew.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/crew.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/oxygen.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/oxygen.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/research.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/research.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/build.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/build.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/repair.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/repair.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/info.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/info.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/close.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/close.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/next.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/next.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/warning.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/warning.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Icons/pause.png",
+      "pass": true,
+      "details": [
+        24,
+        24
+      ]
+    },
+    {
+      "test": "rgba:UI/Icons/pause.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/Font/astrociv_5x7.png",
+      "pass": true,
+      "details": [
+        128,
+        32
+      ]
+    },
+    {
+      "test": "rgba:UI/Font/astrociv_5x7.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:UI/astrociv_wordmark.png",
+      "pass": true,
+      "details": [
+        288,
+        48
+      ]
+    },
+    {
+      "test": "rgba:UI/astrociv_wordmark.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "dimensions:Characters/portrait.png",
+      "pass": true,
+      "details": [
+        64,
+        64
+      ]
+    },
+    {
+      "test": "rgba:Characters/portrait.png",
+      "pass": true,
+      "details": "RGBA"
+    },
+    {
+      "test": "seam_x:Moon",
+      "pass": true,
+      "details": "First and last columns identical"
+    },
+    {
+      "test": "seam_y:Moon",
+      "pass": true,
+      "details": "First and last rows identical"
+    },
+    {
+      "test": "seam_x:Mars",
+      "pass": true,
+      "details": "First and last columns identical"
+    },
+    {
+      "test": "seam_y:Mars",
+      "pass": true,
+      "details": "First and last rows identical"
+    },
+    {
+      "test": "unique_walk_frames:SE",
+      "pass": true,
+      "details": "Four distinct frames"
+    },
+    {
+      "test": "unique_walk_frames:SW",
+      "pass": true,
+      "details": "Four distinct frames"
+    },
+    {
+      "test": "unique_walk_frames:NW",
+      "pass": true,
+      "details": "Four distinct frames"
+    },
+    {
+      "test": "unique_walk_frames:NE",
+      "pass": true,
+      "details": "Four distinct frames"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NE_SW.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/straight_NW_SE.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NE_SE.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SE_SW.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_SW_NW.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/corner_NW_NE.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NE_SE_SW.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SE_SW_NW.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_SW_NW_NE.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/tee_NW_NE_SE.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/cross.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/straight_NE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/corner_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/corner_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/tee_NE_SE_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/tee_SE_SW_NW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/tee_SW_NW_NE.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/cross.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NE.png:Corridors/end_SW.png:NE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/straight_NW_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/corner_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/corner_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/tee_SE_SW_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/tee_SW_NW_NE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/tee_NW_NE_SE.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/cross.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SE.png:Corridors/end_NW.png:SE",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/straight_NE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/corner_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/corner_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/tee_NE_SE_SW.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/tee_SW_NW_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/tee_NW_NE_SE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/cross.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_SW.png:Corridors/end_NE.png:SW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/straight_NW_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/corner_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/corner_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/tee_NE_SE_SW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/tee_SE_SW_NW.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/tee_NW_NE_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/cross.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    },
+    {
+      "test": "port:Corridors/end_NW.png:Corridors/end_SE.png:NW",
+      "pass": true,
+      "details": "Coincident reciprocal port centres"
+    }
+  ],
+  "manual_review": [
+    "Building, astronaut, icon and corridor contact sheets inspected.",
+    "3x3 corridor join raster and 3x3 terrain repetition inspected.",
+    "Moon and Mars assembly previews inspected."
+  ],
+  "limitations": [
+    "Unity Editor is not available here: importer, scene placement, runtime sorting and animation playback in Unity still require an integration smoke test.",
+    "AI illustration preserves the reference family, not a pixel-for-pixel reconstruction.",
+    "Directional frames are distinct and baseline-aligned; small pose/helmet differences remain.",
+    "Mirrored texture period is seamless but can become recognizable on large maps.",
+    "Bitmap font is uppercase A-Z, digits and a small punctuation subset."
+  ]
+}

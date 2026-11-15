@@ -12,9 +12,10 @@ using Object = UnityEngine.Object;
 namespace Mapmakers.Tests
 {
     // Plays the real scenes. Any error logged during a test fails it (Unity's LogAssert default).
+    // Time is driven through the run's own clock (Tick) so the tests stay fast and deterministic.
     public class FlowSmokeTests
     {
-        static IEnumerator WaitFor(Func<bool> condition, float seconds = 10)
+        static IEnumerator WaitFor(Func<bool> condition, float seconds = 15)
         {
             float end = Time.realtimeSinceStartup + seconds;
             while (!condition())
@@ -38,6 +39,43 @@ namespace Mapmakers.Tests
             for (int i = 0; i < 20 && game.ModalOpen; i++) game.PressModal(0);
         }
 
+        // Runs the mission at 4x until it ends (or `hours` pass), letting frames render now and then.
+        static IEnumerator Play(GameScreen game, double hours = 400, Action<MissionRun> everyHour = null)
+        {
+            var run = game.Run;
+            run.clock.SetSpeed(4);
+            for (int i = 0; i < hours * 2 && !run.Ended; i++)
+            {
+                CloseWindows(game);
+                if (everyHour != null && i % 2 == 0) everyHour(run);
+                run.Tick(0.25);
+                if (i % 8 == 0) yield return null;
+            }
+            yield return null;
+            yield return null;
+        }
+
+        static IEnumerator StartFree(double hours = 144)
+        {
+            Flow.StartFree(new FreeSettings { planet = "Moon", seed = 11, difficulty = Difficulty.Easy, hours = hours });
+            yield return WaitForScene(Flow.GameScene);
+        }
+
+        static void PlaceAndPowerShelter(MissionRun run)
+        {
+            var shelter = run.State.First(BuildingType.Shelter);
+            if (shelter == null)
+            {
+                run.Choose(BuildingType.Shelter);
+                for (int y = 0; y < run.sim.terrain.height && run.State.Count(BuildingType.Shelter) == 0; y++)
+                    for (int x = 0; x < run.sim.terrain.width && run.State.Count(BuildingType.Shelter) == 0; x++)
+                        if (run.sim.CanPlace(run.State, BuildingType.Shelter, x, y).Ok) run.Place(x, y);
+                shelter = run.State.First(BuildingType.Shelter);
+            }
+            Assert.IsNotNull(shelter, "no room for a Shelter");
+            if (!shelter.enabled) run.Toggle(shelter.id);
+        }
+
         [UnityTest]
         public IEnumerator Boot_OpensTheMenu_WithStoryAndFreeBuild()
         {
@@ -53,7 +91,7 @@ namespace Mapmakers.Tests
         }
 
         [UnityTest]
-        public IEnumerator Tutorial_CutsceneThenDrawingThenGrade()
+        public IEnumerator Tutorial_IsUntimed_ThenFinishGivesAGrade()
         {
             Flow.StartLevel("L1");
             yield return WaitForScene(Flow.CutsceneScene);
@@ -69,6 +107,8 @@ namespace Mapmakers.Tests
             CloseWindows(game);
             var run = game.Run;
             Assert.IsTrue(run.IsDrawing);
+            run.Tick(10);
+            Assert.AreEqual(0.0, run.State.timeHours, "the drawing has no clock");
 
             run.Choose(BuildingType.Habitat);
             game.ClickTile(2, 2);
@@ -77,43 +117,142 @@ namespace Mapmakers.Tests
             run.Choose(BuildingType.Greenhouse);
             game.ClickTile(9, 3);
             Assert.IsFalse(run.DrawingReady, "one Solar Array cannot power the drawing");
-            game.PressNextDay();
+            game.PressFinish();
             Assert.AreEqual(Flow.GameScene, SceneManager.GetActiveScene().name, "Finish waits for the goals");
             run.Choose(BuildingType.SolarArray);
             game.ClickTile(1, 13);
             Assert.IsTrue(run.DrawingReady);
-            game.PressNextDay();
+            game.PressFinish();
 
             yield return WaitForScene(Flow.ResultsScene);
             var results = Object.FindAnyObjectByType<ResultsScreen>();
-            Assert.IsTrue(results.Result.score.passed);
+            Assert.IsTrue(results.Result.canContinue);
             Assert.That(results.Result.score.letter, Is.EqualTo("S").Or.EqualTo("A"));
         }
 
         [UnityTest]
-        public IEnumerator FreeBuild_PlaysTenDays_ToAGrade()
+        public IEnumerator StoryMission_BriefingIsPaused_IdleRunsOutOfAir_RetryStartsFresh()
         {
-            Flow.StartFree(new FreeSettings { planet = "Mars", seed = 11, difficulty = Difficulty.Normal });
+            Flow.StartLevel("L2");
+            yield return WaitForScene(Flow.CutsceneScene);
+            Object.FindAnyObjectByType<CutsceneScreen>().Leave();
             yield return WaitForScene(Flow.GameScene);
             var game = Game();
-            CloseWindows(game);
             var run = game.Run;
-            Assert.AreEqual("Sol", run.Planet.dayWord);
-            StarterBase.Build(run.sim, run.State);
-            var bot = new SmartBot();
+            Assert.AreEqual(RunPhase.Briefing, run.Phase);
+            for (int i = 0; i < 10; i++) yield return null;
+            Assert.AreEqual(0.0, run.State.timeHours, "nothing moves before Start mission");
+            game.PressModal(0);
+            Assert.AreEqual(RunPhase.Running, run.Phase);
 
-            for (int day = 0; day < 12 && !run.Ended; day++)
+            yield return Play(game);
+            Assert.IsTrue(run.Ended);
+            Assert.IsTrue(game.EndShowing);
+            Assert.AreEqual("NoAir", game.EndVariant);
+            game.PressEnd("Try again");
+
+            yield return WaitFor(() => Game() != null && Game() != game);
+            yield return null;
+            var again = Game();
+            Assert.AreEqual(RunPhase.Briefing, again.Run.Phase);
+            Assert.AreEqual(0.0, again.Run.State.timeHours);
+            Assert.AreEqual(0, again.Run.State.buildings.Count, "retry starts from the intended base, not the stopped one");
+        }
+
+        [UnityTest]
+        public IEnumerator EachFailure_HasItsOwnScene_FromARealTrigger()
+        {
+            var cases = new (FailReason reason, Action<MissionRun> setup)[]
             {
+                (FailReason.PowerLoss, run =>
+                {
+                    run.State.supplies = 500;
+                    run.sim.Place(run.State, BuildingType.Habitat, 6, 5);
+                    run.sim.Place(run.State, BuildingType.LifeSupport, 9, 5);
+                }),
+                (FailReason.NoWater, run =>
+                {
+                    StarterBase.Build(run.sim, run.State);
+                    run.State.waterL = 1;
+                    run.sim.SetEnabled(run.State, run.State.First(BuildingType.RoverGarage).id, false);
+                }),
+                (FailReason.NoFood, run =>
+                {
+                    StarterBase.Build(run.sim, run.State);
+                    run.State.meals = 0.5;
+                    run.sim.SetEnabled(run.State, run.State.First(BuildingType.Greenhouse).id, false);
+                }),
+                (FailReason.RadiationNoShelter, run =>
+                {
+                    StarterBase.Build(run.sim, run.State);
+                    run.sim.StartStorm(run.State);
+                    run.State.geologist = CrewLocation.Inside;
+                }),
+                (FailReason.RadiationOutside, run =>
+                {
+                    StarterBase.Build(run.sim, run.State);
+                    run.State.shelterUnlocked = true;
+                    run.sim.StartStorm(run.State);
+                    run.State.recallIssued = true;
+                }),
+            };
+            foreach (var (reason, setup) in cases)
+            {
+                yield return StartFree();
+                var game = Game();
                 CloseWindows(game);
-                bot.Act(run.sim, run.State);
-                game.PressNextDay();
-                yield return null;
+                game.Run.StartMission();
+                setup(game.Run);
+                if (reason == FailReason.RadiationOutside) PlaceAndPowerShelter(game.Run);
+                yield return Play(game, 80);
+                Assert.IsTrue(game.EndShowing, reason + " did not end the run");
+                Assert.AreEqual(reason.ToString(), game.EndVariant);
+                Assert.IsFalse(string.IsNullOrEmpty(game.Run.Result.cause), reason + " needs an explanation");
+                game.SkipEndBeat();
+                Assert.IsTrue(game.EndBeatDone, "the animation can be skipped at once");
             }
+        }
+
+        [UnityTest]
+        public IEnumerator FreeBuild_CarefulPlay_ReachesTheEvaluation_ThenTheReport()
+        {
+            yield return StartFree();
+            var game = Game();
+            CloseWindows(game);
+            game.Run.StartMission();
+            var bot = new SmartBot();
+            yield return Play(game, 200, run => bot.Act(run.sim, run.State));
+            Assert.IsTrue(game.EndShowing);
+            Assert.AreEqual("Evaluation", game.EndVariant);
+            Assert.AreEqual(MissionEnd.Deadline, game.Run.Result.end);
+            game.PressEnd("View report");
 
             yield return WaitForScene(Flow.ResultsScene);
             var results = Object.FindAnyObjectByType<ResultsScreen>();
             Assert.AreEqual(GameMode.Free, results.Result.mode);
-            Assert.IsTrue(results.Result.score.passed, "a careful player survives ten sols");
+            Assert.IsTrue(results.Result.evaluation);
+            Assert.IsFalse(results.Result.Failed);
+        }
+
+        [UnityTest]
+        public IEnumerator IncompleteBase_GetsAnEvaluation_NotAFailureScene()
+        {
+            yield return StartFree(12);
+            var game = Game();
+            CloseWindows(game);
+            var run = game.Run;
+            run.StartMission();
+            run.State.supplies = 500;
+            run.sim.Place(run.State, BuildingType.Habitat, 6, 5);
+            yield return Play(game, 30, r =>
+            {
+                if (r.State.Count(BuildingType.LifeSupport) == 0) Planner.Place(r.sim, r.State, BuildingType.LifeSupport, true);
+                if (r.State.Count(BuildingType.Battery) == 0) Planner.Place(r.sim, r.State, BuildingType.Battery, true);
+                while (r.State.Count(BuildingType.SolarArray) < 4 && Planner.Place(r.sim, r.State, BuildingType.SolarArray, true)) { }
+            });
+            Assert.AreEqual("Evaluation", game.EndVariant, "a low grade is still an evaluation");
+            Assert.LessOrEqual(run.Result.score.total, run.sim.balance.grade.missingCoreCap);
+            Assert.IsFalse(run.Result.Failed);
         }
     }
 }

@@ -1,0 +1,537 @@
+{
+  "size": [
+    1024,
+    1024
+  ],
+  "extrusion": 2,
+  "sprites": [
+    {
+      "name": "Buildings/command_hub.png",
+      "x": 2,
+      "y_top": 2,
+      "y_unity_bottom": 830,
+      "width": 192,
+      "height": 192,
+      "pivot_px_top_left": [
+        96,
+        184
+      ]
+    },
+    {
+      "name": "Buildings/habitat.png",
+      "x": 198,
+      "y_top": 2,
+      "y_unity_bottom": 894,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Buildings/greenhouse.png",
+      "x": 330,
+      "y_top": 2,
+      "y_unity_bottom": 830,
+      "width": 192,
+      "height": 192,
+      "pivot_px_top_left": [
+        96,
+        184
+      ]
+    },
+    {
+      "name": "Buildings/battery_bank.png",
+      "x": 526,
+      "y_top": 2,
+      "y_unity_bottom": 894,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Buildings/communications_dish.png",
+      "x": 658,
+      "y_top": 2,
+      "y_unity_bottom": 830,
+      "width": 192,
+      "height": 192,
+      "pivot_px_top_left": [
+        96,
+        184
+      ]
+    },
+    {
+      "name": "Buildings/solar_array.png",
+      "x": 854,
+      "y_top": 2,
+      "y_unity_bottom": 894,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Buildings/regolith_shelter.png",
+      "x": 2,
+      "y_top": 198,
+      "y_unity_bottom": 634,
+      "width": 192,
+      "height": 192,
+      "pivot_px_top_left": [
+        96,
+        184
+      ]
+    },
+    {
+      "name": "Buildings/airlock.png",
+      "x": 198,
+      "y_top": 198,
+      "y_unity_bottom": 698,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Buildings/laboratory.png",
+      "x": 330,
+      "y_top": 198,
+      "y_unity_bottom": 634,
+      "width": 192,
+      "height": 192,
+      "pivot_px_top_left": [
+        96,
+        184
+      ]
+    },
+    {
+      "name": "Buildings/life_support.png",
+      "x": 526,
+      "y_top": 198,
+      "y_unity_bottom": 634,
+      "width": 192,
+      "height": 192,
+      "pivot_px_top_left": [
+        96,
+        184
+      ]
+    },
+    {
+      "name": "Buildings/rover_garage.png",
+      "x": 722,
+      "y_top": 198,
+      "y_unity_bottom": 634,
+      "width": 192,
+      "height": 192,
+      "pivot_px_top_left": [
+        96,
+        184
+      ]
+    },
+    {
+      "name": "Vehicles/rover_six_wheel.png",
+      "x": 2,
+      "y_top": 394,
+      "y_unity_bottom": 502,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Environment/Moon/crater_small.png",
+      "x": 134,
+      "y_top": 394,
+      "y_unity_bottom": 598,
+      "width": 32,
+      "height": 32,
+      "pivot_px_top_left": [
+        16,
+        24
+      ]
+    },
+    {
+      "name": "Environment/Mars/crater_small.png",
+      "x": 170,
+      "y_top": 394,
+      "y_unity_bottom": 598,
+      "width": 32,
+      "height": 32,
+      "pivot_px_top_left": [
+        16,
+        24
+      ]
+    },
+    {
+      "name": "Environment/Moon/crater_medium.png",
+      "x": 206,
+      "y_top": 394,
+      "y_unity_bottom": 566,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "Environment/Mars/crater_medium.png",
+      "x": 274,
+      "y_top": 394,
+      "y_unity_bottom": 566,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "Environment/Moon/crater_large.png",
+      "x": 342,
+      "y_top": 394,
+      "y_unity_bottom": 502,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Environment/Mars/crater_large.png",
+      "x": 474,
+      "y_top": 394,
+      "y_unity_bottom": 502,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Environment/Moon/rocks_small.png",
+      "x": 606,
+      "y_top": 394,
+      "y_unity_bottom": 598,
+      "width": 32,
+      "height": 32,
+      "pivot_px_top_left": [
+        16,
+        24
+      ]
+    },
+    {
+      "name": "Environment/Mars/rocks_small.png",
+      "x": 642,
+      "y_top": 394,
+      "y_unity_bottom": 598,
+      "width": 32,
+      "height": 32,
+      "pivot_px_top_left": [
+        16,
+        24
+      ]
+    },
+    {
+      "name": "Environment/Moon/rocks_medium.png",
+      "x": 678,
+      "y_top": 394,
+      "y_unity_bottom": 566,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "Environment/Mars/rocks_medium.png",
+      "x": 746,
+      "y_top": 394,
+      "y_unity_bottom": 566,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "Environment/Moon/rocks_large.png",
+      "x": 814,
+      "y_top": 394,
+      "y_unity_bottom": 502,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Environment/Mars/rocks_large.png",
+      "x": 2,
+      "y_top": 526,
+      "y_unity_bottom": 370,
+      "width": 128,
+      "height": 128,
+      "pivot_px_top_left": [
+        64,
+        120
+      ]
+    },
+    {
+      "name": "Environment/Space/earth.png",
+      "x": 134,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "Corridors/straight_NE_SW.png",
+      "x": 202,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/straight_NW_SE.png",
+      "x": 302,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/corner_NE_SE.png",
+      "x": 402,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/corner_SE_SW.png",
+      "x": 502,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/corner_SW_NW.png",
+      "x": 602,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/corner_NW_NE.png",
+      "x": 702,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/tee_NE_SE_SW.png",
+      "x": 802,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/tee_SE_SW_NW.png",
+      "x": 902,
+      "y_top": 526,
+      "y_unity_bottom": 434,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/tee_SW_NW_NE.png",
+      "x": 2,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/tee_NW_NE_SE.png",
+      "x": 102,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/cross.png",
+      "x": 202,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/end_NE.png",
+      "x": 302,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/end_SE.png",
+      "x": 402,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/end_SW.png",
+      "x": 502,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/end_NW.png",
+      "x": 602,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/adapter_NE.png",
+      "x": 702,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/adapter_SE.png",
+      "x": 802,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/adapter_SW.png",
+      "x": 902,
+      "y_top": 658,
+      "y_unity_bottom": 302,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    },
+    {
+      "name": "Corridors/adapter_NW.png",
+      "x": 2,
+      "y_top": 726,
+      "y_unity_bottom": 234,
+      "width": 96,
+      "height": 64,
+      "pivot_px_top_left": [
+        48,
+        40
+      ]
+    }
+  ]
+}

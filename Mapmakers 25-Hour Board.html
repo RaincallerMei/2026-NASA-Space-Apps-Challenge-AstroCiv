@@ -89,6 +89,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
   <button role="tab" data-p="plan">2 The 25 hours</button>
   <button role="tab" data-p="tasks">3 Task list</button>
   <button role="tab" data-p="ship">4 Ship it</button>
+  <button role="tab" data-p="ai">5 AI use</button>
 </nav>
 
 <!-- ================= STORY ================= -->
@@ -161,7 +162,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 
 <!-- ================= PLAN ================= -->
 <section class="page" id="p-plan">
-<div class="big"><span class="lab">Big picture</span>Claude Code builds. You write, draw, check, test and film. The last 10 hours (test, fix, build, submit, buffer) are sacred. Do not borrow from them.</div>
+<div class="big"><span class="lab">Big picture</span>AI tools assist with code, text and all project-created art. You direct, select, review, test and film. Record each use on page 5. The last 10 hours (test, fix, build, submit, buffer) are sacred. Do not borrow from them.</div>
 
 <h2>Where am I?</h2>
 <div class="card">
@@ -177,11 +178,12 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 <h2>Which tool does what</h2>
 <div class="tw"><table>
 <tr><th>Tool</th><th>Use for</th><th>Do not use for</th></tr>
-<tr><td>Claude Code</td><td>All Unity C# code, tests, data fetch, Story.json, README, docs. Drives your open Unity.</td><td>Final fact check. You check sources.</td></tr>
+<tr><td>Claude Code / Codex</td><td>Unity code, tests, data tooling, text, documentation, gameplay analysis and prompts. Log the actual agent per session.</td><td>Assuming generated code or facts have been reviewed by a person.</td></tr>
 <tr><td>Unity 2D</td><td>Stays open. Tilemap, sprites, Canvas UI, WebGL build.</td><td>Upgrading the version.</td></tr>
-<tr><td>Midjourney</td><td>Pictures only: bedroom, kid's map drawing, 3 photo cards, observation window, title, crew faces.</td><td><b>Code.</b> Also not tiles: its pixels are not on a real grid.</td></tr>
-<tr><td>Free packs</td><td>Tiles and UI: Cozy Space Planet (16 px), Kenney Pixel UI (CC0).</td><td>Anything with unclear license.</td></tr>
-<tr><td>Piskel or Aseprite</td><td>Fix sprites. Shrink Midjourney art. Match palette. Greenhouse sprite.</td><td>Drawing whole tilesets from zero.</td></tr>
+<tr><td>Midjourney</td><td>Seven imported story pictures; keep originals, full prompts and job IDs where available.</td><td>Claiming filename fragments are the complete prompts.</td></tr>
+<tr><td>Built-in image generation + procedural scripts</td><td>AstroCiv masters, derived sprites, terrain, UI and icons. The available pack contains 142 exported PNGs. All project-created art is AI-created.</td><td>Claiming the pack is integrated or human-approved without checking.</td></tr>
+<tr><td>Historical free-pack candidates</td><td>Cozy Space / Kenney were suggestions in the original plan, not recorded sources for current team art.</td><td>Crediting an unimported candidate as a used asset.</td></tr>
+<tr><td>Python / Piskel / Aseprite</td><td>Record cleanup, palette changes, transforms and any actual manual edits separately. Python export steps are documented; manual edits are not assumed.</td><td>Calling deterministic rendering a live AI model.</td></tr>
 <tr><td>Blender</td><td>Skip. Game is 2D pixel.</td><td>Game art.</td></tr>
 <tr><td>OBS + CapCut</td><td>Record play. Cut the demo. English subtitles.</td><td>Long edits.</td></tr>
 </table></div>
@@ -192,7 +194,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 <li>Shrink to 480 × 270 with nearest-neighbour. Scenes then scale ×4 to 1080p.</li>
 <li>Crew portraits: ask for a face, then shrink to 32 × 32 and clean by hand.</li>
 <li>Cut colours to the same 16 to 32 as the tile pack.</li>
-<li>Write "AI-made art" in ASSET_CREDITS.md and on the project page. Never credit it to NASA.</li>
+<li>All project-created art is AI-created, including procedural placeholders and derivatives. Record the method in <a href="Work%20Log%20and%20Review/AI_USE_LOG.md">AI_USE_LOG.md</a>, asset credits and the project page. Never credit it to NASA.</li>
 </ul>
 
 <h2>Battery math the kid will do</h2>
@@ -220,6 +222,7 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 </div>
 <div class="card" id="runlog"><h3>Claude Code run log</h3>
 <ul class="src" id="runlogList">
+<li><b>AI-use record reconciled, Nov 14</b> Added page 5 and the <a href="Work%20Log%20and%20Review/AI_USE_LOG.md">maintained AI-use log</a>: purpose, method, tool, prompt/output evidence, review and unknown details. Team confirms <b>all project-created art is AI-created</b>. Seven Midjourney cutscene originals matched to imports by SHA-256; the available AstroCiv pack has 142 exported PNGs. Credits and submission text updated. Historical milestone/test records below are retained; this documentation pass did not rerun game tests or prove cloud-agent completion.</li>
 <li><b>Tutorial and sequence verified</b> Open <b>Assets/_Game/Scenes/Boot.unity</b> and press Play. Dream → Habitat/Solar/Greenhouse drawing tasks → teacher → three photo cards → commander → persistent outpost/shadow/harvest → storm → debrief → window/message ending → Blueprint v2. <b>57/57 tests passed</b>, including the complete campaign, timer safety, enforced placement order and failure/Retry guards. <a href="26NASAChallenge/GAMEPLAY_SEQUENCE.md">Sequence details</a> · <a href="review/campaign-tests.json">Test evidence</a> · <a href="review/tutorial-greybox.png">Tutorial screenshot</a>. Story scenes use labelled greybox/text placeholders; final art and crew chat remain separate.</li>
 <li><b>Functional Main scene — verified</b> Runtime ticking, clickable 20×15 greybox map, footprint preview/rejection reasons, six core buildings plus Shelter, inspection/toggles, totals/rates/warnings, Pause/1×/2×/4×, Reset/Retry, crew recall, DONKI warning and text debrief are connected. <b>55/55 tests passed after fixes</b> (53 EditMode + 2 real-scene PlayMode), including win/debrief and failure/retry. <a href="review/runtime-tests.json">Test evidence</a> · <a href="review/mission-greybox.png">1080p screenshot</a>. Open Assets/_Game/Scenes/Main.unity and press Play. Final Tilemap artwork, tutorial, chat and illustrated ending remain for Opus.</li>
 <li><b>M0</b> Unity 6000.6.7f1, URP 2D, new Input System only, Web build module installed. Editor driven live through unity-cli.</li>
@@ -276,6 +279,34 @@ input[type=range]{width:100%;accent-color:var(--lamp)}
 </ul>
 <p class="src">Not checked: Eco-Metropolis, Connected Earth Museum. Treat as unverified. Checks on this board save in this browser only.</p>
 </section>
+
+<!-- ================= AI USE ================= -->
+<section class="page" id="p-ai">
+<div class="big"><span class="lab">AI-use record</span>All project-created art is AI-created. Track each AI session: what it helped with, how it was made, its inputs and outputs, and what was actually checked.</div>
+<p><a href="Work%20Log%20and%20Review/AI_USE_LOG.md"><b>Open the maintained AI-use log and entry template</b></a> · <a href="26NASAChallenge/ASSET_CREDITS.md">Art provenance</a> · <a href="26NASAChallenge/SUBMISSION_NOTES.md">Submission disclosure</a></p>
+<p class="src">Reconciled November 14, 2026. Times in the log use America/Toronto. Commit checkpoints are not exact prompt times; file-copy dates are not generation dates. Missing model names, prompts and job IDs stay marked as not recorded.</p>
+<h2>Recorded moments</h2>
+<div class="tw"><table>
+<tr><th>Moment / evidence</th><th>AI use and purpose</th><th>How / outputs</th><th>Recorded state</th></tr>
+<tr><td>M0–M2; C1–C3</td><td>AI-assisted briefs, simulation, tests, data loaders and story text; Claude Code where the board attributes it</td><td>Team briefs → C# / Story.json / offline data tooling. Initial checkpoint e7a0318.</td><td>Historical board evidence; original full sessions not available.</td></tr>
+<tr><td>Codex execution; C4/C6</td><td>Source checks, timing/reset work, test plans, balance/scenario and submission documentation</td><td>Repository review, existing tests/bots and source checks → code, reports and board updates.</td><td>Existing reports retained; human approval not inferred.</td></tr>
+<tr><td>Greybox/campaign/redesign; C5/C7/C8</td><td>AI-assisted playable map, tutorial, campaign, crew chat, results and turn-based redesign</td><td>Brief-driven implementation and automated verification → scenes, UI, tests and data.</td><td>Historical milestones; current uncommitted work is not declared complete.</td></tr>
+<tr><td>Story pictures; A1–A7</td><td>Midjourney generated seven illustrations</td><td>Team prompts/selection → originals in Art/cutscenes → imported PNGs. All seven source/import pairs match by SHA-256.</td><td>Imported; full prompts/model/job details missing.</td></tr>
+<tr><td>Art pack; P1–P11</td><td>Built-in image generation plus procedural/derived art</td><td>Reference/style instructions → 10 master groups → deterministic cleanup, palette mapping, geometry and atlases. 142 exported PNGs.</td><td>Available on disk; reference is a separate input. Unity integration not verified here.</td></tr>
+<tr><td>Board and placeholder graphics</td><td>AI-created procedural art through code</td><td>Canvas/Unity drawing code → Moon-base illustration, shapes and icons.</td><td>Included in all-art disclosure; not described as Midjourney output.</td></tr>
+<tr><td>Current conversation; C11/C9</td><td>Codex gameplay comparison and real-time/failure-scene cloud prompt</td><td>Read current mechanics → pausable real-time recommendation → implementation prompt. Deadline means evaluation, not automatic failure.</td><td>Advice/specification created; prompt creation does not prove implementation.</td></tr>
+<tr><td>Log maintenance; C10/C12</td><td>AI-assisted provenance reconciliation and ongoing logging</td><td>Board + git + generation notes + file matching → log, corrected credits, disclosure and agent instructions.</td><td>Documentation updated; missing historical details remain explicit.</td></tr>
+</table></div>
+<h2>After every AI session</h2>
+<ol>
+<li>Append a row to the maintained Markdown log: date/time (or not recorded), tool/model/session, purpose and actual prompt/reference.</li>
+<li>Link the generated output and any revisions; say whether it is proposed, selected, imported, used or discarded.</li>
+<li>For art, keep source → transforms → export → Unity destination connected and update asset credits.</li>
+<li>Record automated checks and real human edits/review separately. Log unknown details without guessing.</li>
+<li>Before submission, reconcile this record with final credits and the project-page AI statement.</li>
+</ol>
+<p class="src">This page summarizes the repository log; it does not save AI entries into browser storage. Edit the linked Markdown file to keep a durable team record. Existing task checks still save in this browser only. Python/Unity are tools rather than AI models; NASA/CSA source data is credited separately. Crew dialogue is scripted, with no live AI during play.</p>
+</section>
 </div>
 
 <script>
@@ -331,18 +362,18 @@ const PH=[
   ["Total story and chat text under about 650 words","must","Claude"],
   ["Bond hearts 0 to 3 change only the ending lines","nice","Claude"]]},
  {id:"art",name:"Pixel art",par:"grey",bud:"3.5 h",who:"You",c:"#d6a5ff",done:"Every art slot has a real sprite or a placeholder. One style.",t:[
-  ["Download Cozy Space Planet and Kenney Pixel UI. Read the license inside each zip","must","itch / Kenney"],
+  ["Review the AI-created AstroCiv pack, generation notes and manifest; record selected/imported files (old free-pack suggestions are not used credits)","must","You + AI"],
   ["Pick one palette of 16 to 32 colours","must","Piskel"],
   ["Midjourney: bedroom scene and the kid's notebook map","must","Midjourney"],
   ["Midjourney: 3 photo cards (campus, lab, training) and the observation window","must","Midjourney"],
-  ["3 crew portraits, shrunk to 32 × 32 and cleaned by hand","must","Midjourney + Piskel"],
-  ["Greenhouse sprite (3×2) with on and off look","must","Piskel"],
-  ["Shelter sprite and alert icon","must","Piskel"],
-  ["Icons: power, battery, air, water, food, crew safety. Shape as well as colour","must","Kenney"],
+  ["Select AI-created crew portraits; record actual resizing, cleanup and approval","must","You + AI"],
+  ["Select AI-created Greenhouse sprite with on and off look; record source and transforms","must","You + AI"],
+  ["Select AI-created Shelter sprite and alert icon; record source and transforms","must","You + AI"],
+  ["AI-created icons: power, battery, air, water, food, crew safety. Shape as well as colour","must","AI + scripts"],
   ["Shrink all Midjourney art to the pixel grid and palette","must","Piskel"],
   ["Drop files into the ArtManifest slots. Placeholders cover the gaps","must","Unity"],
   ["ASSET_CREDITS.md complete. AI-made art is marked","must","Claude"],
-  ["Locked Lab and Rover Garage icons","nice","Piskel"],
+  ["AI-created locked Lab and Rover Garage icons","nice","AI + scripts"],
   ["Title art","nice","Midjourney"]]},
  {id:"bal",name:"Balance and feel (M5)",h:2,who:"Both",c:"#ffd9a0",done:"Two ways to win. One gentle fail. Tight but fair.",t:[
   ["Read BALANCE_REPORT.md. Bots: DoNothing fails, ShedLoads wins, StoredEnergy wins","must","You"],
@@ -395,7 +426,7 @@ const PH=[
   ["Explain how it meets the challenge and each judging point","must","Claude"],
   ["List NASA and CSA data used: DONKI, RadLab, POWER, LOLA, OSDR, CSA","must","You"],
   ["List other references, assets and tools","must","You"],
-  ["State AI use: Claude for code and text, Midjourney for some art","must","You"],
+  ["State AI use: Claude Code/Codex for recorded code, text and design; all project-created art is AI-created (Midjourney, built-in image generation and procedural derivatives)","must","You"],
   ["Say: not endorsed by NASA, CSA, Sara Seager or Chris Hadfield. The astronaut path is a dream","must","You"],
   ["Local impact note: who it helps in Mississauga and Toronto","must","You"],
   ["README: Unity version, how to open, controls, demo path","must","Claude"],
@@ -425,6 +456,9 @@ const EXECUTION_DOC_IDS=EXECUTION_DOCS.map(([phase,title,path])=>{
   const p=PH.find(p=>p.id===phase),id=phase+"-"+p.t.length;
   p.t.push([`<a href="${path}">${title}</a>`,"must","Codex"]);return id;
 });
+/* Append ongoing disclosure checks after existing task IDs. These are not pre-checked. */
+PH.find(p=>p.id==="art").t.push(["Append each art generation/revision to the AI-use log with prompt, source, transforms, destination and review","must","You + AI"]);
+PH.find(p=>p.id==="submit").t.push(["Review AI_USE_LOG.md against final assets, credits and project-page disclosure; keep unknown details explicit","must","You"]);
 /* ---------- storage ---------- */
 const KEY="mapmakers-board-v2";let S={c:{},hour:0,must:false,hide:false,start:0,auto:false};
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
@@ -493,7 +527,7 @@ let armed=false;$("#reset").onclick=e=>{if(!armed){armed=true;e.target.textConte
 syncClock();paintTasks();
 
 /* ---------- tabs ---------- */
-const PAGES=["story","plan","tasks","ship"];
+const PAGES=["story","plan","tasks","ship","ai"];
 function show(){let p=location.hash.slice(1);if(!PAGES.includes(p))p="story";
   PAGES.forEach(n=>{$("#p-"+n).classList.toggle("on",n===p)});
   document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.p===p))}

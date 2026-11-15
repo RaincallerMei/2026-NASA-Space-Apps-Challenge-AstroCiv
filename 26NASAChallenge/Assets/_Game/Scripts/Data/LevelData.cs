@@ -9,7 +9,7 @@ namespace Mapmakers.Data
     public class LevelDef
     {
         public string id, title, subtitle, planet, mode, before, after, startBase;
-        public int days;
+        public double durationHours;
         public int seed = -1;
         public int startSupplies = -1;
         public int maxBatteries = 1;
@@ -25,7 +25,7 @@ namespace Mapmakers.Data
         {
             return new Scenario
             {
-                days = days, shelterUnlocked = shelterUnlocked, maxBatteries = maxBatteries,
+                durationHours = durationHours, shelterUnlocked = shelterUnlocked, maxBatteries = maxBatteries,
                 events = new List<ScheduledEvent>(events)
             };
         }
@@ -81,36 +81,46 @@ namespace Mapmakers.Data
         {
             var balance = BalanceLoader.Load();
             if (level.startSupplies >= 0) balance.startSupplies = level.startSupplies;
-            var sim = new Simulator(balance, Terrain(level.planet, level.seed, balance), level.MakeScenario())
+            return new Simulator(balance, Terrain(level.planet, level.seed, balance), level.MakeScenario())
             {
                 planet = level.Planet,
-                missionEnabled = !level.IsDrawing
+                missionEnabled = !level.IsDrawing,
+                layoutRules = !level.IsDrawing
             };
-            return sim;
         }
 
-        public static Simulator FreeBuild(string planet, int seed, Difficulty difficulty, int days)
+        public static Simulator FreeBuild(string planet, int seed, Difficulty difficulty, double durationHours)
         {
             var balance = BalanceLoader.Load();
-            var scenario = ScenarioFactory.Random(seed, days, difficulty);
+            var scenario = ScenarioFactory.Random(seed, durationHours, difficulty, balance);
             return new Simulator(balance, TerrainGenerator.Generate(seed), scenario) { planet = PlanetProfile.Get(planet) };
         }
 
         public static TerrainGrid Terrain(string planet, int seed, Balance balance)
         {
-            if (planet == "Mars" || seed >= 0) return TerrainGenerator.Generate(seed < 0 ? 4 : seed);
-            return TerrainFactory.Load(balance);
+            if (seed >= 0) return TerrainGenerator.Generate(seed);
+            return planet == "Mars" ? TerrainFactory.LoadMars(balance) : TerrainFactory.Load(balance);
         }
 
-        // Rebuilds a saved base for free. Falls back to a ready-made base when nothing valid was saved.
-        public static void LoadBase(Simulator sim, SimState s, SavedBase saved)
+        // Rebuilds a saved base for free. Returns false (and builds a ready-made base) when nothing valid was saved,
+        // so the game can say so instead of silently swapping bases.
+        public static bool LoadBase(Simulator sim, SimState s, SavedBase saved)
         {
+            bool valid = saved != null;
             if (saved != null)
                 foreach (var b in saved.buildings)
-                    if (Enum.TryParse(b.type, out BuildingType type)) sim.PlaceFree(s, type, b.x, b.y);
-            if (!Mapmakers.Sim.Simulator.HasCoreBase(s)) StarterBase.Build(sim, s);
+                    valid &= Enum.TryParse(b.type, out BuildingType type) && sim.PlaceFree(s, type, b.x, b.y).Ok;
+            if (!valid || !Simulator.HasCoreBase(s))
+            {
+                s.buildings.Clear();
+                s.nextId = 1;
+                StarterBase.Build(sim, s);
+                valid = false;
+            }
+            s.events.Clear();
             s.batteryKWh = sim.BatteryCapacity(s);
             s.harvestDone = true;
+            return valid;
         }
 
         public static SavedBase Save(SimState s)

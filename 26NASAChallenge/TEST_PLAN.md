@@ -2,7 +2,18 @@
 
 Prepared from the 25-hour board and master prompt. Human sessions below are **not run**. Scene layout, art, pacing, and difficulty changes belong to Opus and the team.
 
-## Automated checks
+## Current automated results (14 November 2026, real-time version)
+
+Run in Unity 6000.6.7f1 with the Unity CLI (`test run --mode editor`, then `--mode playmode --async-tests` and `test status`).
+
+| Suite | Result | Covers |
+|---|---|---|
+| EditMode | **89/89 passed** | Fixed-step clock (pause, speeds, holds, focus loss, no catch-up), end reasons and precedence, deadline stops exactly on time, water use, alerts, layout links, soil and rover, grade caps, data fixtures (incl. Jezero), crew chat, bot balance on L2–L4 and 36 Free Build seeds |
+| PlayMode | **6/6 passed** | Boot → Menu; tutorial untimed; paused briefing → idle NoAir scene → Retry starts fresh; each of 5 failure scenes from real triggers; evaluation → report; incomplete base → evaluation, not failure |
+
+Visual check (screenshots in the editor, not a player test): Moon Free Build map with the AstroCiv sprites, Level 4 Mars map with dust overlays, NoFood failure card, and evaluation card with the 60-point cap. No human or physical-mouse session has been run.
+
+## Older automated checks (historical)
 
 In Unity 6000.6.7f1, open **Window > General > Test Runner**, select **EditMode**, and run the `Mapmakers.Tests` tests. Record the actual totals; never treat a test file's existence as a pass.
 

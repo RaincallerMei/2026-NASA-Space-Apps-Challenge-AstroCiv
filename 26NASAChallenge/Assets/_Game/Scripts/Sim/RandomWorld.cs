@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace Mapmakers.Sim
 {
-    // Made-up maps for Free Build and Mars. Same seed, same map.
+    // Made-up maps for Free Build. Same seed, same map. Crater floors hold water (ice or wet clay); soft soil lies in patches.
     public static class TerrainGenerator
     {
-        public const int MinFreeTiles = 210;
+        public const int MinFreeTiles = 200;
 
         public static TerrainGrid Generate(int seed, int width = 20, int height = 15)
         {
@@ -14,7 +15,7 @@ namespace Mapmakers.Sim
             {
                 var terrain = Build(new Random(seed + attempt * 7919), width, height);
                 best = terrain;
-                if (FreeTiles(terrain) >= MinFreeTiles && HasFreeRect(terrain, 3, 3)) return terrain;
+                if (FreeTiles(terrain) >= MinFreeTiles && HasFreeRect(terrain, 3, 3) && terrain.AnySoil() && terrain.AnyWater()) return terrain;
             }
             return best;
         }
@@ -46,11 +47,29 @@ namespace Mapmakers.Sim
                 double cx = rng.Next(width), cy = rng.Next(height), r = 1.0 + rng.NextDouble() * 1.4;
                 for (int y = 0; y < height; y++)
                     for (int x = 0; x < width; x++)
-                        if ((x - cx) * (x - cx) + (y - cy) * (y - cy) <= r * r) terrain.SetBlocked(x, y, true);
+                        if ((x - cx) * (x - cx) + (y - cy) * (y - cy) <= r * r)
+                        {
+                            terrain.SetBlocked(x, y, true);
+                            terrain.SetWater(x, y, true);
+                        }
             }
 
             int rocks = 4 + rng.Next(5);
-            for (int k = 0; k < rocks; k++) terrain.SetBlocked(rng.Next(width), rng.Next(height), true);
+            for (int k = 0; k < rocks; k++)
+            {
+                int x = rng.Next(width), y = rng.Next(height);
+                terrain.SetBlocked(x, y, true);
+                terrain.SetWater(x, y, false);
+            }
+
+            int patches = 2 + rng.Next(2);
+            for (int p = 0; p < patches; p++)
+            {
+                int cx = rng.Next(width), cy = rng.Next(height);
+                for (int y = cy - 1; y <= cy + 1; y++)
+                    for (int x = cx - 1; x <= cx + 1; x++)
+                        if (terrain.InBounds(x, y) && !terrain.IsBlocked(x, y) && rng.NextDouble() < 0.8) terrain.SetSoil(x, y, true);
+            }
             return terrain;
         }
 
@@ -85,53 +104,63 @@ namespace Mapmakers.Sim
 
     public enum Difficulty { Easy, Normal, Hard }
 
-    // Random event schedule for Free Build. Storms and dim days never overlap, so each one can be handled.
+    // Random event schedule for Free Build, in game hours. Storms and dim spells never overlap,
+    // and every storm is over well before the evaluation so the player can recover.
     public static class ScenarioFactory
     {
-        public static Scenario Random(int seed, int days, Difficulty difficulty)
+        public const double FirstEventHour = 20;
+        public const double RecoveryHours = 8;
+        public const double FirstDropHour = 12;
+        public const double DropEveryHours = 20;
+
+        public static Scenario Random(int seed, double durationHours, Difficulty difficulty, Balance balance)
         {
             var rng = new Random(seed);
-            var scenario = new Scenario { days = days, shelterUnlocked = true, maxBatteries = 2 };
-            var busy = new bool[days + 3];
+            var scenario = new Scenario { durationHours = durationHours, shelterUnlocked = true, maxBatteries = 2 };
+            var busy = new List<(double from, double to)>();
 
             int storms = difficulty == Difficulty.Easy ? 1 : difficulty == Difficulty.Normal ? 1 + rng.Next(2) : 2;
             int dims = difficulty == Difficulty.Easy ? 1 : difficulty == Difficulty.Normal ? 2 : 3;
             int faults = difficulty == Difficulty.Easy ? 0 : difficulty == Difficulty.Normal ? 1 : 2;
-            int drops = difficulty == Difficulty.Easy ? 2 : 1;
 
+            double stormLength = balance.storm.endHour;
             for (int i = 0; i < storms; i++)
             {
-                int day = Pick(rng, 3, days - 1, d => !busy[d - 1] && !busy[d] && !busy[d + 1]);
-                if (day < 0) continue;
-                busy[day - 1] = busy[day] = busy[day + 1] = true;
+                double hour = Pick(rng, FirstEventHour, durationHours - stormLength - RecoveryHours, stormLength, busy);
+                if (hour < 0) continue;
                 double strength = Math.Round((0.7 + 0.3 * rng.NextDouble()) * 20) / 20;
-                scenario.events.Add(ScheduledEvent.Make(day, EventKind.SolarStorm, strength));
+                scenario.events.Add(ScheduledEvent.Make(hour, EventKind.SolarStorm, strength));
             }
+            double dimLength = balance.shadow.durationHours;
             for (int i = 0; i < dims; i++)
             {
-                int day = Pick(rng, 2, days, d => !busy[d]);
-                if (day < 0) continue;
-                busy[day] = true;
-                scenario.events.Add(ScheduledEvent.Make(day, EventKind.Shadow));
+                double hour = Pick(rng, FirstEventHour, durationHours - dimLength - 2, dimLength, busy);
+                if (hour >= 0) scenario.events.Add(ScheduledEvent.Make(hour, EventKind.Shadow));
             }
             for (int i = 0; i < faults; i++)
-                scenario.events.Add(ScheduledEvent.Make(2 + rng.Next(Math.Max(1, days - 1)), EventKind.Fault, 1, rng.Next(100)));
-            for (int i = 0; i < drops; i++)
-                scenario.events.Add(ScheduledEvent.Make(2 + rng.Next(Math.Max(1, days - 1)), EventKind.SupplyDrop, 1, 20 + 5 * rng.Next(3)));
+                scenario.events.Add(ScheduledEvent.Make(Whole(FirstEventHour + rng.NextDouble() * (durationHours - FirstEventHour - 10)), EventKind.Fault, 1, rng.Next(100)));
+            int bonus = difficulty == Difficulty.Easy ? 10 : difficulty == Difficulty.Normal ? 5 : 0;
+            for (double hour = FirstDropHour; hour < durationHours - 12; hour += DropEveryHours)
+                scenario.events.Add(ScheduledEvent.Make(Whole(hour + rng.NextDouble() * 4), EventKind.SupplyDrop, 1, 20 + bonus + 5 * rng.Next(3)));
 
-            scenario.events.Sort((a, b) => a.day.CompareTo(b.day));
+            scenario.events.Sort((a, b) => a.hour.CompareTo(b.hour));
             return scenario;
         }
 
-        static int Pick(Random rng, int min, int max, Func<int, bool> ok)
+        static double Pick(Random rng, double min, double max, double length, List<(double from, double to)> busy)
         {
             if (max < min) return -1;
             for (int tries = 0; tries < 50; tries++)
             {
-                int day = min + rng.Next(max - min + 1);
-                if (ok(day)) return day;
+                double hour = Whole(min + rng.NextDouble() * (max - min));
+                bool clash = busy.Exists(b => hour < b.to + 2 && hour + length + 2 > b.from);
+                if (clash) continue;
+                busy.Add((hour, hour + length));
+                return hour;
             }
             return -1;
         }
+
+        static double Whole(double hour) => Math.Round(hour);
     }
 }

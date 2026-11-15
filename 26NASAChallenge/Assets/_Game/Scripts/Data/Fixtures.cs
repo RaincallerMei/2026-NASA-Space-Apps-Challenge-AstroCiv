@@ -70,12 +70,19 @@ namespace Mapmakers.Data
         public double[,] percent; // [row from top, column]
     }
 
+    public class ElevationGrid
+    {
+        public FixtureHeader header;
+        public int width, height;
+        public double[,] metres; // [row from top (north), column]
+    }
+
     // Parses the offline fixtures. Parsing takes plain strings so it can be unit-tested.
     public static class FixtureLoader
     {
         public const string Folder = "Fixtures/";
         public static readonly string[] JsonFixtures = { "donki_event_pack", "power_mississauga", "osdr_cards", "csa_food_cards" };
-        public static readonly string[] CsvFixtures = { "radlab_iss_sample", "illumination_grid" };
+        public static readonly string[] CsvFixtures = { "radlab_iss_sample", "illumination_grid", "mars_jezero_mola" };
         public static readonly string[] Classifications = { "NASA-derived", "CSA-derived", "simplified", "synthetic" };
 
         public static string LoadText(string name)
@@ -140,6 +147,17 @@ namespace Mapmakers.Data
             return grid;
         }
 
+        public static ElevationGrid ParseElevation(string text)
+        {
+            var csv = ParseCsv(text);
+            var grid = new ElevationGrid { header = csv.header, height = csv.rows.Count, width = csv.rows[0].Length };
+            grid.metres = new double[grid.height, grid.width];
+            for (int row = 0; row < grid.height; row++)
+                for (int col = 0; col < grid.width; col++)
+                    grid.metres[row, col] = double.Parse(csv.rows[row][col], CultureInfo.InvariantCulture);
+            return grid;
+        }
+
         static float Number(Dictionary<string, string> meta, string key)
         {
             return meta.TryGetValue(key, out string value) ? float.Parse(value, CultureInfo.InvariantCulture) : 0f;
@@ -151,5 +169,6 @@ namespace Mapmakers.Data
         public static CsaCards Csa() => ParseCsa(LoadText("csa_food_cards"));
         public static RadlabSample Radlab() => ParseRadlab(LoadText("radlab_iss_sample"));
         public static IlluminationGrid Illumination() => ParseIllumination(LoadText("illumination_grid"));
+        public static ElevationGrid Jezero() => ParseElevation(LoadText("mars_jezero_mola"));
     }
 }

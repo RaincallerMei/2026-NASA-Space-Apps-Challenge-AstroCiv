@@ -8,22 +8,26 @@ using UnityEngine.UI;
 
 namespace Mapmakers.UI
 {
-    // Map-first play screen (Civ-style): top resource bar, goal card and crew on the left,
-    // alerts on the right, build bar and Next Day at the bottom. Text is short on purpose.
+    // Map-first play screen (Civ-style): top resource bar and clock, goal card and crew on the left,
+    // alerts on the right, build bar and time controls at the bottom. Text is short on purpose.
+    // Real time: Update feeds unscaled frame time to the run's clock; counters refresh a few times a second,
+    // structural UI only when the run's Revision changes.
     public sealed partial class GameScreen : MonoBehaviour
     {
         public const int TopBar = 76;
         public const int BottomBar = 124;
         public const int Side = 420;
+        const float CounterInterval = 0.2f;
 
         MissionRun run;
         RectTransform root;
         StoryData story;
         int shownRevision = -1;
+        float nextCounters;
 
         public MissionRun Run => run;
 
-        sealed class Chip { public Text label, value; public string detail; }
+        sealed class Chip { public Text label, value; public string name, detail; }
         readonly List<Chip> chips = new List<Chip>();
         Text dayText;
         Text goalCaption, goalText, goalCount;
@@ -81,27 +85,27 @@ namespace Mapmakers.UI
             var menu = UIKit.Button(bar.transform, "Menu", OpenPause, Palette.PanelLight, Palette.Hull, 24);
             menu.GetComponent<RectTransform>().TopLeft(14, 12, 110, 52);
 
-            string[] ids = run.IsDrawing ? new[] { "power", "power", "supplies" } : new[] { "power", "battery", "air", "water", "food", "crew", "supplies" };
-            string[] names = run.IsDrawing ? new[] { "Power in", "Power out", "Supplies" } : new[] { "Power", "Battery", "Air", "Water", "Food", "Crew safety", "Supplies" };
+            string[] ids = run.IsDrawing ? new[] { "power", "power", "supplies" } : new[] { "power", "battery", "air", "water", "food", "soil", "crew", "supplies" };
+            string[] names = run.IsDrawing ? new[] { "Power in", "Power out", "Supplies" } : new[] { "Power", "Battery", "Air", "Water", "Food", "Soil", "Crew safety", "Supplies" };
             for (int i = 0; i < ids.Length; i++)
             {
-                var chip = new Chip();
-                var box = UIKit.Rect(bar.transform, "Chip " + names[i]).TopLeft(150 + i * 200, 6, 190, 64);
+                var chip = new Chip { name = names[i] };
+                var box = UIKit.Rect(bar.transform, "Chip " + names[i]).TopLeft(140 + i * 176, 6, 170, 64);
                 var click = box.gameObject.AddComponent<Image>();
                 click.color = new Color(0, 0, 0, 0);
                 var button = box.gameObject.AddComponent<Button>();
                 button.transition = Selectable.Transition.None;
                 button.onClick.AddListener(() => ShowToast(chip.detail));
-                UIKit.Icon(box, ids[i], 40).TopLeftOf(0, 12);
-                chip.label = UIKit.Label(box, names[i], 18, Palette.Muted);
-                chip.label.rectTransform.TopLeft(50, 4, 140, 24);
-                chip.value = UIKit.Label(box, "", 28, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
-                chip.value.rectTransform.TopLeft(50, 26, 140, 34);
+                UIKit.Icon(box, ids[i], 36).TopLeftOf(0, 14);
+                chip.label = UIKit.Label(box, names[i], 17, Palette.Muted);
+                chip.label.rectTransform.TopLeft(42, 4, 128, 24);
+                chip.value = UIKit.Label(box, "", 26, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
+                chip.value.rectTransform.TopLeft(42, 26, 128, 34);
                 chips.Add(chip);
             }
 
-            dayText = UIKit.Label(bar.transform, "", 30, Palette.Hull, TextAnchor.MiddleRight, FontStyle.Bold);
-            dayText.rectTransform.Anchor(new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(-28, 0), new Vector2(300, 60));
+            dayText = UIKit.Label(bar.transform, "", 26, Palette.Hull, TextAnchor.MiddleRight, FontStyle.Bold);
+            dayText.rectTransform.Anchor(new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(-22, 0), new Vector2(330, 60));
         }
 
         void RefreshTopBar(StepReport power)
@@ -109,32 +113,50 @@ namespace Mapmakers.UI
             var s = run.State;
             if (run.IsDrawing)
             {
-                SetChip(0, Num(power.generationKW) + " kW", power.generationKW + 1e-6 >= power.demandKW && power.demandKW > 0 ? Palette.Mint : Palette.Hull,
+                SetChip(0, Num(power.generationKW) + " kW", "", power.generationKW + 1e-6 >= power.demandKW && power.demandKW > 0 ? Palette.Mint : Palette.Hull,
                     "Power in: Solar Arrays make power from sunlight.");
-                SetChip(1, Num(power.demandKW) + " kW", power.demandKW > power.generationKW + 1e-6 ? Palette.Amber : Palette.Hull,
+                SetChip(1, Num(power.demandKW) + " kW", "", power.demandKW > power.generationKW + 1e-6 ? Palette.Amber : Palette.Hull,
                     "Power out: what your buildings use.");
-                SetChip(2, s.supplies.ToString(), Palette.Hull, "Supplies pay for new buildings.");
+                SetChip(2, s.supplies.ToString(), "", Palette.Hull, "Supplies pay for new buildings.");
                 dayText.text = "Your drawing";
                 return;
             }
-            double net = power.generationKW - power.demandKW;
-            SetChip(0, (net >= 0 ? "+" : "") + Num(net) + " kW", net >= 0 ? Palette.Mint : Palette.Amber,
-                "Solar makes " + Num(power.generationKW) + " kW. The base uses " + Num(power.demandKW) + " kW.");
+            var r = s.step > 0 ? s.report : power;
+            var b = run.sim.balance;
+            double net = r.generationKW - r.servedKW;
+            SetChip(0, Signed(net) + " kW", "", net >= 0 ? Palette.Mint : Palette.Amber,
+                "Solar makes " + Num(r.generationKW) + " kW. The base uses " + Num(r.servedKW) + " kW.");
             double cap = run.sim.BatteryCapacity(s);
-            SetChip(1, cap > 0 ? Num(s.batteryKWh) + "/" + Num(cap) : "none", cap > 0 && s.batteryKWh < cap * 0.25 ? Palette.Amber : Palette.Hull,
-                "Batteries save extra power for later (kWh).");
-            SetChip(2, Num(s.airHours) + " h", s.airHours < 8 ? Palette.Danger : Palette.Hull, "Hours of air. Life Support makes more.");
-            SetChip(3, Num(s.waterL) + " L", s.waterL < 20 ? Palette.Amber : Palette.Hull, "Water. The Greenhouse recycles most of it.");
-            SetChip(4, Num(s.meals), s.meals < 5 ? Palette.Amber : Palette.Hull, "Meals left. The Greenhouse grows more.");
-            SetChip(5, Num(s.safety) + "%", s.safety < 70 ? Palette.Danger : Palette.Mint, "How safe the crew is. Keep it high.");
-            SetChip(6, s.supplies.ToString(), Palette.Hull, "Supplies pay for buildings and repairs.");
-            dayText.text = run.Planet.dayWord + " " + Mathf.Min(s.day, run.Days) + " of " + run.Days;
+            SetChip(1, cap > 0 ? Num(s.batteryKWh) + "/" + Num(cap) : "none", Rate(r.batteryFlowKW),
+                cap > 0 && s.batteryKWh < cap * 0.25 ? Palette.Amber : Palette.Hull, "Batteries save extra power for later (kWh).");
+            SetChip(2, Num(s.airHours) + " h", Rate(r.airPerHour), Level(s.airHours, r.airPerHour), "Hours of air left. Life Support makes more.");
+            SetChip(3, Num(s.waterL) + " L", Rate(r.waterPerHour), Level(s.waterL, r.waterPerHour),
+                "Water: the crew drinks " + Num(b.CrewWaterPerHour) + " L/h. The Greenhouse recycles most of its water.");
+            SetChip(4, Num(s.meals), Rate(r.foodPerHour), Level(s.meals, r.foodPerHour), "Meals left. The Greenhouse grows more.");
+            SetChip(5, Num(s.soil), r.soilPerHour > 0 ? Rate(r.soilPerHour) : "", Palette.Hull,
+                "Bags of soil. A rover brings them. The Greenhouse needs " + b.Def(BuildingType.Greenhouse).soilCost + ".");
+            SetChip(6, Num(s.safety) + "%", "", s.safety < 70 ? Palette.Danger : Palette.Mint, "How safe the crew is from solar particles.");
+            SetChip(7, s.supplies.ToString(), "", Palette.Hull, "Supplies pay for buildings and repairs. Landers bring more.");
+            double dayHours = run.Planet.dayHours;
+            dayText.text = run.Planet.dayWord + " " + SimText.Day(s.timeHours + run.sim.balance.startClockHour, dayHours) + " · "
+                + SimText.Clock(s.timeHours, run.sim.balance.startClockHour, dayHours);
         }
 
-        void SetChip(int i, string value, Color color, string detail)
+        Color Level(double amount, double rate)
+        {
+            double hours = MissionRun.HoursLeft(amount, rate);
+            var b = run.sim.balance;
+            return hours <= b.criticalHours ? Palette.Danger : hours <= b.warnHours ? Palette.Amber : Palette.Hull;
+        }
+
+        static string Signed(double v) => (v >= 0 ? "+" : "") + Num(v);
+        static string Rate(double perHour) => System.Math.Abs(perHour) < 0.05 ? "" : Signed(perHour) + "/h";
+
+        void SetChip(int i, string value, string rate, Color color, string detail)
         {
             chips[i].value.text = value;
             chips[i].value.color = color;
+            chips[i].label.text = rate.Length > 0 ? chips[i].name + "  " + rate : chips[i].name;
             chips[i].detail = detail;
         }
 
@@ -215,15 +237,21 @@ namespace Mapmakers.UI
 
         // ---------- alerts ----------
 
+        string shownAlerts = "";
+
         void BuildAlerts()
         {
-            alertList = UIKit.Rect(root, "Alerts").TopLeft(1920 - Side - 20, TopBar + 16, Side, 400);
+            alertList = UIKit.Rect(root, "Alerts").TopLeft(1920 - Side - 20, TopBar + 16, Side, 420);
         }
 
         void RefreshAlerts()
         {
-            UIKit.Clear(alertList);
             var alerts = run.Alerts();
+            string key = "";
+            foreach (var a in alerts) key += a.level + a.text + a.actionEnabled + "|";
+            if (key == shownAlerts) return;
+            shownAlerts = key;
+            UIKit.Clear(alertList);
             float y = 0;
             foreach (var alert in alerts)
             {
@@ -233,9 +261,11 @@ namespace Mapmakers.UI
                 card.rectTransform.TopLeft(0, y, Side, h);
                 var stripe = UIKit.Panel(card.transform, AlertColor(alert.level), "Stripe", false);
                 stripe.rectTransform.TopLeft(0, 0, 10, h);
-                UIKit.Icon(card.transform, "alert", 30).TopLeftOf(24, 14);
-                var text = UIKit.Label(card.transform, alert.text, 23, Palette.Hull, TextAnchor.UpperLeft);
-                text.rectTransform.TopLeft(66, 12, Side - 84, 64);
+                if (alert.level == AlertLevel.Danger) stripe.gameObject.AddComponent<SoftPulse>();
+                UIKit.Icon(card.transform, alert.icon, 30).TopLeftOf(24, 14);
+                string mark = alert.level == AlertLevel.Danger ? "!! " : alert.level == AlertLevel.Warning ? "! " : "";
+                var text = UIKit.Label(card.transform, mark + alert.text, 22, Palette.Hull, TextAnchor.UpperLeft);
+                text.rectTransform.TopLeft(66, 10, Side - 84, 66);
                 if (hasAction)
                 {
                     var action = alert.action;
@@ -263,20 +293,35 @@ namespace Mapmakers.UI
 
         void RefreshHint()
         {
-            bool show = run.HintsOn && !string.IsNullOrEmpty(run.Hint);
+            bool show = run.HintsOn && !string.IsNullOrEmpty(run.Hint) && !run.Ended;
             hintBox.gameObject.SetActive(show);
             hintText.text = "Tip: " + run.Hint;
         }
 
-        // ---------- refresh ----------
+        // ---------- frame loop ----------
 
         void Update()
         {
             HandleKeys();
             UpdateToast();
-            if (run == null || run.Revision == shownRevision) return;
+            if (run == null) return;
+            run.Tick(Time.unscaledDeltaTime);
+            foreach (var e in run.TakeEvents()) HandleEvent(e);
+            if (run.Ended) ShowEnd();
+            if (run.Revision != shownRevision) Refresh();
+            else if (Time.unscaledTime >= nextCounters) RefreshCounters();
+            UpdateRover();
+        }
+
+        // Losing focus pauses; the player resumes with the Play button (never automatically).
+        void OnApplicationFocus(bool focus)
+        {
+            if (focus || run == null || !run.Running) return;
+            run.clock.FocusLost();
             Refresh();
         }
+
+        void OnApplicationPause(bool paused) => OnApplicationFocus(!paused);
 
         void HandleKeys()
         {
@@ -284,29 +329,39 @@ namespace Mapmakers.UI
             if (keys == null || run == null) return;
             if (keys.escapeKey.wasPressedThisFrame)
             {
+                if (EndShowing) return;
                 if (ModalOpen) { CloseModal(); return; }
                 if (run.BuildChoice.HasValue || run.SelectedId != 0) { run.Deselect(); return; }
                 OpenPause();
                 return;
             }
-            if (ModalOpen) return;
-            if (keys.enterKey.wasPressedThisFrame) PressNextDay();
+            if (ModalOpen || EndShowing) return;
+            if (keys.spaceKey.wasPressedThisFrame) TogglePause();
         }
 
         public void Refresh()
         {
             shownRevision = run.Revision;
             var power = run.Power;
-            RefreshTopBar(power);
+            RefreshCounters();
             RefreshGoalCard();
             RefreshCrew();
-            RefreshAlerts();
             RefreshMap();
             RefreshSelection(power);
             RefreshBottomBar();
             RefreshHint();
             statusText.text = status;
             statusText.color = statusIsError ? Palette.Amber : Palette.Ice;
+        }
+
+        // Numbers that move every step: resource chips, clock, countdown, alerts.
+        void RefreshCounters()
+        {
+            nextCounters = Time.unscaledTime + CounterInterval;
+            RefreshTopBar(run.Power);
+            RefreshTime();
+            RefreshAlerts();
+            if (run.Selected != null) RefreshSelection(run.Power);
         }
 
         void SetStatus(string text, bool error = false)

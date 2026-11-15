@@ -33,6 +33,8 @@ Game mapping (fictional balance, in `Balance.json → terrain`): `sun = 0.5 + 0.
 
 **CSA cards.** Tomatosphere, Deep Space Food Challenge, Growing healthy food in space and remote areas. Short paraphrases and links. Credited "© Canadian Space Agency".
 
+**MOLA Jezero (`mars_jezero_mola.csv`, added 14 Nov 2026).** 20×15 heights in metres from the MGS MOLA MEGDR at 16 pixels per degree (about 3.7 km per tile), fetched with an HTTP Range request (`python tools/fetch_data.py fetch_mola_jezero`; no API key needed). Top-left pixel line 1138, sample 1231, about 18.84° N, 76.97° E, around Jezero crater (centre about 18° N, 77° E, 45 km wide per the JPL Mars 2020 press kit). Classification `simplified`. Game mapping (fictional balance, `Balance.json → mars`): a height step over 300 m to a neighbour blocks the tile; sun = 0.7 + 0.3 × min(1, (height − lowest) / 800 m); tiles below −2640 m are lake mud (soil); a few delta tiles are hand-picked wet clay (water). The height-to-sun rule is a gameplay assumption, not a lighting model.
+
 ## Problems met while fetching
 
 - `api.nasa.gov/DONKI/FLR` returned HTTP 404 for this window, while CME and SEP returned 200. The script falls back to the CCMC DONKI web service, which needs no key.

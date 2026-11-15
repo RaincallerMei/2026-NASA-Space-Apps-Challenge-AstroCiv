@@ -5,6 +5,12 @@ Build a working **Unity 2D, top-down pixel-art educational game** for the **2026
 
 **Source challenge:** https://www.spaceappschallenge.org/2026/challenges/junior-astronaut-mission-trainer/
 
+## AI-use tracking — team requirement
+
+Maintain the repository-root `Work Log and Review/AI_USE_LOG.md` after every meaningful AI session, generation or revision. Record the date/time if known, actual tool/model/session, purpose, prompt/reference inputs, method, outputs, created/imported/used/discarded status, and actual human edits/review plus automated checks. Link saved prompts; leave unavailable history marked **not recorded**. Do not treat a commit/file timestamp as a generation time or claim approval/testing that did not happen. Keep the 25-hour board's **AI use** page, asset credits and submission disclosure consistent with the log.
+
+**All project-created art assets are AI-created**, confirmed by the team November 14, 2026. Disclose image-generated masters, their derivatives, procedural graphics produced through AI-authored scripts, and code-drawn placeholders. Distinguish creation methods; Python/Unity rendering is not an image model. Record source → transformations → exports → imported paths. Earlier “some art,” free-pack suggestions, or “Midjourney planned” wording is historical, not current provenance. Keep engine/template material, actual third-party content and NASA/CSA source data credited separately.
+
 ## Story: "Every great civilization starts with a dream."
 **This is not a resource-management game with a story attached.** It is a story about one person's dream of exploring space. Resource management is how the player *lives* that dream. Every building is a promise to a person. Every number is someone's air, light, water or food. Story reaches the player **through play** (events, choices, crew chat), not long cutscenes. At most **20% of play time** may be non-interactive. Every system should still carry a story reason.
 

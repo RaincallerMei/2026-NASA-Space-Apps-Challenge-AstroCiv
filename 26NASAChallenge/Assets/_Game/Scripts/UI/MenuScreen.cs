@@ -11,10 +11,10 @@ namespace Mapmakers.UI
     public sealed class MenuScreen : MonoBehaviour
     {
         public const string CreditsText =
-            "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA (PDS), CSA. Not endorsed by NASA or CSA.\n" +
+            "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA and MGS/MOLA (PDS), CSA. Not endorsed by NASA or CSA.\n" +
             "CSA content © Canadian Space Agency.\n\n" +
-            "Story pictures: AI-generated for this project.\n" +
-            "Building and icon art: simple placeholders for now.\n\n" +
+            "All game art is AI-created for this project:\n" +
+            "story pictures, AstroCiv pixel sprites and code-drawn shapes.\n\n" +
             "Power, cost and safety numbers are made up for the game.\n" +
             "Chris Hadfield and Sara Seager are named as inspiration only.\nThey do not endorse this game.";
 
@@ -101,7 +101,7 @@ namespace Mapmakers.UI
                 number.rectTransform.TopLeft(24, 24, 72, 72);
                 UIKit.Label(number.transform, (i + 1).ToString(), 40, Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold).rectTransform.Stretch();
                 UIKit.Label(card.transform, level.planet, 22, level.planet == "Mars" ? Palette.MarsSand : Palette.Cyan).rectTransform.TopLeft(112, 30, 250, 30);
-                UIKit.Label(card.transform, level.IsDrawing ? "Tutorial" : level.days + " days", 22, Palette.Muted).rectTransform.TopLeft(112, 62, 250, 30);
+                UIKit.Label(card.transform, level.IsDrawing ? "Tutorial" : "About " + Mathf.CeilToInt((float)(level.durationHours * BalanceLoader.Load().realSecondsPerGameHour / 60)) + " min at 1x", 22, Palette.Muted).rectTransform.TopLeft(112, 62, 250, 30);
 
                 UIKit.Label(card.transform, level.title, 36, Palette.Hull, TextAnchor.UpperLeft, FontStyle.Bold).rectTransform.TopLeft(24, 120, width - 48, 50);
                 UIKit.Label(card.transform, level.subtitle, 24, Palette.Ice, TextAnchor.UpperLeft).rectTransform.TopLeft(24, 176, width - 48, 70);
@@ -179,10 +179,10 @@ namespace Mapmakers.UI
             var reroll = UIKit.Button(box.transform, "New map", () => { free.seed = FreeSettings.NewSeed(); RefreshFree(); }, Palette.PanelLight, Palette.Hull, 26);
             reroll.GetComponent<RectTransform>().TopLeft(470, 220, 190, 64);
 
-            UIKit.Label(box.transform, free.days + " days. Storms, shadows and surprises come at random times.", 22, Palette.Muted)
+            UIKit.Label(box.transform, Sim.SimText.Duration(free.hours) + ". Storms, shadows and surprises come at random times.", 22, Palette.Muted)
                 .rectTransform.TopLeft(40, 300, 820, 40);
             var start = UIKit.Button(box.transform, "Start", () => Flow.StartFree(new FreeSettings
-            { planet = free.planet, difficulty = free.difficulty, seed = free.seed, days = free.days }), Palette.Azure, Palette.Hull, 32);
+            { planet = free.planet, difficulty = free.difficulty, seed = free.seed, hours = free.hours }), Palette.Azure, Palette.Hull, 32);
             start.GetComponent<RectTransform>().TopLeft(260, 360, 400, 76);
 
             BackButton(panel);

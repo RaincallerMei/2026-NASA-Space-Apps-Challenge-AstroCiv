@@ -33,6 +33,7 @@ namespace Mapmakers.UI
         CanvasGroup toast;
         Text toastText;
         float toastUntil;
+        readonly HashSet<string> explained = new HashSet<string>();
 
         public bool ModalOpen => openModal != null;
         public string ModalTitle { get; private set; } = "";
@@ -47,8 +48,7 @@ namespace Mapmakers.UI
             toastText.rectTransform.Stretch(24, 10, 24, 10);
             toast.alpha = 0;
 
-            var layer = UIKit.Canvas("Window Canvas", 10);
-            modalLayer = layer;
+            modalLayer = UIKit.Canvas("Window Canvas", 10);
         }
 
         void ShowToast(string text)
@@ -66,6 +66,8 @@ namespace Mapmakers.UI
         }
 
         // ---------- modal windows (one at a time, the rest wait in a queue) ----------
+        // Every open window holds the mission clock; closing it releases the hold, so the earlier
+        // play/pause state and speed come back. Nested or queued windows keep the mission paused.
 
         void ShowModal(ModalSpec spec)
         {
@@ -75,13 +77,16 @@ namespace Mapmakers.UI
 
         public void CloseModal()
         {
-            if (openModal != null) Destroy(openModal);
+            if (openModal == null) return;
+            Destroy(openModal);
             openModal = null;
             ModalTitle = "";
+            run.clock.Release();
             if (modalQueue.Count > 0) Render(modalQueue.Dequeue());
+            Refresh();
         }
 
-        // Presses the first button of the open window (used by tests and the Enter key).
+        // Presses a button of the open window (used by tests).
         public void PressModal(int index = 0)
         {
             if (openModal == null) return;
@@ -91,6 +96,7 @@ namespace Mapmakers.UI
 
         void Render(ModalSpec spec)
         {
+            run.clock.Hold();
             var holder = UIKit.Rect(modalLayer, "Window " + spec.title).Stretch();
             openModal = holder.gameObject;
             ModalTitle = spec.title;
@@ -108,6 +114,7 @@ namespace Mapmakers.UI
             column.childForceExpandWidth = true;
             column.childForceExpandHeight = false;
             panel.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            UIFx.Pop(panel.transform);
 
             var head = UIKit.Rect(panel.transform, "Head");
             head.gameObject.AddComponent<LayoutElement>().preferredHeight = 64;
@@ -157,80 +164,67 @@ namespace Mapmakers.UI
             ShowModal(spec);
         }
 
-        // ---------- start of a level ----------
+        // ---------- briefing (paused until Start) ----------
 
         void ShowStartCard()
         {
-            var body = new StringBuilder(run.mode == GameMode.Free ? run.Subtitle + "\nEvents come at random times. Watch the alerts." : run.Subtitle);
-            body.Append("\n");
             var catalog = LevelCatalog.Load();
+            var body = new StringBuilder(run.mode == GameMode.Free ? run.Subtitle + "\nEvents come at random times. Watch the alerts." : run.Subtitle);
+            if (!run.IsDrawing)
+                body.Append("\nInspection in ").Append(SimText.Duration(run.Duration, run.Planet.dayWord, run.Planet.dayHours))
+                    .Append(". Keep the crew safe until then.");
+            if (run.UsedStarterBase) body.Append("\n").Append(story.Debrief("starter_base"));
+            body.Append("\n");
             foreach (var goal in run.goals) body.Append("\n•  ").Append(catalog.GoalLabel(goal));
             string title = run.mode == GameMode.Free ? run.Title : "Level " + (catalog.IndexOf(run.level.id) + 1) + ": " + run.Title;
-            var spec = Modal(title, body.ToString(), run.IsDrawing ? "Habitat" : run.Planet.id == "Mars" ? "SolarArray" : "Habitat", new ModalButton("Start"));
-            string card = run.level == null ? null : run.level.id == "L1" ? "c_sun_home" : run.level.id == "L2" ? "c_ridge" : null;
-            if (card != null) spec.buttons.Add(new ModalButton("Sun facts", () => ShowCard(card), false));
+            string label = run.IsDrawing ? "Start drawing" : "Start mission";
+            var spec = Modal(title, body.ToString(), run.IsDrawing ? "Habitat" : run.Planet.id == "Mars" ? "SolarArray" : "Habitat",
+                new ModalButton(label, run.StartMission));
+            string card = BriefingCard();
+            if (card != null) spec.buttons.Add(new ModalButton("Science fact", () => { ShowCard(card); }, false));
             ShowModal(spec);
         }
 
-        // ---------- Next Day ----------
-
-        public void PressNextDay()
+        string BriefingCard()
         {
-            if (ModalOpen || run.Ended) return;
-            if (run.IsDrawing)
+            if (run.level == null) return null;
+            switch (run.level.id)
             {
-                if (!run.DrawingReady) { SetStatus("First: " + run.CurrentGoal, true); return; }
-                Finish();
-                return;
+                case "L1": return "c_sun_home";
+                case "L2": return "c_ridge";
+                case "L4": return "c_jezero";
+                default: return null;
             }
-            var report = run.NextDay();
-            if (report == null) return;
-            SetStatus("");
-            if (run.State.Finished) { Finish(); return; }
-            var notes = new List<string>();
-            foreach (var e in report.events) HandleEvent(e, notes);
-            ShowToast(DaySummary(report, notes));
         }
 
-        string DaySummary(DayReport r, List<string> notes)
-        {
-            var sb = new StringBuilder();
-            sb.Append(run.Planet.dayWord).Append(' ').Append(r.day).Append(" is done.   ")
-              .Append("Battery ").Append(Delta(r.batteryEnd - r.batteryStart))
-              .Append("  ·  Food ").Append(Delta(r.mealsEnd - r.mealsStart))
-              .Append("  ·  Water ").Append(Delta(r.waterEnd - r.waterStart));
-            for (int i = 0; i < notes.Count && i < 2; i++) sb.Append('\n').Append(notes[i]);
-            return sb.ToString();
-        }
+        // ---------- events during play ----------
 
-        static string Delta(double v)
-        {
-            double r = Math.Round(v);
-            return (r > 0 ? "+" : r < 0 ? "-" : "") + SimText.Num(Math.Abs(r));
-        }
-
-        void HandleEvent(SimEvent e, List<string> notes)
+        void HandleEvent(SimEvent e)
         {
             switch (e.code)
             {
                 case "shadow_warning":
-                    ShowModal(Modal(run.Planet.dimmingName + " tomorrow", "Less sun means less power.\nRest the Greenhouse or save battery power.", "power"));
+                    ShowToast(e.text);
+                    break;
+                case "shadow_start":
+                    if (Explain("dim")) ShowModal(Modal(run.Planet.dimmingName, "Less sun means less power.\nRest the Greenhouse or use battery power.", "power"));
+                    else ShowToast(e.text);
                     break;
                 case "battery_unlock":
-                    ShowModal(Modal("New: a second Battery", "You got through the dark.\nA second Battery can save more power.", "battery"));
+                    ShowModal(Modal("New: a second Battery", "You got through the dark.\nPut it next to a Solar Array.", "battery"));
                     break;
                 case "storm_warning":
-                    var warning = Modal("Solar storm warning!", "Particles arrive tomorrow.\nCall Yuki inside. Turn on the Shelter.\nThe Sun still shines. Solar Arrays keep working.", "alert");
+                    var warning = Modal("Solar storm warning!", "Particles arrive in " + SimText.Num(run.sim.balance.storm.onsetHour) + " hours.\nCall "
+                        + run.sim.geologistName + " inside. Turn on the Shelter.\nThe Sun still shines. Solar Arrays keep working.", "alert");
                     warning.badge = StormBadge();
                     ShowModal(warning);
                     break;
                 case "storm_onset":
-                    ShowModal(Modal("Particles have arrived", "Stay in the Shelter today.", "alert",
-                        new ModalButton("OK"), new ModalButton("A real reading", () => ShowCard("c_iss"), false)));
+                    ShowToast("Particles have arrived. Stay in the Shelter.");
                     break;
                 case "first_harvest":
-                    ShowModal(Modal("First harvest!", e.text, "food",
-                        new ModalButton("OK"), new ModalButton("Why plants?", () => ShowCard("c_plants"), false)));
+                    var cardId = run.Planet.id == "Mars" ? "c_moxie" : "c_plants";
+                    ShowModal(Modal("First harvest!", e.text, "food", new ModalButton("OK"), new ModalButton("Why plants?", () => ShowCard(cardId), false)));
                     break;
                 case "fault":
                     ShowModal(Modal("A Solar Array broke", "A tiny space rock hit it.\nFix it for " + run.sim.balance.repairCost + " supplies.", "SolarArray",
@@ -239,22 +233,29 @@ namespace Mapmakers.UI
                 case "sunrise_start":
                     ShowModal(Modal("Sunrise!", e.text, "power"));
                     break;
-                case "brownout":
-                    if (!notes.Contains(BrownoutNote)) notes.Add(BrownoutNote);
+                case "critical_out":
+                    if (Explain("critical")) ShowModal(Modal("Life Support has no power!", "Air stops when Life Support has no power.\n"
+                        + "Switch off what can wait, or add Solar Arrays near a Battery.", "power"));
                     break;
-                case "shadow_start":
+                case "brownout":
+                    ShowToast("Power ran short. Some systems switched off.");
+                    break;
+                case "placed_RoverGarage":
+                    if (Explain("rover") && run.sim.terrain.AnyWater()) ShowCard(run.Planet.id == "Mars" ? "c_mars_sun" : "c_ice");
+                    break;
                 case "shadow_end":
                 case "storm_decay":
                 case "storm_over":
                 case "supply_drop":
                 case "self_return":
                 case "geologist_inside":
-                    notes.Add(e.text);
+                    ShowToast(e.text);
                     break;
             }
         }
 
-        const string BrownoutNote = "Power ran out. Some systems switched off.";
+        // True the first time a topic comes up in this run, so explanations never repeat.
+        bool Explain(string topic) => explained.Add(topic);
 
         void FixFirstBroken()
         {
@@ -269,17 +270,11 @@ namespace Mapmakers.UI
             return donki.Badge + " · NASA DONKI: a real " + donki.flare.classType + " flare on " + date + ". The timing in this game is made up.";
         }
 
-        void Finish()
-        {
-            var result = run.Finish();
-            Flow.FinishMission(result);
-        }
-
         // ---------- crew chat ----------
 
         public void OpenChat(string crewId)
         {
-            if (ModalOpen || run.IsDrawing) return;
+            if (ModalOpen || run.IsDrawing || run.Ended) return;
             var member = story.Crew(crewId);
             var entry = CrewChat.Entry(story, crewId, run);
             var row = crewRows.Find(r => r.id == crewId);
@@ -293,7 +288,6 @@ namespace Mapmakers.UI
                 spec.buttons.Add(new ModalButton(reply.text, () => Answer(member, chosen), false));
             }
             ShowModal(spec);
-            Refresh();
         }
 
         void Answer(CrewMember member, ChatReply reply)
@@ -303,17 +297,18 @@ namespace Mapmakers.UI
             ShowModal(Modal(member.name, "\"" + answer + "\"", null, new ModalButton("Close")));
         }
 
-        // ---------- pause ----------
+        // ---------- pause menu ----------
 
         void OpenPause()
         {
-            if (ModalOpen) return;
-            var spec = Modal("Paused", "", null);
+            if (ModalOpen || EndShowing) return;
+            var spec = Modal("Menu", "The mission waits while this menu is open.", null);
             spec.vertical = true;
             spec.buttons.Clear();
             spec.buttons.Add(new ModalButton("Back to the base"));
             spec.buttons.Add(new ModalButton("Restart this level", Flow.Retry, false));
             spec.buttons.Add(new ModalButton("Tips: " + (run.HintsOn ? "On" : "Off"), ToggleHints, false));
+            spec.buttons.Add(new ModalButton("Calm motion: " + (Progress.ReducedMotion ? "On" : "Off"), ToggleCalm, false));
             spec.buttons.Add(new ModalButton("Data & Credits", () => ShowModal(Modal("Data & Credits", MenuScreen.CreditsText, null)), false));
             spec.buttons.Add(new ModalButton("Quit to menu", () => Flow.ToMenu(run.mode == GameMode.Free ? "free" : "story"), false));
             ShowModal(spec);
@@ -323,7 +318,12 @@ namespace Mapmakers.UI
         {
             run.HintsOn = !run.HintsOn;
             Progress.HintsOn = run.HintsOn;
-            Refresh();
+            OpenPause();
+        }
+
+        void ToggleCalm()
+        {
+            Progress.ReducedMotion = !Progress.ReducedMotion;
             OpenPause();
         }
     }

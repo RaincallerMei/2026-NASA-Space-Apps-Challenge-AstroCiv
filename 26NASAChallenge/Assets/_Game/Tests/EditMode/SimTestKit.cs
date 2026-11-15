@@ -5,14 +5,30 @@ namespace Mapmakers.Tests
 {
     static class SimTestKit
     {
+        // Plain power and life tests: no events, no layout links, no deadline.
         public static Simulator Sim(double sun = 1.0, int width = 20, int height = 15)
         {
-            return new Simulator(BalanceLoader.Load(), new TerrainGrid(width, height, sun)) { missionEnabled = false };
+            return new Simulator(BalanceLoader.Load(), new TerrainGrid(width, height, sun)) { missionEnabled = false, layoutRules = false };
+        }
+
+        // A timed mission without layout rules, for end-condition tests.
+        public static Simulator Timed(double hours, params ScheduledEvent[] events)
+        {
+            var scenario = new Scenario { durationHours = hours, shelterUnlocked = true, maxBatteries = 2 };
+            scenario.events.AddRange(events);
+            return new Simulator(BalanceLoader.Load(), new TerrainGrid(20, 15, 1), scenario) { layoutRules = false };
+        }
+
+        // Layout rules on, events off.
+        public static Simulator Layout(TerrainGrid terrain = null)
+        {
+            return new Simulator(BalanceLoader.Load(), terrain ?? new TerrainGrid(20, 15, 1)) { missionEnabled = false };
         }
 
         public static PlacedBuilding Put(Simulator sim, SimState s, BuildingType type, int x, int y)
         {
             s.supplies += sim.balance.Def(type).cost;
+            s.soil += sim.balance.Def(type).soilCost;
             var result = sim.Place(s, type, x, y);
             NUnit.Framework.Assert.IsTrue(result.Ok, type + " at " + x + "," + y + ": " + result.message);
             return result.building;
@@ -31,11 +47,6 @@ namespace Mapmakers.Tests
             return s;
         }
 
-        public static PlacedBuilding First(SimState s, BuildingType type)
-        {
-            foreach (var b in s.buildings)
-                if (b.type == type) return b;
-            return null;
-        }
+        public static PlacedBuilding First(SimState s, BuildingType type) => s.First(type);
     }
 }

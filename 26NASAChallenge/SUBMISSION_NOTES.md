@@ -33,17 +33,23 @@ Required no-endorsement statement from the existing plan: **Not endorsed by NASA
 
 Local-impact statement from the agreed audience: the project aims to make space engineering approachable for children in Mississauga and Toronto, using local inspiration and a Mississauga sunlight comparison. Do not claim educational effectiveness before testing it with players.
 
-## AI and tools — actual versus planned
+## AI and tools — recorded use
 
 | Tool | Recorded use |
 |---|---|
-| Claude Code | Existing simulation, tests, offline data pipeline and story text |
-| Codex | Repository preparation, code review, timing/reset execution, tests, documentation and board updates |
+| Claude Code | Board-recorded simulation, tests, offline data pipeline, story text and playable-game implementation; exact session/model details are incomplete |
+| Codex | Board-recorded execution/source checks, tests, documentation and board updates; this conversation also records gameplay advice, the real-time/failure-scene cloud prompt, and AI-use-log reconciliation |
 | Unity 6000.6.7f1 and installed packages | Project and automated test execution |
-| Python | Existing data fetch and configuration-document export |
-| Midjourney | Planned by the team; no imported Midjourney game-art files were found in this snapshot |
+| Python and image-processing libraries | Data fetch/configuration export and deterministic art cleanup, procedural rendering, palette mapping and atlas generation; these tools are not AI models |
+| Midjourney | **Used:** seven imported story cutscene pictures, matched to originals in `../Art/cutscenes/` by SHA-256 |
+| Built-in image-generation tool | **Used:** 10 documented AstroCiv illustration master groups; generator/model version and exact generation times not recorded |
+| AI-authored procedural graphics and derived art | **All project-created art is AI-created**, including UI, icons, font, placeholders and derivatives. The 142-PNG pack exists on disk; this inventory does not establish final Unity integration |
 
-Before submission, update this table to reflect the actual finished assets/tools. The supplied guide requires visible watermarks for AI-generated images/video and acknowledgements in descriptive text and metadata for generated audio/code/data. Do not claim proposed Midjourney art was used already.
+The maintained record is [AI_USE_LOG.md](../Work%20Log%20and%20Review/AI_USE_LOG.md), including purposes, creation methods, evidence, prompt references, imported versus proposed outputs, and missing details. See [ASSET_CREDITS.md](ASSET_CREDITS.md) for art provenance. Historical plans that said only “some art” or “Midjourney planned” are superseded by the team's confirmation that **all project-created art assets are AI-created**. No AI audio/video generation is established by this inventory; do not claim it was used.
+
+Draft project-page wording: “We used Claude Code and OpenAI Codex to assist with code, tests, story text, research checks, documentation and gameplay design. All project-created art is AI-created: Midjourney produced story illustrations, a built-in image-generation tool produced illustration masters, and procedural graphics/image-processing scripts produced additional artwork and derivatives. The team supplied creative direction and references. The game uses scripted dialogue and does not call a live AI model during play. NASA/CSA reference data is credited separately.” Final human review and missing tool/prompt details remain to be recorded.
+
+Retain the visible labels and descriptive/metadata acknowledgements documented in SUBMISSION_REQUIREMENTS.md; final build-wide coverage has not been reverified for this log update.
 
 ## Demo requirements already decided
 

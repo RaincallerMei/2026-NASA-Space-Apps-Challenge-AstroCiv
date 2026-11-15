@@ -1,183 +1,795 @@
 {
   "note": "All story, chat, hint, card and debrief text. Story beats: max 12 words each, under 300 words in total. Story plus chat: under 650 words. The science event, teacher and crew are fictional. Sara Seager and Chris Hadfield are named as inspiration only: no portraits, no quotes, no endorsement.",
   "crew": [
-    { "id": "engineer", "name": "Priya", "role": "Engineer", "owns": "Power" },
-    { "id": "botanist", "name": "Mateo", "role": "Botanist", "owns": "Greenhouse" },
-    { "id": "geologist", "name": "Yuki", "role": "Geologist", "owns": "Scouting" }
+    {
+      "id": "engineer",
+      "name": "Priya",
+      "role": "Engineer",
+      "owns": "Power"
+    },
+    {
+      "id": "botanist",
+      "name": "Mateo",
+      "role": "Botanist",
+      "owns": "Greenhouse"
+    },
+    {
+      "id": "geologist",
+      "name": "Yuki",
+      "role": "Geologist",
+      "owns": "Scouting"
+    }
   ],
   "story": [
-    { "id": "p_night", "text": "Mississauga, Ontario. Night. You are ten and love strategy games." },
-    { "id": "p_event", "text": "Today a science fair talked about two people from Ontario." },
-    { "id": "p_hadfield", "text": "Chris Hadfield, a Canadian astronaut, commanded the Space Station." },
-    { "id": "p_seager", "text": "Sara Seager, born in Toronto, studies planets around other stars." },
-    { "id": "p_wonder", "text": "You wonder: could I build a home on the Moon?" },
-    { "id": "p_draw", "text": "So you draw a Moon base on your map." },
-    { "id": "p_locked", "text": "The Lab and Rover Garage must wait. Power and people first." },
-    { "id": "p_teacher1", "text": "Your teacher says: A civilization needs more than buildings." },
-    { "id": "p_teacher2", "text": "It needs people, resources, science and a plan." },
-    { "id": "p_card1", "text": "You study astronomy at the University of Toronto." },
-    { "id": "p_card2", "text": "You earn a PhD. You never stop asking questions." },
-    { "id": "p_card3", "text": "You train as an astronaut. This is a dream, not a promise." },
-    { "id": "p_jump", "text": "Years later, the Moon fills your window." },
-    { "id": "m_drawing", "text": "I drew this when I was ten. It is missing things." },
-    { "id": "m_commander", "text": "Commander, your crew is ready. Build them a home." },
-    { "id": "m_class", "text": "Radio from a class in Mississauga: How do you breathe?" },
-    { "id": "m_air", "text": "Good question. Build Life Support to make air." },
-    { "id": "m_shadow", "text": "A long shadow is coming. Less sun means less power." },
-    { "id": "m_harvest", "text": "First harvest! The crew shares fresh greens." },
-    { "id": "s_warn", "text": "Mission control: solar particle warning. The Sun still shines." },
-    { "id": "s_outside", "text": "Yuki is outside, far from base." },
-    { "id": "s_onset", "text": "Particles are here. Keep the crew in a powered Shelter." },
-    { "id": "s_clear", "text": "All clear. The storm has passed." },
-    { "id": "e_window", "text": "The crew gathers at the window." },
-    { "id": "e_sun", "text": "Sunlight creeps over the ridge. Solar power climbs." },
-    { "id": "e_earth", "text": "Earth hangs low above the horizon." },
-    { "id": "e_photo", "text": "Priya hands you an old photo: your first drawing." },
-    { "id": "e_msg1", "text": "I used to build this world on a computer." },
-    { "id": "e_msg2", "text": "Now we are building it together." },
-    { "id": "e_kid", "text": "On Earth, a new kid opens Blueprint v2." },
-    { "id": "p_l3_intro", "text": "Yuki walks out to study old rocks." },
-    { "id": "p_l3_warn", "text": "Mission control: the Sun is very active." },
-    { "id": "p_mars1", "text": "Years later, a new rocket waits." },
-    { "id": "p_mars2", "text": "Next stop: Mars." }
+    {
+      "id": "p_night",
+      "text": "Mississauga, Ontario. Night. You are ten and love strategy games."
+    },
+    {
+      "id": "p_event",
+      "text": "Today a science fair talked about two people from Ontario."
+    },
+    {
+      "id": "p_hadfield",
+      "text": "Chris Hadfield, a Canadian astronaut, commanded the Space Station."
+    },
+    {
+      "id": "p_seager",
+      "text": "Sara Seager, born in Toronto, studies planets around other stars."
+    },
+    {
+      "id": "p_wonder",
+      "text": "You wonder: could I build a home on the Moon?"
+    },
+    {
+      "id": "p_draw",
+      "text": "So you draw a Moon base on your map."
+    },
+    {
+      "id": "p_locked",
+      "text": "The Lab and Rover Garage must wait. Power and people first."
+    },
+    {
+      "id": "p_teacher1",
+      "text": "Your teacher says: A civilization needs more than buildings."
+    },
+    {
+      "id": "p_teacher2",
+      "text": "It needs people, resources, science and a plan."
+    },
+    {
+      "id": "p_card1",
+      "text": "You study astronomy at the University of Toronto."
+    },
+    {
+      "id": "p_card2",
+      "text": "You earn a PhD. You never stop asking questions."
+    },
+    {
+      "id": "p_card3",
+      "text": "You train as an astronaut. This is a dream, not a promise."
+    },
+    {
+      "id": "p_jump",
+      "text": "Years later, the Moon fills your window."
+    },
+    {
+      "id": "m_drawing",
+      "text": "I drew this when I was ten. It is missing things."
+    },
+    {
+      "id": "m_commander",
+      "text": "Commander, your crew is ready. Build them a home."
+    },
+    {
+      "id": "m_class",
+      "text": "Radio from a class in Mississauga: How do you breathe?"
+    },
+    {
+      "id": "m_air",
+      "text": "Good question. Build Life Support to make air."
+    },
+    {
+      "id": "m_shadow",
+      "text": "A long shadow is coming. Less sun means less power."
+    },
+    {
+      "id": "m_harvest",
+      "text": "First harvest! The crew shares fresh greens."
+    },
+    {
+      "id": "s_warn",
+      "text": "Mission control: solar particle warning. The Sun still shines."
+    },
+    {
+      "id": "s_outside",
+      "text": "Yuki is outside, far from base."
+    },
+    {
+      "id": "s_onset",
+      "text": "Particles are here. Keep the crew in a powered Shelter."
+    },
+    {
+      "id": "s_clear",
+      "text": "All clear. The storm has passed."
+    },
+    {
+      "id": "e_window",
+      "text": "The crew gathers at the window."
+    },
+    {
+      "id": "e_sun",
+      "text": "Sunlight creeps over the ridge. Solar power climbs."
+    },
+    {
+      "id": "e_earth",
+      "text": "Earth hangs low above the horizon."
+    },
+    {
+      "id": "e_photo",
+      "text": "Priya hands you an old photo: your first drawing."
+    },
+    {
+      "id": "e_msg1",
+      "text": "I used to build this world on a computer."
+    },
+    {
+      "id": "e_msg2",
+      "text": "Now we are building it together."
+    },
+    {
+      "id": "e_kid",
+      "text": "On Earth, a new kid opens Blueprint v2."
+    },
+    {
+      "id": "p_l3_intro",
+      "text": "Yuki walks out to study old rocks."
+    },
+    {
+      "id": "p_l3_warn",
+      "text": "Mission control: the Sun is very active."
+    },
+    {
+      "id": "p_mars1",
+      "text": "Years later, a new rocket waits."
+    },
+    {
+      "id": "p_mars2",
+      "text": "Next stop: Mars."
+    },
+    {
+      "id": "p_mars3",
+      "text": "We land at Jezero crater. Long ago, it held a lake."
+    }
   ],
   "chat": [
     {
-      "crew": "engineer", "when": "default", "line": "Power is like water in a tank. Never let it empty.",
+      "crew": "engineer",
+      "when": "default",
+      "line": "Power is like water in a tank. Never let it empty.",
       "replies": [
-        { "text": "How do I save power?", "answer": "Switch off what can wait. Air never waits.", "heart": 0, "action": "" },
-        { "text": "Thanks, Priya!", "answer": "Any time, Commander.", "heart": 1, "action": "" }
+        {
+          "text": "How do I save power?",
+          "answer": "Switch off what can wait. Air never waits.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "Thanks, Priya!",
+          "answer": "Any time, Commander.",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "engineer", "when": "battery_low", "line": "The battery is draining. Something must switch off.",
+      "crew": "engineer",
+      "when": "battery_low",
+      "line": "The battery is draining. Something must switch off.",
       "replies": [
-        { "text": "What can wait?", "answer": "The Greenhouse can rest. Life Support cannot.", "heart": 0, "action": "" },
-        { "text": "I am on it.", "answer": "I knew you would be.", "heart": 1, "action": "" }
+        {
+          "text": "What can wait?",
+          "answer": "The Greenhouse can rest. Life Support cannot.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "I am on it.",
+          "answer": "I knew you would be.",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "engineer", "when": "two_batteries", "line": "Two batteries! Now we can save energy for later.",
+      "crew": "engineer",
+      "when": "two_batteries",
+      "line": "Two batteries! Now we can save energy for later.",
       "replies": [
-        { "text": "Good plan?", "answer": "The best plan. Thank you.", "heart": 1, "action": "" },
-        { "text": "Keep them charged.", "answer": "Always.", "heart": 0, "action": "" }
+        {
+          "text": "Good plan?",
+          "answer": "The best plan. Thank you.",
+          "heart": 1,
+          "action": ""
+        },
+        {
+          "text": "Keep them charged.",
+          "answer": "Always.",
+          "heart": 0,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "engineer", "when": "storm", "line": "The Shelter needs extra power. Check the battery now.",
+      "crew": "engineer",
+      "when": "storm",
+      "line": "The Shelter needs extra power. Check the battery now.",
       "replies": [
-        { "text": "Will the panels stop?", "answer": "No. A warning is not a power cut.", "heart": 0, "action": "" },
-        { "text": "Got it.", "answer": "Stay sharp, Commander.", "heart": 1, "action": "" }
+        {
+          "text": "Will the panels stop?",
+          "answer": "No. A warning is not a power cut.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "Got it.",
+          "answer": "Stay sharp, Commander.",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "botanist", "when": "default", "line": "My seeds need light, water and power.",
+      "crew": "botanist",
+      "when": "default",
+      "line": "My seeds need soil, light, water and power.",
       "replies": [
-        { "text": "I will build a Greenhouse.", "answer": "My seeds thank you!", "heart": 1, "action": "" },
-        { "text": "What do plants give us?", "answer": "Food, and a little fresh air.", "heart": 0, "action": "" }
+        {
+          "text": "I will build a Greenhouse.",
+          "answer": "My seeds thank you!",
+          "heart": 1,
+          "action": ""
+        },
+        {
+          "text": "Where do we get soil?",
+          "answer": "A rover brings it.",
+          "heart": 0,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "botanist", "when": "sprouts", "line": "Look, tiny sprouts! We recycle most of their water.",
+      "crew": "botanist",
+      "when": "sprouts",
+      "line": "Look, tiny sprouts! We recycle most of their water.",
       "replies": [
-        { "text": "Why recycle?", "answer": "Water is hard to bring here. Every drop counts.", "heart": 0, "action": "" },
-        { "text": "They look great.", "answer": "They like you too.", "heart": 1, "action": "" }
+        {
+          "text": "Why recycle?",
+          "answer": "Water is hard to bring here. Every drop counts.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "They look great.",
+          "answer": "They like you too.",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "botanist", "when": "harvest", "line": "First harvest! Real food, grown on the Moon.",
+      "crew": "botanist",
+      "when": "harvest",
+      "line": "First harvest! Real food, grown on the Moon.",
       "replies": [
-        { "text": "Save me a leaf!", "answer": "The biggest one is yours.", "heart": 1, "action": "" },
-        { "text": "Well done, Mateo.", "answer": "We did it together.", "heart": 0, "action": "" }
+        {
+          "text": "Save me a leaf!",
+          "answer": "The biggest one is yours.",
+          "heart": 1,
+          "action": ""
+        },
+        {
+          "text": "Well done, Mateo.",
+          "answer": "We did it together.",
+          "heart": 0,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "botanist", "when": "storm", "line": "Short on power? Let my plants rest. People come first.",
+      "crew": "botanist",
+      "when": "storm",
+      "line": "Short on power? Let my plants rest. People come first.",
       "replies": [
-        { "text": "Are you sure?", "answer": "Plants can wait a few hours. We cannot.", "heart": 0, "action": "" },
-        { "text": "Thank you, Mateo.", "answer": "Keep everyone safe.", "heart": 1, "action": "" }
+        {
+          "text": "Are you sure?",
+          "answer": "Plants can wait a few hours. We cannot.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "Thank you, Mateo.",
+          "answer": "Keep everyone safe.",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "geologist", "when": "default", "line": "These rocks are older than any city on Earth.",
+      "crew": "geologist",
+      "when": "default",
+      "line": "These rocks are older than any city on Earth.",
       "replies": [
-        { "text": "What are you looking for?", "answer": "Maybe ice, hiding in the dark craters.", "heart": 0, "action": "" },
-        { "text": "Be careful out there.", "answer": "Always, Commander.", "heart": 1, "action": "" }
+        {
+          "text": "What are you looking for?",
+          "answer": "Maybe ice, hiding in the dark craters.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "Be careful out there.",
+          "answer": "Always, Commander.",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "geologist", "when": "rover", "line": "One day a rover will carry my samples home.",
+      "crew": "geologist",
+      "when": "rover",
+      "line": "My rover found soft soil for Mateo.",
       "replies": [
-        { "text": "The Rover Garage is locked.", "answer": "Later missions. I can wait.", "heart": 0, "action": "" },
-        { "text": "I drew one as a kid.", "answer": "Then we will build it together.", "heart": 1, "action": "" }
+        {
+          "text": "Where is the water?",
+          "answer": "Ice in dark craters. Clay on Mars.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "Great driving, Yuki!",
+          "answer": "Thanks, Commander!",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "geologist", "when": "storm_outside", "line": "I am far from base. Should I come back?",
+      "crew": "geologist",
+      "when": "storm_outside",
+      "line": "I am far from base. Should I come back?",
       "replies": [
-        { "text": "Yes. Come back now.", "answer": "On my way!", "heart": 1, "action": "recall" },
-        { "text": "Finish your samples.", "answer": "Okay. Call me if it gets worse.", "heart": 0, "action": "" }
+        {
+          "text": "Yes. Come back now.",
+          "answer": "On my way!",
+          "heart": 1,
+          "action": "recall"
+        },
+        {
+          "text": "Finish your samples.",
+          "answer": "Okay. Call me if it gets worse.",
+          "heart": 0,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "geologist", "when": "storm_inside", "line": "Safe inside. Thank you for watching over us.",
+      "crew": "geologist",
+      "when": "storm_inside",
+      "line": "Safe inside. Thank you for watching over us.",
       "replies": [
-        { "text": "Stay in the Shelter.", "answer": "Not moving an inch.", "heart": 0, "action": "" },
-        { "text": "Glad you are safe.", "answer": "Me too.", "heart": 1, "action": "" }
+        {
+          "text": "Stay in the Shelter.",
+          "answer": "Not moving an inch.",
+          "heart": 0,
+          "action": ""
+        },
+        {
+          "text": "Glad you are safe.",
+          "answer": "Me too.",
+          "heart": 1,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "geologist", "when": "after_called_first", "line": "You called me in first. I will not forget that.",
+      "crew": "geologist",
+      "when": "after_called_first",
+      "line": "You called me in first. I will not forget that.",
       "replies": [
-        { "text": "The crew comes first.", "answer": "That is why we follow you.", "heart": 1, "action": "" },
-        { "text": "Any time, Yuki.", "answer": "Thank you, Commander.", "heart": 0, "action": "" }
+        {
+          "text": "The crew comes first.",
+          "answer": "That is why we follow you.",
+          "heart": 1,
+          "action": ""
+        },
+        {
+          "text": "Any time, Yuki.",
+          "answer": "Thank you, Commander.",
+          "heart": 0,
+          "action": ""
+        }
       ]
     },
     {
-      "crew": "geologist", "when": "after_not_called", "line": "That storm was scary. Call me sooner next time?",
+      "crew": "geologist",
+      "when": "after_not_called",
+      "line": "That storm was scary. Call me sooner next time?",
       "replies": [
-        { "text": "I am sorry, Yuki.", "answer": "We are okay. We learn.", "heart": 1, "action": "" },
-        { "text": "I will.", "answer": "Thank you.", "heart": 0, "action": "" }
+        {
+          "text": "I am sorry, Yuki.",
+          "answer": "We are okay. We learn.",
+          "heart": 1,
+          "action": ""
+        },
+        {
+          "text": "I will.",
+          "answer": "Thank you.",
+          "heart": 0,
+          "action": ""
+        }
       ]
     }
   ],
   "hints": [
-    { "id": "h_build", "text": "Pick a building below. Then click the map." },
-    { "id": "h_sun", "text": "Brighter ground gets more sun. Put Solar Arrays there." },
-    { "id": "h_power", "text": "Power in must beat power out. Watch the top bar." },
-    { "id": "h_info", "text": "Click a building to see what it needs." },
-    { "id": "h_toggle", "text": "Short on power? Switch the Greenhouse off for a while." },
-    { "id": "h_next", "text": "Ready? Press Next Day to see what happens." }
+    {
+      "id": "h_build",
+      "text": "Pick a building below. Then click the map."
+    },
+    {
+      "id": "h_habitat",
+      "text": "Place the Habitat first. Your base grows around it."
+    },
+    {
+      "id": "h_zone",
+      "text": "Build inside the lit area around your Habitat."
+    },
+    {
+      "id": "h_clock",
+      "text": "Time is running. Press Pause any time to think."
+    },
+    {
+      "id": "h_sun",
+      "text": "Brighter ground gets more sun. Put Solar Arrays there."
+    },
+    {
+      "id": "h_cable",
+      "text": "Put Batteries next to Solar Arrays. Long cables waste power."
+    },
+    {
+      "id": "h_rover",
+      "text": "Build it near soft soil and water. Short trips are faster."
+    },
+    {
+      "id": "h_power",
+      "text": "Power in must beat power out. Watch the top bar."
+    },
+    {
+      "id": "h_info",
+      "text": "Click a building to see what helps it."
+    },
+    {
+      "id": "h_toggle",
+      "text": "Short on power? Switch the Greenhouse off for a while."
+    }
   ],
   "cards": [
-    { "id": "c_sun_home", "title": "Sun at home, Sun at the pole", "text": "Mississauga gets about five times more sunlight energy in June than in December.", "text2": "At the Moon's poles the Sun is never more than 1.5 degrees above the horizon, so shadows are long.", "source": "NASA POWER climatology; NASA Scientific Visualization Studio (svs.gsfc.nasa.gov/4893)", "label": "NASA-derived, simplified" },
-    { "id": "c_ridge", "title": "Sunny ridges, dark craters", "text": "On this map the sunniest ridge is lit about 70% of the time. Some crater floors nearby are never lit.", "text2": "The brightness of each tile comes from a real map of the Moon's south pole.", "source": "LRO LOLA illumination map (Mazarico et al. 2011)", "label": "simplified from real map" },
-    { "id": "c_plants", "title": "Why grow plants in space?", "text": "Plants can provide food, produce oxygen, and recycle carbon dioxide.", "text2": "Over three million students have taken part in the Tomatosphere program.", "source": "Canadian Space Agency, Tomatosphere page. © Canadian Space Agency", "label": "CSA-derived" },
-    { "id": "c_far", "title": "Far from the grocery store", "text": "On the Moon or Mars, astronauts will need to be more self-sufficient.", "text2": "Supply trips will be rare, so crews must grow food.", "source": "Canadian Space Agency, Growing healthy food in space. © Canadian Space Agency", "label": "CSA-derived" },
-    { "id": "c_iss", "title": "A real reading from the Space Station", "text": "A Space Station dosimeter measured about 4 microgray per hour during this real storm week.", "text2": "The Station is in low Earth orbit. This is NOT a Moon dose. The game's safety meter is made up.", "source": "NASA OSDR RadLab, ISS DosTel, 2024-05-11", "label": "NASA-derived" }
+    {
+      "id": "c_sun_home",
+      "title": "Sun at home, Sun at the pole",
+      "text": "Mississauga gets about five times more sunlight energy in June than in December.",
+      "text2": "At the Moon's poles the Sun is never more than 1.5 degrees above the horizon, so shadows are long.",
+      "source": "NASA POWER climatology; NASA Scientific Visualization Studio (svs.gsfc.nasa.gov/4893)",
+      "label": "NASA-derived, simplified"
+    },
+    {
+      "id": "c_ridge",
+      "title": "Sunny ridges, dark craters",
+      "text": "On this map the sunniest ridge is lit about 70% of the time. Some crater floors nearby are never lit.",
+      "text2": "The brightness of each tile comes from a real map of the Moon's south pole.",
+      "source": "LRO LOLA illumination map (Mazarico et al. 2011)",
+      "label": "simplified from real map"
+    },
+    {
+      "id": "c_plants",
+      "title": "Why grow plants in space?",
+      "text": "Plants can provide food, produce oxygen, and recycle carbon dioxide.",
+      "text2": "Over three million students have taken part in the Tomatosphere program.",
+      "source": "Canadian Space Agency, Tomatosphere page. © Canadian Space Agency",
+      "label": "CSA-derived"
+    },
+    {
+      "id": "c_far",
+      "title": "Far from the grocery store",
+      "text": "On the Moon or Mars, astronauts will need to be more self-sufficient.",
+      "text2": "Supply trips will be rare, so crews must grow food.",
+      "source": "Canadian Space Agency, Growing healthy food in space. © Canadian Space Agency",
+      "label": "CSA-derived"
+    },
+    {
+      "id": "c_iss",
+      "title": "A real reading from the Space Station",
+      "text": "A Space Station dosimeter measured about 4 microgray per hour during this real storm week.",
+      "text2": "The Station is in low Earth orbit. This is NOT a Moon dose. The game's safety meter is made up.",
+      "source": "NASA OSDR RadLab, ISS DosTel, 2024-05-11",
+      "label": "NASA-derived"
+    },
+    {
+      "id": "c_ice",
+      "title": "Ice in the dark",
+      "text": "Some craters near the Moon's poles never see the Sun. They can trap water ice.",
+      "text2": "In 2009, NASA's LCROSS found water in one of them, Cabeus. Not every dark crater has ice.",
+      "source": "NASA NSSDC, Ice on the Moon; NASA LCROSS mission",
+      "label": "NASA-derived"
+    },
+    {
+      "id": "c_mars_sun",
+      "title": "Less sunlight on Mars",
+      "text": "Sunlight on Mars is about 43% as strong as on Earth. Panels make less power.",
+      "text2": "A Mars day, called a sol, lasts about 24 hours 40 minutes. The game skips Mars nights.",
+      "source": "NASA Mars Fact Sheet (nssdc.gsfc.nasa.gov)",
+      "label": "NASA-derived; game power is softened"
+    },
+    {
+      "id": "c_jezero",
+      "title": "Jezero crater",
+      "text": "NASA's Perseverance rover landed in Jezero crater in 2021. Long ago it held a lake.",
+      "text2": "This map uses real heights measured by the MOLA laser on Mars Global Surveyor.",
+      "source": "MGS MOLA MEGDR (NASA PDS); NASA Mars 2020 mission",
+      "label": "simplified from real map"
+    },
+    {
+      "id": "c_moxie",
+      "title": "Making oxygen from Mars air",
+      "text": "Mars air is 95% carbon dioxide. NASA's MOXIE made oxygen from it on Mars.",
+      "text2": "At its best, MOXIE made 12 grams of oxygen an hour. In total it made 122 grams.",
+      "source": "NASA JPL, MOXIE completes Mars mission (6 Sept 2023); NASA Mars Fact Sheet",
+      "label": "NASA-derived"
+    }
   ],
   "debrief": [
-    { "id": "title_win", "text": "Mission success!" },
-    { "id": "title_close", "text": "A close call." },
-    { "id": "title_fail", "text": "Mission paused. Let's try again." },
-    { "id": "body_win", "text": "Your crew is safe and the base kept running." },
-    { "id": "body_close", "text": "Your crew made it, but it was close." },
-    { "id": "body_fail", "text": "Crew safety stayed too low for too long. No one is hurt. Mission control stopped the mission to keep everyone safe." },
-    { "id": "fail_NoAir", "text": "Why: the air ran out. Life Support needs to be built and powered." },
-    { "id": "fail_NoFood", "text": "Why: the crew ran out of meals. A powered Greenhouse grows food." },
-    { "id": "fail_RadiationOutside", "text": "Why: Yuki stayed outside in the particle storm. Call Yuki in early." },
-    { "id": "fail_RadiationNoShelter", "text": "Why: the crew had no powered Shelter during the particle storm." },
-    { "id": "did_recall_yes", "text": "You called Yuki inside before the particles arrived." },
-    { "id": "did_recall_late", "text": "Yuki was still outside when the particles arrived." },
-    { "id": "did_shelter_yes", "text": "You switched the Shelter on to protect the crew." },
-    { "id": "did_shelter_no", "text": "The Shelter was never switched on." },
-    { "id": "did_shed_yes", "text": "You rested the Greenhouse to save power." },
-    { "id": "did_stored_yes", "text": "You added a second Battery before the storm." },
-    { "id": "did_brownout", "text": "The battery ran empty and some systems switched off." },
-    { "id": "sci_warning", "text": "A solar warning is not a power cut. The Sun still shines." },
-    { "id": "sci_battery", "text": "Batteries save energy for later." },
-    { "id": "sci_priority", "text": "Critical jobs first: air before plants." },
-    { "id": "honesty", "text": "The storm event and the map are real NASA data. All kW, kWh, costs, recycling and safety numbers are made up for the game." },
-    { "id": "blueprint", "text": "Blueprint v2: what will you change next time?" }
+    {
+      "id": "title_win",
+      "text": "Mission success!"
+    },
+    {
+      "id": "title_close",
+      "text": "A close call."
+    },
+    {
+      "id": "title_fail",
+      "text": "Mission stopped"
+    },
+    {
+      "id": "body_win",
+      "text": "Your crew is safe and the base kept running."
+    },
+    {
+      "id": "body_close",
+      "text": "Your crew made it, but it was close."
+    },
+    {
+      "id": "body_fail",
+      "text": "No one is hurt. Mission control stopped this training mission to keep everyone safe."
+    },
+    {
+      "id": "did_recall_yes",
+      "text": "You called {geo} inside before the particles arrived."
+    },
+    {
+      "id": "did_recall_late",
+      "text": "{geo} was still outside when the particles arrived."
+    },
+    {
+      "id": "did_shelter_yes",
+      "text": "You switched the Shelter on to protect the crew."
+    },
+    {
+      "id": "did_shelter_no",
+      "text": "The Shelter was never switched on."
+    },
+    {
+      "id": "did_shed_yes",
+      "text": "You rested the Greenhouse to save power."
+    },
+    {
+      "id": "did_stored_yes",
+      "text": "You added a second Battery before the storm."
+    },
+    {
+      "id": "did_brownout",
+      "text": "Power ran short and some systems switched off."
+    },
+    {
+      "id": "sci_warning",
+      "text": "A solar warning is not a power cut. The Sun still shines."
+    },
+    {
+      "id": "sci_battery",
+      "text": "Batteries save energy for later."
+    },
+    {
+      "id": "sci_priority",
+      "text": "Critical jobs first: air before plants."
+    },
+    {
+      "id": "honesty",
+      "text": "The storm event and the map are real NASA data. All kW, kWh, costs, recycling and safety numbers are made up for the game."
+    },
+    {
+      "id": "blueprint",
+      "text": "Blueprint v2: what will you change next time?"
+    },
+    {
+      "id": "title_eval",
+      "text": "Evaluation complete"
+    },
+    {
+      "id": "blocked_core",
+      "text": "The next mission needs a full base. Missing: {list}."
+    },
+    {
+      "id": "head_NoAir",
+      "text": "The air reserve is empty."
+    },
+    {
+      "id": "why_NoAir_missing",
+      "text": "There was no Life Support to make air."
+    },
+    {
+      "id": "why_NoAir_power",
+      "text": "Life Support had no power, so it made no air."
+    },
+    {
+      "id": "fix_NoAir",
+      "text": "Keep Life Support powered."
+    },
+    {
+      "id": "fix_NoAir_missing",
+      "text": "Build Life Support next to the Habitat early."
+    },
+    {
+      "id": "head_NoFood",
+      "text": "The food reserve is empty."
+    },
+    {
+      "id": "why_NoFood_missing",
+      "text": "There was no Greenhouse to grow food."
+    },
+    {
+      "id": "why_NoFood_off",
+      "text": "The Greenhouse was switched off."
+    },
+    {
+      "id": "why_NoFood_power",
+      "text": "The Greenhouse had no power."
+    },
+    {
+      "id": "why_NoFood_water",
+      "text": "The Greenhouse had no water."
+    },
+    {
+      "id": "why_NoFood_slow",
+      "text": "The crew ate faster than the Greenhouse grew."
+    },
+    {
+      "id": "fix_NoFood",
+      "text": "Keep the Greenhouse powered and watered."
+    },
+    {
+      "id": "fix_NoFood_missing",
+      "text": "Send a rover for soil, then build a Greenhouse."
+    },
+    {
+      "id": "head_NoWater",
+      "text": "The water reserve is empty."
+    },
+    {
+      "id": "why_NoWater_plants",
+      "text": "The Greenhouse used the most water."
+    },
+    {
+      "id": "why_NoWater_crew",
+      "text": "The crew drank the last of it."
+    },
+    {
+      "id": "fix_NoWater",
+      "text": "Rest the Greenhouse, or send the rover for {water}."
+    },
+    {
+      "id": "head_PowerLoss",
+      "text": "Essential systems lost power for too long."
+    },
+    {
+      "id": "why_PowerLoss_out",
+      "text": "Life Support or the Habitat had no power for {hours} hours."
+    },
+    {
+      "id": "fix_PowerLoss",
+      "text": "Protect Life Support before optional systems."
+    },
+    {
+      "id": "head_RadiationOutside",
+      "text": "The crew could not reach safety in time."
+    },
+    {
+      "id": "why_RadiationOutside_out",
+      "text": "{geo} was outside when the particles arrived."
+    },
+    {
+      "id": "fix_RadiationOutside",
+      "text": "Call the crew in before particles arrive."
+    },
+    {
+      "id": "head_RadiationNoShelter",
+      "text": "The crew needed a powered Shelter."
+    },
+    {
+      "id": "why_RadiationNoShelter_missing",
+      "text": "There was no Shelter."
+    },
+    {
+      "id": "why_RadiationNoShelter_off",
+      "text": "The Shelter was switched off."
+    },
+    {
+      "id": "why_RadiationNoShelter_power",
+      "text": "The Shelter had no power."
+    },
+    {
+      "id": "why_RadiationNoShelter_far",
+      "text": "The Shelter was too far from the Habitat."
+    },
+    {
+      "id": "fix_RadiationNoShelter_missing",
+      "text": "Build a Shelter before the storm comes."
+    },
+    {
+      "id": "fix_RadiationNoShelter_off",
+      "text": "Switch the Shelter on when the warning comes."
+    },
+    {
+      "id": "fix_RadiationNoShelter_power",
+      "text": "Save power for the Shelter: rest the Greenhouse."
+    },
+    {
+      "id": "fix_RadiationNoShelter_far",
+      "text": "Build the Shelter right next to the Habitat."
+    },
+    {
+      "id": "tip_build",
+      "text": "Build the {name}."
+    },
+    {
+      "id": "tip_base",
+      "text": "Finish every goal on the list."
+    },
+    {
+      "id": "tip_smart",
+      "text": "Use links: Batteries by Solar Arrays, Life Support by the Habitat."
+    },
+    {
+      "id": "tip_crew",
+      "text": "Get the crew into a powered Shelter early."
+    },
+    {
+      "id": "tip_air",
+      "text": "End with more air, water and food left."
+    },
+    {
+      "id": "tip_steady",
+      "text": "When power is short, rest the Greenhouse first."
+    },
+    {
+      "id": "sci_layout",
+      "text": "Where you build matters: short cables and pipes waste less."
+    },
+    {
+      "id": "sci_mars",
+      "text": "Mars gets less sunlight, so a Mars base needs more solar panels."
+    },
+    {
+      "id": "starter_base",
+      "text": "Your saved base was not found, so mission control set up a ready-made base."
+    }
   ]
 }

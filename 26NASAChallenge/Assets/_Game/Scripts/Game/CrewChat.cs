@@ -15,11 +15,11 @@ namespace Mapmakers.Game
                     if (s.StormActive && s.geologist == CrewLocation.Outside && !s.recallIssued) return "storm_outside";
                     if (s.StormActive) return "storm_inside";
                     if (s.stormsStarted > 0) return s.earlyRecalls >= s.stormsStarted ? "after_called_first" : "after_not_called";
-                    return s.day >= 2 ? "rover" : "default";
+                    return s.Count(BuildingType.RoverGarage) > 0 ? "rover" : "default";
                 case "engineer":
                     if (s.StormActive) return "storm";
-                    var f = run.Forecast;
-                    if (f != null && f.lastDay != null && f.lastDay.brownouts > 0) return "battery_low";
+                    double cap = run.sim.BatteryCapacity(s);
+                    if (s.report.Has("loads_off") || (cap > 0 && s.batteryKWh < 0.4 * cap && s.report.batteryFlowKW < 0)) return "battery_low";
                     if (s.Count(BuildingType.Battery) >= 2) return "two_batteries";
                     return "default";
                 case "botanist":

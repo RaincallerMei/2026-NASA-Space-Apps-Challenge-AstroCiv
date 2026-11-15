@@ -1,0 +1,441 @@
+{
+  "size": [
+    1024,
+    1024
+  ],
+  "extrusion": 2,
+  "sprites": [
+    {
+      "name": "UI/Thumbnails/command_hub.png",
+      "x": 2,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/habitat.png",
+      "x": 70,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/greenhouse.png",
+      "x": 138,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/battery_bank.png",
+      "x": 206,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/communications_dish.png",
+      "x": 274,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/solar_array.png",
+      "x": 342,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/regolith_shelter.png",
+      "x": 410,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/airlock.png",
+      "x": 478,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/laboratory.png",
+      "x": 546,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/life_support.png",
+      "x": 614,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Thumbnails/rover_garage.png",
+      "x": 682,
+      "y_top": 2,
+      "y_unity_bottom": 958,
+      "width": 64,
+      "height": 64,
+      "pivot_px_top_left": [
+        32,
+        56
+      ]
+    },
+    {
+      "name": "UI/Panels/resource_bar.png",
+      "x": 2,
+      "y_top": 70,
+      "y_unity_bottom": 914,
+      "width": 384,
+      "height": 40,
+      "pivot_px_top_left": [
+        192,
+        32
+      ]
+    },
+    {
+      "name": "UI/Panels/selection_panel.png",
+      "x": 390,
+      "y_top": 70,
+      "y_unity_bottom": 890,
+      "width": 512,
+      "height": 64,
+      "pivot_px_top_left": [
+        256,
+        56
+      ]
+    },
+    {
+      "name": "UI/Panels/window.png",
+      "x": 2,
+      "y_top": 138,
+      "y_unity_bottom": 662,
+      "width": 320,
+      "height": 224,
+      "pivot_px_top_left": [
+        160,
+        216
+      ]
+    },
+    {
+      "name": "UI/Panels/tooltip.png",
+      "x": 326,
+      "y_top": 138,
+      "y_unity_bottom": 822,
+      "width": 192,
+      "height": 64,
+      "pivot_px_top_left": [
+        96,
+        56
+      ]
+    },
+    {
+      "name": "UI/Panels/build_card.png",
+      "x": 522,
+      "y_top": 138,
+      "y_unity_bottom": 790,
+      "width": 80,
+      "height": 96,
+      "pivot_px_top_left": [
+        40,
+        88
+      ]
+    },
+    {
+      "name": "UI/Panels/nine_slice.png",
+      "x": 606,
+      "y_top": 138,
+      "y_unity_bottom": 854,
+      "width": 32,
+      "height": 32,
+      "pivot_px_top_left": [
+        16,
+        24
+      ]
+    },
+    {
+      "name": "UI/Panels/button_normal.png",
+      "x": 642,
+      "y_top": 138,
+      "y_unity_bottom": 854,
+      "width": 112,
+      "height": 32,
+      "pivot_px_top_left": [
+        56,
+        24
+      ]
+    },
+    {
+      "name": "UI/Panels/button_hover.png",
+      "x": 758,
+      "y_top": 138,
+      "y_unity_bottom": 854,
+      "width": 112,
+      "height": 32,
+      "pivot_px_top_left": [
+        56,
+        24
+      ]
+    },
+    {
+      "name": "UI/Panels/button_pressed.png",
+      "x": 874,
+      "y_top": 138,
+      "y_unity_bottom": 854,
+      "width": 112,
+      "height": 32,
+      "pivot_px_top_left": [
+        56,
+        24
+      ]
+    },
+    {
+      "name": "UI/Panels/button_disabled.png",
+      "x": 2,
+      "y_top": 366,
+      "y_unity_bottom": 626,
+      "width": 112,
+      "height": 32,
+      "pivot_px_top_left": [
+        56,
+        24
+      ]
+    },
+    {
+      "name": "UI/Icons/ore.png",
+      "x": 118,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/water.png",
+      "x": 146,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/power.png",
+      "x": 174,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/food.png",
+      "x": 202,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/crew.png",
+      "x": 230,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/oxygen.png",
+      "x": 258,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/research.png",
+      "x": 286,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/build.png",
+      "x": 314,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/repair.png",
+      "x": 342,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/info.png",
+      "x": 370,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/close.png",
+      "x": 398,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/next.png",
+      "x": 426,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/warning.png",
+      "x": 454,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/Icons/pause.png",
+      "x": 482,
+      "y_top": 366,
+      "y_unity_bottom": 634,
+      "width": 24,
+      "height": 24,
+      "pivot_px_top_left": [
+        12,
+        16
+      ]
+    },
+    {
+      "name": "UI/astrociv_wordmark.png",
+      "x": 510,
+      "y_top": 366,
+      "y_unity_bottom": 610,
+      "width": 288,
+      "height": 48,
+      "pivot_px_top_left": [
+        144,
+        40
+      ]
+    }
+  ]
+}

@@ -16,34 +16,67 @@ Story pictures never share the screen with the game UI.
 
 ## Story Mode
 
-Each level unlocks the next. Progress and best grades are saved (PlayerPrefs, works in WebGL).
+Each level unlocks the next. Progress, best grades and the best saved base are kept (PlayerPrefs, works in WebGL).
 
-| # | Level | Before | Play | After |
+| # | Level | Mission time | Events (game hours) | Goals |
 |---|---|---|---|---|
-| 1 | The Dream (tutorial) | Bedroom, classroom | Draw Habitat, Solar Array, Greenhouse. Fix the power deficit with a second Solar Array. No clock | Teacher |
-| 2 | The Commander | Graduation, launch, colony | Build all six base parts. Day 3: long shadow. First harvest unlocks the Shelter; the shadow unlocks a second Battery | — |
-| 3 | Solar Storm | Colony, storm | Starts from the player's Level 2 base. Day 2: DONKI-based warning, Yuki outside. Days 3–4: particles. Day 5: sunrise | Window and final message |
-| 4 | Mars Base | Launch | Same rules on red ground, counted in sols. Sol 3: dust storm. Sol 6: solar storm | Bedroom, Blueprint v2 |
+| 1 | The Dream (tutorial) | No clock | — | Draw Habitat, Solar Array, Greenhouse; power in beats power out |
+| 2 | The Commander | 96 h (about 3 min at 1x) | Landers 16, 34, 56; long shadow 64 | Core base, rover, first harvest, safe to the end |
+| 3 | Solar Storm | 84 h (about 3 min) | Polar dusk 2–58; storm warning 16; lander 36; sunrise 60 | Call Yuki in early, use the Shelter, keep power in the storm, safe to the end |
+| 4 | Mars Base (Jezero crater) | 120 h (about 4 min) | Landers 14, 32, 56, 84; dust storm 40–70; solar storm 78 | All of the above plus "no brownout in the dim days" |
 
-## Free Build
+Level 3 starts from the player's best Level 2 base (or a starter base). Mars counts sols (24.66 h). Real minutes depend on pauses and speed.
 
-No story. Choose Moon or Mars and Easy, Normal or Hard. Every run has a new seed:
+## Real-time play
 
-- a new made-up map (sunlight pattern, craters, rocks);
-- new days for dim days, solar storms, panel faults and supply landers.
+| Control | Effect |
+|---|---|
+| **Start mission** (briefing) | The clock waits until this is pressed |
+| Play/Pause button, **Space** | Pause or resume |
+| **1x / 2x / 4x** | 1x = 2 real seconds per game hour |
+| Any window or menu | Holds the clock; closing it resumes |
+| Window loses focus | Pauses; press Play to resume |
 
-The seed is shown (Map #1234). "Same map" replays it.
+The sim always steps in fixed 0.05 h steps. A slow frame never makes it jump ahead.
 
-## One day (turn)
+The bottom bar shows **Evaluation in …**. Alerts give hours left and an action ("Water runs out in 6 h. Rest the Greenhouse").
 
-1. Look at the top bar, the goal card and the alerts. Alerts use tomorrow's forecast.
-2. Build, switch systems on or off, fix, talk to the crew.
-3. Press **Next Day** (amber when tomorrow looks risky).
-4. Read the day summary and any event card.
+## Placement strategy
+
+| Rule | Effect |
+|---|---|
+| Habitat first | All other buildings must be within 6 tiles of it (shaded area) |
+| Solar → Battery within 2 tiles | Otherwise the long cable loses 30% (shown as "~") |
+| Life Support → Habitat within 1 tile | Otherwise air refills at half speed |
+| Greenhouse → Life Support within 1 tile | Life Support uses 1 kW less |
+| Shelter → Habitat within 2 tiles | Otherwise only half protection |
+| Rover Garage near soil/ice | Trips take 1 h + 0.5 h per tile; brings soil (Greenhouse needs 6), then water |
+| Sunny tiles | Solar output follows the real sunlight map |
+
+## How a mission ends
+
+| Ending | When | Screen |
+|---|---|---|
+| **Evaluation** | The mission clock reaches its end | Inspection sweep, blueprint checklist, grade |
+| **Mission stopped** | Air, water or food runs out; critical power off too long (10 h); crew in particles outside or without a powered Shelter | Short calm scene per cause, then cause, telemetry, "Next time" fix. Try again / View report / Menu |
+
+If a failure and the deadline happen on the same step, the failure counts. Nothing changes after the end.
 
 ## Grades
 
-Score out of 100: crew safety 25, steady power 25, air/water/food 25, goals 25. The tutorial uses power balance 25, sunny solar spots 25 and goals 50.
+| Row | Points |
+|---|---|
+| Base and goals | 30 |
+| Smart layout (sunny solar, links met) | 20 |
+| Crew safety | 20 |
+| Air, water and food left | 15 |
+| Steady power | 15 |
+
+| Cap | Max score |
+|---|---|
+| Mission stopped | 30 (C) |
+| A core building missing | 60 (B), cannot continue |
+| A goal missing | 80 (A) |
 
 | Letter | Score | Stars |
 |---|---|---|
@@ -52,9 +85,11 @@ Score out of 100: crew safety 25, steady power 25, air/water/food 25, goals 25. 
 | B | 31–60 | 1 |
 | C | 0–30 | 0 |
 
-A failed mission is capped at 30 (C) and does not unlock the next level.
+## Free Build
+
+No story. Moon or Mars; Easy, Normal or Hard; 144 h. Each seed makes a new map (sunlight, craters with ice, soil patches) and a new event schedule. The seed is shown (Map #1234).
 
 ## Tests
 
-- EditMode (55): simulation, data, day turns, events, grades, random worlds, level data, crew chat, bot balance on every level and on 36 Free Build seeds.
-- PlayMode (3): Boot → Menu; tutorial cutscene → drawing → grade; a full Free Build run on Mars → grade.
+- EditMode (89): simulation, clock, end conditions, layout, data, events, grades, random worlds, crew chat, bot balance on every level and 36 Free Build seeds.
+- PlayMode (6): Boot → Menu; tutorial; paused briefing → idle failure → Retry; every failure scene from a real trigger; evaluation → report; incomplete base → evaluation.

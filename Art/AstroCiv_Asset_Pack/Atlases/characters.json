@@ -1,0 +1,261 @@
+{
+  "size": [
+    1024,
+    1024
+  ],
+  "extrusion": 2,
+  "sprites": [
+    {
+      "name": "Characters/Frames/idle.png",
+      "x": 2,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_pose.png",
+      "x": 38,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/wave.png",
+      "x": 74,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/tablet.png",
+      "x": 110,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/repair.png",
+      "x": 146,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SE_0.png",
+      "x": 182,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SE_1.png",
+      "x": 218,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SE_2.png",
+      "x": 254,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SE_3.png",
+      "x": 290,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SW_0.png",
+      "x": 326,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SW_1.png",
+      "x": 362,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SW_2.png",
+      "x": 398,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_SW_3.png",
+      "x": 434,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NW_0.png",
+      "x": 470,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NW_1.png",
+      "x": 506,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NW_2.png",
+      "x": 542,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NW_3.png",
+      "x": 578,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NE_0.png",
+      "x": 614,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NE_1.png",
+      "x": 650,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NE_2.png",
+      "x": 686,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    },
+    {
+      "name": "Characters/Frames/walk_NE_3.png",
+      "x": 722,
+      "y_top": 2,
+      "y_unity_bottom": 974,
+      "width": 32,
+      "height": 48,
+      "pivot_px_top_left": [
+        16,
+        44
+      ]
+    }
+  ]
+}

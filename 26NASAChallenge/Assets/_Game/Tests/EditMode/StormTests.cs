@@ -110,8 +110,7 @@ namespace Mapmakers.Tests
             s = sim.Advance(s, sim.balance.storm.endHour + 0.5);
 
             Assert.AreEqual(100.0, s.minSafetyStorm, 1e-6);
-            Assert.IsFalse(s.failed);
-            Assert.Greater(Grader.Mission(sim.balance, s, 0, 0).total, Grader.FailCap);
+            Assert.IsFalse(s.Failed);
         }
 
         [Test]
@@ -120,20 +119,40 @@ namespace Mapmakers.Tests
             var sim = SimTestKit.Sim();
             var s = BaseInStorm(sim);
             double safetyAtOnset = -1;
-            for (double h = 0; h < sim.balance.storm.endHour + 1 && !s.failed; h += sim.balance.dtHours)
+            for (double h = 0; h < sim.balance.storm.endHour + 1 && !s.Failed; h += sim.balance.dtHours)
             {
                 s = sim.Step(s);
                 if (s.stormPhase == StormPhase.Particles && safetyAtOnset < 0) safetyAtOnset = s.safety;
             }
 
-            Assert.IsTrue(s.failed);
-            Assert.AreNotEqual(FailReason.None, s.failReason);
+            Assert.IsTrue(s.Failed);
+            Assert.AreEqual(FailReason.RadiationNoShelter, s.failReason, "she walked back in; the missing Shelter is the cause at the end");
+            Assert.Greater(s.damageOutside, 0.0, "time outside is still recorded");
             Assert.Greater(safetyAtOnset, 95.0, "no instant game over at onset");
             Assert.Greater(s.StormRelHour, sim.balance.storm.onsetHour + 2, "failure takes hours, not a moment");
-            var score = Grader.Mission(sim.balance, s, 0, 0);
-            Assert.LessOrEqual(score.total, Grader.FailCap);
+            var score = Grader.Mission(sim, s, new string[0]);
+            Assert.LessOrEqual(score.total, sim.balance.grade.failCap);
             Assert.AreEqual("C", score.letter);
-            Assert.IsFalse(score.passed);
+        }
+
+        [Test]
+        public void FarShelter_OnlyHalfProtects()
+        {
+            var sim = SimTestKit.Sim();
+            sim.layoutRules = true;
+            var s = sim.NewGame();
+            SimTestKit.Put(sim, s, BuildingType.Habitat, 0, 0);
+            for (int i = 0; i < 4; i++) SimTestKit.Put(sim, s, BuildingType.SolarArray, 3 + i * 2, 0);
+            SimTestKit.Put(sim, s, BuildingType.Battery, 3, 2);
+            s.shelterUnlocked = true;
+            var shelter = SimTestKit.Put(sim, s, BuildingType.Shelter, 6, 6);
+            sim.SetEnabled(s, shelter.id, true);
+            Assert.IsFalse(sim.ShelterClose(s));
+            sim.StartStorm(s);
+            s.geologist = CrewLocation.Inside;
+            s = sim.Advance(s, sim.balance.storm.onsetHour + 1);
+            Assert.Less(s.safety, 100.0, "a far Shelter lets some particles through");
+            Assert.Greater(s.safety, 100 - sim.balance.radiationUnshelteredPerHour * 1.01, "but less than no Shelter");
         }
 
         [Test]
@@ -142,7 +161,7 @@ namespace Mapmakers.Tests
             var sim = SimTestKit.Sim();
             var s = BaseInStorm(sim);
             s = sim.Advance(s, sim.balance.storm.onsetHour + 20);
-            Assert.IsTrue(s.failed);
+            Assert.IsTrue(s.Failed);
             double t = s.timeHours;
             s = sim.Advance(s, 5);
             Assert.AreEqual(t, s.timeHours);

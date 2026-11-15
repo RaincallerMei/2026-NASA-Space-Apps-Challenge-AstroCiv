@@ -13,6 +13,8 @@ You are the lead developer for **Mapmakers of the Moon**, our entry for the **20
 
 If this prompt and `CLAUDE.md` disagree, **this prompt wins**. The one big change: **the greenhouse is part of the basic outpost** (it was a stretch goal before).
 
+**Updated team requirement, November 14:** maintain the repository-root `Work Log and Review/AI_USE_LOG.md` after each AI session, recording purpose, actual tool/model if known, prompt/input, method, output, used/proposed status and real review/checks. **All project-created art is AI-created**, including procedural art and derivatives. This supersedes older “some art” disclosure and stock-pack plans below; do not invent third-party asset use. See the current AI-use log and ASSET_CREDITS.md for actual provenance.
+
 ## 1. What we are building (scope)
 One Unity 2D, top-down, pixel-art game. About **12 to 15 minutes** of play.
 
@@ -137,8 +139,8 @@ Canvas UI (uGUI). Mouse only. Short sentences. Big buttons.
 
 ## 10. Build and delivery
 - Make **Main** and **Prologue** scenes bootable from a Boot/Menu scene. Build **WebGL** (primary, so judges can click a link) and a Windows/macOS standalone if time allows. Check the WebGL build runs without network access to NASA and without any API key.
-- Write `README.md`: Unity version, how to open and play, controls, architecture, how to tune values, the demo path (what to click in 3 minutes), known limits.
-- Write `ASSET_CREDITS.md`, `SCIENCE_SOURCES.md`, `DATA_SOURCES.md`, `BALANCE_REPORT.md`, `TEST_PLAN.md`, and `SUBMISSION_NOTES.md` (project summary in 3 short sentences, how it meets the challenge, data used, AI used: Claude for code/text, Midjourney for some art, local-impact note for Mississauga/Toronto, 60 to 90 second demo-video shot list with English subtitle text).
+- Write `README.md`: Unity version, how to open and play, controls, architecture, how to tune values, the demo path (what to click in 3 minutes), known limits. Link the maintained AI-use log and final asset provenance.
+- Write `ASSET_CREDITS.md`, `SCIENCE_SOURCES.md`, `DATA_SOURCES.md`, `BALANCE_REPORT.md`, `TEST_PLAN.md`, and `SUBMISSION_NOTES.md` (project summary in 3 short sentences, how it meets the challenge, data used, AI tools actually recorded in the log, disclosure that all project-created art is AI-created, local-impact note for Mississauga/Toronto, demo-video shot list with English subtitle text; use the current SUBMISSION_REQUIREMENTS.md for final demo limits).
 - Final check: search the repo and build output for the real NASA key and for `api_key=` followed by a real value. Only `DEMO_KEY` may appear.
 
 ## 11. Honesty rules (non-negotiable)

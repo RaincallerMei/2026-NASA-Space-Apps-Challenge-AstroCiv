@@ -293,6 +293,43 @@ def write_illumination(filename, grid, source, url, classification, units, note)
     write_text(filename, header + "".join(",".join(str(v) for v in row) + "\n" for row in grid))
 
 
+# ---------------------------------------------------------------- MOLA Mars topography (Jezero crater)
+
+MOLA_IMG = "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg016/megt90n000eb.img"
+MOLA_RECORD_BYTES = 11520        # from megt90n000eb.lbl: 5760 samples x 16-bit MSB
+MOLA_SAMPLES = 5760
+MOLA_PPD = 16.0                  # MAP_RESOLUTION, 3.705 km per pixel
+JEZERO_LAT, JEZERO_LON = 18.38, 77.58   # crater centre (USGS/IAU)
+
+
+def fetch_mola_jezero():
+    filename = "mars_jezero_mola.csv"
+    units = "metres above the Mars areoid (MOLA median topography)"
+    top = int(round(1440.5 - JEZERO_LAT * MOLA_PPD - 1 - GRID_H / 2.0))
+    left = int(round(JEZERO_LON * MOLA_PPD + 0.5 - 1 - GRID_W / 2.0))
+    first, last = top * MOLA_RECORD_BYTES, (top + GRID_H) * MOLA_RECORD_BYTES - 1
+    status, body = try_get("MOLA Jezero topography", MOLA_IMG, {"Range": f"bytes={first}-{last}"})
+    if body is None or len(body) != GRID_H * MOLA_RECORD_BYTES:
+        record("MOLA Jezero topography", MOLA_IMG, status, filename, "not written", units, "fetch failed")
+        return
+    pixels = array.array("h")
+    pixels.frombytes(body)
+    if sys.byteorder == "little":
+        pixels.byteswap()
+    grid = [[pixels[row * MOLA_SAMPLES + left + col] for col in range(GRID_W)] for row in range(GRID_H)]
+    lat_top = (1440.5 - (top + 1)) / MOLA_PPD
+    lon_left = (left + 1 - 0.5) / MOLA_PPD
+    note = (f"Crop of {GRID_W}x{GRID_H} pixels at 16 pixels per degree (3.7 km each). Top-left pixel line {top}, sample {left} "
+            f"(0-based), about {lat_top:.2f} N, {lon_left:.2f} E. Jezero crater (Mars 2020 Perseverance site, centre 18.38 N 77.58 E). "
+            "First data row is the top (north) of the map.")
+    header = csv_header({"source": "MGS MOLA Mission Experiment Gridded Data Record MEGT90N000EB (PDS MGS-M-MOLA-5-MEGDR-L3-V1.0)",
+                         "query_url": MOLA_IMG + " (HTTP Range request for the crop rows)", "retrieved_utc": NOW, "units": units,
+                         "license_note": NASA_NOTE, "classification": "simplified", "note": note,
+                         "width": GRID_W, "height": GRID_H})
+    write_text(filename, header + "".join(",".join(str(v) for v in row) + "\n" for row in grid))
+    record("MOLA Jezero topography", MOLA_IMG, status, filename, "simplified", units, "real elevations, one pixel per tile")
+
+
 # ---------------------------------------------------------------- NASA POWER (Mississauga)
 
 POWER = ("https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=ALLSKY_SFC_SW_DWN"
@@ -441,8 +478,11 @@ def write_report():
 
 def main():
     print("Fetching fixtures. Key source:", "NASA_API_KEY (environment)" if os.environ.get("NASA_API_KEY") else "DEMO_KEY")
-    for step in (fetch_donki, fetch_radlab, fetch_lola, fetch_power, fetch_osdr, fetch_csa):
-        step()
+    steps = (fetch_donki, fetch_radlab, fetch_lola, fetch_mola_jezero, fetch_power, fetch_osdr, fetch_csa)
+    only = sys.argv[1:]
+    for step in steps:
+        if not only or step.__name__ in only:
+            step()
     write_report()
     assert API_KEY == "DEMO_KEY" or not any(API_KEY in json.dumps(e) for e in LOG), "key leaked into the log"
 

@@ -19,6 +19,16 @@ Primary pages read on **2026-11-14**. This pack verifies the existing plan; it d
 | [NASA: media guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/) | Attribution and no-endorsement rules inform credits | Third-party material has separate rights; logos are not general-purpose game branding |
 | [CSA: terms](https://www.asc-csa.gc.ca/eng/terms.asp) | Educational non-commercial reuse requires accuracy, credit and no endorsement | Commercial redistribution and third-party content need separate permission checks |
 
+## Level 4 (Mars) and layout sources — added 14 November 2026
+
+| Source | What it supports | Game simplification |
+|---|---|---|
+| [NSSDC Mars Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html) | Solar irradiance 586.2 W/m² (0.431 of Earth); day 24.6597 h; atmosphere 95.1% CO2 | Game uses 0.6 of Moon solar output (softened for play); no Mars night cycle |
+| [JPL Mars 2020 press kit: landing site](https://www.jpl.nasa.gov/news/press_kits/mars_2020/landing/mission/landing_site/) | Jezero: about 18° N, 77° E, 45 km wide; held a lake about 3.5 billion years ago; ancient river delta | Lake mud (soil) and wet clay (water) tiles are hand-picked game features, not mapped mineralogy |
+| [MGS MOLA MEGDR 16 px/deg (PDS Geosciences)](https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg016/) | Real heights for the 20×15 Jezero crop (`mars_jezero_mola.csv`) | Steep tiles (>300 m step) are blocked; height → sunlight is a gameplay assumption |
+| [JPL: MOXIE completes its mission (6 Sept 2023)](https://www.jpl.nasa.gov/news/nasas-oxygen-generating-experiment-moxie-completes-mars-mission/) | MOXIE made 122 g of oxygen in total, up to 12 g per hour | Card text only; no MOXIE building or rate in the sim |
+| [NSSDC: Ice on the Moon](https://nssdc.gsfc.nasa.gov/planetary/ice/ice_moon.html) | LCROSS (2009) found water ice in a shadowed crater (Cabeus) | Game puts ice in every dark tile; real shadowed craters do not all hold ice |
+
 ## Resolved checks
 
 - **S1 / Hadfield:** verified from CSA: Ontario connection, Canadian astronaut, ISS commander.

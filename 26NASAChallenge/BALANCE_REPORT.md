@@ -1,6 +1,37 @@
 # Balance report
 
-## Current: day turns (14 November 2026, redesign)
+## Current: pausable real time with strategic layout (14 November 2026)
+
+Source: `BalanceTests` run in Unity 6000.6.7f1 on the shipped `Balance.json` and `Levels.json` (all 5 tests passed). Bots act every 2 game hours. All numbers are **fictional balance**, not equipment specs or dose forecasts.
+
+**Main changes:** grade rows 30/20/20/15/15 (Steady power 25 → 15; new Smart layout row 20). Caps: stopped 30, core building missing 60, goal missing 80. Layout links (cable, duct, plant loop, shelter distance), base area (6 tiles from the Habitat), Rover Garage and soil cost for the Greenhouse. Battery 12 kWh. Crew drinks water. Critical power off 10 h stops the mission. Level 3 has a long polar dusk (sun ×0.84 for 56 h). Level 4 is Mars at Jezero.
+
+| Level | Bot (strategy) | Score | Grade | End | Notes |
+|---|---|---|---|---|---|
+| L2 Commander | Smart (good layout) | 92 | S | Evaluation | 0 brownouts |
+| L2 Commander | Careless (builds next to the Habitat) | 74 | A | Evaluation | 9 brownouts, links missed |
+| L2 Commander | NoRadio (no Communications) | 60 | B | Evaluation | Capped: core building missing |
+| L2 Commander | Idle | 6 | C | NoAir at 36 h | About 72 s at 1x before air runs out |
+| L3 Solar Storm | StoredEnergy (second Battery) | 99 | S | Evaluation | Winning strategy 1 |
+| L3 Solar Storm | ShedLoads (rests the Greenhouse) | 97 | S | Evaluation | Winning strategy 2 |
+| L3 Solar Storm | Greedy (all loads on, one Battery) | 80 | A | Evaluation | 1 storm brownout; cannot reach S |
+| L3 Solar Storm | DoNothing | 30 | C | RadiationNoShelter at 34 h | |
+| L4 Mars | Smart | 97 | S | Evaluation | |
+| L4 Mars | ShedLoads | 94 | S | Evaluation | |
+| L4 Mars | Greedy | 80 | A | Evaluation | 9 brownouts in the dust storm; "dim_power" goal missed |
+| L4 Mars | Idle | 6 | C | NoAir at 36 h | |
+
+Free Build (Smart bot, 144 h, seeds 1–12, Moon on odd seeds, Mars on even):
+
+| Difficulty | Survived | Grades |
+|---|---|---|
+| Easy | 12/12 | 11 S, 1 A |
+| Normal | 12/12 | 10 S, 2 A |
+| Hard | 8/12 | Seeds 1, 5 PowerLoss; 3 NoFood; 9 RadiationNoShelter |
+
+Simplifications to review: Mars sunlight is 0.6 of the Moon's in game (real 0.43, softened for play); Mars has no night cycle; MOLA height is mapped to sun (higher = brighter) as a gameplay assumption; Jezero wet-clay and Moon soil tiles are hand-picked.
+
+## Historical: day turns (14 November 2026, earlier redesign)
 
 Source: `BalanceTests` on the shipped `Balance.json` and `Levels.json`. Bots act once per day, like a player pressing Next Day. All numbers are **fictional balance**, not equipment specs or dose forecasts.
 

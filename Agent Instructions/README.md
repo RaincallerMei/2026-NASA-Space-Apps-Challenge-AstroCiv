@@ -34,6 +34,7 @@ To rerun them, open Unity's Test Runner and run the EditMode tests in `Mapmakers
 | `CLAUDE.md` | Game design and implementation brief |
 | `CLAUDE_CODE_MASTER_PROMPT.md` | Build requirements and milestones |
 | `RESEARCH_AGENT_BRIEF.md` | Science and research requirements |
+| `Work Log and Review/AI_USE_LOG.md` (repository root) | Maintained AI-session history, methods, prompt/output references and all-AI-created-art disclosure; also linked from page 5 of the board |
 | `review/PROGRESS_REVIEW.md` | Progress audit and resumption checklist |
 
 The game is designed to read saved fixtures without network access. Optional data refresh uses `NASA_API_KEY` from the environment, or `DEMO_KEY` if unset. Never commit a personal API key.

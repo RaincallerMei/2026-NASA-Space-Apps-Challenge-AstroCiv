@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mapmakers.Sim;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
@@ -66,6 +67,12 @@ namespace Mapmakers.UI
             { "Communications", new[] { ".........k..", "..kkkk..k...", ".kwwwwk.k...", "kwwwwwwkk...", "kwwwwwk.....", ".kwwwk......", "..kkk.......", "...kk.......", "..kkkk......", ".kkkkkk....." } },
             { "Greenhouse", new[] { "..kkkkkkkk..", ".kcccccccck.", "kcgcgcgcgcck", "kcgGgGgGgGck", "kkkkkkkkkkkk", "kGgGgGgGgGgk", "kkkkkkkkkkkk" } },
             { "Shelter", new[] { "............", "....kkkk....", "..kkppppkk..", ".kppppppppk.", "kppppkkppppk", "kppppkdkpppk", "kppppkdkpppk", "kkkkkkkkkkkk" } },
+            { "soil", new[] { "............", "............", "....kkkk....", "..kkppppkk..", ".kpppkppppk.", "kpppppppkppk", "kppkpppppppk", "kpppppkppppk", "kkkkkkkkkkkk" } },
+            { "RoverGarage", new[] { "............", "...kkkkkk...", "..kwwwwwwk..", ".kwwwwwwwwk.", "kkkkkkkkkkkk", "kwkyyyyyykwk", "kwkyyyyyykwk", "kwkyyyyyykwk", "kkkkkkkkkkkk" } },
+            { "rover", new[] { "............", ".....k......", ".....kk.....", "..kkkkkkkk..", ".kwwwwwwwwk.", ".kwcwwwwcwk.", ".kkkkkkkkkk.", "kddkkddkkddk", "kddk.kdk.kdk", ".kk...k...k." } },
+            { "pause", new[] { "............", "..kkk..kkk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kwk..kwk..", "..kkk..kkk.." } },
+            { "play", new[] { "..kk........", "..kwk.......", "..kwwk......", "..kwwwk.....", "..kwwwwk....", "..kwwwk.....", "..kwwk......", "..kwk.......", "..kk........" } },
+            { "clock", new[] { "...kkkkkk...", "..kwwwwwwk..", ".kwwwkwwwwk.", ".kwwwkwwwwk.", ".kwwwkkkwwk.", ".kwwwwwwwwk.", "..kwwwwwwk..", "...kkkkkk..." } },
             { "lock", new[] { "....kkkk....", "...k....k...", "...k....k...", "..kkkkkkkk..", "..kyyyyyyk..", "..kyyykyyk..", "..kyyykyyk..", "..kyyyyyyk..", "..kkkkkkkk.." } },
             { "star", new[] { ".....kk.....", ".....yk.....", "....kyyk....", "kkkkkyykkkkk", ".kyyyyyyyyk.", "..kyyyyyyk..", "...kyyyyk...", "..kyykkyyk..", "..kyk..kyk..", ".kk......kk." } },
             { "star_empty", new[] { ".....kk.....", ".....mk.....", "....kmmk....", "kkkkkmmkkkkk", ".kmmmmmmmmk.", "..kmmmmmmk..", "...kmmmmk...", "..kmmkkmmk..", "..kmk..kmk..", ".kk......kk." } },
@@ -74,7 +81,9 @@ namespace Mapmakers.UI
 
         public static Sprite Get(string id)
         {
-            if (cache.TryGetValue(id, out var sprite)) return sprite;
+            if (cache.TryGetValue(id, out var sprite) && sprite) return sprite;
+            sprite = PixelArt.Icon(id);
+            if (sprite != null) return cache[id] = sprite;
             if (!art.TryGetValue(id, out var rows)) rows = art["alert"];
             const int size = 12;
             var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
@@ -94,6 +103,46 @@ namespace Mapmakers.UI
             cache[id] = sprite;
             return sprite;
         }
+    }
+
+    // Sprites from the AstroCiv pixel pack (Art/Resources/AstroCiv). Missing files return null.
+    public static class PixelArt
+    {
+        const string Root = "AstroCiv/";
+        static readonly Dictionary<string, Sprite> cache = new Dictionary<string, Sprite>();
+
+        static readonly Dictionary<BuildingType, string> files = new Dictionary<BuildingType, string>
+        {
+            { BuildingType.Habitat, "habitat" }, { BuildingType.SolarArray, "solar_array" }, { BuildingType.Battery, "battery_bank" },
+            { BuildingType.LifeSupport, "life_support" }, { BuildingType.Communications, "communications_dish" },
+            { BuildingType.Greenhouse, "greenhouse" }, { BuildingType.Shelter, "regolith_shelter" }, { BuildingType.RoverGarage, "rover_garage" }
+        };
+
+        static readonly Dictionary<string, string> icons = new Dictionary<string, string>
+        {
+            { "power", "Icons/power" }, { "water", "Icons/water" }, { "food", "Icons/food" }, { "air", "Icons/oxygen" },
+            { "alert", "Icons/warning" }, { "info", "Icons/info" }, { "rover", "Vehicles/rover" }, { "battery", "Thumbnails/battery_bank" }
+        };
+
+        public static Sprite Load(string path)
+        {
+            if (cache.TryGetValue(path, out var sprite) && sprite) return sprite;
+            return cache[path] = Resources.Load<Sprite>(Root + path);
+        }
+
+        public static Sprite Icon(string id)
+        {
+            if (icons.TryGetValue(id, out var path)) return Load(path);
+            return System.Enum.TryParse(id, out BuildingType type) && files.ContainsKey(type) ? Load("Thumbnails/" + files[type]) : null;
+        }
+
+        public static Sprite Building(BuildingType type) => Load("Buildings/" + files[type]);
+        public static Sprite Shadow(BuildingType type) => Load("Shadows/" + files[type]);
+        public static Sprite Dust(BuildingType type) => Load("Dust/" + files[type]);
+        public static Sprite MarsSurface(BuildingType type) => type == BuildingType.Shelter ? Load("Dust/regolith_shelter_surface") : null;
+        public static Sprite Prop(string planet, string name) => Load("Environment/" + (planet == "Mars" ? "Mars/" : "Moon/") + name);
+        public static Sprite Frame(string name) => Load("Characters/" + name);
+        public static Texture2D Ground(string planet) => Resources.Load<Texture2D>(Root + "Environment/" + (planet == "Mars" ? "Mars" : "Moon") + "/ground_repeat");
     }
 
     // Builds uGUI in code with one consistent look: notched pixel panels, readable text, one font.
@@ -254,6 +303,7 @@ namespace Mapmakers.UI
             colors.colorMultiplier = 1.2f;
             button.colors = colors;
             if (onClick != null) button.onClick.AddListener(onClick);
+            image.gameObject.AddComponent<ButtonJuice>();
             var label = Label(image.transform, text, size, foreground ?? Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold);
             label.rectTransform.Stretch(8, 4, 8, 4);
             return button;

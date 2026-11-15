@@ -3,47 +3,68 @@ using System.Collections.Generic;
 
 namespace Mapmakers.Sim
 {
-    // Deterministic fixed-step simulation. Commands mutate the state they are given;
-    // Step and AdvanceDay return a new state and never read frame time.
-    // Play is turn based: one Next Day press runs 24 game hours of fixed steps.
+    // Deterministic fixed-step simulation. Commands mutate the state they are given; Step returns a new state
+    // and never reads frame time. A runtime clock outside the simulation decides how many steps to run.
     public sealed class Simulator
     {
         const double Eps = 1e-6;
-        public const double HoursPerDay = 24;
         public readonly Balance balance;
         public readonly TerrainGrid terrain;
         public readonly Scenario scenario;
         public PlanetProfile planet = PlanetProfile.Moon;
         public string geologistName = "Yuki";
+        // Scheduled events and the first-harvest reward run only in missions (off in the drawing and in unit tests).
         public bool missionEnabled = true;
+        // Placement links, the base area, soil and the rover (off in the drawing and in plain power tests).
+        public bool layoutRules = true;
+        bool previewing;
+
+        sealed class Trigger { public double time; public ScheduledEvent e; public bool warning; }
+        readonly List<Trigger> triggers = new List<Trigger>();
 
         public Simulator(Balance balance, TerrainGrid terrain, Scenario scenario = null)
         {
             this.balance = balance;
             this.terrain = terrain;
             this.scenario = scenario ?? new Scenario();
+            BuildTriggers();
         }
+
+        void BuildTriggers()
+        {
+            foreach (var e in scenario.events)
+            {
+                if (e.Kind == EventKind.Shadow && e.hour - balance.shadow.warningHours >= 0)
+                    triggers.Add(new Trigger { time = e.hour - balance.shadow.warningHours, e = e, warning = true });
+                triggers.Add(new Trigger { time = e.hour, e = e });
+            }
+            if (scenario.Timed) triggers.RemoveAll(t => t.time >= scenario.durationHours - Eps);
+            triggers.Sort((a, b) => a.time.CompareTo(b.time));
+        }
+
+        public double DurationHours => scenario.durationHours;
 
         public SimState NewGame()
         {
-            var s = new SimState
+            return new SimState
             {
-                supplies = balance.startSupplies,
+                supplies = balance.startSupplies + planet.extraSupplies,
                 waterL = balance.startWaterL,
                 meals = balance.startMeals,
                 airHours = balance.startAirHours,
+                minAirHours = balance.startAirHours,
+                soil = balance.startSoil,
                 maxBatteries = Math.Max(balance.startMaxBatteries, scenario.maxBatteries),
                 shelterUnlocked = scenario.shelterUnlocked
             };
-            if (missionEnabled) StartDay(s);
-            return s;
         }
 
-        // ---------- commands ----------
+        // ---------- commands (all refused once the run has ended) ----------
 
         public PlacementResult CanPlace(SimState s, BuildingType type, int x, int y)
         {
-            return Placement.Check(balance, terrain, s, type, x, y);
+            if (s.Finished) return PlacementResult.Fail(PlacementReason.Locked, "The mission has ended.");
+            return Placement.Check(this, s, type, x, y);
         }
 
         public PlacementResult Place(SimState s, BuildingType type, int x, int y)
@@ -54,6 +75,7 @@ namespace Mapmakers.Sim
             var b = new PlacedBuilding { id = s.nextId++, type = type, x = x, y = y, enabled = type != BuildingType.Shelter };
             s.buildings.Add(b);
             s.supplies -= def.cost;
+            if (layoutRules) s.soil -= def.soilCost;
             Log(s, "placed_" + type, def.displayName + " placed.");
             result.building = b;
             return result;
@@ -62,28 +84,37 @@ namespace Mapmakers.Sim
         // Rebuilds a saved base at no cost (a level that continues the previous level's base).
         public PlacementResult PlaceFree(SimState s, BuildingType type, int x, int y)
         {
-            int cost = balance.Def(type).cost;
-            s.supplies += cost;
+            var def = balance.Def(type);
+            s.supplies += def.cost;
+            s.soil += def.soilCost;
             var result = Place(s, type, x, y);
-            if (!result.Ok) s.supplies -= cost;
+            if (!result.Ok)
+            {
+                s.supplies -= def.cost;
+                s.soil -= def.soilCost;
+            }
+            else if (!layoutRules) s.soil -= def.soilCost;
             return result;
         }
 
         public bool Remove(SimState s, int id)
         {
             var b = s.Find(id);
-            if (b == null) return false;
+            if (b == null || s.Finished) return false;
+            if (b.type == BuildingType.Habitat && s.buildings.Count > 1) return false;
+            var def = balance.Def(b.type);
             s.buildings.Remove(b);
-            s.supplies += balance.Def(b.type).cost;
+            s.supplies += def.cost;
+            if (layoutRules) s.soil += def.soilCost;
             s.batteryKWh = Math.Min(s.batteryKWh, BatteryCapacity(s));
-            Log(s, "removed_" + b.type, balance.Def(b.type).displayName + " removed. Supplies returned.");
+            Log(s, "removed_" + b.type, def.displayName + " removed. Supplies returned.");
             return true;
         }
 
         public bool SetEnabled(SimState s, int id, bool on)
         {
             var b = s.Find(id);
-            if (b == null) return false;
+            if (b == null || s.Finished) return false;
             var def = balance.Def(b.type);
             if (!def.optional) return false;
             if (b.enabled == on) return true;
@@ -98,6 +129,7 @@ namespace Mapmakers.Sim
         {
             why = "";
             var b = s.Find(id);
+            if (s.Finished) { why = "The mission has ended."; return false; }
             if (b == null || !b.broken) { why = "Nothing to fix."; return false; }
             if (s.supplies < balance.repairCost) { why = "Need " + balance.repairCost + " supplies."; return false; }
             return true;
@@ -113,10 +145,11 @@ namespace Mapmakers.Sim
             return true;
         }
 
-        public void StartShadow(SimState s)
+        // strength below 1 sets how much sun gets through (a thick dust storm); otherwise the balance default.
+        public void StartShadow(SimState s, double strength = 1, double durationHours = 0)
         {
-            s.shadowFactor = balance.shadow.factor;
-            s.shadowEndsAt = s.timeHours + balance.shadow.durationHours;
+            s.shadowFactor = strength < 1 ? strength : balance.shadow.factor;
+            s.shadowEndsAt = s.timeHours + (durationHours > 0 ? durationHours : balance.shadow.durationHours);
             Log(s, "shadow_start", planet.dimmingStart);
         }
 
@@ -130,12 +163,14 @@ namespace Mapmakers.Sim
             s.recallRelHour = -1;
             s.geologist = CrewLocation.Outside;
             s.minSafetyStorm = Math.Min(s.minSafetyStorm, s.safety);
-            Log(s, "storm_warning", "Solar warning! Particles arrive tomorrow. " + geologistName + " is outside.");
+            Log(s, "storm_warning", "Solar warning! Particles arrive in " + SimText.Num(balance.storm.onsetHour) + " hours. "
+                + geologistName + " is outside.");
         }
 
         public bool CanRecall(SimState s, out string why)
         {
             why = "";
+            if (s.Finished) { why = "The mission has ended."; return false; }
             if (s.geologist != CrewLocation.Outside || s.recallIssued) { why = geologistName + " is not outside."; return false; }
             if (!s.AnyPowered(BuildingType.Communications)) { why = "The radio needs power."; return false; }
             return true;
@@ -167,6 +202,47 @@ namespace Mapmakers.Sim
             return EffectiveSun(s, terrain.AverageSun(b.x, b.y, def.width, def.height));
         }
 
+        public bool HasCable(SimState s, PlacedBuilding solar)
+        {
+            return !layoutRules || Layout.GapTo(balance, s, solar, BuildingType.Battery) <= balance.layout.cableGap;
+        }
+
+        // kW one Solar Array makes right now: tile sun x planet sunlight x cable.
+        public double SolarOutput(SimState s, PlacedBuilding b)
+        {
+            double kw = balance.Def(b.type).generationKW * SunFor(s, b) * planet.solarScale;
+            return HasCable(s, b) ? kw : kw * (1 - balance.layout.longCableLoss);
+        }
+
+        public bool PlantLoop(SimState s)
+        {
+            if (!layoutRules) return false;
+            var ls = s.First(BuildingType.LifeSupport);
+            if (ls == null) return false;
+            foreach (var g in s.buildings)
+                if (g.type == BuildingType.Greenhouse && g.enabled && !g.broken && Layout.Gap(balance, ls, g) <= balance.layout.plantLoopGap) return true;
+            return false;
+        }
+
+        public bool ShortDuct(SimState s)
+        {
+            var ls = s.First(BuildingType.LifeSupport);
+            return !layoutRules || ls == null || Layout.GapTo(balance, s, ls, BuildingType.Habitat) <= balance.layout.ductGap;
+        }
+
+        public bool ShelterClose(SimState s)
+        {
+            var shelter = s.First(BuildingType.Shelter);
+            return !layoutRules || shelter == null || Layout.GapTo(balance, s, shelter, BuildingType.Habitat) <= balance.layout.shelterGap;
+        }
+
+        public double DemandOf(SimState s, PlacedBuilding b)
+        {
+            double demand = balance.Def(b.type).demandKW;
+            if (b.type == BuildingType.LifeSupport && PlantLoop(s)) demand = Math.Max(0, demand - balance.layout.plantLoopSavesKW);
+            return demand;
+        }
+
         public double BatteryCapacity(SimState s)
         {
             double cap = 0;
@@ -184,14 +260,33 @@ namespace Mapmakers.Sim
             return s.stormStrength * (1 - (rel - t.decayHour) / (t.endHour - t.decayHour));
         }
 
-        // Power numbers for the current layout without changing the state.
+        // Soil still needed for buildings that are not built yet.
+        public double SoilNeeded(SimState s)
+        {
+            double need = 0;
+            foreach (var def in balance.buildings)
+            {
+                var type = (BuildingType)Enum.Parse(typeof(BuildingType), def.type);
+                if (def.soilCost > 0 && s.Count(type) < def.maxCount) need += def.soilCost;
+            }
+            return need;
+        }
+
+        // Rover trip time to soil or water from the garage (infinite if out of reach).
+        public double TripHours(PlacedBuilding garage, bool water)
+        {
+            var def = balance.Def(garage.type);
+            int gap = water ? Layout.WaterGap(terrain, garage.x, garage.y, def.width, def.height)
+                            : Layout.SoilGap(terrain, garage.x, garage.y, def.width, def.height);
+            return Layout.TripHours(balance.layout, gap);
+        }
+
+        // Power numbers for the current layout. Never changes the state, never fires events or ends the run.
         public StepReport Preview(SimState s)
         {
-            bool mission = missionEnabled;
-            missionEnabled = false;
-            var report = Step(s).report;
-            missionEnabled = mission;
-            return report;
+            previewing = true;
+            try { return Step(s).report; }
+            finally { previewing = false; }
         }
 
         // ---------- stepping ----------
@@ -199,41 +294,9 @@ namespace Mapmakers.Sim
         public SimState Advance(SimState s, double hours)
         {
             long steps = (long)Math.Round(hours / balance.dtHours);
-            for (long i = 0; i < steps; i++) s = Step(s);
+            for (long i = 0; i < steps && !s.Finished; i++) s = Step(s);
             return s;
         }
-
-        // Runs one whole day (one Next Day press) and records what happened.
-        public SimState AdvanceDay(SimState s)
-        {
-            if (s.Finished) return s;
-            var report = new DayReport
-            {
-                day = s.day, batteryStart = s.batteryKWh, airStart = s.airHours, waterStart = s.waterL,
-                mealsStart = s.meals, safetyStart = s.safety, safetyLowest = s.safety
-            };
-            int firstEvent = s.events.Count, brownouts = s.brownouts, day = s.day;
-            bool hasHabitat = s.Count(BuildingType.Habitat) > 0;
-            while (!s.Finished && s.day == day)
-            {
-                s = Step(s);
-                report.safetyLowest = Math.Min(report.safetyLowest, s.safety);
-                if (hasHabitat && s.airHours <= 0) report.airRanOut = true;
-            }
-            report.batteryEnd = s.batteryKWh;
-            report.airEnd = s.airHours;
-            report.waterEnd = s.waterL;
-            report.mealsEnd = s.meals;
-            report.safetyEnd = s.safety;
-            report.brownouts = s.brownouts - brownouts;
-            report.failed = s.failed;
-            report.events = s.events.GetRange(firstEvent, s.events.Count - firstEvent);
-            s.lastDay = report;
-            return s;
-        }
-
-        // What tomorrow looks like if the player changes nothing.
-        public SimState Forecast(SimState s) => AdvanceDay(s);
 
         public SimState Step(SimState previous)
         {
@@ -243,57 +306,46 @@ namespace Mapmakers.Sim
             var r = new StepReport();
             s.report = r;
 
+            if (missionEnabled && !previewing) FireTriggers(s);
             UpdateLighting(s);
             UpdateStorm(s);
             StepPower(s, r, dt);
+            StepRover(s, r, dt);
             StepLife(s, r, dt);
             StepSafety(s, r, dt);
 
             s.step++;
             s.timeHours = s.step * dt;
+            if (previewing) return s;
             if (missionEnabled) UpdateHarvest(s);
-
-            int day = 1 + (int)Math.Floor(s.timeHours / HoursPerDay + Eps);
-            if (day != s.day)
-            {
-                s.day = day;
-                if (missionEnabled && !s.failed) StartDay(s);
-                UpdateLighting(s);
-                UpdateStorm(s);
-            }
+            CheckFailure(s);
+            if (!s.Finished && scenario.Timed && s.timeHours >= scenario.durationHours - Eps) EndRun(s, MissionEnd.Deadline, FailReason.None);
             return s;
         }
 
-        void StartDay(SimState s)
+        void FireTriggers(SimState s)
         {
-            int d = s.day;
-            if (scenario.days > 0 && d > scenario.days)
+            while (s.nextEvent < triggers.Count && triggers[s.nextEvent].time <= s.timeHours + Eps)
             {
-                s.completed = true;
-                Log(s, "complete", "Mission complete!");
-                return;
-            }
-            foreach (var e in scenario.events)
-            {
+                var t = triggers[s.nextEvent++];
+                var e = t.e;
                 switch (e.Kind)
                 {
                     case EventKind.Shadow:
-                        if (e.day - 1 == d) Log(s, "shadow_warning", planet.dimmingWarning);
-                        if (e.day == d) StartShadow(s);
+                        if (t.warning) Log(s, "shadow_warning", planet.dimmingWarning);
+                        else StartShadow(s, e.strength, e.durationHours);
                         break;
                     case EventKind.SolarStorm:
-                        if (e.day - 1 == d || (e.day == d && d == 1)) StartStorm(s, e.strength);
+                        StartStorm(s, e.strength);
                         break;
                     case EventKind.Fault:
-                        if (e.day == d) BreakPanel(s, e.amount);
+                        BreakPanel(s, e.amount);
                         break;
                     case EventKind.SupplyDrop:
-                        if (e.day != d) break;
                         s.supplies += e.amount;
                         Log(s, "supply_drop", "A supply lander brings " + e.amount + " supplies.");
                         break;
                     case EventKind.Sunrise:
-                        if (e.day != d) break;
                         s.sunriseStartedAt = s.timeHours;
                         Log(s, "sunrise_start", "Sunlight creeps over the ridge. Solar power climbs.");
                         break;
@@ -345,6 +397,7 @@ namespace Mapmakers.Sim
                 s.stormPhase = phase;
                 if (phase == StormPhase.Particles)
                 {
+                    s.stormsSeenParticles++;
                     s.batteryAtOnsetKWh = s.batteryKWh;
                     s.batteriesAtOnset = s.Count(BuildingType.Battery);
                     Log(s, "storm_onset", "Solar particles have arrived. Stay in the Shelter.");
@@ -378,7 +431,7 @@ namespace Mapmakers.Sim
                 if (def.generationKW > 0)
                 {
                     b.powered = b.enabled && !b.broken;
-                    if (b.powered) gen += def.generationKW * SunFor(s, b);
+                    if (b.powered) gen += SolarOutput(s, b);
                 }
                 if (def.demandKW > 0)
                 {
@@ -402,7 +455,7 @@ namespace Mapmakers.Sim
             double wanted = 0, total = 0;
             foreach (var b in loads)
             {
-                double demand = balance.Def(b.type).demandKW;
+                double demand = DemandOf(s, b);
                 wanted += demand;
                 if (b.tripped && !recovered && gen + Eps < total + demand) continue;
                 candidates.Add(b);
@@ -415,7 +468,7 @@ namespace Mapmakers.Sim
             {
                 var last = candidates[candidates.Count - 1];
                 candidates.RemoveAt(candidates.Count - 1);
-                total -= balance.Def(last.type).demandKW;
+                total -= DemandOf(s, last);
                 shedNow.Add(last);
             }
 
@@ -430,28 +483,26 @@ namespace Mapmakers.Sim
             }
 
             double unmetCritical = 0;
+            bool anyCritical = false;
             var lostNames = new List<string>();
             foreach (var b in shedNow)
             {
-                var def = balance.Def(b.type);
-                if (def.priority <= 1) unmetCritical += def.demandKW;
                 b.tripped = true;
-                if (wasPowered.Contains(b.id)) lostNames.Add(def.displayName);
+                if (wasPowered.Contains(b.id)) lostNames.Add(balance.Def(b.type).displayName);
             }
             foreach (var b in loads)
-                if (!b.powered && balance.Def(b.type).priority <= 1 && !shedNow.Contains(b))
-                    unmetCritical += balance.Def(b.type).demandKW;
+            {
+                if (balance.Def(b.type).priority > 1) continue;
+                anyCritical = true;
+                if (!b.powered) unmetCritical += DemandOf(s, b);
+            }
 
-            if (lostNames.Count > 0)
+            if (lostNames.Count > 0 && !previewing)
             {
                 s.brownouts++;
-                if (s.lastBrownoutDay != s.day)
-                {
-                    s.brownoutDays++;
-                    s.lastBrownoutDay = s.day;
-                }
                 if (s.StormActive) s.stormBrownouts++;
-                Log(s, "brownout", "Battery empty. Switched off: " + string.Join(", ", lostNames) + ".");
+                if (s.shadowFactor < 1) s.dimBrownouts++;
+                Log(s, "brownout", "Not enough power. Switched off: " + string.Join(", ", lostNames) + ".");
             }
 
             double net = gen - total;
@@ -470,9 +521,15 @@ namespace Mapmakers.Sim
             if (s.batteryKWh < 1e-9) s.batteryKWh = 0;
             if (s.batteryKWh > cap) s.batteryKWh = cap;
 
+            bool shedding = false;
+            foreach (var b in loads) shedding |= !b.powered;
             s.unmetCriticalKWh += unmetCritical * dt;
-            if (unmetCritical > 0 && !s.criticalOut) Log(s, "critical_out", "Critical systems lost power.");
+            if (unmetCritical > 0 && !s.criticalOut && !previewing) Log(s, "critical_out", "Critical systems lost power.");
             s.criticalOut = unmetCritical > 0;
+            s.criticalOutHours = unmetCritical > 0 ? s.criticalOutHours + dt : 0;
+            if (anyCritical) s.criticalServedHours += dt;
+            if (anyCritical && unmetCritical > 0) s.criticalLostHours += dt;
+            if (shedding) s.shedHours += dt;
 
             r.generationKW = gen;
             r.demandKW = wanted;
@@ -482,7 +539,7 @@ namespace Mapmakers.Sim
             r.unmetCriticalKW = unmetCritical;
 
             if (unmetCritical > 0)
-                Warn(r, "critical_unpowered", "Critical systems have no power: they need " + SimText.Num(CriticalDemand(loads))
+                Warn(r, "critical_unpowered", "Critical systems have no power: they need " + SimText.Num(CriticalDemand(s, loads))
                     + " kW but supply is " + SimText.Num(available) + " kW.");
             var off = new List<string>();
             foreach (var b in loads)
@@ -495,55 +552,93 @@ namespace Mapmakers.Sim
                     + " kW. Empty in " + SimText.Num(s.batteryKWh / -flow) + " h.");
         }
 
-        double CriticalDemand(List<PlacedBuilding> loads)
+        double CriticalDemand(SimState s, List<PlacedBuilding> loads)
         {
             double total = 0;
             foreach (var b in loads)
-                if (balance.Def(b.type).priority <= 1) total += balance.Def(b.type).demandKW;
+                if (balance.Def(b.type).priority <= 1) total += DemandOf(s, b);
             return total;
+        }
+
+        // The rover fetches soil until the Greenhouse can be built, then water. Shorter trips bring more per hour.
+        void StepRover(SimState s, StepReport r, double dt)
+        {
+            var garage = s.First(BuildingType.RoverGarage);
+            if (!layoutRules || garage == null || !garage.enabled || !garage.powered)
+            {
+                if (garage == null) { s.roverTrip = 0; s.roverCargo = ""; }
+                return;
+            }
+            if (s.roverCargo == "") s.roverCargo = PickCargo(s, garage);
+            if (s.roverCargo == "") return;
+            bool water = s.roverCargo == "water";
+            double trip = TripHours(garage, water);
+            var rules = balance.layout;
+            double perHour = (water ? rules.waterPerTrip : rules.soilPerTrip) / trip;
+            if (water) r.waterPerHour += perHour;
+            else r.soilPerHour = perHour;
+
+            s.roverTrip += dt / trip;
+            if (s.roverTrip < 1 - Eps) return;
+            s.roverTrip = 0;
+            if (water) s.waterL += rules.waterPerTrip;
+            else s.soil = Math.Min(rules.soilStockCap, s.soil + rules.soilPerTrip);
+            s.roverCargo = PickCargo(s, garage);
+        }
+
+        string PickCargo(SimState s, PlacedBuilding garage)
+        {
+            bool soilReach = !double.IsInfinity(TripHours(garage, false));
+            bool waterReach = !double.IsInfinity(TripHours(garage, true));
+            if (soilReach && s.soil + 1e-6 < Math.Min(balance.layout.soilStockCap, SoilNeeded(s))) return "soil";
+            if (waterReach) return "water";
+            return soilReach && s.soil + 1e-6 < balance.layout.soilStockCap ? "soil" : "";
         }
 
         void StepLife(SimState s, StepReport r, double dt)
         {
             bool lifeSupport = s.AnyPowered(BuildingType.LifeSupport);
-            double airBonus = 0, waterNet = 0, food = 0;
+            double airBonus = 0, plantWater = 0, food = 0;
             foreach (var b in s.buildings)
             {
                 var def = balance.Def(b.type);
                 if (def.foodPerHour <= 0 || !b.enabled || !b.powered) continue;
                 if (s.waterL <= 0) continue;
                 airBonus += def.airBonusPerHour;
-                waterNet -= def.waterInLph - def.waterReturnLph;
+                plantWater += def.waterInLph - def.waterReturnLph;
                 food += def.foodPerHour;
             }
 
-            double airRate = (lifeSupport ? balance.airRefillPerHour : -balance.airDrainPerHour) + airBonus;
-            double air = Math.Max(0, Math.Min(balance.airCapHours, s.airHours + airRate * dt));
+            double refill = balance.airRefillPerHour * (ShortDuct(s) ? 1 : balance.layout.longDuctAirFactor);
+            double airRate = (lifeSupport ? refill : -balance.airDrainPerHour) + airBonus;
+            double air = Empty(Math.Min(balance.airCapHours, s.airHours + airRate * dt));
             r.airPerHour = (air - s.airHours) / dt;
             s.airHours = air;
+            s.minAirHours = Math.Min(s.minAirHours, air);
 
-            double water = Math.Max(0, s.waterL + waterNet * dt);
-            r.waterPerHour = (water - s.waterL) / dt;
+            // Rover water arrives in whole trips (StepRover); the report shows its average rate on top.
+            double roverAverage = r.waterPerHour;
+            double water = Empty(s.waterL - (plantWater + balance.CrewWaterPerHour) * dt);
+            r.waterPerHour = (water - s.waterL) / dt + roverAverage;
             s.waterL = water;
 
-            double meals = Math.Max(0, s.meals + (food - balance.CrewMealsPerHour) * dt);
+            double meals = Empty(s.meals + (food - balance.CrewMealsPerHour) * dt);
             r.foodPerHour = (meals - s.meals) / dt;
             s.meals = meals;
             s.mealsHarvested += food * dt;
-            s.noFoodHours = s.meals <= 0 ? s.noFoodHours + dt : 0;
 
-            if (s.Count(BuildingType.Habitat) == 0) return;
-            if (s.airHours <= 0)
-                Warn(r, "air_empty", "No air left: " + LifeSupportProblem(s));
-            else if (!lifeSupport)
-                Warn(r, "air_dropping", "Air is dropping: " + LifeSupportProblem(s) + " Air left: " + SimText.Num(s.airHours) + " h.");
-            if (s.meals <= 0) Warn(r, "food_empty", "No meals left: the crew is hungry. A powered Greenhouse grows food.");
-            if (s.waterL <= 0 && s.Count(BuildingType.Greenhouse) > 0) Warn(r, "water_empty", "Water is gone: the Greenhouse cannot grow food.");
+            if (!lifeSupport) Warn(r, "air_dropping", "Air is dropping: " + LifeSupportProblem(s));
+            if (s.Count(BuildingType.Greenhouse) > 0 && s.waterL <= 0) Warn(r, "water_empty", "Water is gone: the Greenhouse cannot grow food.");
         }
 
-        string LifeSupportProblem(SimState s)
+        // Reserves never go negative, and a rounding crumb counts as empty.
+        static double Empty(double value) => value < Eps ? 0 : value;
+
+        public string LifeSupportProblem(SimState s)
         {
             if (s.Count(BuildingType.LifeSupport) == 0) return "there is no Life Support yet.";
+            var ls = s.First(BuildingType.LifeSupport);
+            if (ls.broken) return "Life Support is broken.";
             return "Life Support has no power.";
         }
 
@@ -555,19 +650,16 @@ namespace Mapmakers.Sim
             r.radiation = radiation;
             r.sheltered = sheltered;
 
-            double noAir = s.airHours <= 0 ? balance.safetyNoAirPerHour : 0;
-            double noFood = s.noFoodHours > balance.noFoodGraceHours ? balance.safetyNoFoodPerHour : 0;
             double radOutside = outside ? balance.radiationOutsidePerHour * radiation : 0;
-            double radInside = sheltered ? 0 : balance.radiationUnshelteredPerHour * radiation;
-            double harm = noAir + noFood + radOutside + radInside;
+            double exposure = !sheltered ? 1 : ShelterClose(s) ? 0 : balance.layout.farShelterExposure;
+            double radInside = balance.radiationUnshelteredPerHour * radiation * exposure;
+            double harm = radOutside + radInside;
 
             double rate = harm > 0 ? -harm : balance.safetyRecoverPerHour;
             double safety = Math.Max(0, Math.Min(100, s.safety + rate * dt));
             r.safetyPerHour = (safety - s.safety) / dt;
             s.safety = safety;
             s.minSafety = Math.Min(s.minSafety, s.safety);
-            s.damageNoAir += noAir * dt;
-            s.damageNoFood += noFood * dt;
             s.damageOutside += radOutside * dt;
             s.damageNoShelter += radInside * dt;
 
@@ -575,34 +667,50 @@ namespace Mapmakers.Sim
             {
                 s.minSafetyStorm = Math.Min(s.minSafetyStorm, s.safety);
                 if (sheltered) s.shelterHours += dt;
-                var greenhouse = FirstOf(s, BuildingType.Greenhouse);
+                var greenhouse = s.First(BuildingType.Greenhouse);
                 if (radiation > 0 && greenhouse != null && !greenhouse.enabled) s.greenhouseOffInStorm = true;
             }
 
             if (radOutside > 0) Warn(r, "radiation_outside", geologistName + " is outside in the particle storm.");
             if (radInside > 0) Warn(r, "radiation_noshelter", s.Count(BuildingType.Shelter) == 0
                 ? "Particle storm: the crew has no Shelter."
+                : sheltered ? "Particle storm: the Shelter is far from the Habitat."
                 : "Particle storm: the Shelter is not switched on or has no power.");
 
             s.lowSafetyHours = s.safety < balance.safetyFailThreshold ? s.lowSafetyHours + dt : 0;
-            if (s.safety < balance.safetyFailThreshold)
-                Warn(r, "safety_low", "Crew safety is low. Fix the warnings above.");
-            if (s.lowSafetyHours >= balance.safetyFailHours - Eps)
-            {
-                s.failed = true;
-                s.failReason = WorstCause(s);
-                Log(s, "failed", "Mission paused: crew safety stayed too low.");
-            }
+            if (s.safety < balance.safetyFailThreshold) Warn(r, "safety_low", "Crew safety is low. Get everyone inside a powered Shelter.");
         }
 
-        static FailReason WorstCause(SimState s)
+        // Fixed order decides which cause is named when several happen on the same step. The others are recorded.
+        void CheckFailure(SimState s)
         {
-            var reason = FailReason.NoAir;
-            double worst = s.damageNoAir;
-            if (s.damageNoFood > worst) { worst = s.damageNoFood; reason = FailReason.NoFood; }
-            if (s.damageOutside > worst) { worst = s.damageOutside; reason = FailReason.RadiationOutside; }
-            if (s.damageNoShelter > worst) reason = FailReason.RadiationNoShelter;
-            return reason;
+            var causes = new List<FailReason>();
+            if (s.airHours <= 0) causes.Add(FailReason.NoAir);
+            if (s.waterL <= 0) causes.Add(FailReason.NoWater);
+            if (s.meals <= 0) causes.Add(FailReason.NoFood);
+            if (s.criticalOutHours >= balance.powerLossToleranceHours - Eps) causes.Add(FailReason.PowerLoss);
+            if (s.lowSafetyHours >= balance.safetyFailHours - Eps) causes.Add(RadiationCause(s));
+            if (causes.Count == 0) return;
+            EndRun(s, MissionEnd.Failed, causes[0]);
+            for (int i = 1; i < causes.Count; i++) s.otherHazards.Add(causes[i]);
+            if (s.report.radiation > 0 && !causes.Contains(RadiationCause(s)) && s.report.safetyPerHour < 0) s.otherHazards.Add(RadiationCause(s));
+        }
+
+        FailReason RadiationCause(SimState s)
+        {
+            bool outsideNow = s.geologist != CrewLocation.Inside && s.report.radiation > 0;
+            if (outsideNow) return FailReason.RadiationOutside;
+            if (s.report.radiation > 0) return FailReason.RadiationNoShelter;
+            return s.damageOutside > s.damageNoShelter ? FailReason.RadiationOutside : FailReason.RadiationNoShelter;
+        }
+
+        void EndRun(SimState s, MissionEnd end, FailReason reason)
+        {
+            s.end = end;
+            s.failReason = reason;
+            s.endHour = s.timeHours;
+            if (end == MissionEnd.Deadline) Log(s, "evaluation", "Time is up. Mission control inspects the base.");
+            else Log(s, "failed", "Mission stopped: " + reason + ".");
         }
 
         void UpdateHarvest(SimState s)
@@ -619,7 +727,7 @@ namespace Mapmakers.Sim
             Log(s, "first_harvest", "First harvest! +" + balance.harvestSupplyReward + " supplies. Shelter unlocked.");
         }
 
-        static readonly BuildingType[] CoreTypes =
+        public static readonly BuildingType[] CoreTypes =
         {
             BuildingType.Habitat, BuildingType.SolarArray, BuildingType.Battery,
             BuildingType.LifeSupport, BuildingType.Communications, BuildingType.Greenhouse
@@ -632,16 +740,18 @@ namespace Mapmakers.Sim
             return true;
         }
 
-        static PlacedBuilding FirstOf(SimState s, BuildingType type)
+        public static List<BuildingType> MissingCore(SimState s)
         {
-            foreach (var b in s.buildings)
-                if (b.type == type) return b;
-            return null;
+            var missing = new List<BuildingType>();
+            foreach (var type in CoreTypes)
+                if (s.Count(type) == 0) missing.Add(type);
+            return missing;
         }
 
         void Log(SimState s, string code, string text)
         {
-            s.events.Add(new SimEvent { timeHours = s.timeHours, day = s.day, code = code, text = text });
+            if (previewing) return;
+            s.events.Add(new SimEvent { timeHours = s.timeHours, code = code, text = text });
         }
 
         static void Warn(StepReport r, string code, string text)

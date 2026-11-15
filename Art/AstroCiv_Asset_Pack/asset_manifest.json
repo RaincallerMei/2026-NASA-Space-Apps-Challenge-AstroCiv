@@ -1,0 +1,2158 @@
+{
+  "grid": {
+    "tile_width": 64,
+    "tile_height": 32,
+    "axes_screen_px": {
+      "u": [
+        32,
+        16
+      ],
+      "v": [
+        -32,
+        16
+      ]
+    }
+  },
+  "assets": [
+    {
+      "path": "Buildings/command_hub.png",
+      "width": 192,
+      "height": 192,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "165637841488fbf30ea1956b6a99361b15e325e51463b8750994d193ddc44848",
+      "footprint_cells": [
+        3,
+        3
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/command_hub.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "fb57112799e47f94ba367c4ccdeeba3fb7d82de1d1f390e03aae599691249c09"
+    },
+    {
+      "path": "Shadows/command_hub.png",
+      "width": 192,
+      "height": 192,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e5390e7817421468ad179b6465dfbff9ea2fbbda86a0f2d3c86c09af81b0706f"
+    },
+    {
+      "path": "Buildings/habitat.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f41c7d68ab9a6a89df0390f85a0c14ccd29cf11ed105249f12532f64225029a2",
+      "footprint_cells": [
+        2,
+        2
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/habitat.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "da6f3b9cfbd46787a0fb041f402685e589a291e7b6977f846108291f466a297f"
+    },
+    {
+      "path": "Shadows/habitat.png",
+      "width": 128,
+      "height": 128,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "16c645956600d52bd7c4bab21ee10a61d2dcb464232ad2b1ac1dab496d261f7c"
+    },
+    {
+      "path": "Buildings/greenhouse.png",
+      "width": 192,
+      "height": 192,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "63f3369483eda87d42672e2f98518cdd87a33eec33876049252f2049fdcf28b1",
+      "footprint_cells": [
+        3,
+        2
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/greenhouse.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "8d00d3e67c645361c7d72ed14bd1bad6efae3bb806df98914bdb6b7159076095"
+    },
+    {
+      "path": "Shadows/greenhouse.png",
+      "width": 192,
+      "height": 192,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "cec27ef116fd100b0b804dfaf4cd83867d5222ef7c92436b3304c8037117d978"
+    },
+    {
+      "path": "Buildings/battery_bank.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "52083fb106011950a290d66d43e394bc37d9593905ed691f54914bd9f7609a1c",
+      "footprint_cells": [
+        2,
+        1
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/battery_bank.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e57d9d99fab0675b34bdd7499b4bc8ce05291f968915c122d81360278061d635"
+    },
+    {
+      "path": "Shadows/battery_bank.png",
+      "width": 128,
+      "height": 128,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "cb5c0915527036572a4a3888279a5b7c3c73221611c5002f8453441593139498"
+    },
+    {
+      "path": "Buildings/communications_dish.png",
+      "width": 192,
+      "height": 192,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "0827d04c83181cc1c2e1225d6d01db52c383eaad319785d81ec74183dd7139c9",
+      "footprint_cells": [
+        2,
+        2
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/communications_dish.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "1b856657fb01a019a974bc13285ab1a3a406e43428a4a3c6271fc6c4dd89b94b"
+    },
+    {
+      "path": "Shadows/communications_dish.png",
+      "width": 192,
+      "height": 192,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "56d6492c048bed449c38a87814cf4f193233509da68b1369a378552939c55cb5"
+    },
+    {
+      "path": "Buildings/solar_array.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "d2cdbc8759ba7400c1273b5ce94fa6304d813e893d41890b7bc0276d1cacc7fb",
+      "footprint_cells": [
+        2,
+        2
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/solar_array.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "36075b1c76593e5eebf1079cc792f01e0d285308a5222a489e5a01dcc83f352e"
+    },
+    {
+      "path": "Shadows/solar_array.png",
+      "width": 128,
+      "height": 128,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e4077148c4bf4e1669c59bb4265a528c8c4fdb118b0c2e03016f97c1e358c5fa"
+    },
+    {
+      "path": "Buildings/regolith_shelter.png",
+      "width": 192,
+      "height": 192,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "d7069d9aefdec060b9f06484c69de384ceddd4622c7b74dab50197aace684e8b",
+      "footprint_cells": [
+        3,
+        3
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/regolith_shelter.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "dc90fa8866a9d3316b65aca575ac053732a51fd6b900fba514f3fd0dcb433623"
+    },
+    {
+      "path": "Shadows/regolith_shelter.png",
+      "width": 192,
+      "height": 192,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "9a41cd3b795b548848ec9d5308751b2291d87bd186a86578d665c74f3eed0ffc"
+    },
+    {
+      "path": "Buildings/airlock.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "4a98bdb9996c4557c980c1371f4b031f3b037ab04551690fad0b4010b878ad56",
+      "footprint_cells": [
+        1,
+        1
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/airlock.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "00ddbfba035296aa1fad617c8c1943a842218fd194f161b2d155a21ac0bca623"
+    },
+    {
+      "path": "Shadows/airlock.png",
+      "width": 128,
+      "height": 128,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "4b11b236adeab8d62d2de705333b1964e30d13c3ef801c9e2791f0f5fda2c307"
+    },
+    {
+      "path": "Buildings/laboratory.png",
+      "width": 192,
+      "height": 192,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "97786ac4593c6c14aaa911a4b2084820dc75964aadb69753e0459c227aa4fd5e",
+      "footprint_cells": [
+        2,
+        2
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/laboratory.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "da284c55d3e4d8b51220c437d79fdbf4322e29d4b964d514363fa0c4939c784f"
+    },
+    {
+      "path": "Shadows/laboratory.png",
+      "width": 192,
+      "height": 192,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "14652e5af6d960c66fc3548b47b275947824ff127951c26f4cce7ee0984d21d7"
+    },
+    {
+      "path": "Buildings/life_support.png",
+      "width": 192,
+      "height": 192,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "9045db126ca5f3da903b87a893df33ba0391365c89596233c42aed36b8776f42",
+      "footprint_cells": [
+        2,
+        2
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/life_support.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "408361995123149d64fa342f27c1b8fcf013cf82aa9b045c7f289a77b04b2c96"
+    },
+    {
+      "path": "Shadows/life_support.png",
+      "width": 192,
+      "height": 192,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "67b9173101c6f670ababb51d7e1c870f7d88544e99320051b8d4ce3e206224e0"
+    },
+    {
+      "path": "Buildings/rover_garage.png",
+      "width": 192,
+      "height": 192,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "c090747d90c95652ec7447c7b9c33d235a4b913aa94e59edc8c0a25ec4f101d1",
+      "footprint_cells": [
+        3,
+        2
+      ]
+    },
+    {
+      "path": "UI/Thumbnails/rover_garage.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "5d8faf94f3046b32f98cf2bf1067ca1e3946de2825884b95ec19ad7c973d3de1"
+    },
+    {
+      "path": "Shadows/rover_garage.png",
+      "width": 192,
+      "height": 192,
+      "kind": "shadow",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "3aa0780ff5d6048e6bea425b27ffff81473b98c35c8d673905304623402c257c"
+    },
+    {
+      "path": "Vehicles/rover_six_wheel.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "470c0e038ee1fa92b6fe2cfefae54590144e30c7e44e9307fcd074f00a3d3e8d",
+      "footprint_cells": [
+        2,
+        1
+      ]
+    },
+    {
+      "path": "Characters/Frames/idle.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "a6aa0794a071e39807ddef0e4a247e219c3841f8c21d8841d6feb02b418c00be"
+    },
+    {
+      "path": "Characters/Frames/walk_pose.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "ec4d1334d5d76aeae1b0a2d06d213884d0f7122648672521da2adb1f4de80d9c"
+    },
+    {
+      "path": "Characters/Frames/wave.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "1feb0150805137e2904d115b6f8a5d8e1b51a18e5369d956fbc01be00313f6db"
+    },
+    {
+      "path": "Characters/Frames/tablet.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "44b3051ff39cec4c92da918a11cfbfdfdc32947b4e290b5a1a9e3e32eb9cdb06"
+    },
+    {
+      "path": "Characters/Frames/repair.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "89c58b4ddb0e0a521820a48a3bc9bc4cf2fd7170aea5f47451170a04c318c5fc"
+    },
+    {
+      "path": "Characters/Frames/walk_SE_0.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "6ee09e0053a0d4f956d2066915955a253554450448b70ceefefb5e8366848436"
+    },
+    {
+      "path": "Characters/Frames/walk_SE_1.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f0cf657fd9419c1780b47aae5a6612f3bee2c27d92601d135e6d7b768455637f"
+    },
+    {
+      "path": "Characters/Frames/walk_SE_2.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "0785d2226375fdfd75a1e701d5b36e1f9f0562cfa85d20839c17b7014012d089"
+    },
+    {
+      "path": "Characters/Frames/walk_SE_3.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "b2ccccfdb3b49d24c1969caa32b0e06250eb8a51a2e739eac587955943c902aa"
+    },
+    {
+      "path": "Characters/Sheets/walk_SE.png",
+      "width": 128,
+      "height": 48,
+      "kind": "sheet",
+      "pivot_px_top_left": [
+        64,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "4f541deec9f274b94b5e1481f99b27404a61fea25bb4ae85f69d4373043d2f6f",
+      "frame_size": [
+        32,
+        48
+      ],
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    {
+      "path": "Characters/Frames/walk_SW_0.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "8604862a118c8f2038f24b7f41733305db51ed8c948f9da83eb8e038c64b0e87"
+    },
+    {
+      "path": "Characters/Frames/walk_SW_1.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "a39e51d8876a19fb53ebde5b186b2d675dedd8bc73a174910a48b9ac5d4c19c8"
+    },
+    {
+      "path": "Characters/Frames/walk_SW_2.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "06c501df507fdea5995bd939b490be72feb668bb08a4674344a3a4ce41349576"
+    },
+    {
+      "path": "Characters/Frames/walk_SW_3.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "cae09451a1b0c4ae0db438fc54aeaff5d2e9ecd5b5d985db4822572d0c62c620"
+    },
+    {
+      "path": "Characters/Sheets/walk_SW.png",
+      "width": 128,
+      "height": 48,
+      "kind": "sheet",
+      "pivot_px_top_left": [
+        64,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "944c11bcc1aca4cc596f9e37cb0a00ed3dbd1c2b24234986f5669b492a568bd0",
+      "frame_size": [
+        32,
+        48
+      ],
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    {
+      "path": "Characters/Frames/walk_NW_0.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "eb2007d9e2853d49cec6452f5b617510d0a1dd76253a6730b3a8813a1ae766f6"
+    },
+    {
+      "path": "Characters/Frames/walk_NW_1.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "526e51501099cc8f10ab7dce6bfafbe3be1b5d3239ddd90035487ff7859786d1"
+    },
+    {
+      "path": "Characters/Frames/walk_NW_2.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "bc88fa636043b46d3d056d7dc413025006983d3585cc89106aef4816a6ce6666"
+    },
+    {
+      "path": "Characters/Frames/walk_NW_3.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "c31e13eeab98c8ce10808ca662b321e22a87ca53dfbee5fb74959548d88d9a6d"
+    },
+    {
+      "path": "Characters/Sheets/walk_NW.png",
+      "width": 128,
+      "height": 48,
+      "kind": "sheet",
+      "pivot_px_top_left": [
+        64,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "b7caf5391836bf09df8fb5dfec935bd7c9f719b5a7bedf8ecd59a03d811a7cdf",
+      "frame_size": [
+        32,
+        48
+      ],
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    {
+      "path": "Characters/Frames/walk_NE_0.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "1fadfad9872eeed24dc3b819c50a370b5fde2fe8e078e51b6c4511da78c76cdb"
+    },
+    {
+      "path": "Characters/Frames/walk_NE_1.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "eabe1803ea42076575af74a3231cce3f0b58dffa84a4576c01abe6d25b4cb79f"
+    },
+    {
+      "path": "Characters/Frames/walk_NE_2.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "008dc27b95279b805b4de29580947bb5db3aa7c070e699339342abec9b39a16e"
+    },
+    {
+      "path": "Characters/Frames/walk_NE_3.png",
+      "width": 32,
+      "height": 48,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        44
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "c12d0f82db2e61eb199c7c0103c46aefb9ed81589c9a072c5909f365a389a116"
+    },
+    {
+      "path": "Characters/Sheets/walk_NE.png",
+      "width": 128,
+      "height": 48,
+      "kind": "sheet",
+      "pivot_px_top_left": [
+        64,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e7a54d0d2f0a4f5343cc473e1c55eaa71f9161681dbe52d11c38b8f38b0efd3b",
+      "frame_size": [
+        32,
+        48
+      ],
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    {
+      "path": "Environment/Moon/crater_small.png",
+      "width": 32,
+      "height": 32,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e68391c05340a827fc1c87721a4f9daca88f30676103df1443da601f592af28e"
+    },
+    {
+      "path": "Environment/Mars/crater_small.png",
+      "width": 32,
+      "height": 32,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "d397a56c001d89642711f6898bbde941e057452f2cb2f5326c776e9ff6771043"
+    },
+    {
+      "path": "Environment/Moon/crater_medium.png",
+      "width": 64,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "8b410c1f19c64de8345810bf2316fb0214a51215b1e57769b54c91114db9ea80"
+    },
+    {
+      "path": "Environment/Mars/crater_medium.png",
+      "width": 64,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "ce550ea83f9e50d7d36496d46d9f718e19ed6cb0c1d6335a74fafeead63ae656"
+    },
+    {
+      "path": "Environment/Moon/crater_large.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "bdbef82c0a9ddb68ae64c5ada26b1c6c40791b2a837f591f479a021270852f45"
+    },
+    {
+      "path": "Environment/Mars/crater_large.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "9c7597a615f23a33a4c29c3655c9ba58518717f9bac0adbe20f9f848db8c01e9"
+    },
+    {
+      "path": "Environment/Moon/rocks_small.png",
+      "width": 32,
+      "height": 32,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "cded45353e4aa14aaa5df07f0651252cfaec3680fa13b7545dca7e5afaa968c9"
+    },
+    {
+      "path": "Environment/Mars/rocks_small.png",
+      "width": 32,
+      "height": 32,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        16,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "b8f91a92a353ce77ab430fb75546005fbbf99b072e95e492f355ec9a4ff7954a"
+    },
+    {
+      "path": "Environment/Moon/rocks_medium.png",
+      "width": 64,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "47c810c5f89a2714f3c2b45e679487d0f2de71f33ee4e4db55de38ac0c9d9e34"
+    },
+    {
+      "path": "Environment/Mars/rocks_medium.png",
+      "width": 64,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f6a481cc75252f50eacea2a4fc8af5e5c4ec4cbe438b02d9c4a8fa82022ca256"
+    },
+    {
+      "path": "Environment/Moon/rocks_large.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "ddae17bc2ed2faa770de41abc2af2db280b8a6007c519e09f482576d466f3dca"
+    },
+    {
+      "path": "Environment/Mars/rocks_large.png",
+      "width": 128,
+      "height": 128,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "7c5cd2aa83b9c9cee4cc0233b3cf26c05e29bf2787c22b3dfa1ae8f9ad239e7c"
+    },
+    {
+      "path": "Environment/Moon/ridge.png",
+      "width": 512,
+      "height": 64,
+      "kind": "backdrop",
+      "pivot_px_top_left": [
+        256,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "b648f33645852b2facb7b4561cec58e23bde3612f4bd0a652a49fc775983d347"
+    },
+    {
+      "path": "Environment/Mars/ridge.png",
+      "width": 512,
+      "height": 64,
+      "kind": "backdrop",
+      "pivot_px_top_left": [
+        256,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "040c12dd360b501db5419974417b4bc01a285fc6820428d7bee57e5d3b3b31d6"
+    },
+    {
+      "path": "Environment/Moon/ground_repeat.png",
+      "width": 128,
+      "height": 128,
+      "kind": "texture",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "b1ecefe924fca7626258911311dcd5630aed67d238ae9c9413751296c6687c8e",
+      "wrap": "repeat"
+    },
+    {
+      "path": "Environment/Moon/ground_diamond.png",
+      "width": 64,
+      "height": 32,
+      "kind": "tile",
+      "pivot_px_top_left": [
+        32,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e2016b3944f10892c5c3587421a4a7b177f24d9da7c5e7343d8ec066d49b4136"
+    },
+    {
+      "path": "Environment/Mars/ground_repeat.png",
+      "width": 128,
+      "height": 128,
+      "kind": "texture",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "20c995d151d06a6a15747b2a438f9266b6f6df556d028d786b032315810b2ef3",
+      "wrap": "repeat"
+    },
+    {
+      "path": "Environment/Mars/ground_diamond.png",
+      "width": 64,
+      "height": 32,
+      "kind": "tile",
+      "pivot_px_top_left": [
+        32,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "ef8907dc09bed82b5ee04db557d2ec1583ee4825bb096837f40e169fa77d3af3"
+    },
+    {
+      "path": "Environment/Space/black_space.png",
+      "width": 512,
+      "height": 256,
+      "kind": "backdrop",
+      "pivot_px_top_left": [
+        256,
+        248
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "4edb893c373ab726f482ab77a4d68b4334c713dad2eb4d483a1ef5266cfddab5"
+    },
+    {
+      "path": "Environment/Mars/peach_sky.png",
+      "width": 512,
+      "height": 256,
+      "kind": "backdrop",
+      "pivot_px_top_left": [
+        256,
+        248
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "ed46fc5d58aeedfc8dcf1af31fcf8a8d1a288a590d331a2529b218e5997b2af4"
+    },
+    {
+      "path": "Environment/Space/earth.png",
+      "width": 64,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f197374eec94d9f038bcd21629250b3508d687ac97c0b2df30f03cec6a2631b8"
+    },
+    {
+      "path": "Environment/Moon/footprints.png",
+      "width": 64,
+      "height": 64,
+      "kind": "decal",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "3ddc7336b31bbaca3f9a5f0c02851e8d106e427d6c8f262531b7972aa28bd635"
+    },
+    {
+      "path": "Environment/Moon/rover_tracks.png",
+      "width": 64,
+      "height": 64,
+      "kind": "decal",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "fe4ab55b220f1fbc5543637226eb06a7e112c3b373ef0bd8b88716e2234c0507"
+    },
+    {
+      "path": "Environment/Mars/footprints.png",
+      "width": 64,
+      "height": 64,
+      "kind": "decal",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "3ad125bc8a2180ae3a0eaae99252254b25fcfe14d865c3eaa70e5a412ea85b14"
+    },
+    {
+      "path": "Environment/Mars/rover_tracks.png",
+      "width": 64,
+      "height": 64,
+      "kind": "decal",
+      "pivot_px_top_left": [
+        32,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "94acb091278986dbce38fc93417e99ca04eabbbb7f179d2303ab8b61c38584ec"
+    },
+    {
+      "path": "Overlays/command_hub_mars_dust.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "51c30bb3fa72293a292cb38cd98fe4c5259130998bacd4ae17089096cdb4dae4"
+    },
+    {
+      "path": "Overlays/habitat_mars_dust.png",
+      "width": 128,
+      "height": 128,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "bfe64194ecef8befd2c5667a86c13e8baf5dac1b2ed8cd295c2a2cce818fcad7"
+    },
+    {
+      "path": "Overlays/greenhouse_mars_dust.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "41318dc1f1dcdfaa55a673ca798e59afd75226fd17318fd7472b924da731e1d8"
+    },
+    {
+      "path": "Overlays/battery_bank_mars_dust.png",
+      "width": 128,
+      "height": 128,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "c502f70a994110efcfd92c36ac7a2dfe51d821d8fb313b9e999669f78636fa92"
+    },
+    {
+      "path": "Overlays/communications_dish_mars_dust.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "9231408257225a7e27a499a911aaca9f8ca0281ccc6fb265e029932cb3811436"
+    },
+    {
+      "path": "Overlays/solar_array_mars_dust.png",
+      "width": 128,
+      "height": 128,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f7bf0c35ad8a4f3cfa998a1c89107d6db857178039686cabe1de9a792be3143c"
+    },
+    {
+      "path": "Overlays/regolith_shelter_mars_dust.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e5ddeb872f7184bc3a98e7ff39936758d740aa98bbf6a3312d87ebc529109832"
+    },
+    {
+      "path": "Overlays/airlock_mars_dust.png",
+      "width": 128,
+      "height": 128,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        64,
+        120
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f0c85883a882792e46548b68bd3cceef02f57c27a23d2d6bc2c196e3b16e269a"
+    },
+    {
+      "path": "Overlays/laboratory_mars_dust.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "8418b386d1073256b171372b21fea8b5a3e8fca0d814c13f130ef5427f71f454"
+    },
+    {
+      "path": "Overlays/life_support_mars_dust.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "d9a7ab20d6ebfa5e7e85159f8b2ad1fd4ec02be33e3db779964e1f9be45aa10a"
+    },
+    {
+      "path": "Overlays/rover_garage_mars_dust.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "00d0ba474b5124162f51a0500ad246e8e5f96fc8c5f5eadf03f38119f3adff19"
+    },
+    {
+      "path": "Overlays/regolith_shelter_mars_surface.png",
+      "width": 192,
+      "height": 192,
+      "kind": "overlay",
+      "pivot_px_top_left": [
+        96,
+        184
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "3cf769cb78f091ec7e447ddc387c7999b1e7d2a71b760456ed26b5b7bc9c822e"
+    },
+    {
+      "path": "Corridors/straight_NE_SW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "1af7e711e01c87416827fe503912d468643d2e33ac12b007b6c3a4b95f48455f",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NE": [
+          64,
+          32
+        ],
+        "SW": [
+          32,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/straight_NW_SE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "406ab28d65f92c447a6c1bcf1c1a756499cf5286538bfbdb501f1cb9f5b72347",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NW": [
+          32,
+          32
+        ],
+        "SE": [
+          64,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/corner_NE_SE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "fa5daa09c3a2d96a3b29ad0f2918d47f61e491b87fa39fd128435d4bd2105d71",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NE": [
+          64,
+          32
+        ],
+        "SE": [
+          64,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/corner_SE_SW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "77617cd6086f89d0a006430ff473fcef5fec43131e11c17a89aa0d390b0a8273",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SE": [
+          64,
+          48
+        ],
+        "SW": [
+          32,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/corner_SW_NW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "aae43ac9c174aece4dc115b97bf708c3f1878899464f16208ed2761845e4334a",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SW": [
+          32,
+          48
+        ],
+        "NW": [
+          32,
+          32
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/corner_NW_NE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "210b03e6ddfb44298ad54d9a2ce61db7d5c31d4fd040d786da46d7b6f55d0c02",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NW": [
+          32,
+          32
+        ],
+        "NE": [
+          64,
+          32
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/tee_NE_SE_SW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "cd96304209ab83e7dea5826024af60746e6af0133ed2e7ed08a816f15493a742",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NE": [
+          64,
+          32
+        ],
+        "SE": [
+          64,
+          48
+        ],
+        "SW": [
+          32,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/tee_SE_SW_NW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "70a1fb1997ebec3abf3c3c49b9317d321038fc35d7bdc63afe5bb3e8ecaee7aa",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SE": [
+          64,
+          48
+        ],
+        "SW": [
+          32,
+          48
+        ],
+        "NW": [
+          32,
+          32
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/tee_SW_NW_NE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "0d56adebd9f01f3df2b0b167ffa9585086122d86221a87514324fd57ee95b650",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SW": [
+          32,
+          48
+        ],
+        "NW": [
+          32,
+          32
+        ],
+        "NE": [
+          64,
+          32
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/tee_NW_NE_SE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "606dfb42e67ebc30440401f424694be6ad095accaed7514ef73167ee49a03273",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NW": [
+          32,
+          32
+        ],
+        "NE": [
+          64,
+          32
+        ],
+        "SE": [
+          64,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/cross.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "568e89f5a9d3c2be1ce9a33a894b6d540e6b7a9c172fed6abe06785726feef4d",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NE": [
+          64,
+          32
+        ],
+        "SE": [
+          64,
+          48
+        ],
+        "SW": [
+          32,
+          48
+        ],
+        "NW": [
+          32,
+          32
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/end_NE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "6421e9b3befdfc77f543840eb0d6a64fca2634fa17f29e25a4c451d495da7752",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NE": [
+          64,
+          32
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/end_SE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "13f1253f325d6c88f6b61f471b7ca7c406e83dacb39eb2896956e29275e38bf8",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SE": [
+          64,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/end_SW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f14409dbb228c45f90009e184ddeab87a487f827707d87105bdf7bb5c3432d38",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SW": [
+          32,
+          48
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/end_NW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "b45b9ded719540f55e5e3a745d46313eb5d29afde8b970dcab67472ab4b2a650",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NW": [
+          32,
+          32
+        ]
+      },
+      "port_width_cells": 0.375,
+      "height_px": 12
+    },
+    {
+      "path": "Corridors/adapter_NE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "6421e9b3befdfc77f543840eb0d6a64fca2634fa17f29e25a4c451d495da7752",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NE": [
+          64,
+          32
+        ]
+      },
+      "building_overlap_px": 6
+    },
+    {
+      "path": "Corridors/adapter_SE.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "13f1253f325d6c88f6b61f471b7ca7c406e83dacb39eb2896956e29275e38bf8",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SE": [
+          64,
+          48
+        ]
+      },
+      "building_overlap_px": 6
+    },
+    {
+      "path": "Corridors/adapter_SW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f14409dbb228c45f90009e184ddeab87a487f827707d87105bdf7bb5c3432d38",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "SW": [
+          32,
+          48
+        ]
+      },
+      "building_overlap_px": 6
+    },
+    {
+      "path": "Corridors/adapter_NW.png",
+      "width": 96,
+      "height": 64,
+      "kind": "sprite",
+      "pivot_px_top_left": [
+        48,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "b45b9ded719540f55e5e3a745d46313eb5d29afde8b970dcab67472ab4b2a650",
+      "footprint_cells": [
+        1,
+        1
+      ],
+      "ports": {
+        "NW": [
+          32,
+          32
+        ]
+      },
+      "building_overlap_px": 6
+    },
+    {
+      "path": "UI/Panels/resource_bar.png",
+      "width": 384,
+      "height": 40,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        192,
+        32
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "39d2029c44bd7cdaddc96eab3fbf3c9c9bd00e55719bf5103e9214becb4c6893",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "scale_mode": "sliced"
+    },
+    {
+      "path": "UI/Panels/selection_panel.png",
+      "width": 512,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        256,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "d3914f888007837d81bf6e081824ae8aaa9d86f61c246232fc22867c639d4fa1",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "scale_mode": "sliced"
+    },
+    {
+      "path": "UI/Panels/window.png",
+      "width": 320,
+      "height": 224,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        160,
+        216
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "7a73152cc47aeacffa332ee1903d8732b1cf3033d67c19e2ae5d544fb2186b84",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "scale_mode": "sliced"
+    },
+    {
+      "path": "UI/Panels/tooltip.png",
+      "width": 192,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        96,
+        56
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "e01638d88bca3f084063b017c235410b1da60cfac56cb60b25f67ea4d2502e01",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "scale_mode": "sliced"
+    },
+    {
+      "path": "UI/Panels/build_card.png",
+      "width": 80,
+      "height": 96,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        40,
+        88
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "8d7f1c25074665d8d627bbccc79db4d1b6d5836c61512e6a0111d2ead8d536fb",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "scale_mode": "sliced"
+    },
+    {
+      "path": "UI/Panels/nine_slice.png",
+      "width": 32,
+      "height": 32,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        16,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "fcc1fb1ba4adbcabe3e4c5082714164bac494a5261be3be315c21fc886eebd15",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "scale_mode": "sliced"
+    },
+    {
+      "path": "UI/Panels/button_normal.png",
+      "width": 112,
+      "height": 32,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        56,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "9785a3663f2592c85683cbd5e952d3b75ae6e9ff0bbfd159cf10a4af3aedff73",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "path": "UI/Panels/button_hover.png",
+      "width": 112,
+      "height": 32,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        56,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "3960f7601c2d5dc4c6d431e295155b8cb92813cc413811dae0491fe57ca2e887",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "path": "UI/Panels/button_pressed.png",
+      "width": 112,
+      "height": 32,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        56,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "235a912d9fb5c392f6d56431131817d9333ba70671a55ddfc2033666951c66e1",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "path": "UI/Panels/button_disabled.png",
+      "width": 112,
+      "height": 32,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        56,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f9837895ff186bc443cc9915e8d374df9917b213b3baa141b0b0155cad1ac3ce",
+      "border_lbrt": [
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "path": "UI/Icons/ore.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "946b2e9ebf403f7ac74bf68a3565d386c2fb178ef77057230f6bbc1051d48ad0"
+    },
+    {
+      "path": "UI/Icons/water.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "5ccd682b8cf3ea9c7acef0c21387ff5f8053e77a1e85cc34ba313abbb5bd339e"
+    },
+    {
+      "path": "UI/Icons/power.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f5dab4ebb06f3f7151ff1a3566bdcf1c03b8931bb07ec72fde1bca7e56401b4d"
+    },
+    {
+      "path": "UI/Icons/food.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "f8e73e3e75b1876be38addcf32e58c9cda4a66da8ec8232bacff22de9c1311f2"
+    },
+    {
+      "path": "UI/Icons/crew.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "65b813fa589cbd2a9e943e44b8574928316e3bb5e121d4eb287adb8341d00460"
+    },
+    {
+      "path": "UI/Icons/oxygen.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "07f60775e85be0b762c13e64d354c571674c3726227824aac59d4fd1194b837a"
+    },
+    {
+      "path": "UI/Icons/research.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "640a987280c7913aba973c565b3f797ec936cd4e3620579a539491d88ab4a824"
+    },
+    {
+      "path": "UI/Icons/build.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "2cbdaad2408152ba717ef0b87449922a4722f4d5201451567227eb38085c665f"
+    },
+    {
+      "path": "UI/Icons/repair.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "2cbdaad2408152ba717ef0b87449922a4722f4d5201451567227eb38085c665f"
+    },
+    {
+      "path": "UI/Icons/info.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "1d4de484fbbb5e9d66f57f6c0920ec042fc35a64f31d8770595ecdc9685ecb04"
+    },
+    {
+      "path": "UI/Icons/close.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "c9e5aab69de2365020c3149fcb046391f238297e73de598aeea84fcc8a691442"
+    },
+    {
+      "path": "UI/Icons/next.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "2b904dfa7322292372a1e7b37a2443d6b943c76b5cbe602f09e5fdfd35388f48"
+    },
+    {
+      "path": "UI/Icons/warning.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "20021b99a229492643575f7319e9f678a20494d20b992180a760d8dbd07bf2ee"
+    },
+    {
+      "path": "UI/Icons/pause.png",
+      "width": 24,
+      "height": 24,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        12,
+        16
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "350eaa290f6d3a89927a02d1fc759a2446263ba10a92511cbac464a26b367004"
+    },
+    {
+      "path": "UI/Font/astrociv_5x7.png",
+      "width": 128,
+      "height": 32,
+      "kind": "font",
+      "pivot_px_top_left": [
+        64,
+        24
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "dfc6de1161d6ecdae9dd4e96e06db8d09d5a4b7eeba1f838505d4f2141b681ad"
+    },
+    {
+      "path": "UI/astrociv_wordmark.png",
+      "width": 288,
+      "height": 48,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        144,
+        40
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "4a2c03f447cbd84eec1621ab7a830b154c48dff84bb8c17f46fd46ca8972a94e"
+    },
+    {
+      "path": "Characters/portrait.png",
+      "width": 64,
+      "height": 64,
+      "kind": "ui",
+      "pivot_px_top_left": [
+        32,
+        32
+      ],
+      "pixels_per_unit": 64,
+      "sha256": "998ce878f8c36872698d192ff45617d77b3323572fa9c98ba65df303aac5f0aa"
+    }
+  ]
+}

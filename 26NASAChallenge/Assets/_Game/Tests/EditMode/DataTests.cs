@@ -37,7 +37,7 @@ namespace Mapmakers.Tests
                 Assert.Contains(header.classification, FixtureLoader.Classifications);
                 if (!header.IsSynthetic) Assert.IsFalse(string.IsNullOrEmpty(header.query_url), "real data needs a query_url");
             }
-            Assert.AreEqual(6, count);
+            Assert.AreEqual(7, count);
         }
 
         [Test]
@@ -102,13 +102,30 @@ namespace Mapmakers.Tests
         }
 
         [Test]
-        public void Balance_LoadsAllSevenBuildings()
+        public void Jezero_IsARealMolaCrop_WithTheCraterInside()
+        {
+            var grid = FixtureLoader.Jezero();
+            Assert.AreEqual(20, grid.width);
+            Assert.AreEqual(15, grid.height);
+            Assert.AreEqual("simplified", grid.header.classification);
+            StringAssert.Contains("MOLA", grid.header.source);
+            double min = double.MaxValue, max = double.MinValue;
+            foreach (double h in grid.metres) { min = System.Math.Min(min, h); max = System.Math.Max(max, h); }
+            Assert.Less(min, -2600.0, "the crater floor is deep");
+            Assert.Greater(max - min, 1000.0, "rim and floor differ by more than a kilometre");
+            Assert.Less(grid.metres[7, 10], grid.metres[7, 0], "the middle of the map is lower than the plains outside");
+        }
+
+        [Test]
+        public void Balance_LoadsAllEightBuildings()
         {
             var balance = BalanceLoader.Load();
             foreach (BuildingType type in System.Enum.GetValues(typeof(BuildingType)))
                 Assert.IsNotNull(balance.Def(type), type.ToString());
             Assert.AreEqual("fictional balance", balance.classification);
-            Assert.AreEqual(30.0, balance.Def(BuildingType.Battery).batteryKWh);
+            Assert.AreEqual(12.0, balance.Def(BuildingType.Battery).batteryKWh);
+            Assert.Greater(balance.Def(BuildingType.Greenhouse).soilCost, 0, "the Greenhouse needs rover soil");
+            Assert.Greater(balance.waterPerCrewPerHour, 0.0, "the crew drinks water");
         }
 
         [Test]
@@ -158,11 +175,16 @@ namespace Mapmakers.Tests
         }
 
         [Test]
-        public void Story_HasSixHints_FiveCards_AndTheFinalMessage()
+        public void Story_HasHints_Cards_FailureText_AndTheFinalMessage()
         {
             var story = StoryData.Load();
-            Assert.AreEqual(6, story.hints.Length);
-            Assert.GreaterOrEqual(story.cards.Length, 5);
+            Assert.AreEqual(10, story.hints.Length);
+            Assert.GreaterOrEqual(story.cards.Length, 9);
+            foreach (var reason in new[] { "NoAir", "NoFood", "NoWater", "PowerLoss", "RadiationOutside", "RadiationNoShelter" })
+            {
+                Assert.IsFalse(story.Debrief("head_" + reason).StartsWith("["), reason + " headline");
+                StringAssert.DoesNotContain("died", story.Debrief("head_" + reason).ToLowerInvariant());
+            }
             foreach (var card in story.cards) Assert.IsFalse(string.IsNullOrEmpty(card.source), card.id);
             Assert.AreEqual("I used to build this world on a computer.", story.Story("e_msg1"));
             Assert.AreEqual("Now we are building it together.", story.Story("e_msg2"));

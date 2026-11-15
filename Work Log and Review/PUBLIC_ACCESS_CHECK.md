@@ -1,6 +1,6 @@
 # Public game access and publication record
 
-Checked 15 November 2026. This record is being finalized as part of publication.
+Checked 15 November 2026, approximately 1:25–1:27 a.m. Toronto time (EST).
 
 ## Addresses
 
@@ -18,9 +18,26 @@ Checked 15 November 2026. This record is being finalized as part of publication.
 
 ## Final verification
 
-Pending final push, deployment and anonymous browser check. Do not treat configuration alone as proof the game runs for an outside visitor.
+**Public browser play works without sign-in.** The source/game-snapshot commit `ee7bb91e7ed7d21301be7a323de3a750ef25f89b` was pushed to both `main` and `realtime-astrociv-mars`; an authenticated GitHub Pages status check reported `built` for that commit. Anonymous HTTP requests and an isolated Chrome profile with no saved GitHub/game session then verified the public address.
+
+| Anonymous check | Result |
+|---|---|
+| Public repository | Public; default branch `main` |
+| Game HTML | HTTP 200, `text/html` |
+| Hashed loader and framework JS | Both HTTP 200, `application/javascript` |
+| Unity `.data` | HTTP 200, `application/octet-stream` |
+| Unity `.wasm` | HTTP 200, `application/wasm` |
+| Menu and Free Build setup | Rendered and accepted input |
+| Mission | Start button entered the map; Start mission began the clock; time and resource values changed |
+| Placement input | Selecting Habitat and attempting a rocky tile displayed terrain-validation feedback; this check does not claim a completed valid placement or level |
+| Runtime exceptions / browser error entries | 0 / 0 during the public smoke check |
+| Login, Unity installation or player API key | None required for the public smoke check |
+
+Evidence: [anonymous menu](Public%20Access%20Evidence/anonymous-menu.png), [running mission](Public%20Access%20Evidence/running-mission.png), [placement feedback](Public%20Access%20Evidence/placement-feedback.png). These are screenshots of the deployed build, not newly generated game artwork. The README play link points to this tested address. A later documentation-only commit records these results without changing the tested game payload.
 
 **Build freshness limitation:** the available WebGL snapshot was written November 14, 2026 at about 10:53 p.m. Toronto time. Source files changed afterward, including onboarding work arriving during this session. The existing snapshot loaded its Unity main menu in a fresh local Chrome profile without JavaScript exceptions or browser error entries. It must not be described as a rebuild of the latest source unless a later successful build is recorded here. Current Unity CLI attempts have timed out or lost their editor connection; the separate batch attempt exited during license startup. Existing saved test status reported six passing PlayMode smoke tests, but that status alone does not establish when/which caller ran them or validate the published snapshot.
+
+The editor's saved recompile status reported completion with no compilation errors, but the WebGL build timestamp remained unchanged and no native `pipeline_build_status.json` report was created. One script-build request ultimately timed out after 600 seconds. Thus the newest source is committed/pushed, while a fresh browser build of that source remains unverified. To close this gap, use the existing **Mapmakers → Build WebGL (docs/)** menu when the editor is responsive, confirm the new build succeeds, commit/push its changed `docs/` files and repeat the anonymous mission check.
 
 ## How to reproduce the outside-visitor check
 

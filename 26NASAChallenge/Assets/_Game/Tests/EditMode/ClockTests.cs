@@ -133,6 +133,51 @@ namespace Mapmakers.Tests
             Assert.AreEqual(0.0, run.State.timeHours);
         }
 
+        // Pause and plan: after time has run, new buildings still change the rates, power flags and alerts at once.
+        [Test]
+        public void PausedAfterRunning_RatesFollowNewBuildings()
+        {
+            var run = MissionRun.ForLevel(LevelCatalog.Load().Level("L2"));
+            run.StartMission();
+            run.Choose(BuildingType.Habitat);
+            Assert.IsTrue(run.Place(8, 5).Ok);
+            run.clock.SetPaused(false);
+            for (int i = 0; i < 4; i++) run.Tick(0.25);
+            run.clock.SetPaused(true);
+            var habitat = run.State.First(BuildingType.Habitat);
+            double time = run.State.timeHours;
+            Assert.Greater(time, 0.0);
+            Assert.IsFalse(run.IsPowered(habitat));
+            Assert.IsTrue(run.Alerts().Exists(a => a.icon == "power"), "no power before any Solar Array");
+
+            for (int n = 0; n < 6 && !Goals.PowerPositive(run.sim, run.State); n++) PlaceSunniest(run, BuildingType.SolarArray);
+
+            Assert.IsTrue(Goals.PowerPositive(run.sim, run.State));
+            Assert.AreEqual(time, run.State.timeHours, "placing while paused never moves time");
+            Assert.Greater(run.Power.generationKW, 0.0);
+            Assert.AreEqual(0.0, run.State.report.generationKW, "the last real step had no power");
+            Assert.GreaterOrEqual(run.Power.generationKW - run.Power.demandKW, -1e-6, "the top bar's net power follows the plan");
+            Assert.IsTrue(run.IsPowered(habitat));
+            Assert.IsFalse(run.Alerts().Exists(a => a.icon == "power"), "the no-power alert clears while paused");
+        }
+
+        static void PlaceSunniest(MissionRun run, BuildingType type)
+        {
+            int bestX = -1, bestY = -1;
+            double best = -1;
+            var def = run.sim.balance.Def(type);
+            for (int x = 0; x < run.sim.terrain.width; x++)
+                for (int y = 0; y < run.sim.terrain.height; y++)
+                {
+                    if (!run.sim.CanPlace(run.State, type, x, y).Ok) continue;
+                    double sun = run.sim.terrain.AverageSun(x, y, def.width, def.height);
+                    if (sun > best) { best = sun; bestX = x; bestY = y; }
+                }
+            Assert.GreaterOrEqual(bestX, 0, "a free spot for " + type);
+            run.Choose(type);
+            Assert.IsTrue(run.Place(bestX, bestY).Ok);
+        }
+
         [Test]
         public void Run_EndsOnce_AndRefusesChangesAfterwards()
         {

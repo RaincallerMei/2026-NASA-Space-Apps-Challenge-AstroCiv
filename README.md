@@ -6,7 +6,7 @@ A Unity space-engineering game for ages 7–12, created for the 2026 NASA Space 
 
 Use a current desktop browser with WebGL support. No Unity installation, GitHub account, NASA API key or sign-in is needed for the hosted game. The initial Unity download is about 70 MB; allow it to finish. Mobile performance and touch controls are not guaranteed. The current publishing/access evidence is recorded in [PUBLIC_ACCESS_CHECK.md](Work%20Log%20and%20Review/PUBLIC_ACCESS_CHECK.md).
 
-The current WebGL build (November 15, 2026, afternoon) adds music, sound effects with a small music player, the Tutorial 2 crew training mission and Back/Next for story text, on top of the earlier onboarding, wiki and interface work. See the verification record for public browser checks.
+The current WebGL build (November 15, 2026, evening) adds one Settings window on every screen, resource rates that update while paused, and songs levelled to the menu song's loudness. These sit on top of the afternoon build, which brought music, sound effects with a small music player, the Tutorial 2 crew training mission and Back/Next for story text, and the earlier onboarding, wiki and interface work. See the verification record for public browser checks of earlier builds.
 
 ## Controls
 

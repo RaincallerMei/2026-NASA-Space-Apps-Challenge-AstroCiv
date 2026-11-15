@@ -36,6 +36,9 @@ namespace Mapmakers.Tests
 
         static GameScreen Game() => Object.FindAnyObjectByType<GameScreen>();
 
+        static UnityEngine.UI.Button ButtonLabelled(string text) =>
+            Array.Find(Object.FindObjectsByType<UnityEngine.UI.Button>(), b => UIKit.LabelOf(b) != null && UIKit.LabelOf(b).text == text);
+
         // The tests change saved progress; the player's own progress in the editor is put back afterwards.
         readonly Dictionary<string, int> savedInts = new Dictionary<string, int>();
         readonly Dictionary<string, string> savedStrings = new Dictionary<string, string>();
@@ -70,6 +73,7 @@ namespace Mapmakers.Tests
         public void RestoreProgress()
         {
             if (Wiki.IsOpen) Wiki.Close();
+            SettingsWindow.Close();
             foreach (var key in IntKeys())
             {
                 if (savedInts.TryGetValue(key, out int v)) PlayerPrefs.SetInt(key, v);
@@ -209,11 +213,13 @@ namespace Mapmakers.Tests
             yield return WaitForScene(Flow.MenuScene);
             var audio = AudioDirector.Instance;
             Assert.AreEqual(MusicMode.Menu, audio.Mode);
+            Assert.IsNotNull(ButtonLabelled("Settings"), "the menu has a Settings button");
 
             Flow.StartLevel("L1");
             yield return WaitForScene(Flow.CutsceneScene);
             Assert.AreEqual(MusicMode.Cutscene, audio.Mode);
             var cutscene = Object.FindAnyObjectByType<CutsceneScreen>();
+            Assert.IsNotNull(ButtonLabelled("Settings"), "story pictures have a Settings button");
             cutscene.Back();
             Assert.AreEqual(0, cutscene.Slide + cutscene.Line, "nothing comes before the first line");
             cutscene.Advance();
@@ -467,6 +473,16 @@ namespace Mapmakers.Tests
             Assert.AreEqual("e_storm", Wiki.Page);
             Wiki.Close();
             Assert.IsFalse(run.clock.Paused, "closing the Wiki resumes");
+
+            game.OpenSettings();
+            Assert.IsTrue(SettingsWindow.IsOpen);
+            before = run.State.timeHours;
+            run.Tick(1);
+            Assert.AreEqual(before, run.State.timeHours, "the mission waits while Settings is open");
+            SettingsWindow.Close();
+            Assert.IsTrue(game.ModalOpen, "closing Settings goes back to the Menu");
+            game.CloseModal();
+            Assert.IsFalse(run.clock.Paused, "closing the Menu resumes");
 
             run.State.supplies = 500;
             run.State.soil = 12;

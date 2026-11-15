@@ -100,14 +100,14 @@ namespace Mapmakers.Game
                 var garage = s.First(BuildingType.RoverGarage);
                 if (garage == null) return "";
                 if (double.IsInfinity(run.sim.TripHours(garage, false))) return "The garage is too far from soil. Remove it and build it nearer brown dots.";
-                if (!garage.enabled || !garage.powered) return "The rover has no power. Add a Solar Array.";
+                if (!garage.enabled || !run.IsPowered(garage)) return "The rover has no power. Add a Solar Array.";
             }
             if (step.done == "harvest")
             {
                 var g = s.First(BuildingType.Greenhouse);
                 if (g == null) return "";
                 if (!g.enabled) return "Turn the Greenhouse back on.";
-                if (!g.powered) return "The Greenhouse has no power. Add a Solar Array.";
+                if (!run.IsPowered(g)) return "The Greenhouse has no power. Add a Solar Array.";
                 if (s.waterL <= 0) return "The Greenhouse needs water.";
             }
             return "";

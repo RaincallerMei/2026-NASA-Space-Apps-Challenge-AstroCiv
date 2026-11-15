@@ -355,11 +355,12 @@ namespace Mapmakers.UI
         }
 
         // Visible label required by the Space Apps guide for AI-generated (SI) images.
-        public static void AiWatermark(Transform parent, Vector2 corner)
+        // shift moves it along the top or bottom edge, away from a button in the same corner.
+        public static void AiWatermark(Transform parent, Vector2 corner, float shift = 0)
         {
             var tag = Panel(parent, Palette.Alpha(Palette.Space, 0.75f), "AI Watermark");
             tag.raycastTarget = false;
-            var offset = new Vector2(corner.x < 0.5f ? 20 : -20, corner.y < 0.5f ? 20 : -20);
+            var offset = new Vector2(corner.x < 0.5f ? 20 + shift : -20 - shift, corner.y < 0.5f ? 20 : -20);
             tag.rectTransform.Anchor(corner, corner, offset, new Vector2(250, 36));
             Label(tag.transform, "AI-generated image", 20, Palette.Hull, TextAnchor.MiddleCenter).rectTransform.Stretch();
         }

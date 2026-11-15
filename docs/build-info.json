@@ -1,10 +1,10 @@
 {
   "BuildResultName": "Succeeded",
   "PlatformName": "WebGL",
-  "BuildStartedAt": "2026-11-15T18:32:54.6383820Z",
-  "TotalTimeMs": 863404,
+  "BuildStartedAt": "2026-11-15T21:20:34.8180139Z",
+  "TotalTimeMs": 416010,
   "TotalErrors": 0,
-  "TotalWarnings": 354,
-  "BuildSessionGUID": "808775f3f70c52f4799676adee7e372a",
+  "TotalWarnings": 1,
+  "BuildSessionGUID": "f5c13df4e0cd48a28cb58e827951768b",
   "unityVersion": "6000.6.7f1"
 }

@@ -43,6 +43,7 @@ namespace Mapmakers.UI
             BuildRows(root, r.score);
             BuildNotes(root, r);
             BuildButtons(root, r);
+            SettingsWindow.AddButton(root);
         }
 
         static void BuildGrade(RectTransform root, LevelScore s)

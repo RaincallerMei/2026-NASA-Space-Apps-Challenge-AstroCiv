@@ -39,6 +39,18 @@ namespace Mapmakers.Tests
         }
 
         [Test]
+        public void EverySongPlaysAtTheMenuSongsLoudness()
+        {
+            float Out(Track t) => t.level + 20 * Mathf.Log10(AudioDirector.MusicVolume * t.gain);
+            float menu = Out(AudioDirector.MenuTrack);
+            foreach (var track in AllTracks())
+            {
+                Assert.AreEqual(menu, Out(track), 0.25f, track.file);
+                Assert.LessOrEqual(AudioDirector.MusicVolume * track.gain, 1f, track.file);
+            }
+        }
+
+        [Test]
         public void CreditsNameEverySongCreatorAndLicense()
         {
             foreach (var track in AllTracks())

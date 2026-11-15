@@ -350,38 +350,24 @@ namespace Mapmakers.UI
             spec.vertical = true;
             spec.buttons.Clear();
             spec.buttons.Add(new ModalButton("Back to the base"));
-            spec.buttons.Add(new ModalButton("Wiki & Help", () => OpenWiki(), false));
+            spec.buttons.Add(new ModalButton("Settings", OpenSettings, false));
             spec.buttons.Add(new ModalButton("Restart this level", Flow.Retry, false));
-            spec.buttons.Add(new ModalButton("Tips: " + (run.HintsOn ? "On" : "Off"), ToggleHints, false));
-            spec.buttons.Add(new ModalButton("Calm motion: " + (Progress.ReducedMotion ? "On" : "Off"), ToggleCalm, false));
-            spec.buttons.Add(new ModalButton("Music & sounds", OpenSound, false));
-            spec.buttons.Add(new ModalButton("Data & Credits", () => ShowModal(Modal("Data & Credits", MenuScreen.CreditsText + "\n\n" + MenuScreen.AudioCreditsText, null)), false));
             spec.buttons.Add(new ModalButton("Quit to menu", () => Flow.ToMenu(run.mode == GameMode.Free ? "free" : "story"), false));
             ShowModal(spec);
         }
 
-        void ToggleHints()
+        // Holds the clock like any window. Closing it goes back to the Menu.
+        public void OpenSettings()
         {
-            run.HintsOn = !run.HintsOn;
-            Progress.HintsOn = run.HintsOn;
-            OpenPause();
-        }
-
-        void OpenSound()
-        {
-            var spec = Modal("Music & sounds", "Use the music player at the top right to skip or pause songs.", "music");
-            spec.vertical = true;
-            spec.buttons.Clear();
-            spec.buttons.Add(new ModalButton("Music: " + (Progress.MusicOn ? "On" : "Off"), () => { Progress.MusicOn = !Progress.MusicOn; OpenSound(); }, false));
-            spec.buttons.Add(new ModalButton("Sound effects: " + (Progress.SoundsOn ? "On" : "Off"), () => { Progress.SoundsOn = !Progress.SoundsOn; OpenSound(); }, false));
-            spec.buttons.Add(new ModalButton("Back", OpenPause));
-            ShowModal(spec);
-        }
-
-        void ToggleCalm()
-        {
-            Progress.ReducedMotion = !Progress.ReducedMotion;
-            OpenPause();
+            if (ModalOpen || SettingsWindow.IsOpen || Wiki.IsOpen) return;
+            run.clock.Hold();
+            SettingsWindow.Open(() =>
+            {
+                run.clock.Release();
+                run.HintsOn = Progress.HintsOn;
+                Refresh();
+                if (!EndShowing) OpenPause();
+            }, () => run.TrainingAction("wiki"));
         }
     }
 }

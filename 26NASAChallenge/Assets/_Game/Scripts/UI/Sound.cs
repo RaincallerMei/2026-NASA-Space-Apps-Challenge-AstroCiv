@@ -14,11 +14,12 @@ namespace Mapmakers.UI
 
     public enum MusicMode { None, Menu, Cutscene, Game }
 
+    // level: the file's typical loudness in LUFS (see AudioDirector). gain brings every song to the menu song's level.
     public sealed class Track
     {
         public string file, title, artist;
-        public float gain;
-        public Track(string file, string title, string artist, float gain) { this.file = file; this.title = title; this.artist = artist; this.gain = gain; }
+        public float gain, level;
+        public Track(string file, string title, string artist, float gain, float level) { this.file = file; this.title = title; this.artist = artist; this.gain = gain; this.level = level; }
     }
 
     // One music source and one effects source that live across scenes.
@@ -26,21 +27,23 @@ namespace Mapmakers.UI
     // Only the most important effect requested in a frame plays, and repeated effects are spaced out.
     public sealed class AudioDirector : MonoBehaviour
     {
-        // Music sits near -30 dBFS RMS. Effect volumes put clicks near the music level and key actions about 9 dB above it
-        // (from the measured RMS of each file, November 15, 2026).
+        // Every song plays at the menu song's loudness, about -31.7 LUFS after volume and gain. A song's level is the mean
+        // 3-second K-weighted loudness, averaged over the full file and a 150 Hz high-passed copy (small laptop speakers drop
+        // bass). Measured with tools/measure_music.py (pyloudnorm) on November 15, 2026.
+        // Effect volumes put clicks near the music level and key actions about 9 dB above it (measured RMS of each file).
         // No sharp sounds: every cue the player triggers has its spectral centroid under 4 kHz and under 10% of its energy
         // above 4 kHz (measured on the Kenney files). Every window opens with one sound and closes with one sound.
         public const float MusicVolume = 0.35f;
         public const float GapSeconds = 5f;
         const float FadeSeconds = 0.8f;
 
-        public static readonly Track MenuTrack = new Track("menu_dream_culture", "Dream Culture", "Kevin MacLeod", 0.73f);
-        public static readonly Track CutsceneTrack = new Track("cutscene_space_jazz", "Space Jazz", "Kevin MacLeod", 1f);
+        public static readonly Track MenuTrack = new Track("menu_dream_culture", "Dream Culture", "Kevin MacLeod", 0.73f, -19.80f);
+        public static readonly Track CutsceneTrack = new Track("cutscene_space_jazz", "Space Jazz", "Kevin MacLeod", 1.05f, -22.93f);
         public static readonly Track[] GameTracks =
         {
-            new Track("game_cat_caffe", "Cat caffe", "TAD", 0.97f),
-            new Track("game_cipher", "Cipher", "Kevin MacLeod", 0.79f),
-            new Track("game_cue", "Cue", "TAD", 0.65f)
+            new Track("game_cat_caffe", "Cat caffe", "TAD", 0.90f, -21.66f),
+            new Track("game_cipher", "Cipher", "Kevin MacLeod", 0.75f, -20.06f),
+            new Track("game_cue", "Cue", "TAD", 0.57f, -17.72f)
         };
 
         sealed class Cue
@@ -298,7 +301,7 @@ namespace Mapmakers.UI
             Control(panel.transform, x + 104, "skip", () => AudioDirector.Instance?.Next());
             Tip.Add(previous, () => new TipContent("Previous song", "music", "Go back to the song before."), false);
             Tip.Add(player.playButton, () => new TipContent("Music", "music", "Pause or play the music. The game keeps going."), false);
-            Tip.Add(panel, () => new TipContent("Music player", "music", "Three songs play in a random order. Credits are in Menu → Data & Credits."), false);
+            Tip.Add(panel, () => new TipContent("Music player", "music", "Three songs play in a random order. Credits are in Settings → Data & Credits."), false);
             return player;
         }
 
@@ -324,7 +327,7 @@ namespace Mapmakers.UI
             playIcon.sprite = Icons.Get(paused ? "play" : "pause");
             playButton.image.color = paused ? Palette.Amber : Palette.PanelLight;
             var track = director.Current;
-            if (off) title.text = "Music is off (Menu)";
+            if (off) title.text = "Music is off (Settings)";
             else if (director.Waiting) title.text = "Next song in " + Mathf.CeilToInt(director.GapLeft) + " s";
             else title.text = track == null ? "" : track.title + "  <color=#8A9BB5>· " + track.artist + "</color>";
         }

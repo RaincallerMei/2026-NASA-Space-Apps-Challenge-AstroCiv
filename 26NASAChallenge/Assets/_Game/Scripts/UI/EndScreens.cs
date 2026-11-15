@@ -34,6 +34,7 @@ namespace Mapmakers.UI
             endLayer = UIKit.Canvas("End Canvas", 20);
             var dim = UIKit.Blocker(endLayer, 0.55f);
             dim.raycastTarget = true;
+            SettingsWindow.AddButton(endLayer);
             EndVariant = result.Failed ? result.failReason.ToString() : "Evaluation";
             if (result.Failed) BuildFailure(result);
             else BuildEvaluation(result);

@@ -139,7 +139,7 @@ namespace Mapmakers.UI
                 SetChip(2, s.supplies.ToString(), "", Palette.Hull, "You have " + s.supplies + " supplies.");
                 return;
             }
-            var r = s.step > 0 ? s.report : power;
+            var r = power;
             var b = run.sim.balance;
             double net = r.generationKW - r.demandKW;
             SetChip(0, Signed(net) + " kW", "", net >= -1e-6 ? Palette.Mint : Palette.Amber,
@@ -382,7 +382,7 @@ namespace Mapmakers.UI
 
         public void OpenWiki(string page = null)
         {
-            if (Wiki.IsOpen || EndShowing) return;
+            if (Wiki.IsOpen || SettingsWindow.IsOpen || EndShowing) return;
             run.TrainingAction("wiki");
             run.clock.Hold();
             Wiki.Open(page ?? WikiPageForNow(), () => { run.clock.Release(); Refresh(); });
@@ -640,7 +640,7 @@ namespace Mapmakers.UI
         RectTransform CoachTarget(out string message)
         {
             message = "";
-            if (run.Ended || ModalOpen || Wiki.IsOpen || run.Phase == RunPhase.Briefing) return null;
+            if (run.Ended || ModalOpen || Wiki.IsOpen || SettingsWindow.IsOpen || run.Phase == RunPhase.Briefing) return null;
             if (run.IsTraining) return TrainingTarget(out message);
             if (WaitingForFirstPlay)
             {
@@ -702,13 +702,14 @@ namespace Mapmakers.UI
             if (keys.escapeKey.wasPressedThisFrame)
             {
                 if (Wiki.IsOpen) { Wiki.Close(); return; }
+                if (SettingsWindow.IsOpen) { SettingsWindow.Close(); return; }
                 if (EndShowing) return;
                 if (ModalOpen) { CloseModal(); return; }
                 if (run.BuildChoice.HasValue || run.SelectedId != 0) { run.Deselect(); return; }
                 OpenPause();
                 return;
             }
-            if (Wiki.IsOpen) return;
+            if (Wiki.IsOpen || SettingsWindow.IsOpen) return;
             if (keys.hKey.wasPressedThisFrame || keys.f1Key.wasPressedThisFrame) { if (!ModalOpen) OpenWiki(); return; }
             if (ModalOpen || EndShowing) return;
             if (keys.spaceKey.wasPressedThisFrame) TogglePause();

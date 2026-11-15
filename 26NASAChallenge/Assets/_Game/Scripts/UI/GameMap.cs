@@ -243,12 +243,13 @@ namespace Mapmakers.UI
         {
             if (run.State.shadowFactor != lastShadow) PaintTerrain();
             var s = run.State;
+            var preview = run.Preview;
             var alive = new HashSet<int>();
             foreach (var b in s.buildings)
             {
                 alive.Add(b.id);
                 if (!views.TryGetValue(b.id, out var view)) views[b.id] = view = CreateView(b);
-                UpdateView(view, b);
+                UpdateView(view, b, preview);
             }
             var gone = new List<int>();
             foreach (var pair in views)
@@ -357,7 +358,7 @@ namespace Mapmakers.UI
             return view;
         }
 
-        void UpdateView(BuildingView view, PlacedBuilding b)
+        void UpdateView(BuildingView view, PlacedBuilding b, SimState preview)
         {
             var def = run.sim.balance.Def(b.type);
             string badge = "";
@@ -365,7 +366,7 @@ namespace Mapmakers.UI
             bool dim = false;
             if (b.broken) { badge = "X"; badgeColor = Palette.Danger; dim = true; }
             else if (!b.enabled) { badge = "off"; badgeColor = Palette.LunarGray; dim = true; }
-            else if (!run.IsDrawing && def.demandKW > 0 && !b.powered && run.State.step > 0) { badge = "!"; dim = true; }
+            else if (!run.IsDrawing && def.demandKW > 0 && !run.IsPowered(b, preview) && run.State.step > 0) { badge = "!"; dim = true; }
             else if (!run.IsDrawing && b.type == BuildingType.SolarArray && !run.sim.HasCable(run.State, b)) { badge = "~"; }
             var plate = dim ? Color.Lerp(BuildingColor(b.type), Palette.Space, 0.45f) : BuildingColor(b.type);
             view.body.color = view.art != null ? Palette.Alpha(plate, 0.3f) : plate;
@@ -488,7 +489,7 @@ namespace Mapmakers.UI
             var def = run.sim.balance.Def(b.type);
             if (b.broken) return "Broken.";
             if (!b.enabled) return "Switched off.";
-            if (def.demandKW > 0 && !b.powered && run.State.step > 0 && !run.IsDrawing) return "No power!";
+            if (def.demandKW > 0 && !run.IsPowered(b) && run.State.step > 0 && !run.IsDrawing) return "No power!";
             return "Working.";
         }
 
@@ -623,7 +624,7 @@ namespace Mapmakers.UI
             Color color;
             if (b.broken) { state = "Broken"; color = Palette.Danger; }
             else if (!b.enabled) { state = "Switched off"; color = Palette.LunarGray; }
-            else if (def.demandKW > 0 && !b.powered && s.step > 0) { state = "No power!"; color = Palette.Amber; }
+            else if (def.demandKW > 0 && !run.IsPowered(b) && s.step > 0) { state = "No power!"; color = Palette.Amber; }
             else { state = "Working"; color = Palette.Mint; }
             selectionState.text = state;
             selectionState.color = color;

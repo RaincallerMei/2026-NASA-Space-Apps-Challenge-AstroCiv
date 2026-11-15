@@ -83,7 +83,8 @@ namespace Mapmakers.UI
             counter = UIKit.Label(band.transform, "", 20, Palette.Muted, TextAnchor.LowerLeft);
             counter.rectTransform.Stretch(40, 0, 40, 18);
 
-            UIKit.AiWatermark(root, new Vector2(0, 1));
+            UIKit.AiWatermark(root, new Vector2(0, 1), SettingsWindow.ButtonWidth + 16);
+            SettingsWindow.AddButton(root);
             var skip = UIKit.Button(root, "Skip", Leave, Palette.Alpha(Palette.Panel, 0.85f), Palette.Hull, 24);
             skip.GetComponent<RectTransform>().Anchor(new Vector2(1, 1), new Vector2(1, 1), new Vector2(-32, -28), new Vector2(140, 56));
         }
@@ -91,7 +92,7 @@ namespace Mapmakers.UI
         void Update()
         {
             var keys = Keyboard.current;
-            if (keys == null || done) return;
+            if (keys == null || done || Wiki.IsOpen || SettingsWindow.IsOpen) return;
             if (keys.spaceKey.wasPressedThisFrame || keys.enterKey.wasPressedThisFrame || keys.rightArrowKey.wasPressedThisFrame) Advance();
             if (keys.leftArrowKey.wasPressedThisFrame || keys.backspaceKey.wasPressedThisFrame) Back();
             if (keys.escapeKey.wasPressedThisFrame) Leave();

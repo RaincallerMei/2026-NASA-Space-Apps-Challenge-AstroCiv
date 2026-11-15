@@ -55,7 +55,7 @@ namespace Mapmakers.UI
                 var fit = picture.gameObject.AddComponent<AspectRatioFitter>();
                 fit.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
                 fit.aspectRatio = sprite.rect.width / sprite.rect.height;
-                UIKit.AiWatermark(root, new Vector2(0, 1));
+                UIKit.AiWatermark(root, new Vector2(0, 1), SettingsWindow.ButtonWidth + 16);
             }
 
             var chip = UIKit.Panel(root, Palette.Alpha(Palette.Ink, 0.92f), "Title");
@@ -71,6 +71,8 @@ namespace Mapmakers.UI
                 var skip = UIKit.Button(root, "Skip lesson", Finish, Palette.Alpha(Palette.Panel, 0.92f), Palette.Hull, 24);
                 skip.GetComponent<RectTransform>().Anchor(new Vector2(1, 1), new Vector2(1, 1), new Vector2(-32, -28), new Vector2(200, 56));
             }
+
+            SettingsWindow.AddButton(root);
 
             var panel = UIKit.Panel(root, Palette.Alpha(Palette.Panel, 0.97f), "Dialog");
             panel.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 36), new Vector2(1680, 590));
@@ -128,7 +130,7 @@ namespace Mapmakers.UI
         void Update()
         {
             var keys = Keyboard.current;
-            if (keys == null || done || Wiki.IsOpen) return;
+            if (keys == null || done || Wiki.IsOpen || SettingsWindow.IsOpen) return;
             if (keys.enterKey.wasPressedThisFrame || keys.spaceKey.wasPressedThisFrame || keys.rightArrowKey.wasPressedThisFrame) Next();
             if (keys.backspaceKey.wasPressedThisFrame || keys.leftArrowKey.wasPressedThisFrame) Back();
             if (keys.escapeKey.wasPressedThisFrame && CanSkip) Finish();

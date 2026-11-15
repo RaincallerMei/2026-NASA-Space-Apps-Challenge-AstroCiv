@@ -283,13 +283,16 @@ namespace Mapmakers.Sim
             return Layout.TripHours(balance.layout, gap);
         }
 
-        // Power numbers for the current layout. Never changes the state, never fires events or ends the run.
-        public StepReport Preview(SimState s)
+        // One step ahead on a copy: rates and powered flags for the current layout, also while time is stopped.
+        // Never changes the state, never fires events or ends the run.
+        public SimState PreviewState(SimState s)
         {
             previewing = true;
-            try { return Step(s).report; }
+            try { return Step(s); }
             finally { previewing = false; }
         }
+
+        public StepReport Preview(SimState s) => PreviewState(s).report;
 
         // ---------- stepping ----------
 

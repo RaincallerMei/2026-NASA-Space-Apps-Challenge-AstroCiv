@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 namespace Mapmakers.UI
 {
-    // Title, Story Mode level list, Free Build setup and credits. One panel shows at a time.
+    // Title, Story Mode level list and Free Build setup. One panel shows at a time. Settings (top left) holds the rest.
     public sealed class MenuScreen : MonoBehaviour
     {
         public const string CreditsText =
             "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA and MGS/MOLA (PDS), CSA. Not endorsed by NASA or CSA.\n" +
             "CSA content © Canadian Space Agency.\n\n" +
             "All game art is AI-created for this project:\n" +
-            "story pictures, AstroCiv pixel sprites and code-drawn shapes.\n\n" +
+            "story pictures, AstroCivilization pixel sprites and code-drawn shapes.\n\n" +
             "Power, cost and safety numbers are made up for the game.\n" +
             "Chris Hadfield and Sara Seager are named as inspiration only.\nThey do not endorse this game.";
 
@@ -52,7 +52,7 @@ namespace Mapmakers.UI
             panels["main"] = BuildMain();
             panels["story"] = BuildStory();
             panels["free"] = BuildFree();
-            panels["credits"] = BuildCredits();
+            SettingsWindow.AddButton(root);
             Show(Flow.MenuPanel);
             Flow.MenuPanel = "main";
         }
@@ -68,33 +68,17 @@ namespace Mapmakers.UI
         GameObject BuildMain()
         {
             var panel = UIKit.Rect(root, "Main").Stretch();
-            var title = UIKit.Label(panel, "Mapmakers of the Moon", 84, Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold);
+            var title = UIKit.Label(panel, "AstroCivilization", 84, Palette.Hull, TextAnchor.MiddleCenter, FontStyle.Bold);
             title.rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -170), new Vector2(1400, 110));
             var tag = UIKit.Label(panel, "Every great civilization starts with a dream.", 32, Palette.Ice, TextAnchor.MiddleCenter, FontStyle.Italic);
             tag.rectTransform.Anchor(new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -280), new Vector2(1400, 50));
 
             MenuButton(panel, "Story Mode", -430, () => Show("story"), Palette.Azure);
             MenuButton(panel, "Free Build", -530, () => Show("free"), Palette.Azure);
-            MenuButton(panel, "Wiki & Help", -630, () => Wiki.Open(null, null, true), Palette.PanelLight);
-            MenuButton(panel, "Data & Credits", -730, () => Show("credits"), Palette.PanelLight);
-
-            SoundToggle(panel, 0, "Music", () => Progress.MusicOn, v => Progress.MusicOn = v);
-            SoundToggle(panel, 1, "Sounds", () => Progress.SoundsOn, v => Progress.SoundsOn = v);
 
             var foot = UIKit.Label(panel, "Not endorsed by NASA or CSA.", 20, Palette.Muted, TextAnchor.MiddleCenter);
             foot.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 40), new Vector2(800, 30));
             return panel.gameObject;
-        }
-
-        static void SoundToggle(Transform parent, int slot, string name, System.Func<bool> get, System.Action<bool> set)
-        {
-            Button button = null;
-            button = UIKit.Button(parent, name + ": " + (get() ? "On" : "Off"), () =>
-            {
-                set(!get());
-                UIKit.LabelOf(button).text = name + ": " + (get() ? "On" : "Off");
-            }, Palette.PanelLight, Palette.Hull, 22);
-            button.GetComponent<RectTransform>().Anchor(new Vector2(1, 0), new Vector2(1, 0), new Vector2(-40 - slot * 196, 40), new Vector2(180, 52));
         }
 
         static void MenuButton(Transform parent, string text, float y, UnityEngine.Events.UnityAction action, Color color)
@@ -224,19 +208,6 @@ namespace Mapmakers.UI
             foreach (var (button, value) in planetButtons) button.image.color = value == free.planet ? Palette.Azure : Palette.PanelLight;
             foreach (var (button, value) in difficultyButtons) button.image.color = value == free.difficulty ? Palette.Azure : Palette.PanelLight;
             seedLabel.text = "#" + free.seed;
-        }
-
-        // ---------- Credits ----------
-
-        GameObject BuildCredits()
-        {
-            var panel = UIKit.Rect(root, "Credits").Stretch();
-            Header(panel, "Data & Credits", "");
-            var box = UIKit.Panel(panel, Palette.Alpha(Palette.Panel, 0.94f), "Credits Box");
-            box.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, -10), new Vector2(1560, 740));
-            UIKit.Label(box.transform, CreditsText + "\n\n" + AudioCreditsText, 24, Palette.Hull, TextAnchor.MiddleCenter).rectTransform.Stretch(40, 30, 40, 30);
-            BackButton(panel);
-            return panel.gameObject;
         }
 
         // ---------- shared ----------

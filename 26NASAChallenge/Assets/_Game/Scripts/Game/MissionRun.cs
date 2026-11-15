@@ -140,7 +140,15 @@ namespace Mapmakers.Game
 
         // ---------- queries ----------
 
-        public StepReport Power => sim.Preview(State);
+        // The base as laid out right now. While paused it still follows every building the player adds, removes or switches.
+        public SimState Preview => sim.PreviewState(State);
+        public StepReport Power => Preview.report;
+
+        public bool IsPowered(PlacedBuilding b, SimState preview = null)
+        {
+            var p = (preview ?? Preview).Find(b.id);
+            return p != null && p.powered;
+        }
 
         public bool GoalMet(string id) => Goals.IsMet(id, sim, State);
         public int GoalsMet => Goals.CountMet(goals, sim, State);
@@ -189,7 +197,7 @@ namespace Mapmakers.Game
             var list = new List<Alert>();
             if (IsDrawing || Ended) return list;
             var s = State;
-            var r = s.report;
+            var r = s.step > 0 ? Power : s.report;
             var b = sim.balance;
             string geo = sim.geologistName;
 
@@ -246,10 +254,11 @@ namespace Mapmakers.Game
         public List<string> UnpoweredCritical()
         {
             var names = new List<string>();
+            var preview = Preview;
             foreach (var b in State.buildings)
             {
                 var def = sim.balance.Def(b.type);
-                if (def.priority <= 1 && def.demandKW > 0 && b.enabled && !b.powered && !names.Contains(def.displayName)) names.Add(def.displayName);
+                if (def.priority <= 1 && def.demandKW > 0 && b.enabled && !IsPowered(b, preview) && !names.Contains(def.displayName)) names.Add(def.displayName);
             }
             return names;
         }
@@ -299,7 +308,7 @@ namespace Mapmakers.Game
             var g = State.First(BuildingType.Greenhouse);
             if (g == null) return State.soil < sim.balance.Def(BuildingType.Greenhouse).soilCost ? "Get soil, then build a Greenhouse." : "Build a Greenhouse.";
             if (!g.enabled) return "Turn the Greenhouse back on.";
-            if (!g.powered) return "The Greenhouse needs power.";
+            if (!IsPowered(g)) return "The Greenhouse needs power.";
             if (State.waterL <= 0) return "The Greenhouse needs water.";
             return "The crew eats more than it grows.";
         }

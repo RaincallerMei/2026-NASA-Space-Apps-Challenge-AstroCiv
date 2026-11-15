@@ -1,6 +1,6 @@
 # Public game access and publication record
 
-Checked 15 November 2026, approximately 1:25–1:27 a.m. Toronto time (EST).
+Checked 15 November 2026. Initial anonymous check: approximately 1:25–1:27 a.m. Toronto time (EST); fresh-build verification: approximately 1:32–1:33 a.m. EST.
 
 ## Addresses
 
@@ -18,7 +18,7 @@ Checked 15 November 2026, approximately 1:25–1:27 a.m. Toronto time (EST).
 
 ## Final verification
 
-**Public browser play works without sign-in.** The source/game-snapshot commit `ee7bb91e7ed7d21301be7a323de3a750ef25f89b` was pushed to both `main` and `realtime-astrociv-mars`; an authenticated GitHub Pages status check reported `built` for that commit. Anonymous HTTP requests and an isolated Chrome profile with no saved GitHub/game session then verified the public address.
+**Public browser play works without sign-in.** The source was introduced in `ee7bb91`, and the successful fresh WebGL rebuild was pushed in `deae5017f4af38ce3a779e1bef59fa0e4d2993e1` to both `main` and `realtime-astrociv-mars`. The first hosted snapshot passed anonymous HTTP/browser checks; the fresh build includes the newer onboarding, wiki and interface changes. See the final recheck below for its public-access result.
 
 | Anonymous check | Result |
 |---|---|
@@ -29,15 +29,25 @@ Checked 15 November 2026, approximately 1:25–1:27 a.m. Toronto time (EST).
 | Unity `.wasm` | HTTP 200, `application/wasm` |
 | Menu and Free Build setup | Rendered and accepted input |
 | Mission | Start button entered the map; Start mission began the clock; time and resource values changed |
-| Placement input | Selecting Habitat and attempting a rocky tile displayed terrain-validation feedback; this check does not claim a completed valid placement or level |
+| Placement input | Selecting Habitat and attempting placement displayed boundary/placement validation; this check does not claim a completed valid placement or level |
 | Runtime exceptions / browser error entries | 0 / 0 during the public smoke check |
 | Login, Unity installation or player API key | None required for the public smoke check |
 
-Evidence: [anonymous menu](Public%20Access%20Evidence/anonymous-menu.png), [running mission](Public%20Access%20Evidence/running-mission.png), [placement feedback](Public%20Access%20Evidence/placement-feedback.png). These are screenshots of the deployed build, not newly generated game artwork. The README play link points to this tested address. A later documentation-only commit records these results without changing the tested game payload.
+Evidence: [anonymous menu](Public%20Access%20Evidence/anonymous-menu.png), [running mission](Public%20Access%20Evidence/running-mission.png), [placement feedback](Public%20Access%20Evidence/placement-feedback.png), [build summary](Public%20Access%20Evidence/build-summary.json). These are screenshots of the deployed build, not newly generated game artwork. The README play link points to this tested address. Documentation-only follow-up commits record results without changing the tested Unity payload.
 
-**Build freshness limitation:** the available WebGL snapshot was written November 14, 2026 at about 10:53 p.m. Toronto time. Source files changed afterward, including onboarding work arriving during this session. The existing snapshot loaded its Unity main menu in a fresh local Chrome profile without JavaScript exceptions or browser error entries. It must not be described as a rebuild of the latest source unless a later successful build is recorded here. Current Unity CLI attempts have timed out or lost their editor connection; the separate batch attempt exited during license startup. Existing saved test status reported six passing PlayMode smoke tests, but that status alone does not establish when/which caller ran them or validate the published snapshot.
+**Fresh-build recheck passed:** GitHub Pages reported `built` for `deae501`; the anonymous public HTML matched `docs/index.html` byte for byte. All four newly hashed payload URLs returned HTTP 200, with `.wasm` served as `application/wasm`, and public `build-info.json` matched the successful Unity build. A new isolated Chrome profile loaded the menu, opened Free Build, started the mission and displayed advancing time/resources, the new wiki button and the Information/Objectives panels. No runtime exceptions or browser error entries occurred. The retained screenshots now show this fresh deployment. [Machine-readable anonymous HTTP evidence](Public%20Access%20Evidence/anonymous-http-check.json).
 
-The editor's saved recompile status reported completion with no compilation errors, but the WebGL build timestamp remained unchanged and no native `pipeline_build_status.json` report was created. One script-build request ultimately timed out after 600 seconds. Thus the newest source is committed/pushed, while a fresh browser build of that source remains unverified. To close this gap, use the existing **Mapmakers → Build WebGL (docs/)** menu when the editor is responsive, confirm the new build succeeds, commit/push its changed `docs/` files and repeat the anonymous mission check.
+The verified player-source checkpoint is `ee7bb91`, packaged in the fresh browser release `deae501`. Another local session continued changing source/UI and gameplay documentation after that build. Those later uncommitted edits are preserved separately and are not claimed as part of the tested deployment.
+
+## Resolved build delay and current build evidence
+
+The initial snapshot was from November 14 at about 10:53 p.m. Toronto time. CLI recompilation/test/build calls timed out or lost their connection, and a separate batch launch exited at licensing startup. A 600-second client timeout did **not** mean the already-started editor build had stopped: it eventually finished.
+
+Unity's latest `Library/BuildHistory` summary records **Succeeded**, platform **WebGL**, started `2026-11-15T06:15:30Z`, duration **753,886 ms**, **0 errors**, **354 warnings**, session `0137f4adc28fa1b429bc1a2b43fddb98`. The output was written at approximately **1:28 a.m. EST on November 15**. A sanitized summary is checked in and served as [build-info.json](https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/build-info.json). The player-source changes were present before this build began; subsequent temporary Editor test-runner work is not player code and was excluded from publication.
+
+Warnings include existing package shader-performance diagnostics and Unity dashboard service-link configuration. They did not fail the build; public browser checks remain necessary. The build is about **69.9 MiB** on disk and needs an initial download. No claim of zero warnings, complete campaign testing, mobile compatibility or human learning validation is made.
+
+The saved editor recompile status reported completion without compile errors. An existing saved test status also reported six passing PlayMode smoke tests; that record alone does not establish which caller ran them. This publication's direct validation is the successful build, static payload/JSON checks, board browser checks and anonymous public game smoke test.
 
 ## How to reproduce the outside-visitor check
 

@@ -1,0 +1,42 @@
+{
+  "url": "https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/",
+  "anonymous": true,
+  "publicHtmlMatchesLatestLocalBuild": true,
+  "htmlSha256": "b7126583e4cf7c7f108c133c2df44192391b036b9b8cbbb8c047b290dec0d9ef",
+  "assets": [
+    {
+      "file": "ed9bac8d82e978263038c6da7cd3516b.loader.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=utf-8",
+      "bytes": 27675
+    },
+    {
+      "file": "e955958b67e8997b03483c9cd6cbef72.data",
+      "status": 200,
+      "contentType": "application/octet-stream",
+      "bytes": 18433829
+    },
+    {
+      "file": "83c09258acd91abda047b6d725f2fc12.framework.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=utf-8",
+      "bytes": 444565
+    },
+    {
+      "file": "5832dd74defd5ea9a6aef1b55c483a30.wasm",
+      "status": 200,
+      "contentType": "application/wasm",
+      "bytes": 54375427
+    }
+  ],
+  "build": {
+    "BuildResultName": "Succeeded",
+    "PlatformName": "WebGL",
+    "BuildStartedAt": "2026-11-15T06:15:30.1136286Z",
+    "TotalTimeMs": 753886,
+    "TotalErrors": 0,
+    "TotalWarnings": 354,
+    "BuildSessionGUID": "0137f4adc28fa1b429bc1a2b43fddb98",
+    "unityVersion": "6000.6.7f1"
+  }
+}

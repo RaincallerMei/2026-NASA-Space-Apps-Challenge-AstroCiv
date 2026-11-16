@@ -1,6 +1,4 @@
-# AstroCiv: Mapmakers of the Moon
-
-##**[Play the game in your browser](https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/)**
+# AstroCivilization **[Play the game in your browser](https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/)**
 
 A Unity space-engineering game for ages 7–12, created for the 2026 NASA Space Apps Challenge. Build an outpost, balance power and life support, support a fictional crew and respond to a space-weather warning. Story Mode and Free Build include Moon and Mars settings.
 

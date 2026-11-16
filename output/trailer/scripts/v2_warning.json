@@ -1,0 +1,1 @@
+[{"action": "record-start"}, {"action": "wait", "seconds": 4}, {"action": "record-stop", "name": "v2_storm_warning"}, {"action": "click", "x": 0.5, "y": 0.637, "after": 0.08}, {"action": "key", "key": " ", "after": 0.1}, {"action": "click", "x": 0.11, "y": 0.945, "after": 0.4}, {"action": "screenshot", "name": "v2-solar-during-storm"}]

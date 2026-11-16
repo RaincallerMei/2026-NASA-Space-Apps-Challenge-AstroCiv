@@ -537,7 +537,8 @@ namespace Mapmakers.UI
         Text selectionName, selectionInfo, selectionState;
         Button toggleButton, fixButton, removeButton, cancelButton, suggestButton;
         float SelectionTop => LeftTop + (run.IsTraining ? GuideHeight + Gap : 0);
-        float SelectionHeight => Mathf.Min(run.IsDrawing ? 560 : 1080, 1080 - WikiBottom - 64 - Gap - SelectionTop);
+        // In training the guide leaves little room, so the panel may cover Science Facts while a building is selected.
+        float SelectionHeight => Mathf.Min(run.IsDrawing ? 560 : 1080, 1080 - (run.IsTraining ? WikiBottom : FactsBottom) - 64 - Gap - SelectionTop);
 
         void BuildSelectionPanel()
         {

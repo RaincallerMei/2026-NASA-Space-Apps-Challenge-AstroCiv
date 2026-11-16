@@ -33,7 +33,9 @@ namespace Mapmakers.Data
     [Serializable]
     public class WikiPage
     {
-        public string id, section, title, icon, summary, best, building, resource, crew, lesson;
+        // Science pages: source = where the page's own rows come from; osdr = OSDR study topics to list;
+        // extra = "found" (facts found), "storms" (the real storm table) or "csa" (CSA food cards).
+        public string id, section, title, icon, summary, best, building, resource, crew, lesson, source, osdr, extra;
         public HelpRow[] rows = new HelpRow[0];
     }
 

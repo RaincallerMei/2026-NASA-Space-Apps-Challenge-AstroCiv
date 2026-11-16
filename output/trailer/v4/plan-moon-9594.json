@@ -1,0 +1,144 @@
+{
+  "planet": "Moon",
+  "seed": 9594,
+  "spots": [
+    {
+      "type": "Habitat",
+      "x": 1,
+      "y": 0,
+      "cost": 30.0
+    },
+    {
+      "type": "SolarArray",
+      "x": 0,
+      "y": 5,
+      "cost": 10.0
+    },
+    {
+      "type": "Battery",
+      "x": 0,
+      "y": 9,
+      "cost": 12.0
+    },
+    {
+      "type": "LifeSupport",
+      "x": 4,
+      "y": 3,
+      "cost": 20.0
+    },
+    {
+      "type": "SolarArray",
+      "x": 3,
+      "y": 9,
+      "cost": 10.0
+    },
+    {
+      "type": "RoverGarage",
+      "x": 8,
+      "y": 1,
+      "cost": 15.0
+    },
+    {
+      "type": "Communications",
+      "x": 8,
+      "y": 7,
+      "cost": 8.0
+    },
+    {
+      "type": "SolarArray",
+      "x": 0,
+      "y": 7,
+      "cost": 10.0
+    },
+    {
+      "type": "SolarArray",
+      "x": 2,
+      "y": 7,
+      "cost": 10.0
+    },
+    {
+      "type": "Greenhouse",
+      "x": 6,
+      "y": 5,
+      "cost": 25.0
+    },
+    {
+      "type": "Shelter",
+      "x": 4,
+      "y": 1,
+      "cost": 15.0
+    },
+    {
+      "type": "SolarArray",
+      "x": 2,
+      "y": 5,
+      "cost": 10.0
+    }
+  ],
+  "events": [
+    {
+      "hour": 15.0,
+      "kind": "SupplyDrop",
+      "strength": 1.0,
+      "durationHours": 0.0,
+      "amount": 40,
+      "Kind": 3
+    },
+    {
+      "hour": 34.0,
+      "kind": "SupplyDrop",
+      "strength": 1.0,
+      "durationHours": 0.0,
+      "amount": 35,
+      "Kind": 3
+    },
+    {
+      "hour": 56.0,
+      "kind": "Shadow",
+      "strength": 1.0,
+      "durationHours": 0.0,
+      "amount": 0,
+      "Kind": 0
+    },
+    {
+      "hour": 56.0,
+      "kind": "SupplyDrop",
+      "strength": 1.0,
+      "durationHours": 0.0,
+      "amount": 30,
+      "Kind": 3
+    },
+    {
+      "hour": 74.0,
+      "kind": "SupplyDrop",
+      "strength": 1.0,
+      "durationHours": 0.0,
+      "amount": 35,
+      "Kind": 3
+    },
+    {
+      "hour": 92.0,
+      "kind": "SupplyDrop",
+      "strength": 1.0,
+      "durationHours": 0.0,
+      "amount": 40,
+      "Kind": 3
+    },
+    {
+      "hour": 95.0,
+      "kind": "SolarStorm",
+      "strength": 0.95,
+      "durationHours": 0.0,
+      "amount": 0,
+      "Kind": 1
+    },
+    {
+      "hour": 114.0,
+      "kind": "SupplyDrop",
+      "strength": 1.0,
+      "durationHours": 0.0,
+      "amount": 40,
+      "Kind": 3
+    }
+  ]
+}

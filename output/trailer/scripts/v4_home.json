@@ -1,0 +1,1 @@
+[{"action": "js", "code": "document.querySelector('#unity-canvas').getContext('webgl2').getContextAttributes()"}, {"action": "record-start"}, {"action": "wait", "seconds": 2}, {"action": "record-stop", "name": "home"}, {"action": "screenshot", "name": "v4-home"}]

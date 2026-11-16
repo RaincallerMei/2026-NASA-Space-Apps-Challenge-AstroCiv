@@ -339,6 +339,36 @@ namespace Mapmakers.Game
             PlayerPrefs.Save();
         }
 
+        // Science facts the player has found. Each fact pops up once; the Wiki keeps all of them.
+        public static bool FactSeen(string factId) => PlayerPrefs.GetInt(Prefix + "fact." + factId, 0) == 1;
+
+        public static void MarkFactSeen(string factId)
+        {
+            PlayerPrefs.SetInt(Prefix + "fact." + factId, 1);
+            PlayerPrefs.Save();
+        }
+
+        public static int FactsFound()
+        {
+            int found = 0;
+            foreach (var card in StoryData.Load().cards)
+                if (FactSeen(card.id)) found++;
+            return found;
+        }
+
+        // How many facts were found when the Science Facts collection was last opened. More than that means "New!".
+        public static int FactsLookedAt
+        {
+            get => PlayerPrefs.GetInt(Prefix + "factslooked", 0);
+            set { PlayerPrefs.SetInt(Prefix + "factslooked", value); PlayerPrefs.Save(); }
+        }
+
+        public static bool FactCardsOn
+        {
+            get => PlayerPrefs.GetInt(Prefix + "factcards", 1) == 1;
+            set { PlayerPrefs.SetInt(Prefix + "factcards", value ? 1 : 0); PlayerPrefs.Save(); }
+        }
+
         public static bool SuggestionsOn
         {
             get => PlayerPrefs.GetInt(Prefix + "suggest", 1) == 1;

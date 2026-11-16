@@ -133,6 +133,22 @@ namespace Mapmakers.Tests
             Assert.AreEqual(0.0, run.State.timeHours);
         }
 
+        // The screen hears about a new building at once, even with time stopped, so its science fact can pop up.
+        [Test]
+        public void Placing_SendsItsEventToTheScreen_EvenWhilePaused()
+        {
+            var run = MissionRun.ForLevel(LevelCatalog.Load().Level("L2"));
+            run.StartMission();
+            run.TakeEvents();
+            run.Choose(BuildingType.Habitat);
+            Assert.IsTrue(run.Place(8, 5).Ok);
+            var events = run.TakeEvents();
+            Assert.IsTrue(events.Exists(e => e.code == "placed_Habitat"), "placed_Habitat reaches the screen");
+            run.clock.SetPaused(false);
+            run.Tick(1);
+            Assert.IsFalse(run.TakeEvents().Exists(e => e.code == "placed_Habitat"), "and only once");
+        }
+
         // Pause and plan: after time has run, new buildings still change the rates, power flags and alerts at once.
         [Test]
         public void PausedAfterRunning_RatesFollowNewBuildings()

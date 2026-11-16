@@ -93,7 +93,7 @@ namespace Mapmakers.UI
         static void BuildNotes(RectTransform root, MissionResult r)
         {
             var box = UIKit.Panel(root, Palette.Panel, "Notes");
-            box.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(250, -130), new Vector2(940, 320));
+            box.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(250, -160), new Vector2(940, 380));
             var text = new System.Text.StringBuilder();
             if (r.Failed) text.Append(r.headline).Append(' ').Append(r.cause).Append('\n');
             foreach (var note in r.notes) text.Append(note).Append('\n');
@@ -104,6 +104,17 @@ namespace Mapmakers.UI
             if (!string.IsNullOrEmpty(r.science))
                 UIKit.Label(box.transform, "Science: " + r.science, 22, Palette.Cyan, TextAnchor.UpperLeft, FontStyle.Italic)
                     .rectTransform.TopLeft(36, 260, 870, 50);
+            var study = RandomStudy();
+            if (study != null)
+                UIKit.Label(box.transform, "Real NASA science: " + study.kidLine + "\n<size=18><color=#8A9BB5>NASA OSDR " + study.accession + ", " + study.url + "</color></size>",
+                    22, Palette.Hull, TextAnchor.UpperLeft).rectTransform.TopLeft(36, 308, 870, 64);
+        }
+
+        // One real study from NASA's Open Science Data Repository, different from run to run.
+        static OsdrCard RandomStudy()
+        {
+            var cards = FixtureLoader.Osdr().cards;
+            return cards == null || cards.Length == 0 ? null : cards[Random.Range(0, cards.Length)];
         }
 
         // Tips always use the same big yellow banner as in the game.

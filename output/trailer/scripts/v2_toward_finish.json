@@ -1,0 +1,1 @@
+[{"action": "click", "x": 0.068, "y": 0.735, "after": 0.7}, {"action": "click", "x": 0.21, "y": 0.38, "after": 0.5}, {"action": "click", "x": 0.728, "y": 0.045, "after": 0.5}, {"action": "wait", "seconds": 6}, {"action": "screenshot", "name": "v2-sunrise"}]

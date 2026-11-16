@@ -11,8 +11,8 @@ namespace Mapmakers.UI
     public sealed class MenuScreen : MonoBehaviour
     {
         public const string CreditsText =
-            "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA and MGS/MOLA (PDS), CSA. Not endorsed by NASA or CSA.\n" +
-            "CSA content © Canadian Space Agency.\n\n" +
+            "Data: NASA DONKI, NASA OSDR (studies and RadLab), NASA POWER, LRO/LOLA and MGS/MOLA (PDS), CSA. Not endorsed by NASA or CSA.\n" +
+            "CSA content © Canadian Space Agency. Science fact sources: Wiki > Science.\n\n" +
             "All game art is AI-created for this project:\n" +
             "story pictures, AstroCivilization pixel sprites and code-drawn shapes.\n\n" +
             "Power, cost and safety numbers are made up for the game.\n" +
@@ -75,6 +75,7 @@ namespace Mapmakers.UI
 
             MenuButton(panel, "Story Mode", -430, () => Show("story"), Palette.Azure);
             MenuButton(panel, "Free Build", -530, () => Show("free"), Palette.Azure);
+            MenuButton(panel, "Science Facts  " + Progress.FactsFound() + "/" + StoryData.Load().cards.Length, -630, () => Wiki.OpenFacts(null, true), Palette.PanelLight);
 
             var foot = UIKit.Label(panel, "Not endorsed by NASA or CSA.", 20, Palette.Muted, TextAnchor.MiddleCenter);
             foot.rectTransform.Anchor(new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 40), new Vector2(800, 30));

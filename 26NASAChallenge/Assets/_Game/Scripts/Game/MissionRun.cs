@@ -58,6 +58,26 @@ namespace Mapmakers.Game
         public string Title => mode == GameMode.Free ? "Free Build · " + Planet.name : level.title;
         public string Subtitle => mode == GameMode.Free ? "Map #" + free.seed + " · " + free.difficulty : level.subtitle;
         public double Duration => sim.DurationHours;
+
+        // The real DONKI storm behind the current (or last) storm. Story levels use the May 2024 event;
+        // Free Build picks one per storm from the storm set, so each storm is a different real event.
+        public DonkiStorm RealStorm
+        {
+            get
+            {
+                if (mode != GameMode.Free) return FixtureLoader.Donki().Storm;
+                return FixtureLoader.StormSet().Pick(free.seed, Math.Max(0, State.stormsStarted - 1)) ?? FixtureLoader.Donki().Storm;
+            }
+        }
+
+        // Real numbers that science facts can quote.
+        public Dictionary<string, string> FactValues()
+        {
+            var values = new Dictionary<string, string>();
+            RealStorm.AddValues(values);
+            FixtureLoader.Radlab().AddValues(values);
+            return values;
+        }
         public double TimeLeft => Math.Max(0, Duration - State.timeHours);
 
         MissionRun(GameMode mode, LevelDef level, FreeSettings free, Simulator sim, string[] goals)
@@ -356,8 +376,11 @@ namespace Mapmakers.Game
         {
             if (!BuildChoice.HasValue || Ended) return PlacementResult.Fail(PlacementReason.Locked, "Pick a building first.");
             var type = BuildChoice.Value;
+            int before = State.events.Count;
             var placed = sim.Place(State, type, x, y);
             if (!placed.Ok) return placed;
+            // Placing happens between time steps, so its event is passed on here (the screen offers its science fact).
+            for (int i = before; i < State.events.Count; i++) newEvents.Add(State.events[i]);
             if (!CanBuild(type, out _)) BuildChoice = null;
             if (IsDrawing && State.Count(BuildingType.Greenhouse) > 0 && !Goals.PowerPositive(sim, State)) ShowHint("h_power", true);
             else if (!IsDrawing) ShowNextHint(type);

@@ -182,6 +182,103 @@ def fetch_donki():
                           }))
 
 
+# ---------------------------------------------------------------- DONKI storm set (Free Build)
+
+STORM_SCAN = ("2021-01-01", "2025-12-31")
+STORM_COUNT = 8
+
+
+def donki_ccmc(kind, start, end):
+    """CCMC DONKI web service (no key). It allows at most 60 days per request."""
+    url = CCMC.format(kind=kind, start=start, end=end)
+    status, body = try_get("DONKI " + kind, url)
+    if body is None:
+        raise RuntimeError(f"DONKI {kind} {start}: {status}")
+    return url, json.loads(body) if body.strip() else []
+
+
+def flare_size(class_type):
+    scale = {"A": 0.001, "B": 0.01, "C": 0.1, "M": 1, "X": 10}
+    try:
+        return scale[class_type[0]] * float(class_type[1:])
+    except (KeyError, ValueError, IndexError):
+        return 0
+
+
+def linked_ids(event, tag):
+    return [e["activityID"] for e in event.get("linkedEvents") or [] if tag in e["activityID"]]
+
+
+def fetch_donki_storms():
+    """X-class flares that DONKI links to a CME and to particle (SEP) detections.
+    Keeps the strongest flare from each active region, then the STORM_COUNT strongest of those."""
+    filename = "donki_storm_set.json"
+    scan_url = CCMC.format(kind="FLR", start=STORM_SCAN[0], end=STORM_SCAN[1]) + " (in 60-day windows)"
+    try:
+        flares, day, last = [], datetime.date.fromisoformat(STORM_SCAN[0]), datetime.date.fromisoformat(STORM_SCAN[1])
+        while day <= last:
+            end = min(day + datetime.timedelta(days=59), last)
+            flares += donki_ccmc("FLR", day, end)[1]
+            day = end + datetime.timedelta(days=1)
+        record("DONKI FLR scan via CCMC", scan_url, 200, filename, "NASA-derived", "event metadata", f"{len(flares)} flares")
+
+        best = {}
+        for f in flares:
+            if not (f.get("classType") or "").startswith("X") or not linked_ids(f, "CME") or not linked_ids(f, "SEP"):
+                continue
+            region = f.get("activeRegionNum") or f["flrID"]
+            if region not in best or flare_size(f["classType"]) > flare_size(best[region]["classType"]):
+                best[region] = f
+        picks = sorted(best.values(), key=lambda f: -flare_size(f["classType"]))[:STORM_COUNT]
+
+        storms, urls = [], []
+        for f in picks:
+            peak = datetime.datetime.fromisoformat(f["peakTime"].replace("Z", "+00:00"))
+            start, end = (peak - datetime.timedelta(days=1)).date(), (peak + datetime.timedelta(days=4)).date()
+            url, cmes = donki_ccmc("CME", start, end); urls.append(url)
+            _, seps = donki_ccmc("SEP", start, end)
+            _, gsts = donki_ccmc("GST", start, end)
+            cme = next(c for c in cmes if c["activityID"] in linked_ids(f, "CME"))
+            analyses = cme.get("cmeAnalyses") or []
+            analysis = next((a for a in analyses if a.get("isMostAccurate")), analyses[0] if analyses else {})
+            sep_list = sorted((s for s in seps if s["sepID"] in linked_ids(f, "SEP")), key=lambda s: s["eventTime"])
+            gst_ids = linked_ids(cme, "GST")
+            gst = next((g for g in gsts if g["gstID"] in gst_ids), None)
+            top = max(gst["allKpIndex"], key=lambda k: k["kpIndex"]) if gst and gst.get("allKpIndex") else None
+            storms.append({
+                "flare": {"id": f["flrID"], "classType": f["classType"], "beginTime": f["beginTime"],
+                          "peakTime": f["peakTime"], "endTime": f.get("endTime") or "",
+                          "sourceLocation": f.get("sourceLocation") or "",
+                          "activeRegionNum": int(f.get("activeRegionNum") or 0), "link": f.get("link") or ""},
+                "cme": {"id": cme["activityID"], "startTime": cme["startTime"],
+                        "speedKmS": float(analysis.get("speed") or 0), "link": cme.get("link") or ""},
+                "sep": [{"id": s["sepID"], "eventTime": s["eventTime"],
+                         "instrument": ", ".join(i["displayName"] for i in s.get("instruments") or []),
+                         "link": s.get("link") or ""} for s in sep_list],
+                "gst": {"id": gst["gstID"] if gst else "", "startTime": gst["startTime"] if gst else "",
+                        "maxKp": float(top["kpIndex"]) if top else 0, "maxKpTime": top["observedTime"] if top else "",
+                        "link": (gst.get("link") or "") if gst else "",
+                        "note": "Earth geomagnetic storm index linked to this CME, if DONKI lists one. Never a Moon dose."}
+            })
+        write_json(filename, {
+            "source": "NASA CCMC DONKI (Space Weather Database Of Notifications, Knowledge, Information)",
+            "query_url": scan_url + " ; then CME, SEP and GST around each flare: " + " ; ".join(urls),
+            "retrieved_utc": NOW,
+            "units": "times in UTC; flare class = GOES X-ray class; CME speed in km/s; Kp index (0-9)",
+            "license_note": NASA_NOTE,
+            "classification": "NASA-derived",
+            "selection_note": (f"X-class flares from {STORM_SCAN[0]} to {STORM_SCAN[1]} that DONKI links to a CME and to "
+                               "solar energetic particle (SEP) detections. Strongest flare per active region, then the "
+                               f"{STORM_COUNT} strongest. Free Build picks one per storm. Game timing and crew effects are fictional."),
+            "storms": storms})
+        record("DONKI storm set", scan_url, 200, filename, "NASA-derived", "event metadata", f"{len(storms)} storms")
+    except Exception as error:
+        if existing_is_real(filename):
+            record("DONKI storm set", scan_url, type(error).__name__, filename, "kept earlier real fixture", "event metadata", str(error))
+        else:
+            raise
+
+
 # ---------------------------------------------------------------- RadLab (ISS dosimetry)
 
 RADLAB = ("https://visualization.osdr.nasa.gov/radlab/api/?spacecraft=ISS&instrument=DosTel"
@@ -378,6 +475,10 @@ OSDR_PICKS = [
     ("OSD-7", "plants", "Roots and shoots of a plant react differently to spaceflight."),
     ("OSD-342", "health", "Mice on the station helped study muscle and bone loss."),
     ("OSD-401", "health", "Mouse leg muscles change as they adapt to space."),
+    ("OSD-366", "radiation", "Cosmic-ray-like radiation broke mouse DNA. Mice from 15 families reacted differently."),
+    ("OSD-658", "radiation", "Plant seedlings hit by space-like radiation switched on their DNA repair."),
+    ("OSD-479", "radiation", "Scientists studied how deep space radiation affects thinking, using mice."),
+    ("OSD-984", "radiation", "Space-like radiation and weightless-like rest had long-term effects on mouse muscles."),
 ]
 
 
@@ -394,8 +495,10 @@ def fetch_osdr():
         if match is None:
             continue
         organism = match.get("organism") or ""
+        where = match.get("Flight Program") or match.get("Project Type") or ""
         cards.append({"accession": accession, "topic": topic, "title": match.get("Study Title", "").strip(),
                       "kidLine": kid_line, "organism": organism if isinstance(organism, str) else ", ".join(organism),
+                      "where": where if isinstance(where, str) else ", ".join(where),
                       "url": OSDR_STUDY + accession})
     if len(cards) < 6:
         keep_or_synthetic(filename, "OSDR study cards", last_url, last_status, "text", lambda: write_json(filename, {
@@ -409,7 +512,8 @@ def fetch_osdr():
         "query_url": OSDR_SEARCH + "<accession>", "retrieved_utc": NOW, "units": "text (study titles)",
         "license_note": NASA_NOTE + " Study titles belong to their authors; cards link to the study page. See OSDR terms of use.",
         "classification": "NASA-derived",
-        "note": "Titles are copied from OSDR. Kid lines are simplified summaries of the title only.",
+        "note": ("Titles are copied from OSDR. Kid lines are simplified summaries of the title only. "
+                 "'where' is the OSDR flight program or project type; Ground Study radiation is made on Earth."),
         "cards": cards})
     record("OSDR study cards", OSDR_SEARCH + "<accession>", last_status, filename, "NASA-derived", "text", f"{len(cards)} studies")
 
@@ -471,14 +575,18 @@ def write_report():
     for e in LOG:
         lines.append(f"| {e['name']} | `{e['query_url']}` | {e['status']} | {e['date']} | {e['units']} | {e['fixture']} | {e['classification']} | {e['note']} |")
     path = os.path.join(ROOT, "tools", "fetch_log.md")
-    with open(path, "w", encoding="utf-8", newline="\n") as handle:
-        handle.write("# Fetch log (written by tools/fetch_data.py)\n\n" + "\n".join(lines) + "\n")
+    # Each run adds its own section, so a partial run never erases the record of an earlier one.
+    fresh = not os.path.exists(path)
+    with open(path, "a", encoding="utf-8", newline="\n") as handle:
+        if fresh:
+            handle.write("# Fetch log (written by tools/fetch_data.py)\n")
+        handle.write(f"\n## Run {NOW}: {', '.join(sys.argv[1:]) or 'all steps'}\n\n" + "\n".join(lines) + "\n")
     print("Wrote", os.path.relpath(path, ROOT))
 
 
 def main():
     print("Fetching fixtures. Key source:", "NASA_API_KEY (environment)" if os.environ.get("NASA_API_KEY") else "DEMO_KEY")
-    steps = (fetch_donki, fetch_radlab, fetch_lola, fetch_mola_jezero, fetch_power, fetch_osdr, fetch_csa)
+    steps = (fetch_donki, fetch_donki_storms, fetch_radlab, fetch_lola, fetch_mola_jezero, fetch_power, fetch_osdr, fetch_csa)
     only = sys.argv[1:]
     for step in steps:
         if not only or step.__name__ in only:

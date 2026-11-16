@@ -53,6 +53,9 @@ namespace Mapmakers.Tests
             yield return "mapmakers.suggest";
             yield return "mapmakers.music";
             yield return "mapmakers.sounds";
+            yield return "mapmakers.factcards";
+            yield return "mapmakers.factslooked";
+            foreach (var card in StoryData.Load().cards) yield return "mapmakers.fact." + card.id;
         }
 
         [SetUp]

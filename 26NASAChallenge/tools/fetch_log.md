@@ -13,3 +13,11 @@
 | NASA POWER Mississauga | `https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=ALLSKY_SFC_SW_DWN&community=RE&latitude=43.59&longitude=-79.64&format=JSON` | 200 | 2026-11-14T15:51:58Z | kW-hr/m^2/day | power_mississauga.json | NASA-derived | monthly climatology |
 | OSDR study cards | `https://osdr.nasa.gov/osdr/data/search?type=cgene&size=5&term=<accession>` | 200 | 2026-11-14T15:51:58Z | text | osdr_cards.json | NASA-derived | 8 studies |
 | CSA food cards | `https://www.asc-csa.gc.ca/eng/youth-educators/toolkits/food-production/` | 200 | 2026-11-14T15:51:58Z | text | csa_food_cards.json | CSA-derived | 3 pages |
+
+## Run 2026-11-16T02:05:09Z: fetch_donki_storms, fetch_osdr
+
+| Source | Query URL (key removed) | HTTP status | Date (UTC) | Units | Fixture | Classification | Note |
+|---|---|---|---|---|---|---|---|
+| DONKI FLR scan via CCMC | `https://ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=2021-01-01&endDate=2025-12-31 (in 60-day windows)` | 200 | 2026-11-16T02:05:09Z | event metadata | donki_storm_set.json | NASA-derived | 2476 flares |
+| DONKI storm set | `https://ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?startDate=2021-01-01&endDate=2025-12-31 (in 60-day windows)` | 200 | 2026-11-16T02:05:09Z | event metadata | donki_storm_set.json | NASA-derived | 8 storms |
+| OSDR study cards | `https://osdr.nasa.gov/osdr/data/search?type=cgene&size=5&term=<accession>` | 200 | 2026-11-16T02:05:09Z | text | osdr_cards.json | NASA-derived | 12 studies |

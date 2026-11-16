@@ -37,7 +37,7 @@ namespace Mapmakers.Tests
                 Assert.Contains(header.classification, FixtureLoader.Classifications);
                 if (!header.IsSynthetic) Assert.IsFalse(string.IsNullOrEmpty(header.query_url), "real data needs a query_url");
             }
-            Assert.AreEqual(7, count);
+            Assert.AreEqual(8, count);
         }
 
         [Test]
@@ -190,6 +190,197 @@ namespace Mapmakers.Tests
             Assert.AreEqual("Now we are building it together.", story.Story("e_msg2"));
             StringAssert.Contains("hangs low", story.Story("e_earth"));
             foreach (var line in story.story) StringAssert.DoesNotContain("Earthrise", line.text);
+        }
+
+        // ---------- science facts ----------
+
+        static readonly string[] FactTriggers =
+        {
+            "placed_Habitat", "placed_SolarArray", "placed_Battery", "placed_LifeSupport", "placed_Communications",
+            "placed_Greenhouse", "placed_Shelter", "placed_RoverGarage",
+            "first_harvest", "supply_drop", "shadow_start", "fault", "storm_warning", "storm_onset", "storm_over", "sunrise_start"
+        };
+
+        static Dictionary<string, string> StoryValues()
+        {
+            var values = new Dictionary<string, string>();
+            FixtureLoader.Donki().Storm.AddValues(values);
+            FixtureLoader.Radlab().AddValues(values);
+            return values;
+        }
+
+        [Test]
+        public void ScienceFacts_AreShort_Sourced_AndFiledInTheWiki()
+        {
+            var story = StoryData.Load();
+            var help = HelpData.Load();
+            var values = StoryValues();
+            Assert.GreaterOrEqual(story.cards.Length, 20);
+            foreach (var card in story.cards)
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(card.source), card.id + " source");
+                StringAssert.StartsWith("https://", card.url, card.id + " url");
+                Assert.IsFalse(string.IsNullOrEmpty(card.label), card.id + " label");
+                Assert.Contains(card.planet, new[] { "", "Moon", "Mars" }, card.id);
+                if (!string.IsNullOrEmpty(card.crew)) Assert.IsNotNull(story.Crew(card.crew), card.id + " crew");
+                if (!string.IsNullOrEmpty(card.trigger)) Assert.Contains(card.trigger, FactTriggers, card.id + " trigger");
+                var page = help.Page(card.wiki);
+                Assert.IsNotNull(page, card.id + " wiki page");
+                Assert.AreEqual("Science", page.section, card.id);
+                foreach (var line in new[] { card.text, card.text2 })
+                {
+                    string filled = StoryData.Fill(line, values);
+                    Assert.IsNotNull(filled, card.id + " has a value for every {word} in Story Mode");
+                    Assert.LessOrEqual(StoryData.WordCount(filled), StoryData.MaxChatLineWords, card.id + ": " + filled);
+                }
+            }
+            CollectionAssert.AllItemsAreUnique(System.Array.ConvertAll(story.cards, c => c.id));
+        }
+
+        // The Science Facts collection shows a hint for each fact not found yet. The hint must name the real way to find it.
+        [Test]
+        public void ScienceFactHints_NameTheRealEventAndPlace()
+        {
+            var story = StoryData.Load();
+            var balance = BalanceLoader.Load();
+            var sunriseLevels = LevelCatalog.Load().levels.Where(l => l.events.Any(e => e.kind == "Sunrise")).ToList();
+            Assert.AreEqual(1, sunriseLevels.Count, "sunrise happens in one level");
+            foreach (var card in story.cards)
+            {
+                string hint = card.hint;
+                Assert.IsFalse(string.IsNullOrEmpty(hint), card.id + " hint");
+                Assert.LessOrEqual(StoryData.WordCount(hint), StoryData.MaxChatLineWords, card.id + ": " + hint);
+                if (card.planet == "") Assert.IsFalse(hint.Contains("Moon") || hint.Contains("Mars"), card.id + " works on both planets: " + hint);
+                else StringAssert.Contains(card.planet, hint, card.id);
+                if (card.trigger.StartsWith("placed_"))
+                {
+                    var type = (BuildingType)System.Enum.Parse(typeof(BuildingType), card.trigger.Substring("placed_".Length));
+                    StringAssert.Contains(balance.Def(type).displayName, hint, card.id);
+                }
+                if (card.trigger == "fault") StringAssert.Contains("Free Build on Normal or Hard", hint, "space rocks never come on Easy or in Story Mode");
+                if (card.trigger == "sunrise_start") StringAssert.Contains(sunriseLevels[0].title, hint, card.id);
+                if (card.trigger == "") StringAssert.Contains("Why plants?", hint, card.id + " is only shown by the first-harvest button");
+            }
+            // One fact per event: a second fact for the same event needs that event a second time.
+            foreach (string planet in new[] { "Moon", "Mars" })
+                foreach (string trigger in FactTriggers)
+                {
+                    var facts = story.Facts(trigger, planet);
+                    for (int i = 0; i < facts.Count; i++)
+                        Assert.AreEqual(i > 0, facts[i].hint.Contains("second"), facts[i].id + " on " + planet + ": " + facts[i].hint);
+                }
+        }
+
+        [Test]
+        public void ScienceFacts_EachRealEventHasOne_AndMostPlanetsGetTheirOwn()
+        {
+            var story = StoryData.Load();
+            foreach (var trigger in FactTriggers)
+                Assert.Greater(story.Facts(trigger, "Moon").Count + story.Facts(trigger, "Mars").Count, 0, trigger);
+            foreach (var trigger in new[] { "placed_SolarArray", "placed_Battery", "placed_LifeSupport", "placed_RoverGarage", "shadow_start" })
+            {
+                Assert.IsNotEmpty(story.Facts(trigger, "Moon"), trigger + " on the Moon");
+                Assert.IsNotEmpty(story.Facts(trigger, "Mars"), trigger + " on Mars");
+                Assert.AreNotEqual(story.Facts(trigger, "Moon")[0].id, story.Facts(trigger, "Mars")[0].id, trigger);
+            }
+            Assert.AreEqual(0, story.Facts("sunrise_start", "Mars").Count, "Mars has no scripted sunrise");
+        }
+
+        // Each fact trigger must be an event code the simulation really logs.
+        [Test]
+        public void ScienceFactTriggers_AreEventsTheSimulatorLogs()
+        {
+            var sim = SimTestKit.Timed(60,
+                ScheduledEvent.Make(2, EventKind.Shadow, 0.8),
+                ScheduledEvent.Make(3, EventKind.Fault, 1, 0),
+                ScheduledEvent.Make(5, EventKind.SupplyDrop, 1, 10),
+                ScheduledEvent.Make(12, EventKind.SolarStorm),
+                ScheduledEvent.Make(40, EventKind.Sunrise));
+            sim.canFail = false;
+            var s = SimTestKit.FullBase(sim, 5);
+            SimTestKit.Put(sim, s, BuildingType.Shelter, 0, 9);
+            SimTestKit.Put(sim, s, BuildingType.RoverGarage, 6, 9);
+            var codes = new HashSet<string>();
+            foreach (var e in s.events) codes.Add(e.code);
+            while (!s.Finished && s.timeHours < 59)
+            {
+                s = sim.Step(s);
+                foreach (var e in s.events) codes.Add(e.code);
+            }
+            foreach (var trigger in FactTriggers) Assert.IsTrue(codes.Contains(trigger), trigger + " never logged. Logged: " + string.Join(", ", codes));
+        }
+
+        [Test]
+        public void StormSet_HoldsDifferentRealXFlares_WithLinkedCloudsAndParticles()
+        {
+            var set = FixtureLoader.StormSet();
+            Assert.AreEqual("NASA-derived", set.classification);
+            Assert.That(set.storms.Length, Is.InRange(5, 10));
+            var ids = new HashSet<string>();
+            foreach (var storm in set.storms)
+            {
+                Assert.IsTrue(ids.Add(storm.flare.id), "duplicate " + storm.flare.id);
+                StringAssert.StartsWith("X", storm.flare.classType);
+                Assert.Greater(storm.cme.speedKmS, 0f, storm.flare.id);
+                Assert.GreaterOrEqual(storm.sep.Length, 1, storm.flare.id);
+                var values = new Dictionary<string, string>();
+                storm.AddValues(values);
+                foreach (var key in new[] { "flare", "date", "speed", "moonMinutes", "sepDelay" })
+                    Assert.IsTrue(values.ContainsKey(key), storm.flare.id + " " + key);
+            }
+            Assert.AreSame(set.Pick(42, 0), set.Pick(42, 0), "same seed, same storm");
+
+            // c_sep quotes the range of particle delays in this set: "16 minutes to almost 3 days".
+            StringAssert.Contains("16 minutes to almost 3 days", StoryData.Load().Card("c_sep").text2);
+            double shortest = double.MaxValue, longest = 0;
+            foreach (var storm in set.storms)
+            {
+                var peak = System.DateTime.Parse(storm.flare.peakTime, null, System.Globalization.DateTimeStyles.AdjustToUniversal);
+                double first = double.MaxValue;
+                foreach (var sep in storm.sep)
+                {
+                    double minutes = (System.DateTime.Parse(sep.eventTime, null, System.Globalization.DateTimeStyles.AdjustToUniversal) - peak).TotalMinutes;
+                    if (minutes >= 0) first = System.Math.Min(first, minutes);
+                }
+                shortest = System.Math.Min(shortest, first);
+                longest = System.Math.Max(longest, first);
+            }
+            Assert.AreEqual(16, shortest, 0.5);
+            Assert.That(longest / 1440, Is.InRange(2.0, 3.0));
+            var seen = new HashSet<DonkiStorm>();
+            for (int seed = 0; seed < 50; seed++) seen.Add(set.Pick(seed, 0));
+            Assert.Greater(seen.Count, 3, "different maps meet different real storms");
+        }
+
+        [Test]
+        public void StoryStorm_MatchesTheSavedMay2024Event()
+        {
+            var values = new Dictionary<string, string>();
+            FixtureLoader.Donki().Storm.AddValues(values);
+            Assert.AreEqual("X5.8", values["flare"]);
+            Assert.AreEqual("1263", values["speed"]);
+            Assert.AreEqual("5", values["moonMinutes"], "384,400 km / 1263 km/s is about 5 minutes");
+            Assert.AreEqual("47 minutes", values["sepDelay"], "flare peak 01:23 UTC, first particles 02:10 UTC");
+        }
+
+        [Test]
+        public void Fill_ReturnsNull_WhenRealDataIsMissing()
+        {
+            var values = new Dictionary<string, string> { { "speed", "900" } };
+            Assert.AreEqual("900 km/s", StoryData.Fill("{speed} km/s", values));
+            Assert.IsNull(StoryData.Fill("Kp {kp}", values));
+        }
+
+        [Test]
+        public void Osdr_HasRadiationStudies_ThatSayWhereTheyRan()
+        {
+            var cards = FixtureLoader.Osdr().cards;
+            Assert.GreaterOrEqual(System.Array.FindAll(cards, c => c.topic == "radiation").Length, 3);
+            foreach (var card in cards)
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(card.where), card.accession);
+                Assert.LessOrEqual(StoryData.WordCount(card.kidLine), StoryData.MaxChatLineWords, card.accession);
+            }
         }
     }
 }

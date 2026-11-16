@@ -1,86 +1,134 @@
 {
   "file": "AstroCiv_Trailer_28s.mp4",
   "durationSeconds": 28.0,
+  "frames": 840,
   "width": 1280,
   "height": 720,
   "fps": 30,
-  "frames": 840,
   "videoCodec": "H.264",
   "audioCodec": "AAC",
+  "bytes": 3641006,
+  "audioMeanDb": -20.7,
+  "audioPeakDb": -5.6,
+  "shots": [
+    {
+      "file": "v2_moon_hero.webm",
+      "start": 0,
+      "duration": 1.2,
+      "name": "moon",
+      "headline": "WANT TO EXPLORE THE MOON & MARS?",
+      "sub": "AstroCiv puts young explorers in command.",
+      "timelineStart": 0
+    },
+    {
+      "file": "v2_mars.webm",
+      "start": 0,
+      "duration": 1.2,
+      "name": "mars",
+      "crop": "668:430:306:165",
+      "headline": "WANT TO EXPLORE THE MOON & MARS?",
+      "sub": "AstroCiv puts young explorers in command.",
+      "timelineStart": 1.2
+    },
+    {
+      "file": "v2_building.webm",
+      "start": 0.25,
+      "duration": 4.2,
+      "speed": 1.7,
+      "name": "build",
+      "headline": "BUILD A HOME BEYOND EARTH.",
+      "sub": "Power. Air. Water. Food. Every choice connects.",
+      "timelineStart": 2.4
+    },
+    {
+      "file": "v2_science_sun.webm",
+      "start": 0.2,
+      "duration": 3.4,
+      "name": "science",
+      "crop": "580:340:350:190",
+      "headline": "REAL NASA DATA. SMARTER DECISIONS.",
+      "sub": "Discover how sunlight changes the way you build.",
+      "timelineStart": 6.6
+    },
+    {
+      "file": "v2_greenhouse.webm",
+      "start": 0,
+      "duration": 2.8,
+      "name": "harvest",
+      "headline": "GROW FOOD. KEEP YOUR CREW GOING.",
+      "sub": "Learn the science by using it.",
+      "timelineStart": 10.0
+    },
+    {
+      "file": "v2_storm_warning.webm",
+      "start": 0,
+      "duration": 3.4,
+      "name": "warning",
+      "headline": "SOLAR STORM. YOUR CREW NEEDS YOU.",
+      "sub": "A real NASA event inspires the challenge. Game timing is simplified.",
+      "timelineStart": 12.8
+    },
+    {
+      "file": "v2_storm_response.webm",
+      "start": 1.5,
+      "duration": 2.4,
+      "name": "response",
+      "speed": 1.6,
+      "headline": "PROTECT PEOPLE. THINK AHEAD.",
+      "sub": "Recall your geologist. Power the shelter.",
+      "timelineStart": 16.2
+    },
+    {
+      "file": "v2_storm_report.webm",
+      "start": 0.15,
+      "duration": 2.8,
+      "name": "achievement",
+      "headline": "BUILD. TEST. EARN YOUR MOMENT.",
+      "sub": "S grade. 98/100. Three stars. Crew safe.",
+      "timelineStart": 18.6
+    },
+    {
+      "file": "v2_earth_ending.webm",
+      "start": 0,
+      "duration": 3,
+      "name": "future",
+      "headline": "BIG DREAMS START IN ONTARIO.",
+      "sub": "Practise the problem-solving our future needs.",
+      "timelineStart": 21.4
+    },
+    {
+      "file": "v2_earth_ending.webm",
+      "start": 0,
+      "duration": 3.6,
+      "name": "closing",
+      "closing": true,
+      "timelineStart": 24.4
+    }
+  ],
+  "provenance": "Recreated trailer: actual Unity WebGL game recordings, edited by OpenAI Codex and FFmpeg. Game art is AI-created. Music Starry Twinkles by raincalleer, generated with Suno, song f5182621-6979-42be-864b-69517b18be60. No synthetic gameplay video. Mission selection unlocked in an isolated capture profile; native starter base used for the storm. Shown S 98/100 result was earned by playing the Solar Storm mission; no score was edited. Gameplay excerpts are shortened and may be sped up. NASA/CSA data is simplified for education.",
   "musicFile": "Art\\BGM\\Starry Twinkles.mp3",
   "musicExcerptSeconds": [
     18,
     46
   ],
   "musicSourceSha256": "cd7ecf671e316426f5f42beddd7c8e48e0ae819ed8167085431aae5b296f80a4",
-  "musicMeanDb": -20.7,
-  "musicPeakDb": -5.7,
-  "shots": [
-    {
-      "file": "01_menu.webm",
-      "start": 0,
-      "seconds": 3,
-      "caption": "YOUR CREW. YOUR CALL.",
-      "name": "menu",
-      "timelineStart": 0
-    },
-    {
-      "file": "05_launch.webm",
-      "start": 0,
-      "seconds": 4,
-      "caption": "A DREAM BECOMES A MISSION.",
-      "name": "launch",
-      "timelineStart": 3
-    },
-    {
-      "file": "02_building.webm",
-      "start": 0.15,
-      "seconds": 6,
-      "caption": "BUILD A HOME BEYOND EARTH.",
-      "name": "build",
-      "timelineStart": 7
-    },
-    {
-      "file": "04_crew.webm",
-      "start": 0,
-      "seconds": 5,
-      "caption": "EVERY BUILDING SUPPORTS SOMEONE.",
-      "name": "crew",
-      "timelineStart": 13
-    },
-    {
-      "file": "06_mission.webm",
-      "start": 0,
-      "seconds": 6,
-      "caption": "BALANCE RESOURCES. PLAN AHEAD.",
-      "name": "mission",
-      "timelineStart": 18
-    },
-    {
-      "name": "closing title",
-      "timelineStart": 24,
-      "seconds": 4
-    }
-  ],
-  "provenance": "Actual Unity WebGL gameplay captured with Chrome canvas MediaRecorder; AI-assisted shot selection and editing by OpenAI Codex. Game art is AI-created. Music: Starry Twinkles by raincalleer, generated with Suno, song f5182621-6979-42be-864b-69517b18be60. No synthetic gameplay footage.",
-  "status": "local draft; not uploaded or submitted",
-  "videoSha256": "d662021dc5bd1c9efb050912208dfcadc68226c62c354456df1dea5aac75f7ab",
-  "captureBuild": {
-    "BuildResultName": "Succeeded",
-    "PlatformName": "WebGL",
-    "BuildStartedAt": "2026-11-15T06:15:30.1136286Z",
-    "TotalTimeMs": 753886,
-    "TotalErrors": 0,
-    "TotalWarnings": 354,
-    "BuildSessionGUID": "0137f4adc28fa1b429bc1a2b43fddb98",
-    "unityVersion": "6000.6.7f1"
+  "sourceClipSha256": {
+    "v2_building.webm": "a2911d758d083110deaafa2c23200e9c1cafb1d342325c68e1b88731f0a732fd",
+    "v2_earth_ending.webm": "083aab98bfa2e4aa379196377a9374093b0d6b558cac957e615b6054c0a660d0",
+    "v2_greenhouse.webm": "0a5286257931e9adb5712f75fbb047e78d99357e3fdeed22f22741a0c94d6d9a",
+    "v2_mars.webm": "24abe4ef743a13e2015d12784650590eba574b1bc9a62c95be76c9bd760b2d49",
+    "v2_moon_hero.webm": "5c4c7fd4e444ac719fcb8bb221549fe556399e9c3512b3e644ba317125b81ae1",
+    "v2_science_sun.webm": "0fa762083671296a1e5808c957ad998b5bc83f53931cdee7121bdf7c00ed391b",
+    "v2_storm_report.webm": "f679a88e01be3f17a5712bf7bee216c1fb2806d082e61c9ff254f84c05408a9b",
+    "v2_storm_response.webm": "f94907c179dc86094185ae5ab453cdeda06ba8dd96ad7bf2c68c1834d7e47bbe",
+    "v2_storm_warning.webm": "26585a46de2e33984f1d3908d4700b18772b511cc41850805f573e9700eef053"
   },
-  "review": {
-    "decodedFrames": 840,
-    "durationVerified": true,
-    "audioPresent": true,
-    "audioClippingDetected": false,
-    "contactSheetVisuallyReviewed": true,
-    "humanListeningReviewRecorded": false
-  }
+  "webBuildSha256": {
+    "209ad510e0eaf603c11bd5c2f8d770eb.data": "f2c1040799eb2d52756b40a04baa738c3f4e18cc00647ab7c90fb905492b5616",
+    "97eec1c9bd92fe25d4671524303e51ca.framework.js": "7d8abe8bf95a6d52e64b1db603a9d0d26f9a7286bcb79f3bbccc44611d96110e",
+    "b7781554dedf6719d41e78afc4c4ae5d.loader.js": "b8edf0481d48dedff378ca2b36d5a3648cd8db11ca0342e5e955c6331eece03c",
+    "ef085b5d88847354ff14adb20276a4e9.wasm": "1b26563b2cb8e4913a05bec9e376afb7fc3e0153aae13e382a80142e6002a501"
+  },
+  "validation": "All 840 frames decoded; runtime, codecs, non-silent unclipped audio and sustained-black checks passed.",
+  "status": "local file; not uploaded or submitted"
 }

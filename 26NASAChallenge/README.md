@@ -6,9 +6,9 @@ Open this folder in **Unity 6000.6.7f1** through Unity Hub. This is the folder w
 
 **[Play the public browser build](https://raincallermei.github.io/2026-NASA-Space-Apps-Challenge-AstroCiv/)** — no Unity installation or sign-in. See the [public-access verification record](../Work%20Log%20and%20Review/PUBLIC_ACCESS_CHECK.md) for the latest check and limitations.
 
-Open `Assets/_Game/Scenes/Boot.unity` and press Play. The menu offers **Story Mode** (4 levels, each unlocks the next), **Free Build** (random map and events) and **Data & Credits**. Story pictures play in their own Cutscene scene. Play is real time and pausable: each mission opens paused on a briefing, then runs until its evaluation (or stops early if the crew's air, water, food, power or radiation safety fails). Each level ends with a grade (S/A/B/C), a score out of 100 and stars. Full flow: `GAMEPLAY_SEQUENCE.md`.
+Open `Assets/_Game/Scenes/Boot.unity` and press Play. The menu offers **Story Mode** (two tutorials and three missions, each unlocks the next), **Free Build** (random map and events; each storm is a real DONKI storm) and **Science Facts** (24 sourced facts found during play). Settings (top left) holds the Wiki and **Data & Credits**. Story pictures play in their own Cutscene scene. Play is real time and pausable: each mission opens paused on a briefing, then runs until its evaluation (or stops early if the crew's air, water, food, power or radiation safety fails). Each level ends with a grade (S/A/B/C), a score out of 100 and stars. Full flow: `GAMEPLAY_SEQUENCE.md`.
 
-Controls: click a building card, then click the map. Right-click or Esc cancels. Click a building to inspect it, turn it off or on, fix it or remove it. Click a crew member to talk. Space = pause/resume. 1x/2x/4x buttons set speed. Esc with nothing selected = pause menu (includes "Calm motion").
+Controls: click a building card, then click the map. Right-click or Esc cancels. Click a building to inspect it, turn it off or on, fix it or remove it. Click a crew member to talk. Space = pause/resume. The speed button cycles 1x/2x/4x. Esc with nothing selected = pause menu (Settings there includes "Calm motion").
 
 Try both endings quickly: in Free Build, press Start mission and build nothing; air runs out and "Mission stopped" appears. In Free Build with a short mission, build only part of the base; time runs out and an evaluation (capped at B) appears.
 
@@ -22,7 +22,7 @@ Rebuild the five scenes and the build order with **Mapmakers → Build Scenes**.
 | `Assets/_Game/Scripts/Data/` | Loaders for balance, story, fixtures and levels (`LevelData.cs`) |
 | `Assets/_Game/Scripts/Game/` | Scene flow and progress (`Flow.cs`), one level run (`MissionRun.cs`), crew chat choice (`CrewChat.cs`) |
 | `Assets/_Game/Scripts/UI/` | Screens built in code: Menu, Cutscene, Game (map, windows, end screens), Results; `UIKit.cs` holds the palette, fallback pixel icons and the AstroCiv sprite loader; `UIFx.cs` ripples and button animation |
-| `Assets/_Game/Data/Resources/` | `Balance.json`, `Story.json`, `Levels.json`, seven offline fixtures (incl. MOLA Jezero heights) |
+| `Assets/_Game/Data/Resources/` | `Balance.json`, `Story.json`, `Levels.json`, `Help.json` (Wiki), eight offline fixtures (incl. MOLA Jezero heights) |
 | `Assets/_Game/Art/Resources/Cutscenes/` | AI-generated story pictures (watermarked in game) |
 | `Assets/_Game/Art/Resources/AstroCiv/` | AI-generated AstroCiv pixel pack subset: buildings, shadows, Mars dust, rover, astronaut frames, terrain props, icons |
 | `Assets/_Game/Art/Resources/EndScenes/` | Optional: drop `<FailReason>.png` here to replace a failure scene |
@@ -54,7 +54,7 @@ Refresh source data only if requested: `python tools/fetch_data.py`. It reads NA
 | `SCENARIOS.md` | Existing scenario calculations and recorded bot outcomes |
 | `DATA_SOURCES.md` | Fetch history, metadata, units and source terms |
 | `ASSET_CREDITS.md` | All-AI-created-art disclosure, current inventory and integration/provenance gaps |
-| `../Work Log and Review/AI_USE_LOG.md` | AI sessions: purposes, creation methods, prompt/output references, review and missing provenance; linked from the board's AI-use tab |
+| `../Work Log and Review/AI_USE_LOG.md` | AI sessions: purposes, creation methods, prompt/output references, review and missing provenance |
 | `SUBMISSION_NOTES.md` | Factual draft text and remaining submission inputs |
 
 The checked-in CLAUDE.md and RESEARCH_AGENT_BRIEF.md are copies of the repository-root briefs. If the team edits the briefs, keep those copies in sync. The repository-root master prompt remains the controlling implementation plan.

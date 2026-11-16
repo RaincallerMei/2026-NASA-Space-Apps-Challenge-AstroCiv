@@ -1,0 +1,219 @@
+[
+  {
+    "action": "click",
+    "x": 0.45,
+    "y": 0.367,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.45,
+    "y": 0.45,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.5,
+    "y": 0.67,
+    "after": 0.5
+  },
+  {
+    "action": "click",
+    "x": 0.4,
+    "y": 0.712,
+    "after": 0.4
+  },
+  {
+    "action": "record-start"
+  },
+  {
+    "action": "wait",
+    "seconds": 0.5
+  },
+  {
+    "action": "click",
+    "x": 0.029,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.5130208333333334,
+    "y": 0.5277777777777778,
+    "after": 0.38
+  },
+  {
+    "action": "click",
+    "x": 0.11,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.6432291666666666,
+    "y": 0.5277777777777778,
+    "after": 0.38
+  },
+  {
+    "action": "click",
+    "x": 0.175,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.7473958333333334,
+    "y": 0.6666666666666666,
+    "after": 0.38
+  },
+  {
+    "action": "click",
+    "x": 0.245,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.4869791666666667,
+    "y": 0.6666666666666666,
+    "after": 0.38
+  },
+  {
+    "action": "click",
+    "x": 0.11,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.6953125,
+    "y": 0.5277777777777778,
+    "after": 0.38
+  },
+  {
+    "action": "click",
+    "x": 0.49,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.4088541666666667,
+    "y": 0.7129629629629629,
+    "after": 0.38
+  },
+  {
+    "action": "wait",
+    "seconds": 0.8
+  },
+  {
+    "action": "record-stop",
+    "name": "moon_c_build"
+  },
+  {
+    "action": "screenshot",
+    "name": "moon_c-wave1"
+  },
+  {
+    "action": "click",
+    "x": 0.773,
+    "y": 0.043,
+    "after": 0.12
+  },
+  {
+    "action": "click",
+    "x": 0.773,
+    "y": 0.043,
+    "after": 0.12
+  },
+  {
+    "action": "click",
+    "x": 0.727,
+    "y": 0.043,
+    "after": 0.15
+  },
+  {
+    "action": "wait",
+    "seconds": 7.7
+  },
+  {
+    "action": "click",
+    "x": 0.727,
+    "y": 0.043,
+    "after": 0.2
+  },
+  {
+    "action": "screenshot",
+    "name": "moon_c-funds"
+  },
+  {
+    "action": "record-start"
+  },
+  {
+    "action": "wait",
+    "seconds": 0.4
+  },
+  {
+    "action": "click",
+    "x": 0.33,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.4609375,
+    "y": 0.6666666666666666,
+    "after": 0.38
+  },
+  {
+    "action": "click",
+    "x": 0.11,
+    "y": 0.935,
+    "after": 0.23
+  },
+  {
+    "action": "click",
+    "x": 0.6432291666666666,
+    "y": 0.6203703703703703,
+    "after": 0.38
+  },
+  {
+    "action": "click",
+    "x": 0.7213541666666666,
+    "y": 0.8055555555555556,
+    "after": 0.38
+  },
+  {
+    "action": "wait",
+    "seconds": 1
+  },
+  {
+    "action": "record-stop",
+    "name": "moon_c_grow"
+  },
+  {
+    "action": "screenshot",
+    "name": "moon_c-final"
+  },
+  {
+    "action": "reload"
+  },
+  {
+    "action": "wait",
+    "seconds": 2
+  },
+  {
+    "action": "js",
+    "code": "document.querySelector('#unity-container').style.cssText='position:fixed;left:0;top:0;transform:none;width:1280px;height:720px';document.querySelector('#unity-fullscreen-container').style.cssText='width:1280px;height:720px';document.querySelector('#unity-canvas').style.cssText='width:1280px;height:720px;display:block';document.querySelector('#unity-footer').style.display='none';true"
+  },
+  {
+    "action": "click",
+    "x": 0.5,
+    "y": 0.528,
+    "after": 0.4
+  },
+  {
+    "action": "screenshot",
+    "name": "moon_c-next-seed"
+  }
+]

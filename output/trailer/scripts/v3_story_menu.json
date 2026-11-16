@@ -1,0 +1,4 @@
+[
+  {"action":"click","x":0.5,"y":0.435,"after":0.6},
+  {"action":"screenshot","name":"v3-story-list"}
+]

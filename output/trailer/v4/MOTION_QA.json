@@ -1,0 +1,37 @@
+[
+  {
+    "name": "moon_a",
+    "sourceStartSeconds": 0.75,
+    "sourceWindowSeconds": 2,
+    "meanAbsolutePixelChange": 30.537,
+    "sha256RecordedInManifest": true
+  },
+  {
+    "name": "mars_a",
+    "sourceStartSeconds": 0.45,
+    "sourceWindowSeconds": 2,
+    "meanAbsolutePixelChange": 20.477,
+    "sha256RecordedInManifest": true
+  },
+  {
+    "name": "moon_b",
+    "sourceStartSeconds": 0.75,
+    "sourceWindowSeconds": 2,
+    "meanAbsolutePixelChange": 10.99,
+    "sha256RecordedInManifest": true
+  },
+  {
+    "name": "mars_b",
+    "sourceStartSeconds": 0.45,
+    "sourceWindowSeconds": 2,
+    "meanAbsolutePixelChange": 29.176,
+    "sha256RecordedInManifest": true
+  },
+  {
+    "name": "moon_c",
+    "sourceStartSeconds": 0.75,
+    "sourceWindowSeconds": 2,
+    "meanAbsolutePixelChange": 11.538,
+    "sha256RecordedInManifest": true
+  }
+]

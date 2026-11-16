@@ -1,0 +1,253 @@
+{
+  "file": "output\\trailer\\AstroCiv_Trailer_29s_v4.mp4",
+  "durationSeconds": 29.0,
+  "frames": 870,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "bytes": 10472656,
+  "audioMeanDb": -19.9,
+  "audioPeakDb": -4.0,
+  "chapters": [
+    {
+      "name": "Artemis hook",
+      "startSeconds": 0.0,
+      "endSeconds": 3.0,
+      "frames": 90,
+      "headline": "Want to explore humanity's future on Moon and Mars?"
+    },
+    {
+      "name": "Moon / Mars construction",
+      "startSeconds": 3.0,
+      "endSeconds": 6.433333333333334,
+      "frames": 103,
+      "headline": "Build the first Moon base for human civilization!"
+    },
+    {
+      "name": "Resource balance",
+      "startSeconds": 6.433333333333334,
+      "endSeconds": 8.866666666666667,
+      "frames": 73,
+      "headline": "Balance power, water, air and food"
+    },
+    {
+      "name": "Both resource trade-offs",
+      "startSeconds": 8.866666666666667,
+      "endSeconds": 13.3,
+      "frames": 133,
+      "headline": "Switch buildings on and off to actively learn resource tradeoffs"
+    },
+    {
+      "name": "Strategic placement",
+      "startSeconds": 13.3,
+      "endSeconds": 16.733333333333334,
+      "frames": 103,
+      "headline": "Place your building strategically"
+    },
+    {
+      "name": "Science Achievements",
+      "startSeconds": 16.733333333333334,
+      "endSeconds": 22.666666666666668,
+      "frames": 178,
+      "headline": "Unlock all Science Achievements!"
+    },
+    {
+      "name": "Free Build",
+      "startSeconds": 22.666666666666668,
+      "endSeconds": 24.6,
+      "frames": 58,
+      "headline": "Build your base on different Moon & Mars maps"
+    },
+    {
+      "name": "Five moving maps",
+      "startSeconds": 24.6,
+      "endSeconds": 27.5,
+      "frames": 87,
+      "headline": "Build your base on different Moon & Mars maps"
+    },
+    {
+      "name": "Invitation",
+      "startSeconds": 27.5,
+      "endSeconds": 29.0,
+      "frames": 45,
+      "headline": "You are the next explorer!"
+    }
+  ],
+  "sceneTransitionFrames": 4,
+  "mapTransitionFrames": 2,
+  "mapGameplayCoreFrames": 15,
+  "constructionSpeed": 4,
+  "cameraScaleRange": [
+    1,
+    1.05
+  ],
+  "endingPanelOpacity": 0.5,
+  "musicFile": "Art\\BGM\\Pastel Twinkles.mp3",
+  "musicSourceSha256": "d5417aec59f3637872842cf342cb7be67e26eb4acc29f4af22f2dec833a72262",
+  "sources": [
+    {
+      "name": "opening",
+      "file": "output\\trailer\\v4\\raw\\home.webm",
+      "start": 0,
+      "speed": 1,
+      "frames": 90,
+      "mode": "hook"
+    },
+    {
+      "name": "invitation-bridge",
+      "file": "output\\trailer\\v4\\raw\\home.webm",
+      "start": 0,
+      "speed": 1,
+      "frames": 13,
+      "mode": "full"
+    },
+    {
+      "name": "invitation-moon",
+      "file": "output\\trailer\\v4\\raw\\moon_a_build.webm",
+      "start": 0.65,
+      "speed": 4,
+      "frames": 45,
+      "mode": "map"
+    },
+    {
+      "name": "invitation-mars",
+      "file": "output\\trailer\\v4\\raw\\mars_a_build.webm",
+      "start": 3.7,
+      "speed": 4,
+      "frames": 45,
+      "mode": "map"
+    },
+    {
+      "name": "balance-base",
+      "file": "output\\trailer\\v4\\raw\\resources_overview.webm",
+      "start": 0.1,
+      "speed": 1,
+      "frames": 73,
+      "mode": "hud"
+    },
+    {
+      "name": "manage-off-base",
+      "file": "output\\trailer\\v4\\raw\\greenhouse_off.webm",
+      "start": 0.45,
+      "speed": 1,
+      "frames": 66,
+      "mode": "hud"
+    },
+    {
+      "name": "manage-on-base",
+      "file": "output\\trailer\\v4\\raw\\greenhouse_on.webm",
+      "start": 0.45,
+      "speed": 1,
+      "frames": 67,
+      "mode": "hud"
+    },
+    {
+      "name": "placement-base",
+      "file": "output\\trailer\\v4\\raw\\placement.webm",
+      "start": 0.15,
+      "speed": 1.5,
+      "frames": 103,
+      "mode": "placement"
+    },
+    {
+      "name": "science-warning",
+      "file": "output\\trailer\\v4\\raw\\storm_warning.webm",
+      "start": 0.1,
+      "speed": 1,
+      "frames": 27,
+      "mode": "warning"
+    },
+    {
+      "name": "science-facts",
+      "file": "output\\trailer\\v4\\raw\\science_facts.webm",
+      "start": 0.15,
+      "speed": 1,
+      "frames": 151,
+      "mode": "science"
+    },
+    {
+      "name": "free-base",
+      "file": "output\\trailer\\v4\\raw\\free_menu.webm",
+      "start": 0.15,
+      "speed": 1,
+      "frames": 58,
+      "mode": "controls"
+    },
+    {
+      "name": "montage-moon_a",
+      "file": "output\\trailer\\v4\\raw\\moon_a_grow.webm",
+      "start": 0.75,
+      "speed": 4,
+      "frames": 15,
+      "mode": "map"
+    },
+    {
+      "name": "montage-mars_a",
+      "file": "output\\trailer\\v4\\raw\\mars_a_grow.webm",
+      "start": 0.45,
+      "speed": 4,
+      "frames": 15,
+      "mode": "map"
+    },
+    {
+      "name": "montage-moon_b",
+      "file": "output\\trailer\\v4\\raw\\moon_b_grow.webm",
+      "start": 0.75,
+      "speed": 4,
+      "frames": 15,
+      "mode": "map"
+    },
+    {
+      "name": "montage-mars_b",
+      "file": "output\\trailer\\v4\\raw\\mars_b_grow.webm",
+      "start": 0.45,
+      "speed": 4,
+      "frames": 15,
+      "mode": "map"
+    },
+    {
+      "name": "montage-moon_c",
+      "file": "output\\trailer\\v4\\raw\\moon_c_grow.webm",
+      "start": 0.75,
+      "speed": 4,
+      "frames": 15,
+      "mode": "map"
+    },
+    {
+      "name": "ending-base",
+      "file": "output\\trailer\\v4\\ending-full-drawings.png",
+      "start": 0,
+      "speed": 1,
+      "frames": 45,
+      "mode": "ending"
+    }
+  ],
+  "sourceSha256": {
+    "output\\trailer\\v4\\raw\\home.webm": "c1f35d11e0ab12a1d3122ea7ef9d9d1370421fea7fff9add6b03d64a714eeb63",
+    "output\\trailer\\v4\\raw\\moon_a_build.webm": "7618a3bc8ad7e8bb32e350ed1b93b06e0175f8faccc76ab21d1e7d46b47408c0",
+    "output\\trailer\\v4\\raw\\mars_a_build.webm": "290a74e94601786b829357c63875c3f80406c5721c4beb1ccd8122e1efdc8f44",
+    "output\\trailer\\v4\\raw\\resources_overview.webm": "8be842c31d0c67bbbbd102dc5c89e6ff1f5d431c25f8a0a44be1f5855a218d77",
+    "output\\trailer\\v4\\raw\\greenhouse_off.webm": "844dc9b750908e9957f602902c03eb3eac9d2d0c4f1cda5dad4ad3d633acfa92",
+    "output\\trailer\\v4\\raw\\greenhouse_on.webm": "57c6beb15eee00d96687cbd0395f7a8db2c1f4b3336162fb833a316a1d4776b5",
+    "output\\trailer\\v4\\raw\\placement.webm": "a7b1122029afac68540854d6ded785dddcbac66025caa8be61e569a07045b3bf",
+    "output\\trailer\\v4\\raw\\storm_warning.webm": "0c6e9dd761d85e56faf287c650d2236454b391d9fff4db5cfb902ad2c0eb968a",
+    "output\\trailer\\v4\\raw\\science_facts.webm": "d1447255cbc0d50171d8965ca7e80f0dc89509aef44933457dac0d90b7301f49",
+    "output\\trailer\\v4\\raw\\free_menu.webm": "26d283f97db78f18ee7aaccfd6107f6d10f8ed6cba8352becf1845348e67c95a",
+    "output\\trailer\\v4\\raw\\moon_a_grow.webm": "7ca5754497f5dac6ca5c80756fbf8171bd1158336e8240e9df12ad34d51bacfc",
+    "output\\trailer\\v4\\raw\\mars_a_grow.webm": "476d19ba3fff7f95724a6d57907717e530e67a5d304ec89adc3e11e8932e5155",
+    "output\\trailer\\v4\\raw\\moon_b_grow.webm": "ac17f0d4a482675b6db04443d27d67a1c8915c0b7712bc2c27225776a46003c5",
+    "output\\trailer\\v4\\raw\\mars_b_grow.webm": "606440d0bf9cf86005d84790515bc7f99de59e9095ce3f7f0dc1a79a5f44f6b6",
+    "output\\trailer\\v4\\raw\\moon_c_grow.webm": "8ff33a0160dbeafc5aa9a53f489d01864a06757fd2a443fbd8baab65e337c1b2",
+    "output\\trailer\\v4\\ending-full-drawings.png": "765de0e14f2ff929faaeac2ebb901b93a1e2b1b91ca25d5c41cd918f2bd62a2e"
+  },
+  "posterSourceSha256": "6e720f0005ba21afbce872378ea38c1cfaf7896b940c3bf548877eaebd701e87",
+  "captureBuildSha256": {
+    "00b7ed2b3ba4c6cac5ac4dcd35f19ce6.data": "22fa4636c0a0d65dc265ba1fc29e067dfc6de99940fa86c6cef5d0afdb5f708b",
+    "25c25355a288d9623b9b15ec8e77af16.loader.js": "d6de4b96c39e89c7708d5f23a538b1b8850cd4dbe222bff4585b067fc47c1fa3",
+    "2e970c8a4efe05fe1599a9e317cb7aa8.framework.js": "c75ac38f0b4bb514791408f4080359636b5887fd148107398dc8480e9b80787c",
+    "d29b2ca1a21c8464051cc598f8658bcc.wasm": "1df5d2c4fa2918c0ffaa289d44a52ea675c610a9790dd179211b822b023b1cd0"
+  },
+  "description": "Revised 29-second educational Space Apps trailer. Original Artemis II poster: NASA; independent project without agency/astronaut endorsement. Continuous 30 fps real Unity WebGL gameplay, edited with OpenAI Codex, Python and FFmpeg. Construction sequences play at 4x. Five distinct maps have 0.50-second gameplay cores and nominal 0.07-second transitions (two frames at 30 fps). Greenhouse OFF and ON cases use naturally reached low battery and low food states. Science Facts were earned by actual play; no achievements or scores were fabricated. Game art is AI-created; the ending monitor was edited with built-in imagegen to show classroom drawings. NASA poster was not AI-generated or regenerated. Music: Pastel Twinkles by raincalleer, generated with Suno; song 0a49d446-3f17-465c-8971-c0398cc51905. Supplied 30.01-second track gently fitted to 29 seconds. Historical NASA/CSA references and simplified educational simulation rules. Captured from an isolated current build/profile; mission-selection prerequisites staged only.",
+  "validation": "All 870 frames decoded; exactly 29.00 seconds; H.264/AAC; audible unclipped soundtrack; no sustained black frames.",
+  "status": "Local file; not uploaded or submitted."
+}

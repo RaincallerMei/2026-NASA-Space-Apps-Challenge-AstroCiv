@@ -81,6 +81,8 @@ Before submission, add any final audio, fonts, libraries, demo-editing software 
 
 ## Demo plan: choose one format
 
+[Watch the recreated 28-second trailer](../output/trailer/AstroCiv_Trailer_28s.mp4) · [Actual shots and validation](../output/trailer/README.md).
+
 **Pitch direction:** “Space curiosity becomes decisions that matter.” The issue is the gap between being excited about space and being able to practise scientific thinking. The solution is a game where building, growing food and protecting a crew require the player to use that thinking. Our distinction is the combination of an Ontario child's journey, connected systems and real NASA references. The intended impact is curiosity, confidence and a reason to keep learning.
 
 **Recommended hook:** “Want to explore the Moon and Mars?” Answer it immediately with actual gameplay. A second hook to try is “Could you keep a crew alive on the Moon?” The first sells adventure; the second creates a challenge. Choose one opening. Keep stargazing language for the wider dream: telescope observation and round-the-clock star research are not playable features.
@@ -104,7 +106,7 @@ The suggested timing is a rehearsal target, not a measured recording. Aim to fin
 
 **What viewers should understand:** Children see a place they want to build and a crew they want to help. Judges see the educational problem, a working solution, a specific NASA connection and the reason to open the playable game. The longer description carries the community impact and development plans; the video earns those claims through visible play.
 
-**Editing priorities:** Show meaningful gameplay in the opening seconds. Keep each action and its result together; crop or zoom so the relevant resource change, warning or crew status is legible. Use large English captions, short overlays and music below speech. Show the game's feedback rather than calling it “the best” or claiming proven learning results. Retain existing credits and required generated-content indicators. Use only working screens from the build being submitted. The current trailer is source material for this revised edit; this outline does not mean the MP4 has been recut or a voiceover recorded.
+**Editing priorities:** Show meaningful gameplay in the opening seconds. Keep each action and its result together; crop or zoom so the relevant resource change, warning or crew status is legible. Use large English captions, short overlays and music below speech. Show the game's feedback rather than calling it “the best” or claiming proven learning results. Retain existing credits and required generated-content indicators. Use only working screens from the build being submitted. The recreated 28-second trailer uses on-screen captions and the existing music. Its exact edited sequence and measured validation are recorded in output/trailer/README.md. The voiceover above remains an optional spoken version; no narration was recorded.
 
 **Alternative: up to 7 English slides, including title/intro:** (1) title, confirmed team/member names, selected challenge and hook; (2) curiosity-to-action problem and why it matters; (3) building and resource decisions; (4) storm choice and crew outcome; (5) NASA/CSA connections and the game's distinctive combination; (6) intended Ontario/world impact and future development; (7) public playable link, source link and invitation to try. Use real screenshots and concise captions. Keep the existing submission-guide checks below for final review.
 

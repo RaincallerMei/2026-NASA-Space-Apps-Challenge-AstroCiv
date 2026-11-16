@@ -1,0 +1,18 @@
+﻿[
+ {"action":"click","x":0.183,"y":0.667,"after":0.3},
+ {"action":"click","x":0.175,"y":0.935,"after":0.2},
+ {"action":"click","x":0.66927,"y":0.34259,"after":0.2},
+ {"action":"click","x":0.06,"y":0.667,"after":0.2},
+ {"action":"click","x":0.313,"y":0.55,"after":0.3},
+ {"action":"move","x":0.985,"y":0.985,"after":0.2},
+ {"action":"screenshot","name":"v4-placement-before"},
+ {"action":"record-start"},
+ {"action":"wait","seconds":1.25},
+ {"action":"click","x":0.175,"y":0.935,"after":0.15},
+ {"action":"click","x":0.3828125,"y":0.6666667,"after":0.15},
+ {"action":"click","x":0.313,"y":0.55,"after":0.15},
+ {"action":"move","x":0.985,"y":0.985,"after":0.15},
+ {"action":"wait","seconds":2.4},
+ {"action":"record-stop","name":"placement"},
+ {"action":"screenshot","name":"v4-placement-after"}
+]

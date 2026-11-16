@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Mapmakers.Data
@@ -8,7 +9,9 @@ namespace Mapmakers.Data
     [Serializable] public class CrewMember { public string id, name, role, owns; }
     [Serializable] public class ChatReply { public string text, answer, action; public int heart; }
     [Serializable] public class ChatEntry { public string crew, when, line; public ChatReply[] replies; }
-    [Serializable] public class ScienceCard { public string id, title, text, text2, source, label; }
+    // A science fact. With a trigger (a sim event code such as "placed_Greenhouse") it pops up the first time
+    // that event happens on its planet ("" = any). {words} are filled from real data when it is shown.
+    [Serializable] public class ScienceCard { public string id, title, text, text2, source, url, label, trigger, planet, crew, wiki, hint; }
 
     [Serializable]
     public class StoryData
@@ -39,6 +42,31 @@ namespace Mapmakers.Data
             foreach (var card in cards)
                 if (card.id == id) return card;
             return null;
+        }
+
+        // Facts for this event and planet, in order. The game shows the first one not seen yet.
+        public List<ScienceCard> Facts(string trigger, string planet)
+        {
+            var list = new List<ScienceCard>();
+            foreach (var card in cards)
+                if (card.trigger == trigger && (string.IsNullOrEmpty(card.planet) || card.planet == planet)) list.Add(card);
+            return list;
+        }
+
+        static readonly Regex Slot = new Regex(@"\{(\w+)\}");
+
+        // Fills {words} from real data. Returns null when a value is missing, so a fact never shows a gap.
+        public static string Fill(string text, IDictionary<string, string> values)
+        {
+            if (string.IsNullOrEmpty(text)) return text;
+            bool missing = false;
+            string filled = Slot.Replace(text, m =>
+            {
+                if (values != null && values.TryGetValue(m.Groups[1].Value, out string v)) return v;
+                missing = true;
+                return m.Value;
+            });
+            return missing ? null : filled;
         }
 
         public CrewMember Crew(string id)

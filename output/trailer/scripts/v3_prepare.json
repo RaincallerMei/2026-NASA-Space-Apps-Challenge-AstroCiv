@@ -1,0 +1,5 @@
+[
+  {"action":"js","code":"document.querySelector('#unity-container').style.cssText='position:fixed;left:0;top:0;transform:none;width:1280px;height:720px';document.querySelector('#unity-fullscreen-container').style.cssText='width:1280px;height:720px';document.querySelector('#unity-canvas').style.cssText='width:1280px;height:720px;display:block';document.querySelector('#unity-footer').style.display='none';true"},
+  {"action":"wait","seconds":1},
+  {"action":"screenshot","name":"v3-menu-fixed"}
+]

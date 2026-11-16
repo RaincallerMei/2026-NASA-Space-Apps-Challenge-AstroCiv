@@ -1,0 +1,31 @@
+[
+  {
+    "action": "js",
+    "code": "new Promise((resolve,reject)=>{const r=indexedDB.open('/idbfs');r.onsuccess=()=>{const db=r.result,tx=db.transaction('FILE_DATA','readwrite'),s=tx.objectStore('FILE_DATA'),a=s.getAll(),k=s.getAllKeys();let done=0;const edit=()=>{if(++done<2)return;const n=k.result.findIndex(k=>k.endsWith('/PlayerPrefs')),v=a.result[n],extra=[];for(const [key,val] of [['mapmakers.passed.T2',1],['mapmakers.passed.L2',1],['mapmakers.passed.L3',1],['mapmakers.hints',0]]){extra.push(key.length,...new TextEncoder().encode(key),254,val,0,0,0);}v.contents=new Uint8Array([...v.contents.slice(0,16),...extra,...v.contents.slice(16)]);v.timestamp=new Date();s.put(v,k.result[n]);};a.onsuccess=edit;k.onsuccess=edit;tx.oncomplete=()=>resolve({setup:'Isolated capture profile only: unlock mission selection; keep earned scores unchanged.'});tx.onerror=reject;};r.onerror=reject;})"
+  },
+  {
+    "action": "reload"
+  },
+  {
+    "action": "wait",
+    "seconds": 12
+  },
+  {
+    "action": "js",
+    "code": "document.querySelector('#unity-container').style.cssText='position:fixed;left:0;top:0;transform:none;width:1280px;height:720px';document.querySelector('#unity-fullscreen-container').style.cssText='width:1280px;height:720px';document.querySelector('#unity-canvas').style.cssText='width:1280px;height:720px;display:block';document.querySelector('#unity-footer').style.display='none';true"
+  },
+  {
+    "action": "wait",
+    "seconds": 2
+  },
+  {
+    "action": "click",
+    "x": 0.5,
+    "y": 0.398,
+    "after": 1
+  },
+  {
+    "action": "screenshot",
+    "name": "v3-unlocked-story"
+  }
+]

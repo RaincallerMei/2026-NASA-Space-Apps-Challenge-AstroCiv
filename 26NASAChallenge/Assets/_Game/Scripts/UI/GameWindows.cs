@@ -136,9 +136,108 @@ namespace Mapmakers.UI
         {
             var card = story.Card(id);
             if (card == null) return;
-            var spec = Modal(card.title, card.text + "\n\n" + card.text2, "star");
+            var values = run.FactValues();
+            string text = StoryData.Fill(card.text, values) ?? "", text2 = StoryData.Fill(card.text2, values) ?? "";
+            Progress.MarkFactSeen(card.id);
+            RefreshFactsButton();
+            var spec = Modal(card.title, (text + "\n\n" + text2).Trim(), "star");
             spec.badge = "Source: " + card.source + "  (" + card.label + ")";
             ShowModal(spec);
+        }
+
+        // ---------- science facts: a small card that never pauses the game ----------
+        // The first time an event happens, the crew member who owns that system shares one real fact.
+        // It is also kept in Information (click to open the Wiki) and in the Wiki's "Facts found".
+
+        const float FactCardSeconds = 20;
+        GameObject factCard;
+        float factCardShown;
+        Vector2? factCardSpot;
+
+        void OfferFact(string code)
+        {
+            if (run.IsDrawing) return;
+            var values = run.FactValues();
+            foreach (var card in story.Facts(code, run.Planet.id))
+            {
+                if (Progress.FactSeen(card.id)) continue;
+                string text = StoryData.Fill(card.text, values);
+                if (text == null) continue;
+                Progress.MarkFactSeen(card.id);
+                string speaker = SpeakerName(card.crew);
+                Post(speaker + ": " + text, "star", Palette.Cyan, card.wiki);
+                if (Progress.FactCardsOn) ShowFactCard(card, speaker, text, StoryData.Fill(card.text2, values));
+                RefreshFactsButton();
+                UIFx.Pop(factsButton.transform);
+                return;
+            }
+        }
+
+        string SpeakerName(string crewId)
+        {
+            var member = string.IsNullOrEmpty(crewId) ? null : story.Crew(crewId);
+            return member != null ? member.name : "Mission control";
+        }
+
+        void ShowFactCard(ScienceCard card, string speaker, string text, string text2)
+        {
+            CloseFactCard();
+            var panel = UIKit.Panel(root, Palette.Panel, "Science Fact");
+            factCard = panel.gameObject;
+            factCardShown = Time.unscaledTime;
+            panel.rectTransform.Anchor(new Vector2(1, 1), new Vector2(1, 1), factCardSpot ?? new Vector2(-(20 + Side + Gap), -InfoTop), new Vector2(540, 0));
+            panel.gameObject.AddComponent<DragMove>().moved = spot => factCardSpot = spot;
+            var outline = panel.gameObject.AddComponent<Outline>();
+            outline.effectColor = Palette.Cyan;
+            outline.effectDistance = new Vector2(2, -2);
+            var column = panel.gameObject.AddComponent<VerticalLayoutGroup>();
+            column.padding = new RectOffset(24, 24, 16, 18);
+            column.spacing = 8;
+            column.childControlWidth = column.childControlHeight = true;
+            column.childForceExpandWidth = true;
+            column.childForceExpandHeight = false;
+            panel.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var head = UIKit.Rect(panel.transform, "Head");
+            head.gameObject.AddComponent<LayoutElement>().preferredHeight = 40;
+            UIKit.Icon(head, "star", 34).rectTransform.Anchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f), Vector2.zero, new Vector2(34, 34));
+            UIKit.Label(head, "NEW SCIENCE FACT  " + Progress.FactsFound() + "/" + story.cards.Length, 22, Palette.Amber, TextAnchor.MiddleLeft, FontStyle.Bold)
+                .rectTransform.Stretch(46, 0, 130, 0);
+            UIKit.Label(head, "Drag to move", 16, Palette.Muted, TextAnchor.MiddleRight).rectTransform.Stretch(0, 0, 0, 0);
+            UIKit.Label(panel.transform, card.title, 28, Palette.Hull, TextAnchor.UpperLeft, FontStyle.Bold);
+            UIKit.Label(panel.transform, Keywords.Mark(speaker + ": \"" + text + "\""), 24, Palette.Hull, TextAnchor.UpperLeft);
+            if (!string.IsNullOrEmpty(text2)) UIKit.Label(panel.transform, Keywords.Mark(text2), 22, Palette.Ice, TextAnchor.UpperLeft);
+            UIKit.Label(panel.transform, "Source: " + card.source + " (" + card.label + ")", 16, Palette.Muted, TextAnchor.UpperLeft);
+
+            var row = UIKit.Rect(panel.transform, "Buttons");
+            row.gameObject.AddComponent<LayoutElement>().preferredHeight = 52;
+            var buttons = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+            buttons.spacing = 12;
+            buttons.childControlWidth = buttons.childControlHeight = true;
+            buttons.childForceExpandWidth = true;
+            string page = card.wiki;
+            UIKit.Button(row, "Read more", () => { CloseFactCard(); OpenWiki(page); }, Palette.Azure, Palette.Hull, 22);
+            UIKit.Button(row, "Close", CloseFactCard, Palette.PanelLight, Palette.Hull, 22);
+            if (factCardSpot.HasValue)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(panel.rectTransform);
+                DragMove.KeepOnScreen(panel.rectTransform);
+            }
+            if (!UIFx.Calm) UIFx.Pop(panel.transform);
+        }
+
+        void CloseFactCard()
+        {
+            if (factCard != null) Destroy(factCard);
+            factCard = null;
+        }
+
+        // The card closes on its own after a while. Time with a window open does not count.
+        void UpdateFactCard()
+        {
+            if (factCard == null) return;
+            if (ModalOpen || Wiki.IsOpen || SettingsWindow.IsOpen) { factCardShown += Time.unscaledDeltaTime; return; }
+            if (Time.unscaledTime - factCardShown > FactCardSeconds) CloseFactCard();
         }
 
         // ---------- briefing (paused until Start) ----------
@@ -193,6 +292,7 @@ namespace Mapmakers.UI
         {
             var sound = EventSound(e.code);
             if (sound.HasValue) AudioDirector.Play(sound.Value);
+            OfferFact(e.code);
             switch (e.code)
             {
                 case "shadow_warning":
@@ -218,8 +318,7 @@ namespace Mapmakers.UI
                     break;
                 case "first_harvest":
                     Post(e.text, "food", Palette.Mint);
-                    var cardId = run.Planet.id == "Mars" ? "c_moxie" : "c_plants";
-                    ShowModal(Modal("First harvest!", e.text, "food", new ModalButton("OK"), new ModalButton("Why plants?", () => ShowCard(cardId), false)));
+                    ShowModal(Modal("First harvest!", e.text, "food", new ModalButton("OK"), new ModalButton("Why plants?", () => ShowCard("c_plants"), false)));
                     break;
                 case "fault":
                     Post(e.text, "SolarArray", Palette.Amber);
@@ -236,9 +335,6 @@ namespace Mapmakers.UI
                     break;
                 case "brownout":
                     Post(e.text, "power", Palette.Amber);
-                    break;
-                case "placed_RoverGarage":
-                    if (Explain("rover") && run.sim.terrain.AnyWater()) ShowCard(run.Planet.id == "Mars" ? "c_mars_sun" : "c_ice");
                     break;
                 case "supply_drop":
                     Post(e.text, "supplies", Palette.Mint);
@@ -305,11 +401,11 @@ namespace Mapmakers.UI
                 if (b.broken) { if (run.Repair(b.id)) AudioDirector.Play(Sfx.Repair); return; }
         }
 
-        static string StormBadge()
+        string StormBadge()
         {
-            var donki = FixtureLoader.Donki();
-            string date = donki.flare.beginTime.Length >= 10 ? donki.flare.beginTime.Substring(0, 10) : donki.flare.beginTime;
-            return donki.Badge + " · NASA DONKI: a real " + donki.flare.classType + " flare on " + date + ". The timing in this game is made up.";
+            var storm = run.RealStorm;
+            FixtureHeader data = run.mode == GameMode.Free ? (FixtureHeader)FixtureLoader.StormSet() : FixtureLoader.Donki();
+            return data.Badge + " · NASA DONKI: a real " + storm.flare.classType + " flare on " + storm.Date + ". The timing in this game is made up.";
         }
 
         // ---------- crew chat ----------

@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 namespace Mapmakers.UI
 {
-    // Map-first play screen (Civ-style). Top: resources and the time controls. Left: crew, the selected building
-    // and the Wiki. Right: Information (alerts and messages) above Objectives. Bottom: Buildings.
+    // Map-first play screen (Civ-style). Top: resources and the time controls. Left: crew, the selected building,
+    // Science Facts and the Wiki. Right: Information (alerts and messages) above Objectives. Bottom: Buildings.
     // Real time: Update feeds unscaled frame time to the run's clock; counters refresh a few times a second,
     // structural UI only when the run's Revision changes.
     public sealed partial class GameScreen : MonoBehaviour
@@ -20,6 +20,7 @@ namespace Mapmakers.UI
         const float CounterInterval = 0.2f;
         const int Gap = 16;
         const int WikiBottom = BottomBar + Gap + 12;
+        const int FactsBottom = WikiBottom + 64 + 8;
 
         MissionRun run;
         RectTransform root;
@@ -37,7 +38,9 @@ namespace Mapmakers.UI
         string status = "";
         bool statusIsError;
         CoachMark coach;
-        Button wikiButton;
+        Button wikiButton, factsButton;
+        Text factsLabel;
+        Image factsNew;
 
         void Start()
         {
@@ -369,7 +372,7 @@ namespace Mapmakers.UI
             }
         }
 
-        // ---------- wiki button (bottom left) ----------
+        // ---------- Wiki button (bottom left) with the Science Facts collection above it ----------
 
         void BuildWikiButton()
         {
@@ -378,6 +381,29 @@ namespace Mapmakers.UI
             UIKit.Icon(wikiButton.transform, "info", 40).rectTransform.Anchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(16, 0), new Vector2(40, 40));
             UIKit.Label(wikiButton.transform, "Wiki & Help  (H)", 28, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.Stretch(72, 0, 8, 0);
             Tip.Add(wikiButton, () => new TipContent("Wiki & Help", "info", "Every building, resource, crew member and event explained. The game pauses while it is open."), false);
+
+            factsButton = UIKit.Button(root, "", OpenFacts, Palette.PanelLight, Palette.Hull, 28);
+            factsButton.GetComponent<RectTransform>().Anchor(new Vector2(0, 0), new Vector2(0, 0), new Vector2(20, FactsBottom), new Vector2(Side, 64));
+            var glow = factsButton.gameObject.AddComponent<Outline>();
+            glow.effectColor = Palette.Amber;
+            glow.effectDistance = new Vector2(2, -2);
+            UIKit.Icon(factsButton.transform, "star", 40).rectTransform.Anchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(16, 0), new Vector2(40, 40));
+            factsLabel = UIKit.Label(factsButton.transform, "", 28, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold);
+            factsLabel.rectTransform.Stretch(72, 0, 8, 0);
+            factsNew = UIKit.Panel(factsButton.transform, Palette.Amber, "New");
+            factsNew.raycastTarget = false;
+            factsNew.rectTransform.Anchor(new Vector2(1, 0.5f), new Vector2(1, 0.5f), new Vector2(-12, 0), new Vector2(76, 36));
+            UIKit.Label(factsNew.transform, "NEW!", 20, Palette.Ink, TextAnchor.MiddleCenter, FontStyle.Bold).rectTransform.Stretch();
+            Tip.Add(factsButton, () => new TipContent("Science Facts", "star",
+                "Every real science fact you have found. Dim ones show a hint to find them. Key: F. The game pauses while it is open."), false);
+            RefreshFactsButton();
+        }
+
+        void RefreshFactsButton()
+        {
+            int found = Progress.FactsFound();
+            factsLabel.text = "Science Facts  " + found + "/" + story.cards.Length;
+            factsNew.gameObject.SetActive(found > Progress.FactsLookedAt);
         }
 
         public void OpenWiki(string page = null)
@@ -385,7 +411,14 @@ namespace Mapmakers.UI
             if (Wiki.IsOpen || SettingsWindow.IsOpen || EndShowing) return;
             run.TrainingAction("wiki");
             run.clock.Hold();
-            Wiki.Open(page ?? WikiPageForNow(), () => { run.clock.Release(); Refresh(); });
+            Wiki.Open(page ?? WikiPageForNow(), () => { run.clock.Release(); RefreshFactsButton(); Refresh(); });
+        }
+
+        public void OpenFacts()
+        {
+            if (Wiki.IsOpen || SettingsWindow.IsOpen || EndShowing) return;
+            run.clock.Hold();
+            Wiki.OpenFacts(() => { run.clock.Release(); RefreshFactsButton(); Refresh(); });
         }
 
         string WikiPageForNow()
@@ -398,7 +431,7 @@ namespace Mapmakers.UI
 
         // ---------- information (right, top): alerts first, then the latest messages ----------
 
-        sealed class Message { public string icon, text; public Color color; }
+        sealed class Message { public string icon, text, page; public Color color; }
         readonly List<Message> messages = new List<Message>();
         readonly Dictionary<string, Button> alertButtons = new Dictionary<string, Button>();
         RectTransform infoList;
@@ -420,10 +453,11 @@ namespace Mapmakers.UI
             infoList = UIKit.Rect(infoPanel.transform, "List").TopLeft(10, 50, Side - 20, InfoHeight - 60);
         }
 
-        public void Post(string text, string icon = "info", Color? color = null)
+        // A message with a Wiki page (a science fact) can be clicked to open that page.
+        public void Post(string text, string icon = "info", Color? color = null, string page = null)
         {
             if (string.IsNullOrEmpty(text)) return;
-            messages.Insert(0, new Message { text = text, icon = icon, color = color ?? Palette.Ice });
+            messages.Insert(0, new Message { text = text, icon = icon, color = color ?? Palette.Ice, page = page });
             if (messages.Count > 30) messages.RemoveAt(messages.Count - 1);
             if (infoPanel != null && !UIFx.Calm) UIFx.Pop(infoPanel.transform);
         }
@@ -466,9 +500,17 @@ namespace Mapmakers.UI
                     .rectTransform.TopLeft(4, 0, width - 8, 60);
             foreach (var m in messages)
             {
-                const float h = 62;
+                float h = string.IsNullOrEmpty(m.page) ? 62 : 92;
                 if (y + h > max) break;
                 var row = UIKit.Rect(infoList, "Message").TopLeft(0, y, width, h);
+                if (!string.IsNullOrEmpty(m.page))
+                {
+                    string page = m.page;
+                    var hit = row.gameObject.AddComponent<Image>();
+                    hit.color = Palette.Alpha(Palette.Cyan, 0.08f);
+                    row.gameObject.AddComponent<Button>().onClick.AddListener(() => OpenWiki(page));
+                    Tip.Add(row, () => new TipContent("Science fact", "star", "Click to read more in the Wiki, with the source."), false);
+                }
                 UIKit.Icon(row, m.icon, 28).TopLeftOf(6, 6);
                 UIKit.Label(row, Keywords.Mark(m.text), 20, m.color, TextAnchor.UpperLeft).rectTransform.TopLeft(44, 2, width - 48, h - 4);
                 var line = UIKit.Panel(row, Palette.Alpha(Palette.Muted, 0.25f), "Line", false);
@@ -683,6 +725,7 @@ namespace Mapmakers.UI
             else if (Time.unscaledTime >= nextCounters) RefreshCounters();
             UpdateRover();
             UpdateCoach();
+            UpdateFactCard();
         }
 
         // Losing focus pauses; the player resumes with the Play button (never automatically).
@@ -711,6 +754,7 @@ namespace Mapmakers.UI
             }
             if (Wiki.IsOpen || SettingsWindow.IsOpen) return;
             if (keys.hKey.wasPressedThisFrame || keys.f1Key.wasPressedThisFrame) { if (!ModalOpen) OpenWiki(); return; }
+            if (keys.fKey.wasPressedThisFrame) { if (!ModalOpen) OpenFacts(); return; }
             if (ModalOpen || EndShowing) return;
             if (keys.spaceKey.wasPressedThisFrame) TogglePause();
         }

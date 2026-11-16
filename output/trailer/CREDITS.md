@@ -8,3 +8,9 @@
 - **Sound effects:** the team has downloaded Kenney Interface Sounds (CC0); this trailer's audio track uses the selected music, not an assertion that the full sound pack was mixed into it.
 
 This is a local trailer draft. Review the video/music and applicable track rights before publishing. It has not been uploaded or submitted to Space Apps. Formal submission should also include any required verified team/member names. See `Work Log and Review/TRAILER_WORKFLOW.md` for source documentation and manual alternatives.
+
+## Recreated cut — 15 November 2026
+
+The new cut retains the user-supplied Starry Twinkles excerpt (18–46 seconds), existing music provenance, and art/AI acknowledgements. It adds Moon/Mars gameplay, the NASA POWER sunlight card, greenhouse inspection, a DONKI storm warning, actual shelter/recall interactions, an earned storm-mission S 98/100 report and the in-game classroom/Earth ending. Captions and music are the complete audio/text treatment; no synthetic voice or gameplay video was generated.
+
+Only mission-selection prerequisites were staged in a fresh capture profile, to reach the requested scenes. Scores were not edited: the game's own simulation produced the shown 98/100 result after the storm mission was played with its native starter base. The game uses fictional balance values and simplified data interpretations. Agency data credits, original generated-art indicators and the closing music/art disclosure remain visible. The exact source clips, speeds and hashes are in the manifest. Previous music/source terms above still apply.

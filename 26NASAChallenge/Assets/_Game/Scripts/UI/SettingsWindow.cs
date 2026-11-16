@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Mapmakers.UI
 {
-    // Every option in one window: Tips, Calm motion, Music, Sound effects, Wiki & Help and Data & Credits.
+    // Every option in one window: Tips, Science fact cards, Calm motion, Music, Sound effects, Wiki & Help and Data & Credits.
     // Opens over any screen from the Settings button (top left) or the in-game Menu. Close or Esc shuts it.
     public sealed class SettingsWindow : MonoBehaviour
     {
@@ -88,6 +88,7 @@ namespace Mapmakers.UI
             Title("Settings");
             Section("OPTIONS");
             Toggle("Tips", () => Progress.HintsOn, v => Progress.HintsOn = v);
+            Toggle("Science fact cards", () => Progress.FactCardsOn, v => Progress.FactCardsOn = v);
             Toggle("Calm motion", () => Progress.ReducedMotion, v => Progress.ReducedMotion = v);
             Toggle("Music", () => Progress.MusicOn, v => Progress.MusicOn = v);
             Toggle("Sound effects", () => Progress.SoundsOn, v => Progress.SoundsOn = v);

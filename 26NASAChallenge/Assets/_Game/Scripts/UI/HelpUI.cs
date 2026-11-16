@@ -177,30 +177,10 @@ namespace Mapmakers.UI
 
         public static void Open(string pageId = null, Action onClose = null, bool allowReplay = false)
         {
-            if (IsOpen) Close();
-            AudioDirector.Play(Sfx.WindowOpen);
-            closed = onClose;
-            replay = allowReplay;
             var help = HelpData.Load();
-            var root = UIKit.Canvas("Wiki Canvas", 40);
-            open = root.gameObject;
-            UIKit.Blocker(root, 0.8f);
-
-            var window = UIKit.Panel(root, Palette.Panel, "Wiki");
-            window.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1600, 920));
-            var outline = window.gameObject.AddComponent<Outline>();
-            outline.effectColor = Palette.Cyan;
-            outline.effectDistance = new Vector2(3, -3);
-            UIFx.Pop(window.transform);
-
-            UIKit.Icon(window.transform, "info", 52).TopLeftOf(32, 26);
-            UIKit.Label(window.transform, "Wiki & Help", 42, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.TopLeft(100, 22, 600, 60);
-            UIKit.Label(window.transform, "Pick a topic on the left. Come back any time.", 22, Palette.Muted, TextAnchor.MiddleLeft)
-                .rectTransform.TopLeft(640, 34, 640, 40);
-            var close = UIKit.Button(window.transform, "Close", Close, Palette.Azure, Palette.Hull, 26);
-            close.GetComponent<RectTransform>().TopLeft(1600 - 200, 22, 168, 60);
-
-            var list = Scroll(window.rectTransform, new Vector2(32, 104), new Vector2(460, 784));
+            var window = Frame("Wiki & Help", "info", "Pick a topic on the left. Come back any time.", onClose);
+            replay = allowReplay;
+            var list = Scroll(window, new Vector2(32, 104), new Vector2(460, 784));
             entries.Clear();
             foreach (var section in help.sections)
             {
@@ -218,8 +198,172 @@ namespace Mapmakers.UI
                     entries.Add((id, button.image));
                 }
             }
-            content = Scroll(window.rectTransform, new Vector2(520, 104), new Vector2(1048, 784));
+            content = Scroll(window, new Vector2(520, 104), new Vector2(1048, 784));
             Show(string.IsNullOrEmpty(pageId) || help.Page(pageId) == null ? help.wiki[0].id : pageId);
+        }
+
+        // The big window shared by the Wiki and the Science Facts collection.
+        static RectTransform Frame(string title, string icon, string subtitle, Action onClose)
+        {
+            if (IsOpen) Close();
+            AudioDirector.Play(Sfx.WindowOpen);
+            closed = onClose;
+            var root = UIKit.Canvas("Wiki Canvas", 40);
+            open = root.gameObject;
+            UIKit.Blocker(root, 0.8f);
+
+            var window = UIKit.Panel(root, Palette.Panel, title);
+            window.rectTransform.Anchor(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1600, 920));
+            var outline = window.gameObject.AddComponent<Outline>();
+            outline.effectColor = Palette.Cyan;
+            outline.effectDistance = new Vector2(3, -3);
+            UIFx.Pop(window.transform);
+
+            UIKit.Icon(window.transform, icon, 52).TopLeftOf(32, 26);
+            UIKit.Label(window.transform, title, 42, Palette.Hull, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.TopLeft(100, 22, 600, 60);
+            UIKit.Label(window.transform, subtitle, 22, Palette.Muted, TextAnchor.MiddleLeft).rectTransform.TopLeft(640, 34, 700, 40);
+            var close = UIKit.Button(window.transform, "Close", Close, Palette.Azure, Palette.Hull, 26);
+            close.GetComponent<RectTransform>().TopLeft(1600 - 200, 22, 168, 60);
+            return window.rectTransform;
+        }
+
+        // Swaps the Wiki and the collection without running the close callback (the game stays paused).
+        static void SwitchTo(Action<Action> openNext)
+        {
+            var callback = closed;
+            closed = null;
+            openNext(callback);
+        }
+
+        // ---------- Science Facts collection: every fact, found ones lit up, the rest dim with a hint ----------
+
+        static RectTransform factDetail;
+        static readonly List<(ScienceCard card, Outline edge)> factTiles = new List<(ScienceCard, Outline)>();
+
+        public static void OpenFacts(Action onClose = null, bool allowReplay = false)
+        {
+            var story = StoryData.Load();
+            var help = HelpData.Load();
+            int found = Progress.FactsFound(), total = story.cards.Length;
+            Progress.FactsLookedAt = found;
+            var window = Frame("Science Facts", "star", "Real NASA and CSA science. Play to find them all!", onClose);
+            replay = allowReplay;
+            Page = "facts";
+
+            UIKit.Label(window, "Found " + found + " of " + total, 30, Palette.Amber, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.TopLeft(32, 100, 300, 48);
+            var bar = UIKit.Panel(window, Palette.Space, "Progress", false);
+            bar.rectTransform.TopLeft(330, 112, 1238, 24);
+            var fill = UIKit.Panel(bar.transform, Palette.Amber, "Fill", false);
+            fill.rectTransform.anchorMin = Vector2.zero;
+            fill.rectTransform.anchorMax = new Vector2(total == 0 ? 0 : (float)found / total, 1);
+            fill.rectTransform.offsetMin = fill.rectTransform.offsetMax = Vector2.zero;
+
+            var grid = Scroll(window, new Vector2(32, 164), new Vector2(1000, 724));
+            factTiles.Clear();
+            var pages = new List<string>();
+            foreach (var card in story.cards)
+                if (!pages.Contains(card.wiki)) pages.Add(card.wiki);
+            foreach (string pageId in pages)
+            {
+                var group = Array.FindAll(story.cards, c => c.wiki == pageId);
+                var page = help.Page(pageId);
+                int groupFound = Array.FindAll(group, c => Progress.FactSeen(c.id)).Length;
+                var head = UIKit.Label(grid, (page != null ? page.title : pageId).ToUpperInvariant() + "   " + groupFound + " / " + group.Length,
+                    22, Palette.Cyan, TextAnchor.LowerLeft, FontStyle.Bold);
+                head.gameObject.AddComponent<LayoutElement>().preferredHeight = 40;
+                var cells = UIKit.Rect(grid, "Facts");
+                var layout = cells.gameObject.AddComponent<GridLayoutGroup>();
+                layout.cellSize = new Vector2(466, 104);
+                layout.spacing = new Vector2(14, 14);
+                layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+                layout.constraintCount = 2;
+                int rows = (group.Length + 1) / 2;
+                cells.gameObject.AddComponent<LayoutElement>().preferredHeight = rows * 104 + (rows - 1) * 14;
+                foreach (var card in group) FactTile(cells, card, story);
+            }
+
+            factDetail = UIKit.Panel(window, Palette.PanelLight, "Fact").rectTransform;
+            factDetail.TopLeft(1056, 164, 512, 724);
+            var column = factDetail.gameObject.AddComponent<VerticalLayoutGroup>();
+            column.padding = new RectOffset(26, 26, 22, 22);
+            column.spacing = 12;
+            column.childControlWidth = column.childControlHeight = true;
+            column.childForceExpandWidth = true;
+            column.childForceExpandHeight = false;
+            var first = Array.Find(story.cards, c => Progress.FactSeen(c.id)) ?? story.cards[0];
+            ShowFactDetail(first);
+        }
+
+        static void FactTile(Transform parent, ScienceCard card, StoryData story)
+        {
+            bool found = Progress.FactSeen(card.id);
+            var tile = UIKit.Button(parent, "", () => ShowFactDetail(card), found ? Palette.PanelLight : Palette.Alpha(Palette.Space, 0.9f));
+            var edge = tile.gameObject.AddComponent<Outline>();
+            var icon = UIKit.Icon(tile.transform, found ? "star" : "lock", 52);
+            icon.rectTransform.Anchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(14, 0), new Vector2(52, 52));
+            if (!found) icon.color = Palette.Alpha(Color.white, 0.35f);
+            UIKit.Label(tile.transform, card.title, 24, found ? Palette.Hull : Palette.Muted, TextAnchor.UpperLeft, FontStyle.Bold)
+                .rectTransform.TopLeft(80, 10, 372, 32);
+            string line = found ? "Shared by " + Speaker(card, story) : "Hint: " + card.hint;
+            UIKit.Label(tile.transform, line, 18, found ? Palette.Mint : Palette.Alpha(Palette.Muted, 0.85f), TextAnchor.UpperLeft)
+                .rectTransform.TopLeft(80, 44, 372, 54);
+            factTiles.Add((card, edge));
+        }
+
+        static void ShowFactDetail(ScienceCard card)
+        {
+            if (factDetail == null) return;
+            // Found tiles glow amber; the selected tile gets a thick cyan edge, so its text stays easy to read.
+            foreach (var (c, edge) in factTiles)
+            {
+                bool selected = c == card, found = Progress.FactSeen(c.id);
+                edge.enabled = selected || found;
+                edge.effectColor = selected ? Palette.Cyan : Palette.Amber;
+                edge.effectDistance = selected ? new Vector2(4, -4) : new Vector2(2, -2);
+            }
+            UIKit.Clear(factDetail);
+            var story = StoryData.Load();
+            bool seen = Progress.FactSeen(card.id);
+
+            var head = UIKit.Rect(factDetail, "Head");
+            head.gameObject.AddComponent<LayoutElement>().preferredHeight = 72;
+            var icon = UIKit.Icon(head, seen ? "star" : "lock", 64);
+            icon.rectTransform.Anchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f), Vector2.zero, new Vector2(64, 64));
+            if (!seen) icon.color = Palette.Alpha(Color.white, 0.5f);
+            UIKit.Label(head, card.title, 30, seen ? Palette.Hull : Palette.Muted, TextAnchor.MiddleLeft, FontStyle.Bold).rectTransform.Stretch(80, 0, 0, 0);
+            string where = string.IsNullOrEmpty(card.planet) ? "Moon or Mars" : card.planet + " only";
+
+            if (!seen)
+            {
+                Detail("NOT FOUND YET", 22, Palette.Amber, FontStyle.Bold);
+                Detail("How to find it:", 24, Palette.Hull, FontStyle.Bold);
+                Detail(card.hint, 28, Palette.Amber);
+                Detail("Where: " + where + ".", 22, Palette.Ice);
+                Detail("Each fact pops up the first time its event happens.", 20, Palette.Muted);
+                return;
+            }
+            var values = new Dictionary<string, string>();
+            FixtureLoader.Donki().Storm.AddValues(values);
+            FixtureLoader.Radlab().AddValues(values);
+            string text = StoryData.Fill(card.text, values) ?? card.text;
+            string text2 = StoryData.Fill(card.text2, values) ?? card.text2;
+            Detail("FOUND  ·  " + where, 22, Palette.Mint, FontStyle.Bold);
+            Detail(Keywords.Mark(Speaker(card, story) + ": \"" + text + "\""), 26, Palette.Hull);
+            if (!string.IsNullOrEmpty(text2)) Detail(Keywords.Mark(text2), 24, Palette.Ice);
+            if (card.text.Contains("{")) Detail("Numbers from the May 2024 storm.", 18, Palette.Muted);
+            Detail("Source: " + card.source + " (" + card.label + ")" + (string.IsNullOrEmpty(card.url) ? "" : "\n" + card.url), 18, Palette.Muted);
+            string pageId = card.wiki;
+            var more = UIKit.Button(factDetail, "Read more in the Wiki", () => SwitchTo(cb => Open(pageId, cb, replay)), Palette.Azure, Palette.Hull, 24);
+            more.gameObject.AddComponent<LayoutElement>().preferredHeight = 60;
+        }
+
+        static void Detail(string text, int size, Color color, FontStyle style = FontStyle.Normal) =>
+            UIKit.Label(factDetail, text, size, color, TextAnchor.UpperLeft, style);
+
+        static string Speaker(ScienceCard card, StoryData story)
+        {
+            var member = string.IsNullOrEmpty(card.crew) ? null : story.Crew(card.crew);
+            return member != null ? member.name : "Mission control";
         }
 
         public static void Close()
@@ -229,6 +373,7 @@ namespace Mapmakers.UI
             UnityEngine.Object.Destroy(open);
             open = null;
             content = null;
+            factDetail = null;
             var callback = closed;
             closed = null;
             callback?.Invoke();
@@ -252,6 +397,7 @@ namespace Mapmakers.UI
                 foreach (var fact in HelpText.Facts(BalanceLoader.Load().Def(type), true)) Row(fact.StartsWith("Cost") ? "supplies" : fact.StartsWith("Size") ? "build" : "power", fact);
             foreach (var row in page.rows) Row(row.icon, row.text);
             if (!string.IsNullOrEmpty(page.best)) Row("check", "Best spot: " + page.best);
+            if (page.section == "Science") ScienceContent(page);
             if (replay && !string.IsNullOrEmpty(page.lesson))
             {
                 string lesson = page.lesson;
@@ -267,7 +413,72 @@ namespace Mapmakers.UI
             UIKit.Label(content, Keywords.Mark(text), size, color, TextAnchor.UpperLeft);
         }
 
-        static void Row(string icon, string text)
+        // Science pages: the facts filed here (a star marks the ones found), real storm and study lists, then sources.
+        // Facts with {numbers} show the May 2024 storm used in Story Mode.
+        static void ScienceContent(WikiPage page)
+        {
+            var story = StoryData.Load();
+            var values = new Dictionary<string, string>();
+            FixtureLoader.Donki().Storm.AddValues(values);
+            FixtureLoader.Radlab().AddValues(values);
+            if (page.extra == "found")
+            {
+                var found = Array.FindAll(story.cards, c => Progress.FactSeen(c.id));
+                Paragraph("Found " + found.Length + " of " + story.cards.Length + ".", 26, Palette.Cyan);
+                var collection = UIKit.Button(content, "Open Science Facts: see hints for the rest", () => SwitchTo(cb => OpenFacts(cb, replay)), Palette.Amber, Palette.Ink, 26);
+                collection.gameObject.AddComponent<LayoutElement>().preferredHeight = 64;
+                foreach (var card in found) Fact(card, values, story);
+            }
+            else
+                foreach (var card in story.cards)
+                    if (card.wiki == page.id) Fact(card, values, story);
+            if (page.extra == "storms") Storms();
+            if (!string.IsNullOrEmpty(page.osdr)) Studies(page.osdr.Split(','));
+            if (page.extra == "csa")
+                foreach (var c in FixtureLoader.Csa().cards) SourcedRow("Greenhouse", c.title + ": " + c.kidLine, c.credit + "  " + c.url);
+            if (!string.IsNullOrEmpty(page.source)) SourcedRow("info", "Sources", page.source);
+        }
+
+        static void Fact(ScienceCard card, IDictionary<string, string> values, StoryData story)
+        {
+            string who = Speaker(card, story);
+            string text = StoryData.Fill(card.text, values) ?? card.text;
+            string text2 = StoryData.Fill(card.text2, values) ?? card.text2;
+            string note = card.text.Contains("{") ? " (Numbers from the May 2024 storm.)" : "";
+            SourcedRow(Progress.FactSeen(card.id) ? "star" : "info", card.title + "\n" + who + ": " + text + " " + text2 + note,
+                "Source: " + card.source + " (" + card.label + ")" + (string.IsNullOrEmpty(card.url) ? "" : "\n" + card.url));
+        }
+
+        static void Storms()
+        {
+            foreach (var storm in FixtureLoader.StormSet().storms)
+            {
+                var v = new Dictionary<string, string>();
+                storm.AddValues(v);
+                string line = storm.flare.classType + " flare, " + storm.Date + ". Gas cloud: " + Value(v, "speed", "?") + " km/s. Particles: "
+                    + Value(v, "sepDelay", "no time") + " after the peak. Kp: " + Value(v, "kp", "none linked") + ".";
+                SourcedRow("alert", line, "NASA DONKI  " + storm.flare.link);
+            }
+        }
+
+        static void Studies(string[] topics)
+        {
+            foreach (var c in FixtureLoader.Osdr().cards)
+                if (Array.IndexOf(topics, c.topic) >= 0)
+                    SourcedRow("star", c.kidLine, "NASA OSDR " + c.accession + " (" + c.where + "): " + c.title + "\n" + c.url);
+        }
+
+        static string Value(IDictionary<string, string> values, string key, string missing) => values.TryGetValue(key, out string v) ? v : missing;
+
+        // A row whose small grey source line is never coloured as a keyword.
+        static void SourcedRow(string icon, string text, string source)
+        {
+            RichRow(icon, Keywords.Mark(text) + "\n<size=19><color=#8A9BB5>" + source + "</color></size>");
+        }
+
+        static void Row(string icon, string text) => RichRow(icon, Keywords.Mark(text));
+
+        static void RichRow(string icon, string text)
         {
             var row = UIKit.Rect(content, "Row");
             var layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
@@ -279,7 +490,7 @@ namespace Mapmakers.UI
             var size = image.gameObject.AddComponent<LayoutElement>();
             size.preferredWidth = size.preferredHeight = 44;
             size.flexibleWidth = 0;
-            var label = UIKit.Label(row, Keywords.Mark(text), 26, Palette.Ice, TextAnchor.UpperLeft);
+            var label = UIKit.Label(row, text, 26, Palette.Ice, TextAnchor.UpperLeft);
             label.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1;
         }
 

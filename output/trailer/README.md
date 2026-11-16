@@ -1,26 +1,38 @@
-# AstroCiv — 28-second gameplay trailer
+<!-- trailer-v4-current -->
+**Latest: [revised 29-second trailer](AstroCiv_Trailer_29s_v4.mp4)** | [Timings, credits and validation](v4/README.md) | [Contact sheet](v4/contact-sheet.jpg). Earlier cuts and their historical notes follow.
 
-[Watch the MP4](AstroCiv_Trailer_28s.mp4) · [Credits](CREDITS.md) · [Shot and validation manifest](TRAILER_MANIFEST.json) · [Contact sheet](trailer-contact-sheet.jpg)
+---
 
-**28.00 seconds**, 1280×720, 30 fps, H.264 video and AAC stereo audio. The file is about 3.4 MB. It is a local draft; no upload or event submission has been performed.
+<!-- artemis-29s-current -->
+**Previous version: [29-second Artemis II trailer](AstroCiv_Trailer_29s.mp4)** | [Credits, shots and validation](README_29S.md). Earlier cut and notes follow.
 
-| Time | Recorded shot / edit |
-|---|---|
-| 0–3 s | Actual main menu: “Your crew. Your call.” |
-| 3–7 s | Actual launch cutscene: “A dream becomes a mission.” |
-| 7–13 s | Habitat / Solar Array / Greenhouse placement: “Build a home beyond Earth.” |
-| 13–18 s | Crew introduction: “Every building supports someone.” |
-| 18–24 s | Running commander mission, resources and inspection clock: “Balance resources. Plan ahead.” |
-| 24–28 s | Closing title, play invitation, music/art disclosure |
+---
 
-The soundtrack is the supplied **Starry Twinkles** by **raincalleer / Suno**. The edit uses seconds 18–46 of that file, with loudness processing and opening/closing fades. No new music or synthetic gameplay footage was generated. Original game audio was not recorded; the final soundtrack is the selected music.
+# AstroCiv — recreated 28-second gameplay trailer
 
-The source footage was recorded from the real Unity WebGL game with mouse-driven actions in a fresh Chrome profile. Only its canvas was captured, not the user's desktop. Raw clips remain in `raw/`. Where a browser recording ended slightly early, the editor can hold the final recorded frame to meet the shot duration; it does not invent gameplay.
+[Watch the MP4](AstroCiv_Trailer_28s.mp4) · [Previous cut](AstroCiv_Trailer_28s_previous.mp4) · [Credits](CREDITS.md) · [Shot manifest](TRAILER_MANIFEST.json) · [Contact sheet](trailer-contact-sheet.jpg)
 
-Validation: decoded all **840 frames**, verified **28.00 seconds**, H.264/AAC streams and non-silent audio. Measured audio mean −20.7 dBFS and peak −5.7 dBFS. Reviewed the contact sheet for framing, captions and coverage. Human playback/listening approval is not recorded; review the MP4 before using it as a formal submission demo.
+**28.00 seconds**, 1280×720, 30 fps, H.264 video and AAC stereo audio; **3.64 MB**. Recreated 15 November 2026 to sell the adventure, show science being used in play, celebrate an earned achievement, and connect the Ontario story to curiosity and future problem-solving.
 
-The game build used for capture is identified in the manifest. The trailer does not claim to show every later unbuilt source change or every mission outcome. It deliberately does not claim a complete campaign playthrough.
+The opening cuts from the Moon to Mars. Real placement footage shows an outpost taking shape. A close view of the NASA sunlight card makes the knowledge legible; the greenhouse connects resources to food. The storm warning cites NASA DONKI, followed by actual shelter/recall actions. The result is an earned **S, 98/100, three stars, 100% crew safety**, followed by the commander connecting with a classroom on Earth. The closing card invites viewers to play and gives the browser-game address.
 
-Capture/edit source scripts and shot plans are retained in `scripts/` for this workspace. The editor expects an FFmpeg executable under the temporary dependency directory used in this session; adjust that path for another machine. Free manual workflow: record short takes in OBS, import them and the original MP3 into Shotcut, trim the timeline to 28 seconds, apply audio fades, and export H.264/AAC MP4. See the [research/workflow note](../../Work%20Log%20and%20Review/TRAILER_WORKFLOW.md) for official links.
+| Time | On-screen pitch | Recorded source |
+|---|---|---|
+| 0–1.2 s | WANT TO EXPLORE THE MOON & MARS? | v2_moon_hero.webm |
+| 1.2–2.4 s | WANT TO EXPLORE THE MOON & MARS? | v2_mars.webm |
+| 2.4–6.6 s | BUILD A HOME BEYOND EARTH. | v2_building.webm |
+| 6.6–10 s | REAL NASA DATA. SMARTER DECISIONS. | v2_science_sun.webm |
+| 10–12.8 s | GROW FOOD. KEEP YOUR CREW GOING. | v2_greenhouse.webm |
+| 12.8–16.2 s | SOLAR STORM. YOUR CREW NEEDS YOU. | v2_storm_warning.webm |
+| 16.2–18.6 s | PROTECT PEOPLE. THINK AHEAD. | v2_storm_response.webm |
+| 18.6–21.4 s | BUILD. TEST. EARN YOUR MOMENT. | v2_storm_report.webm |
+| 21.4–24.4 s | BIG DREAMS START IN ONTARIO. | v2_earth_ending.webm |
+| 24.4–28 s | YOUR CREW NEEDS YOU. PLAY ASTROCIV. | v2_earth_ending.webm |
 
-For formal submission, review required team/member names, retain music permissions and AI indicators, then host the final approved video somewhere judges can open without signing in. Creating this file has not done those publication/submission steps.
+Captions and the existing **Starry Twinkles** soundtrack carry the pitch; no voiceover was generated or recorded. Captions sit below the gameplay so building cards, resources and objectives remain visible. The NASA card is cropped closer for readability. Some gameplay is sped up and waiting time is removed; the manifest records source offsets and speeds. All visual source material is captured from the real game. Game balance and storm timing remain simplified educational rules.
+
+Capture used the local `docs/` WebGL build in a fresh, isolated Chrome profile. To reach the requested shots, prerequisite mission-selection flags were set in that capture profile; best scores were never edited. The storm mission used its own native fallback starter base, then was played through: recall the geologist, power the shelter, rest the greenhouse while the battery was low, restore food production and reach inspection. Tutorial 1 also earned S 93/100 in a separate recording. This is a montage of working screens, not a claim to show an uninterrupted campaign playthrough. The user's normal browser/game saves were not used.
+
+Validation decoded all **840 frames**, confirmed **28.00 seconds**, H.264/AAC streams, non-silent audio and no sustained black frames. Audio mean **-20.7 dBFS**, peak **-5.6 dBFS**. The contact sheet samples every edited shot. Source hashes and WebGL build hashes are in the manifest; render/validation logs are under `tmp/trailer/edit-v2/` in this workspace. Human listening/playback approval is not recorded.
+
+The previous MP4 is preserved. Raw recordings and capture plans remain available for further edits. Rebuild with `python output/trailer/scripts/recreate_trailer.py` from the repository root; FFmpeg is supplied by imageio-ffmpeg 0.8.1 under `tmp/trailer-deps-v2/` (or the earlier `tmp/trailer-deps/` fallback); Pillow assembles the review sheet. In this Windows workspace, the encoder's installed folder requires running the script outside the sandbox. The finalizer updates these notes and the Submission desk after rendering. No public upload or challenge submission was performed.

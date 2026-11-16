@@ -370,4 +370,42 @@ namespace Mapmakers.UI
             for (int i = t.childCount - 1; i >= 0; i--) Object.Destroy(t.GetChild(i).gameObject);
         }
     }
+
+    // Lets the player drag a small window out of the way. It always stays fully on screen.
+    public sealed class DragMove : MonoBehaviour, IBeginDragHandler, IDragHandler
+    {
+        public System.Action<Vector2> moved;
+        RectTransform rect;
+        Canvas canvas;
+
+        void Awake()
+        {
+            rect = (RectTransform)transform;
+            canvas = GetComponentInParent<Canvas>().rootCanvas;
+        }
+
+        public void OnBeginDrag(PointerEventData e) => rect.SetAsLastSibling();
+
+        public void OnDrag(PointerEventData e)
+        {
+            rect.anchoredPosition += e.delta / canvas.scaleFactor;
+            KeepOnScreen(rect);
+            moved?.Invoke(rect.anchoredPosition);
+        }
+
+        public static void KeepOnScreen(RectTransform rt)
+        {
+            var parent = (RectTransform)rt.parent;
+            var corners = new Vector3[4];
+            rt.GetWorldCorners(corners);
+            Vector2 min = parent.InverseTransformPoint(corners[0]), max = parent.InverseTransformPoint(corners[2]);
+            var area = parent.rect;
+            var shift = Vector2.zero;
+            if (min.x < area.xMin) shift.x = area.xMin - min.x;
+            else if (max.x > area.xMax) shift.x = area.xMax - max.x;
+            if (max.y > area.yMax) shift.y = area.yMax - max.y;
+            else if (min.y < area.yMin) shift.y = area.yMin - min.y;
+            rt.anchoredPosition += shift;
+        }
+    }
 }

@@ -58,4 +58,4 @@ In-game credit line: "Data: NASA DONKI, NASA OSDR RadLab, NASA POWER, LRO/LOLA a
 
 The simulation uses simplified gameplay values and historical/offline references; it is not a real mission-planning or radiation-prediction tool. Crew dialogue is scripted and no live AI runs during gameplay. Project-created art and AI assistance are disclosed in the linked records. Game music (Kevin MacLeod, CC BY 4.0; TAD, CC0) and sound effects (Kenney, CC0) are credited in the game's Data & Credits page and in the asset credits. Third-party and agency materials retain their own terms; public repository access is not a blanket license for every asset. The team's own code and art are under the [MIT License](LICENSE).
 
-Not endorsed by NASA, CSA, Sara Seager or Chris Hadfield. The astronaut story is fictional and aspirational.
+Not endorsed by NASA, CSA, or any named individuals in the game. The astronaut story is half realistic and half fictional and aspirational.
